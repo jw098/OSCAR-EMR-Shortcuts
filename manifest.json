@@ -1,0 +1,194 @@
+{
+    "name": "OSCAR EMR Shortcuts",
+    "version": "1.0",
+    "manifest_version": 2,
+    "description": "Keyboard shortcuts, buttons, automated actions for OSCAR EMR.",
+    "permissions": [
+        "storage"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*/*/oscarRx/choosePatient.do*", 
+                "*://*/*/oscarRx/SearchDrug3.jsp*",
+                "*://*/*/oscarRx/ShowAllergies2.jsp*",
+                "*://*/*/oscarRx/showAllergy.do*",
+                "*://*/*/oscarRx/deleteAllergy.do*",
+                "*://*/*/oscarRx/addReaction2.do*"
+            ],
+            "js": ["Allergy_QuickAdd.user.js"]
+        },{
+            "matches": [
+                "*://*/*billing.do?bill*", 
+                "*://*/*oscar/CaseManagementEntry*",
+                "*://*/*billing/CA/BC/billingBC.jsp*",
+                "*://*/*SaveBilling.do*",
+                "*://*/*billing/CA/BC/billingDigNewSearch.jsp?*",
+                "*://*/*billing/CA/BC/CreateBilling*"
+            ],
+            "js": ["BCBilling_KeyboardShortcuts.user.js"]
+        },
+        {
+            "matches": [
+                "*://*/*billing.do?bill*", 
+                "*://*/*oscar/CaseManagementEntry*",
+                "*://*/*billing/CA/BC/billingBC.jsp*",
+                "*://*/*SaveBilling.do*",
+                "*://*/*billing/CA/BC/billingDigNewSearch.jsp?*",
+                "*://*/*billing/CA/BC/CreateBilling*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "BCBilling_ScreenButtons.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "https://*/appointment/addappointment.jsp*",
+                "https://*/appointment/editappointment.jsp*",
+                "https://*/appointment/appointmentcontrol.jsp*",
+                "https://*/provider/providercontrol.jsp*",
+                "https://*/casemgmt/forward.jsp*",
+                "https://*/oscarEncounter/IncomingEncounter.do*",
+                "https://*/juno/oscarEncounter/IncomingEncounter.do*",
+                "https://*/eform/efmformadd_data.jsp*",
+                "https://*/eform/efmshowform_data.jsp*",
+                "https://*/dms/documentReport.jsp*",
+                "https://*/*/appointment/addappointment.jsp*",
+                "https://*/*/appointment/editappointment.jsp*",
+                "https://*/*/appointment/appointmentcontrol.jsp*",
+                "https://*/*/provider/providercontrol.jsp*",
+                "https://*/*/casemgmt/forward.jsp*",
+                "https://*/*/eform/efmformadd_data.jsp*",
+                "https://*/*/eform/efmshowform_data.jsp*",
+                "https://*/*/dms/documentReport.jsp*",
+                "https://*/*/dms/showDocument.jsp*",
+                "*://*/*/oscarReport/reportByTemplate/GenerateReportAction.do",
+                "*://*/*/lab/*"
+            ],
+            "js": ["CloseCortico.js"]
+        },
+        {
+            "matches": [
+                "*://*/*/oscarConsultationRequest/ConsultationFormRequest.jsp*"
+            ],
+            "js": ["Consultations_KeyboardShortcuts.user.js"]
+        },
+        {
+            "matches": [
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
+            ],
+            "js": ["EChart_Buttons.user.js"]
+        },
+        {
+            "matches": [
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*", 
+                "*://*/*efmformslistadd.jsp*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "EChart_eFormSearch.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
+            ],
+            "js": ["EChart_KeyboardShortcuts.user.js"]
+        },
+        {
+            "matches": [
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "EChart_UpdateSidebar.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/eform/efmformslistadd.jsp*",
+                "*://*/*/eform/efmformadd_data.jsp*",
+                "*://*/*/eform/efmshowform_data.jsp*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "eForms_KeyboardShortcuts.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/dms/inboxManage*"
+            ],
+            "js": [
+                "Inbox_Buttons.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/lab/CA/ALL/labDisplay*",
+                "*://*/*/dms/inboxManage*",
+                "*://*/*/dms/showDocument*",
+                "*://*/*/dms/MultiPageDocDisplay.jsp*"
+            ],
+            "js": [
+                "Inbox_KeyboardShortcuts.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/lab/CA/ALL/labDisplay*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "Inbox_LabelLabs.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/lab/CA/ALL/labDisplay*",
+                "*://*/*oscar/dms/inboxManage.do*",
+                "*://*/*kaiemr/#/inbox*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "Inbox_StyleChange.user.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "*://*/*/oscarRx/choosePatient.do*",
+                "*://*/*/oscarRx/SearchDrug3.jsp*"
+            ],
+            "js": [
+                "Medications_KeyboardShortcuts.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/provider/providercontrol.jsp?*",
+                "*://*/*provider/appointmentprovideradminday.jsp*"
+            ],
+            "js": [
+                "Schedule_KeyboardShortcuts.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/tickler/ticklerAdd.jsp*",
+                "*://*/*/tickler/ForwardDemographicTickler*"
+            ],
+            "js": [
+                "Tickler_KeyboardShortcuts.user.js"
+            ]
+        }
+      ]
+
+    
+}
