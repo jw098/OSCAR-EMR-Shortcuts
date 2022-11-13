@@ -8,11 +8,27 @@
 // @include        */oscarRx/deleteAllergy.do*
 // @include        */oscarRx/addReaction2.do*
 // @description		Buttons to quickly add allergies. On Medications: Alt+Z to quickly add NKDA.
-// @grant						GM.setValue
-// @grant						GM.getValue
-// @grant						GM.deleteValue
 // ==/UserScript==
 
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Check Enabled
+///////////////////////////////////////////////////////////////////////////////////////////
+checkEnabled();
+async function checkEnabled(){
+	const isEnabled = await browser.storage.sync.get('enabled');
+	console.log("Allergy_QuickAdd enabled? " + isEnabled.enabled);
+	if(!isEnabled.enabled){
+		return;
+	}
+	else {
+		doPageAction();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Do page action
+///////////////////////////////////////////////////////////////////////////////////////////
 
 let addReactionPage = /oscarRx\/addReaction2\.do/;
 
@@ -53,7 +69,7 @@ let currentURL = window.location.href;
 PURPOSE:
 - do the action corresponding with the current page.
 */
-doPageAction();
+
 function doPageAction(){
 	switch(true){
 		// Medications page
@@ -73,14 +89,12 @@ function doPageAction(){
 
 
 async function addReactionPage_Actions(){
-	// const nextPage = await GM.getValue('nextPage', 'test');
 	const nextPageObj = await browser.storage.local.get('nextPageValue');
 	const nextPage = nextPageObj.nextPageValue;
 	switch (nextPage){
 		case 'toAddAllergyThenMedsThenStop':
 			fromAddReactiontoAddAllergy();
 			await browser.storage.local.set({ nextPageValue:"toMedsThenStop"})
-			// GM.setValue('nextPage', 'toMedsThenStop');
 			break;
 		default:
 			addButtonAddAllergyThenToMeds_FromAddReaction();
@@ -88,30 +102,29 @@ async function addReactionPage_Actions(){
 }
 
 async function addAllergyPage_Actions(){
-	// nextPage = await GM.getValue('nextPage', 'test');
 	const nextPageObj = await browser.storage.local.get('nextPageValue');
 	const nextPage = nextPageObj.nextPageValue;
-	console.log('nextPage: ' + nextPage);
+	// console.log('nextPage: ' + nextPage);
 	switch (nextPage){
-		case 'toAddReactionThenAddAllergyThenMedsThenStop':  // from Med. going to Add Reaction
-			NKDAFromAddAllergyToAddReaction();
+		case 'toAddNKDAThenAddReactionThenAddAllergyThenMedsThenStop':  // from Med. going to Add Reaction
+			NKDAFromAddAllergyToAddReaction();  // clicks the default NKDA button, which adds NKDA and goes to Add Reaction.
 			await browser.storage.local.set({ nextPageValue:"toAddAllergyThenMedsThenStop"})
-			// GM.setValue('nextPage', 'toAddAllergyThenMedsThenStop');			
 			break;
 		case 'toMedsThenStop': // from Add Reaction. going to Med.
 			fromAddAllergyToMedications();
 			await browser.storage.local.set({ nextPageValue:"stop"})
-			// GM.setValue('nextPage', 'stop');
 			break;
 		case 'PENtoAddReaction': 
 			penFromAddAllergyToAddReaction();
 			await browser.storage.local.set({ nextPageValue:"stop"})
-			// GM.setValue('nextPage', 'stop');
 			break;					
 		case 'SULFAtoAddReaction': 
 			sulfaFromAddAllergyToAddReaction();
 			await browser.storage.local.set({ nextPageValue:"stop"})
-			// GM.setValue('nextPage', 'stop');
+			break;
+		case 'toRemoveNKDAThenMedsThenStop':
+			removeNKDA();
+			await browser.storage.local.set({ nextPageValue:"toMedsThenStop"})
 			break;
 		default:
 			if(areAllergiesNotSet()){
@@ -119,9 +132,34 @@ async function addAllergyPage_Actions(){
 			}
 			addPenicillinButton_FromAddAllergy();
 			addSulfaButton_FromAddAllergy();
-			
 			medPageKeydownListener();	
 	}
+}
+
+/* 
+- assumes we are on Add Allergy page
+- inactivates the NKDA allergy entry.
+ */
+function removeNKDA(){
+	const allergyEntryList = document.querySelectorAll(".allergy_table > tbody:nth-child(1) > tr");
+	for (let i = 1; i < allergyEntryList.length; i++){
+		const allergyEntry = allergyEntryList[i];
+		const allergyEntryValues = allergyEntry.children;
+		const allergyDescription = allergyEntryValues[2].innerText;
+		// console.log(allergyDescription);
+		if (allergyDescription == "NKDA"){
+			const inactivate = allergyEntryValues[11].children[1];
+			// console.log(inactivate);
+			inactivate.click();
+		}
+	}
+}
+
+function sendEnter(){
+	const ke = new KeyboardEvent('keydown', {
+		bubbles: true, cancelable: true, keyCode: 13
+	});
+	document.body.dispatchEvent(ke);
 }
 
 /* 
@@ -129,15 +167,33 @@ PURPOSE
 - on the Medication page, add the allergy buttons if the Allergies not yet set.
  */
 async function medPage_AddAllergyButtons(){
-	// GM.setValue('nextPage', 'stop');
-	// const nextPageValue = "stop";
 	if(areAllergiesNotSet()){
 		addButtonNKDA_FromMedPage();
 		addPenicillinButton_FromMedPage();
 		addSulfaButton_FromMedPage();
 	}
+	else if (isNKDA()){
+		addButtonRemoveNKDA_FromMedPage();
+	}
 	medPageKeydownListener();
-	await browser.storage.local.set({ nextPageValue: 'stop'})
+	await browser.storage.local.set({ nextPageValue: 'stop'});
+}
+/* 
+- returns true if NKDA has been set as one of the allergies
+ */
+function isNKDA(){
+	let allergyEntry = document.evaluate("/html/body/table/tbody/tr[2]/td[1]/div/p[3]/a",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+	const allergyEntryList = document.querySelectorAll("p.PropSheetMenuItemLevel1 > a:nth-child(1):not([href])");
+	console.log(allergyEntryList);
+	for (let i = 0; i < allergyEntryList.length; i++){
+		const allergyEntry = allergyEntryList[i];
+		const allergyEntryText = allergyEntry.innerText;
+		if(allergyEntryText.includes("NKDA")){
+			return true;
+		}
+	}
+	return false;
 }
 
 /*
@@ -228,10 +284,30 @@ function medPageKeydownListener(){
 // Add button on Medication Page
 /////////////////////////////////////////////
 
+
+function addButtonRemoveNKDA_FromMedPage(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("removeNKDAButton"));
+	let activeAllergies = document.evaluate("//div[@class='PropSheetMenu']/p[1]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	let targetDiv = activeAllergies;
+
+	targetDiv.insertAdjacentHTML('beforebegin',	'<input id="removeNKDAButton" type="button" value="Remove NKDA" title = "Automatically clicks through the pages and removes NKDA from the allergy list. User must confirm to inactivate the allergy." style="font-size:14px"><br/>');
+
+	addButtonRemoveNKDAListener_FromMedPage();	
+}
+
+function addButtonRemoveNKDAListener_FromMedPage(){
+	var theButton = document.getElementById('removeNKDAButton');
+	theButton.addEventListener('click', async function () { 
+  		fromMedsToAddAllergy();
+		await browser.storage.local.set({ nextPageValue:"toRemoveNKDAThenMedsThenStop"})
+  	},true);
+}
+
 /* 
 - add a NKDA button that automatically clicks through and ends up back in Meds.
 */ 
 function addButtonNKDA_FromMedPage(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("autoNKDAButton"));
 	let activeAllergies = document.evaluate("//div[@class='PropSheetMenu']/p[1]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	let targetDiv = activeAllergies;
 
@@ -250,12 +326,12 @@ function addButtonNKDAListener_FromMedPage(){
 	var theButton = document.getElementById('autoNKDAButton');
 	theButton.addEventListener('click', async function () { 
   		fromMedsToAddAllergy();
-		await browser.storage.local.set({ nextPageValue:"toAddReactionThenAddAllergyThenMedsThenStop"})
-  		// GM.setValue('nextPage', 'toAddReactionThenAddAllergyThenMedsThenStop');
+		await browser.storage.local.set({ nextPageValue:"toAddNKDAThenAddReactionThenAddAllergyThenMedsThenStop"})
   	},true);
 }
 
 function addPenicillinButton_FromMedPage(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("addPenicillinButton"));
 	let activeAllergies = document.evaluate("//div[@class='PropSheetMenu']/p[1]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	let targetDiv = activeAllergies;
 
@@ -268,11 +344,11 @@ function addPenicillinButtonListener_FromMedPage(){
 	theButton.addEventListener('click', async function () { 
   		fromMedsToAddAllergy();
 		await browser.storage.local.set({ nextPageValue:"PENtoAddReaction"})
-  		// GM.setValue('nextPage', 'PENtoAddReaction');
   	},true);
 }
 
 function addSulfaButton_FromMedPage(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("addSulfaButton"));
 	let activeAllergies = document.evaluate("//div[@class='PropSheetMenu']/p[1]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	let targetDiv = activeAllergies;
 
@@ -285,8 +361,22 @@ function addSulfaButtonListener_FromMedPage(){
 	theButton.addEventListener('click', async function () { 
   		fromMedsToAddAllergy();
 		await browser.storage.local.set({ nextPageValue:"SULFAtoAddReaction"})
-  		// GM.setValue('nextPage', 'SULFAtoAddReaction');
   	},true);
+}
+
+/* 
+PURPOSE
+- if the given element already exists in the document, remove it and the br after it.
+ */
+function removeAlreadyExistingElementAndBrTag(element){
+	if(!!element){
+		const brTag = element.nextElementSibling;
+		// console.log(brTag.tagName);
+		if (brTag.tagName=="BR"){
+			brTag.remove();
+		}
+		element.remove();
+	}
 }
 
 /////////////////////////////////////////////
@@ -298,9 +388,10 @@ function addSulfaButtonListener_FromMedPage(){
 - add a NKDA button that automatically
 */ 
 function addButtonNKDA_FromAddAllergy(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("autoNKDAButton"));
 	let activeAllergies = document.evaluate("//div[@class='PropSheetMenu']/p[1]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	
-	console.log(activeAllergies);
+	// console.log(activeAllergies);
 	let targetDiv = activeAllergies;
 
 	targetDiv.insertAdjacentHTML('beforebegin',	'<input id="autoNKDAButton" type="button" value="Set NKDA" title = "Automatically clicks through the pages and adds NKDA to the allergy list" style="background-color: red; font-size:14px"><br/>');
@@ -320,11 +411,11 @@ function addButtonNKDAListener_FromAddAllergy(){
 	theButton.addEventListener('click', async function () { 
 		NKDAFromAddAllergyToAddReaction();
 		await browser.storage.local.set({ nextPageValue:"toAddAllergyThenMedsThenStop"})
-  		// GM.setValue('nextPage', 'toAddAllergyThenMedsThenStop');
   	},true);
 }
 
 function addPenicillinButton_FromAddAllergy(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("addPenicillinButton"));
 	let activeAllergies = document.evaluate("//div[@class='PropSheetMenu']/p[1]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	let targetDiv = activeAllergies;
 
@@ -340,6 +431,7 @@ function addPenicillinButtonListener_FromAddAllergy(){
 }
 
 function addSulfaButton_FromAddAllergy(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("addSulfaButton"));
 	let activeAllergies = document.evaluate("//div[@class='PropSheetMenu']/p[1]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	let targetDiv = activeAllergies;
 
@@ -366,6 +458,7 @@ function addSulfaButtonListener_FromAddAllergy(){
 - assumes current page is AddReaction.
 */
 function addButtonAddAllergyThenToMeds_FromAddReaction(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("addAllergyThenToMeds"));
 	let targetDiv = document.evaluate("//form[@name='RxAddAllergyForm']/table[1]/tbody/tr[9]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	targetDiv.insertAdjacentHTML('beforeend',	'<input id="addAllergyThenToMeds" type="button" value="Add Allergy Then To Medications" style="background-color: red; font-size:14px">');
 	buttonListenerAddAllergyThenToMeds_FromAddReaction();
@@ -377,7 +470,6 @@ function buttonListenerAddAllergyThenToMeds_FromAddReaction(){
 	theButton.addEventListener('click', async function () { 
   		fromAddReactiontoAddAllergy();  		
 		await browser.storage.local.set({ nextPageValue:"toMedsThenStop"})
-  		// GM.setValue('nextPage', 'toMedsThenStop');
   	},true);
 }
 
