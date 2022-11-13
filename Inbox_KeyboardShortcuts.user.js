@@ -28,10 +28,16 @@ window.addEventListener('keydown', function(theEvent) {
 	
 
 	switch(true){
-		case (!!document.getElementById("docViews") &&	// If in the inbox, whose XML contains id = "docViews"
-				theAltKey && theKey == 1):  			// Alt+1: Open first item in inbox						
-			getNextTarget().click();
-			console.log("test")
+		case (!!document.getElementById("docViews")):	// If in the inbox, whose XML contains id = "docViews"
+			switch(true){
+				case (theAltKey && theKey == 1): // Alt+1: Open first item in inbox		
+					getNextTarget().click();
+					console.log("test")
+					break;
+				case (theAltKey && theKey == 'z'): // Alt+z: Close inbox		
+					window.close();
+					break;
+			}
 			break;
 		case (labResultPage.test(currentURL) || documentPage.test(currentURL)): // If in the Lab/Document result page
 			switch(true){
