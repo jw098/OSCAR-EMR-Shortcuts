@@ -10,11 +10,6 @@
         "48": "icons/OSCAR_48px.png",
         "96": "icons/OSCAR_96px.png"
     },
-    "background": {
-        "scripts": [
-            "background.js"
-        ]
-    },
     "content_scripts": [
         {
             "matches": [
