@@ -1,11 +1,10 @@
 // ==UserScript==
-// @name           KeyboardShortcuts_BCBilling
+// @name           BCBilling_CodeInput_KeyboardShortcuts
 // @namespace      oscar
 // @include        	*billing.do?bill*
 // @include        	*oscar/CaseManagementEntry*
 // @include        	*billing/CA/BC/billingBC.jsp*
 // @include			*SaveBilling.do*
-// @include        	*billing/CA/BC/billingDigNewSearch.jsp?*
 // @include        	*billing/CA/BC/CreateBilling*
 // @description		In the BC Billing page: Alt+1 to Continue, Alt+Q to input in person visit billing code, Alt+W to input telehealth visit billing code, Alt+A to set focus to Dx code. The above keyboard shortcuts will also scroll to the bottom of the page. In Diagnostic Code search: Alt+1 to Confirm, Escape to Cancel. In Billing confirmation page: Alt+1 to Save Bill. Alt+A to scroll to bottom of page.
 // @grant	   none
@@ -17,55 +16,15 @@
 checkGlobalEnabled();
 async function checkGlobalEnabled(){
 	const isEnabled = await browser.storage.sync.get('enabled');
-	console.log("Allergy_QuickAdd enabled? " + isEnabled.enabled);
+	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		doPageAction();
+		scrollToPageEnd();
+		billingCodeInputPage_KeydownListeners();
 	}
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////
-// Do page action
-///////////////////////////////////////////////////////////////////////////////////////////
-let currentURL = window.location.href;
-const billingPage = /billing.do\?bill/;
-const billingPage2 = /oscar\/CaseManagementEntry/;
-const dxCodeSearch = /billing\/CA\/BC\/billingDigNewSearch.jsp/;
-const billingConf = /billing\/CA\/BC\/CreateBilling/;
-
-function doPageAction(){
-	switch(true){		
-		// If in BC Billing Code Input page, whose XML contains id = "billingFormtable"
-		case  (!!document.getElementById("billingFormTable")):
-			return billingCodeInputPage_Actions();
-
-		// If in Diagnostic Code search, whose XML contains id = "servicecode"
-		case (!!document.getElementById("servicecode")):	
-			return dxCodeSearchPage_Actions();
-
-		// Check if in in Billing confirmation page. XML contains name = "BillingSaveBillingForm"		
-		case (document.getElementsByName("BillingSaveBillingForm").length > 0):	
-			return billingConfirmPage_Actions();
-	}
-}
-
-function billingCodeInputPage_Actions(){
-	scrollToPageEnd();
-	billingCodeInputPage_KeydownListeners();
-}
-
-function dxCodeSearchPage_Actions(){
-	dxCodeSearchPage_KeydownListeners();
-}
-
-function billingConfirmPage_Actions(){
-	scrollToPageEnd();
-	billingConfirmPage_KeydownListeners();
-}
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Event listeners
@@ -97,47 +56,6 @@ function billingCodeInputPage_KeydownListeners(){
 				$("input[name=billing_1_fee_dx1]").focus();
 				window.scrollTo(0, document.body.scrollHeight);
 				break;
-		}
-	}, true);
-}
-
-function dxCodeSearchPage_KeydownListeners(){
-	window.addEventListener('keydown', function(theEvent) {
-		var theKey = theEvent.key;
-		var theAltKey = theEvent.altKey;
-		var theCtrlKey = theEvent.ctrlKey;
-		var theShiftKey= theEvent.shiftKey;
-		let theTarget;		
-		switch(true){				
-			case (theAltKey && theKey ==  1):				// Alt+1 to Confirm.
-				theTarget = document.evaluate("id('servicecode')/input[@value='Confirm']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-				theTarget.click();
-				break;	
-			case (theKey == "Escape"):						// Escape to Cancel. 
-				// alert("dxCodeSearch");
-				theTarget = document.evaluate("id('servicecode')/input[@value='Cancel']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-				theTarget.click();
-				break;	
-		}
-	}, true);
-}
-
-
-function billingConfirmPage_KeydownListeners(){
-	window.addEventListener('keydown', function(theEvent) {
-		var theKey = theEvent.key;
-		var theAltKey = theEvent.altKey;
-		var theCtrlKey = theEvent.ctrlKey;
-		var theShiftKey= theEvent.shiftKey;
-		let theTarget;		
-		switch(true){
-			case(theAltKey && theKey == 1):		// Alt+1 to Save Bill. 
-				theTarget = document.evaluate("//input[@value='Save Bill']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-				theTarget.click();
-				break;
-			case theAltKey && theKey == 'a':
-				window.scrollTo(0, document.body.scrollHeight);
-				break;	
 		}
 	}, true);
 }

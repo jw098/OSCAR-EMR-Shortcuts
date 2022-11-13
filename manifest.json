@@ -33,16 +33,28 @@
                 "*://*/*/oscarRx/addReaction2.do*"
             ],
             "js": ["Allergy_QuickAdd.user.js"]
-        },{
+        },
+        {
             "matches": [
-                "*://*/*billing.do?bill*", 
-                "*://*/*oscar/CaseManagementEntry*",
+                "*://*/*billing.do?billRegion=BC*", 
+                "*://*/*billing/CA/BC/CreateBilling*",
+                "*://*/*oscar/CaseManagementEntry.do*",
                 "*://*/*billing/CA/BC/billingBC.jsp*",
-                "*://*/*SaveBilling.do*",
-                "*://*/*billing/CA/BC/billingDigNewSearch.jsp?*",
+                "*://*/*SaveBilling.do*"
+            ],
+            "js": ["BCBilling_CodeInput_KeyboardShortcuts.user.js"]
+        },
+        {
+            "matches": [
+                "*://*/*billing/CA/BC/billingDigNewSearch.jsp?*"
+            ],
+            "js": ["BCBilling_DxCodeSearch_KeyboardShortcuts.user.js"]
+        },
+        {
+            "matches": [
                 "*://*/*billing/CA/BC/CreateBilling*"
             ],
-            "js": ["BCBilling_KeyboardShortcuts.user.js"]
+            "js": ["BCBilling_Confirm_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [
