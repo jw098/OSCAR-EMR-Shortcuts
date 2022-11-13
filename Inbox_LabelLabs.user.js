@@ -9,48 +9,75 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+// Check Enabled
+///////////////////////////////////////////////////////////////////////////////////////////
+
+checkEnabled();
+async function checkEnabled(){
+	const isEnabled = await browser.storage.sync.get('enabled');
+	console.log("Inbox_LabelLabs enabled? " + isEnabled.enabled);
+	if(!isEnabled.enabled){
+		return;
+	}
+	else {
+		labelAllLabs();
+		labelLabsKeydownListener();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
 // Event Listeners
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 // labelLabsOnAcknowledge();
 
-// function labelLabsOnAcknowledge(){
-// 	let currentURL = window.location.href;
-// 	const labResultPage = /lab\/CA\/ALL\/labDisplay/
-// 	const theTarget = document.evaluate("//input[@value='Acknowledge']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-// 	if(theTarget != null){
-// 		theTarget.addEventListener('click', function(theEvent) { labelCurrentLabs(); }, true);
-// 	}
-// }
-
-
-window.addEventListener('keydown', function(theEvent) {
-	//theEvent.stopPropagation();
-	//theEvent.preventDefault();
-	// const theKeyCode = theEvent.charCode;// || event.which;
-	// const theKey = String.fromCharCode(theKeyCode);
-	const theKey = theEvent.key;
-	const theAltKey = theEvent.altKey;
-	const theCtrlKey = theEvent.ctrlKey;
-	const theShiftKey= theEvent.shiftKey;
-  
+function labelLabsOnAcknowledge(){
 	let currentURL = window.location.href;
 	const labResultPage = /lab\/CA\/ALL\/labDisplay/
-
-	switch(true){
-		case (labResultPage.test(currentURL) && theAltKey && theKey == 'z'):  // Alt+Z: if in lab result page: label lab results.
-			labelCurrentLabs();	
-			setTimeout(addNewLabsLabel, 300);
-			break;
+	const theTarget = document.evaluate("//input[@value='Acknowledge']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	if(theTarget != null){
+		theTarget.addEventListener('click', function(theEvent) { labelCurrentLabs(); }, true);
 	}
-}, true);
+}
+
+function labelLabsKeydownListener(){
+	window.addEventListener('keydown', function(theEvent) {
+		//theEvent.stopPropagation();
+		//theEvent.preventDefault();
+		// const theKeyCode = theEvent.charCode;// || event.which;
+		// const theKey = String.fromCharCode(theKeyCode);
+		const theKey = theEvent.key;
+		const theAltKey = theEvent.altKey;
+		const theCtrlKey = theEvent.ctrlKey;
+		const theShiftKey= theEvent.shiftKey;
+	  
+		let currentURL = window.location.href;
+		const labResultPage = /lab\/CA\/ALL\/labDisplay/
+	
+		switch(true){
+			case (labResultPage.test(currentURL) && theAltKey && theKey == 'z'):  // Alt+Z: if in lab result page: label lab results.
+				labelAllLabs();
+				break;
+		}
+	}, true);
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Labels Lab results on load
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-labelAllLabs();
+/*
+PURPOSE:
+- adds a line break before and after the label text.
+- insert another line element for the old label text.
+- and another line inserted for the new labs text.
+*/
 async function labelAllLabs(){
+	$("[id^='labelspan']").before('<br />');
+	$("[id^='labelspan']").after('<br />');
+
 	$("[id^='labelspan']").append('<br />');
 	$("[id^='labelspan']").append($("<i>"));
 	$("[id^='labelspan']").append('<br />');
@@ -61,14 +88,6 @@ async function labelAllLabs(){
 	setTimeout(addNewLabsLabel, 300);
 }
 
-/*
-PURPOSE:
-- adds a line break before and after the label text.
-- insert another line element for the old label text.
-- and another line inserted for the new labs text.
-*/
-$("[id^='labelspan']").before('<br />');
-$("[id^='labelspan']").after('<br />');
 
 // $("[id^='labelspan'] > i:first-child").before($("<p>"));
 
@@ -100,7 +119,7 @@ function prevVersionURL(){
 	if (prevNode == ""){
 		throw new Error("Previous version URL not Found");
 	} else {
-		console.log(prevNode.href)
+		// console.log(prevNode.href);
 		return prevNode.href;
 	}
 }
