@@ -10,6 +10,18 @@
         "48": "icons/OSCAR_48px.png",
         "96": "icons/OSCAR_96px.png"
     },
+    "browser_specific_settings": {
+        "gecko": {
+          "id": "{56918ab2-19f8-49a0-ae1f-e3f9f8dbfa11}"
+        }
+    },
+    "browser_action": {
+      "default_icon": {
+        "16": "icons/OSCAR_16px.png",
+        "32": "icons/OSCAR_32px.png"
+      },
+      "default_popup": "popup.html"
+    },
     "content_scripts": [
         {
             "matches": [
