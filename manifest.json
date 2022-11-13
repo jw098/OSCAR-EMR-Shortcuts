@@ -6,6 +6,9 @@
     "permissions": [
         "storage"
     ],
+    "icons":{
+        "48": "icons/OSCAR_48px.png"
+    },
     "background": {
         "scripts": [
             "background.js"
