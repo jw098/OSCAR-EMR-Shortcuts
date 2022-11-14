@@ -55,6 +55,18 @@
                 "*://*/*billing/CA/BC/CreateBilling*"
             ],
             "js": [
+                "BCBillingCodeInput.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*billing.do?billRegion=BC*", 
+                "*://*/*oscar/CaseManagementEntry*",
+                "*://*/*billing/CA/BC/billingBC.jsp*",
+                "*://*/*SaveBilling.do*",
+                "*://*/*billing/CA/BC/CreateBilling*"
+            ],
+            "js": [
                 "thirdparty/jquery3.1.0.min.js", 
                 "BCBillingCodeInput_Buttons.user.js"
             ]
