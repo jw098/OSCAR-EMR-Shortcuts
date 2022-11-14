@@ -36,13 +36,9 @@
         },
         {
             "matches": [
-                "*://*/*billing.do?billRegion=BC*", 
-                "*://*/*billing/CA/BC/CreateBilling*",
-                "*://*/*oscar/CaseManagementEntry.do*",
-                "*://*/*billing/CA/BC/billingBC.jsp*",
-                "*://*/*SaveBilling.do*"
+                "*://*/*billing/CA/BC/CreateBilling*"
             ],
-            "js": ["BCBilling_CodeInput_KeyboardShortcuts.user.js"]
+            "js": ["BCBilling_Confirm_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [
@@ -52,23 +48,26 @@
         },
         {
             "matches": [
-                "*://*/*billing/CA/BC/CreateBilling*"
-            ],
-            "js": ["BCBilling_Confirm_KeyboardShortcuts.user.js"]
-        },
-        {
-            "matches": [
-                "*://*/*billing.do?bill*", 
+                "*://*/*billing.do?billRegion=BC*", 
                 "*://*/*oscar/CaseManagementEntry*",
                 "*://*/*billing/CA/BC/billingBC.jsp*",
                 "*://*/*SaveBilling.do*",
-                "*://*/*billing/CA/BC/billingDigNewSearch.jsp?*",
                 "*://*/*billing/CA/BC/CreateBilling*"
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "BCBilling_ScreenButtons.user.js"
+                "BCBillingCodeInput_Buttons.user.js"
             ]
+        },
+        {
+            "matches": [
+                "*://*/*billing.do?billRegion=BC*", 
+                "*://*/*billing/CA/BC/CreateBilling*",
+                "*://*/*oscar/CaseManagementEntry.do*",
+                "*://*/*billing/CA/BC/billingBC.jsp*",
+                "*://*/*SaveBilling.do*"
+            ],
+            "js": ["BCBillingCodeInput_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [

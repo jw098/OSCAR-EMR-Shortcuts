@@ -7,7 +7,22 @@
 // @grant       none
 // ==/UserScript==
 
-// "*://*/*/casemgmt/forward.jsp?action=view&demographic*", 
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Check Enabled
+///////////////////////////////////////////////////////////////////////////////////////////
+checkGlobalEnabled();
+async function checkGlobalEnabled(){
+	const isEnabled = await browser.storage.sync.get('enabled');
+	console.log("Global enabled? " + isEnabled.enabled);
+	if(!isEnabled.enabled){
+		return;
+	}
+	else {
+		keydownEventListener_eChartButtons();
+		loadAllEchartButtons();
+	}
+}
 
 const labReqFID = 510;
 const xrayReqFID = 359;
@@ -17,38 +32,35 @@ const usReqFID = 293;
 // Event listeners
 ///////////////////////////////////////////////////////////////
 
-window.addEventListener("keydown", function(theEvent){
-	const theKey = theEvent.key;
-	const theAltKey = theEvent.altKey;
-	const theCtrlKey = theEvent.ctrlKey;
-	const theShiftKey= theEvent.shiftKey;
-	switch(true){
-		case theShiftKey && theAltKey && theKey == "Q":
-			openLink(labReqFID);
-			break;
-		case theShiftKey && theAltKey && theKey == 'W':
-			openLink(xrayReqFID);
-			break;
-		case theShiftKey && theAltKey && theKey == 'Z':
-			openLink(usReqFID);
-			break;
-	}
-}, false);
+function keydownEventListener_eChartButtons(){
+	window.addEventListener("keydown", function(theEvent){
+		const theKey = theEvent.key;
+		const theAltKey = theEvent.altKey;
+		const theCtrlKey = theEvent.ctrlKey;
+		const theShiftKey= theEvent.shiftKey;
+		switch(true){
+			case theShiftKey && theAltKey && theKey == "Q":
+				openLink(labReqFID);
+				break;
+			case theShiftKey && theAltKey && theKey == 'W':
+				openLink(xrayReqFID);
+				break;
+			case theShiftKey && theAltKey && theKey == 'Z':
+				openLink(usReqFID);
+				break;
+		}
+	}, false);
+}
 
-
-// window.addEventListener("load", function(e) {
-// 	console.log('hihi10');
-// }, false);
 
 ///////////////////////////////////////////////////////////////
 // Load Buttons
 ///////////////////////////////////////////////////////////////
 
-loadButtons();
-function loadButtons(){
+
+function loadAllEchartButtons(){
 	let buttonBlockID = 'buttonBlock1';
 	removeAlreadyExistingElement(document.getElementById(buttonBlockID));
-	
 	addBlock(buttonBlockID);
 	addButtonEForm('buttonOpenLabReq', 'Lab Req', labReqFID, buttonBlockID);
 	addButtonEForm('buttonOpenXray', 'X-ray', xrayReqFID, buttonBlockID);
@@ -86,10 +98,10 @@ function addButtonEForm(id, value, fid, divBlock){
 	inputButton.type = 'button';
 	inputButton.value = value;
 	targetDiv.appendChild(inputButton);	
-	addButtonEFormListener(id, fid);
+	openEFormButton_KeyDownListener(id, fid);
 }
  
-function addButtonEFormListener(id, fid){
+function openEFormButton_KeyDownListener(id, fid){
   var theButton = document.getElementById(id);
   theButton.addEventListener('click',function () { openLink(fid); },true);
 }

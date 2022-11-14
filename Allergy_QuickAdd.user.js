@@ -14,8 +14,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
-checkEnabled();
-async function checkEnabled(){
+checkEnabled_Allergy_QuickAdd();
+async function checkEnabled_Allergy_QuickAdd(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Allergy_QuickAdd enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){

@@ -10,25 +10,40 @@
 // @grant						GM.deleteValue
 // ==/UserScript==
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// Check Enabled
+///////////////////////////////////////////////////////////////////////////////////////////
+checkGlobalEnabled();
+async function checkGlobalEnabled(){
+	const isEnabled = await browser.storage.sync.get('enabled');
+	console.log("Global enabled? " + isEnabled.enabled);
+	if(!isEnabled.enabled){
+		return;
+	}
+	else {
+		keydownEventListener();
+		postPatientAgeGender();
+		getAllHistory();
+	}
+}
+
 
 ////////////////////////////////
-// Event Listeners
+// Keydown Event Listeners
 ////////////////////////////////
 
-const consultationHotkey = 'w';
+function keydownEventListener(){
+	const consultationHotkey = 'w';
 
-let currentURL = window.location.href;
-// const eChartPage = /casemgmt\/forward\.jsp\?action\=view\&/;
-const consultationPage = /oscarConsultationRequest\/ConsultationFormRequest\.jsp/;
-
-window.addEventListener('keydown', function(theEvent) {
-	const theKey = theEvent.key;
-	const theAltKey = theEvent.altKey;
-	const theCtrlKey = theEvent.ctrlKey;
-	const theShiftKey= theEvent.shiftKey;
-    
-
-	if(consultationPage.test(currentURL)) {
+	// let currentURL = window.location.href;
+	// const eChartPage = /casemgmt\/forward\.jsp\?action\=view\&/;
+	// const consultationPage = /oscarConsultationRequest\/ConsultationFormRequest\.jsp/;
+	
+	window.addEventListener('keydown', function(theEvent) {
+		const theKey = theEvent.key;
+		const theAltKey = theEvent.altKey;
+		const theCtrlKey = theEvent.ctrlKey;
+		const theShiftKey= theEvent.shiftKey;
 		switch(true){
 			case theAltKey && theKey == consultationHotkey:	// If on Consultation page, hotkey to close window.
 				window.close();
@@ -37,18 +52,19 @@ window.addEventListener('keydown', function(theEvent) {
 				var theTarget = document.evaluate("//input[@value='Submit Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();
 				break;					
-		}			
-	}
- 
-}, true);
+		}	
+	 
+	}, true);
+}
+
+
 
 
 ////////////////////////////////
 // Patient Age and Gender
 ////////////////////////////////
 
-postPatientAgeGender();
-getAllHistory();
+
 
 function postPatientAgeGender(){
 	const theTarget = document.evaluate("//textarea[@name='reasonForConsultation']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
@@ -242,7 +258,6 @@ function getURLOrigin(){
 	return window.location.origin + '/' + firstUrlElement + '/';
 }
 
-https://carefiniti.kai-oscar.com/oscar/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=8255&teamVar=&appNo=null
 function getDemographicNum(){
 	var params = {}; //Get Params
 	if (location.search) {

@@ -10,56 +10,80 @@
 // ==/UserScript==
 
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// Check Enabled
+///////////////////////////////////////////////////////////////////////////////////////////
+checkGlobalEnabled();
+async function checkGlobalEnabled(){
+	const isEnabled = await browser.storage.sync.get('enabled');
+	console.log("Global enabled? " + isEnabled.enabled);
+	if(!isEnabled.enabled){
+		return;
+	}
+	else {
+        
+		keydownEventListener_eformSearch();
+        addSearchBar();
+        getMeasures();
+	}
+}
+
 /////////////////////////////////////////////////////////////
 // Eventlistener
 /////////////////////////////////////////////////////////////
+function keydownEventListener_eformSearch(){
+    window.addEventListener("keydown", function(theEvent){
+        const theKey = theEvent.key;
+        const theAltKey = theEvent.altKey;
+        const theCtrlKey = theEvent.ctrlKey;
+        const theShiftKey= theEvent.shiftKey;
+        switch(true){
+            case theShiftKey && theAltKey && theKey == "A":
+                if(document.activeElement == document.getElementById("caseNote_note0")){
+                    document.getElementById("referral_name").focus();
+                }
+                else{
+                    document.getElementById("caseNote_note0").focus();
+                }
+                break;
+            }
+    }, true);
+}
 
-window.addEventListener("keydown", function(theEvent){
-    const theKey = theEvent.key;
-    const theAltKey = theEvent.altKey;
-    const theCtrlKey = theEvent.ctrlKey;
-    const theShiftKey= theEvent.shiftKey;
-    switch(true){
-        case theShiftKey && theAltKey && theKey == "A":
-            if(document.activeElement == document.getElementById("caseNote_note0")){
-                document.getElementById("referral_name").focus();
-            }
-            else{
-                document.getElementById("caseNote_note0").focus();
-            }
-            break;
-        }
-}, false);
 
 
 /////////////////////////////////////////////////////////////
 // Get URL Parameters
 /////////////////////////////////////////////////////////////
 
-var params = {}; //Get Params
-if (location.search) {
-    var parts = location.search.substring(1).split('&');
-    for (var i = 0; i < parts.length; i++) {
-        var nv = parts[i].split('=');
-        if (!nv[0]) continue;``
-        params[nv[0]] = nv[1] || true;
+function getEFormLibraryURL(){
+    var params = {}; //Get Params
+    if (location.search) {
+        var parts = location.search.substring(1).split('&');
+        for (var i = 0; i < parts.length; i++) {
+            var nv = parts[i].split('=');
+            if (!nv[0]) continue;``
+            params[nv[0]] = nv[1] || true;
+        }
     }
-}
-// console.log(params.demographicNo);
+    // console.log(params.demographicNo);
+    
+    var elements = (window.location.pathname.split('/', 2))
+    firstElement = (elements.slice(1))
+    vPath = ('https://' + location.host + '/' + firstElement + '/')
+    var newURL = vPath + "/eform/efmformslistadd.jsp?group_view=&demographic_no=" + params.demographicNo + "&parentAjaxId=eforms";
 
-var elements = (window.location.pathname.split('/', 2))
-firstElement = (elements.slice(1))
-vPath = ('https://' + location.host + '/' + firstElement + '/')
-var newURL = vPath + "/eform/efmformslistadd.jsp?group_view=&demographic_no=" + params.demographicNo + "&parentAjaxId=eforms"
-//alert(newURL)	
-//window.open(newURL)
+    return newURL;
+    //alert(newURL)	
+    //window.open(newURL)
+}
 
 
 /////////////////////////////////////////////////////////////
 // Searchbar
 /////////////////////////////////////////////////////////////
 
-addSearchBar();
+
 function addSearchBar(){
     //$('#enTemplate').width("250px"); //widens search field
     var searchbar = "<input id='referral_name' style ='background-color: white; color:green;' list='CP' name='referral_name' placeholder='eForm name (or partial name)' type='text'><datalist id='CP'></datalist>"
@@ -108,7 +132,7 @@ function addSearchBar(){
 // Get eForm names from eForms Library
 /////////////////////////////////////////////////////////////
 
-getMeasures();
+
 function getMeasures(measure) {
     xmlhttp = new XMLHttpRequest();
 
@@ -153,7 +177,7 @@ function getMeasures(measure) {
             }
         }
     }
-    xmlhttp.open("GET", newURL, false);  // newURL is the URL for the eForm library page.
+    xmlhttp.open("GET", getEFormLibraryURL(), false);  // newURL is the URL for the eForm library page.
     xmlhttp.send();
 }
 

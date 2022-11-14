@@ -16,24 +16,54 @@
 // ==/UserScript==
 
 
-/*
-tr = $('.serviceCodesTable').children();
-tr.prepend("<tr><td colspan=3 id='extravvrow'></td></tr>");
-*/
 
-/* 3rd row */
-tr = $('input[name=billing_1_fee]').parent().parent().parent().parent().parent().parent();
-tr.prepend("<tr><td colspan=3 id='extravvrow3'></td></tr>");
+//////////////////////////////////////////////////////////////////
+// Add Buttons
+//////////////////////////////////////////////////////////////////
+function addAllBillingButtons(){
+	/*
+	tr = $('.serviceCodesTable').children();
+	tr.prepend("<tr><td colspan=3 id='extravvrow'></td></tr>");
+	*/
 
-/* 2nd row */
-tr = $('input[name=billing_1_fee]').parent().parent().parent().parent().parent().parent();
-tr.prepend("<tr><td colspan=3 id='extravvrow2'></td></tr>");
+	/* 3rd row */
+	tr = $('input[name=billing_1_fee]').parent().parent().parent().parent().parent().parent();
+	tr.prepend("<tr><td colspan=3 id='extravvrow3'></td></tr>");
 
-/* 1st row */
-tr = $('input[name=billing_1_fee]').parent().parent().parent().parent().parent().parent();
-tr.prepend("<tr><td colspan=3 id='extravvrow1'></td></tr>");
+	/* 2nd row */
+	tr = $('input[name=billing_1_fee]').parent().parent().parent().parent().parent().parent();
+	tr.prepend("<tr><td colspan=3 id='extravvrow2'></td></tr>");
 
+	/* 1st row */
+	tr = $('input[name=billing_1_fee]').parent().parent().parent().parent().parent().parent();
+	tr.prepend("<tr><td colspan=3 id='extravvrow1'></td></tr>");
 
+	// Row 1 buttons
+	addBillingButton('Office', inPersonVisit, "", "9999FF", 1);
+	addBillingButton('TH Visit', virtualVisit, "", "9999FF", 1);
+	addBillingButton('TH Counsel', virtualVisitCounselling, "", "9999FF", 1);
+	addBillingButton('AlliedPhone', AlliedPhone, "", "9999FF", 1);
+	addBillingButton('AlliedConf', AlliedConf, "", "9999FF", 1);
+
+	// Row 2 buttons
+	addBillingButton('INR', INR, "INR", "8FF", 2);
+	addBillingButton('IM inj', Injection, "B12, etc; not allergy shot", "8FF", 2);
+	addBillingButton('Allergy', Allergy, "Allergy shot", "8FF", 2);
+	addBillingButton('Pap', Pap, "Pap", "8FF", 2);
+	addBillingButton('UA', Urinalysis, "Labs - UA, UDS, etc", "8FF", 2);
+	addBillingButton('Preg dip', UrinePreg, "Urine Pregnancy test ", "8FF", 2);
+	addBillingButton('Cryo', Cryo, "Cryo", "8FF", 2);
+
+	// Row 3 buttons
+	addBillingButton('Flu Vax Only', fluVaxAlone, "Flu Vax Only", "8FF", 3);
+	addBillingButton('Adult Flu Vax With Visit', adultFluVaxWithVisit, "Adult Flu Vax With Visit", "8FF", 3);
+	addBillingButton('NH visit', LTCI_visit, "Nursing Home visit", "8FF", 3);
+	addBillingButton('NH bonus', LTCI_visit1, "Nursing Home first visit bonus", "8FF", 3);
+	addBillingButton('PneumoniaVax', pneumoniaAlone, "PPV or Prevnar adult vaccine only", "8FF", 3);
+	addBillingButton('CV19', CV19_visit, "COVID 19 counselling", "8FF", 3);
+
+	$("#extravvrow1").append(document.createElement('br'));
+}
 
 function addBillingButton(theValue, clickAction, theTitle, fontColor, rowNum){
 	removeAlreadyExistingElement(document.getElementById(theValue));
@@ -59,32 +89,6 @@ function removeAlreadyExistingElement(element){
 	}
 }
 
-
-// Row 1 buttons
-addBillingButton('Office', inPersonVisit, "", "9999FF", 1);
-addBillingButton('TH Visit', virtualVisit, "", "9999FF", 1);
-addBillingButton('TH Counsel', virtualVisitCounselling, "", "9999FF", 1);
-addBillingButton('AlliedPhone', AlliedPhone, "", "9999FF", 1);
-addBillingButton('AlliedConf', AlliedConf, "", "9999FF", 1);
-
-// Row 2 buttons
-addBillingButton('INR', INR, "INR", "8FF", 2);
-addBillingButton('IM inj', Injection, "B12, etc; not allergy shot", "8FF", 2);
-addBillingButton('Allergy', Allergy, "Allergy shot", "8FF", 2);
-addBillingButton('Pap', Pap, "Pap", "8FF", 2);
-addBillingButton('UA', Urinalysis, "Labs - UA, UDS, etc", "8FF", 2);
-addBillingButton('Preg dip', UrinePreg, "Urine Pregnancy test ", "8FF", 2);
-addBillingButton('Cryo', Cryo, "Cryo", "8FF", 2);
-
-// Row 3 buttons
-addBillingButton('Flu Vax Only', fluVaxAlone, "Flu Vax Only", "8FF", 3);
-addBillingButton('Adult Flu Vax With Visit', adultFluVaxWithVisit, "Adult Flu Vax With Visit", "8FF", 3);
-addBillingButton('NH visit', LTCI_visit, "Nursing Home visit", "8FF", 3);
-addBillingButton('NH bonus', LTCI_visit1, "Nursing Home first visit bonus", "8FF", 3);
-addBillingButton('PneumoniaVax', pneumoniaAlone, "PPV or Prevnar adult vaccine only", "8FF", 3);
-addBillingButton('CV19', CV19_visit, "COVID 19 counselling", "8FF", 3);
-
-$("#extravvrow1").append(br);
 
 //////////////////////////////////////////////////////////////////
 // Onclick Functions

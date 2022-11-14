@@ -30,11 +30,15 @@ function addButtonLoadPostedEForm(){
 	inputButton.type = 'button';
 	inputButton.value = 'Load Posted eForms';
 	targetDiv.appendChild(inputButton);	
-	addButtonEFormListener();
+	loadPostedEFormButton_KeydownListener();
 }
  
-function addButtonEFormListener(){
+function loadPostedEFormButton_KeydownListener(){
   var theButton = document.getElementById('loadPostedEForm');
+  if (theButton == null){
+	console.log("Load Posted eForm buttons doesn't exist.");
+	return;
+  }
   theButton.addEventListener('click',function () { updateEFormSidebar(); },true);
 }
 

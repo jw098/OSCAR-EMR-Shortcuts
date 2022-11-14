@@ -9,8 +9,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
-checkGlobalEnabled();
-async function checkGlobalEnabled(){
+checkEnabled_BCBilling_DxCodeSearch();
+async function checkEnabled_BCBilling_DxCodeSearch(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
