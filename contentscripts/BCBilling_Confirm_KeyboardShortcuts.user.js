@@ -48,7 +48,7 @@ function billingConfirmPage_KeydownListeners(){
 }
 
 
-function scrollToPageEnd(){
-	window.scrollTo(0, document.body.scrollHeight);
-}
+// function scrollToPageEnd(){
+// 	window.scrollTo(0, document.body.scrollHeight);
+// }
 

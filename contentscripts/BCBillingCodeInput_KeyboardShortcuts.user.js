@@ -44,17 +44,15 @@ function billingCodeInputPage_KeydownListeners(){
 				break;
 			case  (theAltKey && theKey == 'q'):		// Alt+Q to input Office visit code.
 				inPersonVisit();
-				$("input[name=billing_1_fee_dx1]").focus();
-				window.scrollTo(0, document.body.scrollHeight);
+				scrollToPageEnd();
 				break;
 			case  (theAltKey && theKey == 'w'):		// Alt+W to input Telehealth visit code.
 				virtualVisit();
-				$("input[name=billing_1_fee_dx1]").focus();
-				window.scrollTo(0, document.body.scrollHeight);
+				scrollToPageEnd();
 				break;
 			case  (theAltKey && theKey == 'a'):		// Alt+A to set focus to Diagnostic code (row 1).
 				$("input[name=billing_1_fee_dx1]").focus();
-				window.scrollTo(0, document.body.scrollHeight);
+				scrollToPageEnd();
 				break;
 		}
 	}, true);
@@ -65,58 +63,3 @@ function scrollToPageEnd(){
 	window.scrollTo(0, document.body.scrollHeight);
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////////////
-// Input billing codes
-///////////////////////////////////////////////////////////////////////////////////////////
-
-function inPersonVisit(){
-  age = $("#patientIdRow").children().children().next().next().next().html();
-  if(age < 2)
-    code="12100";
-  else if(age >= 2 && age < 50)
-    code="00100";
-  else if(age >= 50 && age < 60)
-    code="15300";
-  else if(age >= 60 && age < 70)
-    code="16100";
-  else if(age >= 70 && age < 80)
-    code="17100";
-  else 
-    code="18100";
-  // $("input[name=billing_1_fee]").val(code);
-  addServiceCodeRigid(code);
-}
-
-function virtualVisit(){
-  age = $("#patientIdRow").children().children().next().next().next().html();
-  if(age < 2)
-    code="13237";
-  else if(age >= 2 && age < 50)
-    code="13437";
-  else if(age >= 50 && age < 60)
-    code="13537";
-  else if(age >= 60 && age < 70)
-    code="13637";
-  else if(age >= 70 && age < 80)
-    code="13737";
-  else 
-    code="13837";
-  // $("input[name=billing_1_fee]").val(code);
-  addServiceCodeRigid(code);
-}
-
-function addServiceCodeRigid(svcCode1) {
-	inputtedBillingCode1 = jQuery("#billing_1_fee").val();
-	if(inputtedBillingCode1 == svcCode1){			// if same service code already entered, clear all fields.
-		$("input[name=billing_1_fee]").val("");
-		$("input[name=billing_1_fee_dx1]").val("");
-		$("input[name=billing_2_fee]").val("");
-		$("input[name=billing_2_fee_dx1]").val("");
-		$("input[name=billing_3_fee]").val("");
-		$("input[name=billing_3_fee_dx1]").val("");
-	}
-	else{
-		$("input[name=billing_1_fee]").val(svcCode1);
-	}
-}
