@@ -30,16 +30,8 @@ async function checkEnabled_Allergy_QuickAdd(){
 // Do page action
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-let addReactionPage = /oscarRx\/addReaction2\.do/;
 
-let addAllergyPage1 = /oscarRx\/ShowAllergies2\.jsp/;
-let addAllergyPage2 = /oscarRx\/deleteAllergy\.do/;
-let addAllergyPage3 = /oscarRx\/showAllergy\.do/;
 
-let medicationPage1 = /oscarRx\/choosePatient\.do/;
-let medicationPage2 = /oscarRx\/SearchDrug3\.jsp/;
-
-let currentURL = window.location.href;
 
 // /*
 // - alert user if allergies haven't yet been set.
@@ -71,6 +63,17 @@ PURPOSE:
 */
 
 function doPageAction(){
+	let addReactionPage = /oscarRx\/addReaction2\.do/;
+
+	let addAllergyPage1 = /oscarRx\/ShowAllergies2\.jsp/;
+	let addAllergyPage2 = /oscarRx\/deleteAllergy\.do/;
+	let addAllergyPage3 = /oscarRx\/showAllergy\.do/;
+
+	let medicationPage1 = /oscarRx\/choosePatient\.do/;
+	let medicationPage2 = /oscarRx\/SearchDrug3\.jsp/;
+	
+	let currentURL = window.location.href;
+
 	switch(true){
 		// Medications page
 		case medicationPage1.test(currentURL) || medicationPage2.test(currentURL):  

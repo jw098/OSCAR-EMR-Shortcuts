@@ -7,59 +7,98 @@
 // @grant          none
 // ==/UserScript==
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// Check Enabled
+///////////////////////////////////////////////////////////////////////////////////////////
+checkEnabled_Medications();
+async function checkEnabled_Medications(){
+	const isEnabled = await browser.storage.sync.get('enabled');
+	console.log("Medications enabled? " + isEnabled.enabled);
+	if(!isEnabled.enabled){
+		return;
+	}
+	else {
+		keydownEventListener_MedsWindow();
+		savePrintClickListener();
+		confirmCloseMeds();
+	}
+}
 
-const medPage = /oscarRx\/choosePatient\.do/
-let currentURL = window.location.href;
-
+///////////////////////////////////////////////////////////////////////////////////////////
+// Window Keydown listener
+///////////////////////////////////////////////////////////////////////////////////////////
 /*
-PURPOSE: keydown event listener. Alt+1 clicks the 'Save and Print' button, as long as the lightwindow isn't currently loaded.
+PURPOSE: keydown event listener. Checks if lightwindow loaded and does the corresponding keydown action.
+
+NOTE: To register all actions when the iFrame is active, need separate listeners on the top-level window as well as the iFrame(s).
 */
-window.addEventListener('keydown', function(theEvent) {
-	//theEvent.stopPropagation();
-	//theEvent.preventDefault();
-	// var theKeyCode = theEvent.charCode;// || event.which;
-	// var theKey = String.fromCharCode(theKeyCode);
+function keydownEventListener_MedsWindow(){
+	window.addEventListener('keydown', function(theEvent) {
+		if(!!document.getElementById("lightwindow_iframe")){  	// check if lightwindow loaded
+			iFrameKeyDownAction(theEvent);
+		}else{													// if lightwindow not loaded
+			medsPageKeyDownAction(theEvent);
+		}
+	
+	}, true);
+}
+
+/* 
+- Alt+1 clicks the 'Save and Print' button.
+*/
+function medsPageKeyDownAction(theEvent){
 	const theKey = theEvent.key;
 	const theAltKey = theEvent.altKey;
 	const theCtrlKey = theEvent.ctrlKey;
 	const theShiftKey= theEvent.shiftKey;
+	let theTarget;
+	switch(true){
+		case theAltKey && theKey == 1:
+			theTarget = document.evaluate("//*[@id='saveButton']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+			theTarget.click();
+			
+			// window.addEventListener('load', function(theEvent) {
+			// 	console.log("window done loading");
+			// });
 
-	if(!document.getElementById("lightwindow_iframe")){  // check if lightwindow not loaded
-		let theTarget;
-		switch(true){
-			case theAltKey && theKey == 1:
-				theTarget = document.evaluate("//*[@id='saveButton']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-				theTarget.click();
-				
-				// window.addEventListener('load', function(theEvent) {
-				// 	console.log("window done loading");
-				// });
+			// setTimeout(iFrameListener, 3000);  // wait for the lightwindow to load, before attaching listeners
 
-				// setTimeout(iFrameListener, 3000);  // wait for the lightwindow to load, before attaching listeners
-
-				break;
-			case theAltKey && theKey == 'a':
-				theTarget = document.getElementById("searchString");
-				theTarget.focus();
-				break;
-			case theAltKey && theKey == 'q':
-				window.close();
-				break;
-		}
+			break;
+		case theAltKey && theKey == 'a':
+			theTarget = document.getElementById("searchString");
+			theTarget.focus();
+			break;
+		case theAltKey && theKey == 'q':
+			window.close();
+			break;
 	}
+}
 
-}, true);
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Click listener
+///////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-PURPOSE: adds keydown event listeners when lightwindow is loaded.
-NOTE: Need separate listeners for the iFrame and the top-level window.
+PURPOSE:
+- activates the iFrame listener once Save and Print are clicked.
+NOTE:
+- adds click event listener to the Save and Print button. 
+- Sets vertical scroll height 
+- activates the lightwindow mutationObserver, which then activates the iFrame listener once loaded.
 */
-window.addEventListener('keydown', function(theEvent) {
-	if(!!document.getElementById("lightwindow_iframe")){  // check if lightwindow  loaded
-		iFrameKeyDownAction(theEvent);
-	}
-}, true);
+function savePrintClickListener(){
+	const inputButton = document.getElementById("saveButton");
+	inputButton.addEventListener('click', function(theEvent){
+		console.log('clicked Save and Print button');
+		window.scrollTo(0, 10);
+		lightwindowIFrameMutationObserver();
+	});
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// iFrame Keydown listener
+///////////////////////////////////////////////////////////////////////////////////////////
 
 /*
 PURPOSE: attaches keydown event listeners to the two iframes on the prescription popup.
@@ -124,18 +163,9 @@ function iFrameKeyDownAction(theEvent){
 
 }
 
-
-/*
-PURPOSE:
-- add click event listener to the Save and Print button. Sets vertical scroll height and activates the lightwindow mutationObserver.
-*/
-const inputButton = document.getElementById("saveButton");
-inputButton.addEventListener('click', function(theEvent){
-	console.log('clicked Save and Print button');
-	window.scrollTo(0, 10);
-	lightwindowIFrameMutationObserver();
-});
-
+///////////////////////////////////////////////////////////////////////////////////////////
+// Mutation Observer to confirm lightwindow loaded.
+///////////////////////////////////////////////////////////////////////////////////////////
 
 /*
 PURPOSE: Use MutationObserver to wait for the prescription lightwindow to be fully loaded. Once loaded, activate the prescription light window listener and disconnect the MutationObserver.
@@ -179,14 +209,19 @@ function lightwindowIFrameMutationObserver(){
 	});
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////
+// Confirm Close
+///////////////////////////////////////////////////////////////////////////////////////////
 
 
 /*
 NOTE:
+- triggers the confirm close dialog if there are pending prescriptions and the light window is not active.
 - only fires if there is any interaction on the page.
 */
-window.onbeforeunload = confirmExit;
+function confirmCloseMeds(){
+	window.onbeforeunload = confirmExit;
+}
 
 
 function confirmExit() {
