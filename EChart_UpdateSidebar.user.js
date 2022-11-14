@@ -9,39 +9,23 @@
 
 
 /////////////////////////////////////////////////////
-// Buttons, Event Listeners
+// Focus Event Listener
 /////////////////////////////////////////////////////
 
-window.addEventListener("focus", function(event) { 
-  setTimeout(updateEFormSidebar(), 1000);
-  setTimeout(updateConsultationsSidebar(), 1000);
-  setTimeout(updateMedicationsSidebar(), 1000);
-  setTimeout(updateTicklerSidebar(), 1000);
-  // console.log("window has focus ");
-}, false);
-
-// addButtonLoadPostedEForm();
- // wrap in block level element so button is next line.
-function addButtonLoadPostedEForm(){
-	let targetDiv = document.getElementById('leftNavBar');
-	
-	var inputButton = document.createElement('input');
-	inputButton.id = 'loadPostedEForm';
-	inputButton.type = 'button';
-	inputButton.value = 'Load Posted eForms';
-	targetDiv.appendChild(inputButton);	
-	loadPostedEFormButton_KeydownListener();
-}
- 
-function loadPostedEFormButton_KeydownListener(){
-  var theButton = document.getElementById('loadPostedEForm');
-  if (theButton == null){
-	console.log("Load Posted eForm buttons doesn't exist.");
-	return;
-  }
-  theButton.addEventListener('click',function () { updateEFormSidebar(); },true);
+function updateAllSidebarOnFocusChange(){
+	window.addEventListener("focus", function(event) { 
+		setTimeout(updateEFormSidebar(), 1000);
+		setTimeout(updateConsultationsSidebar(), 1000);
+		setTimeout(updateMedicationsSidebar(), 1000);
+		setTimeout(updateTicklerSidebar(), 1000);
+		// console.log("window has focus ");
+	  }, false);
 }
 
+
+/////////////////////////////////////////////////////
+// Insert Block
+/////////////////////////////////////////////////////
 
 function addPostedEFormsBlock(){
 	// if the postedItemsBlock exists, don't create another one.
@@ -94,6 +78,33 @@ function addPostedTicklersBlock(){
 	theBlock.className = 'links';
 	targetDiv.before(theBlock);
 
+}
+
+/////////////////////////////////////////////////////
+// Buttons, Click Even Listener
+/////////////////////////////////////////////////////
+
+
+// addButtonLoadPostedEForm();
+ // wrap in block level element so button is next line.
+ function addButtonLoadPostedEForm(){
+	let targetDiv = document.getElementById('leftNavBar');
+	
+	var inputButton = document.createElement('input');
+	inputButton.id = 'loadPostedEForm';
+	inputButton.type = 'button';
+	inputButton.value = 'Load Posted eForms';
+	targetDiv.appendChild(inputButton);	
+	loadPostedEFormButton_KeydownListener();
+}
+ 
+function loadPostedEFormButton_KeydownListener(){
+  var theButton = document.getElementById('loadPostedEForm');
+  if (theButton == null){
+	console.log("Load Posted eForm buttons doesn't exist.");
+	return;
+  }
+  theButton.addEventListener('click',function () { updateEFormSidebar(); },true);
 }
 
 /////////////////////////////////////////////////////

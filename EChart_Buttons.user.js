@@ -8,21 +8,21 @@
 // ==/UserScript==
 
 
-///////////////////////////////////////////////////////////////////////////////////////////
-// Check Enabled
-///////////////////////////////////////////////////////////////////////////////////////////
-checkGlobalEnabled();
-async function checkGlobalEnabled(){
-	const isEnabled = await browser.storage.sync.get('enabled');
-	console.log("Global enabled? " + isEnabled.enabled);
-	if(!isEnabled.enabled){
-		return;
-	}
-	else {
-		keydownEventListener_eChartButtons();
-		loadAllEchartButtons();
-	}
-}
+// ///////////////////////////////////////////////////////////////////////////////////////////
+// // Check Enabled
+// ///////////////////////////////////////////////////////////////////////////////////////////
+// checkEnabled_EChart();
+// async function checkEnabled_EChart(){
+// 	const isEnabled = await browser.storage.sync.get('enabled');
+// 	console.log("Global enabled? " + isEnabled.enabled);
+// 	if(!isEnabled.enabled){
+// 		return;
+// 	}
+// 	else {
+// 		keydownEventListener_eChartButtons();
+// 		loadAllEchartButtons();
+// 	}
+// }
 
 const labReqFID = 510;
 const xrayReqFID = 359;
@@ -32,7 +32,7 @@ const usReqFID = 293;
 // Event listeners
 ///////////////////////////////////////////////////////////////
 
-function keydownEventListener_eChartButtons(){
+function keydownEventListener_eFormButtons(){
 	window.addEventListener("keydown", function(theEvent){
 		const theKey = theEvent.key;
 		const theAltKey = theEvent.altKey;
@@ -58,7 +58,7 @@ function keydownEventListener_eChartButtons(){
 ///////////////////////////////////////////////////////////////
 
 
-function loadAllEchartButtons(){
+function loadAllEFormButtons(){
 	let buttonBlockID = 'buttonBlock1';
 	removeAlreadyExistingElement(document.getElementById(buttonBlockID));
 	addBlock(buttonBlockID);

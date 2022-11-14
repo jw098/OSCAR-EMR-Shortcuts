@@ -6,46 +6,49 @@
 // @grant	   none
 // ==/UserScript==
 
-// created by Darius Opensource
-
-const medicationHotkey = 'q';
-const consultationHotkey = 'w';
-const eFormsHotkey = 'a';
-const ticklerHotkey = 'z';
 
 
 
-window.addEventListener('keydown', function(theEvent) {
-	//theEvent.stopPropagation();
-	//theEvent.preventDefault();
-	// const theKeyCode = theEvent.charCode;// || event.which;
-	// const theKey = String.fromCharCode(theKeyCode);
-	const theKey = theEvent.key;
-	const theAltKey = theEvent.altKey;
-	const theCtrlKey = theEvent.ctrlKey;
-	const theShiftKey= theEvent.shiftKey;
-    
-	let currentURL = window.location.href;
-	const medPage = /oscarRx\/choosePatient\.do/
-	const eChartPage = /casemgmt\/forward\.jsp\?action\=view\&/;
-	const eFormsPage = /eform\/efmformslistadd\.jsp/;
-	const consultationPage = /oscarConsultationRequest\/ConsultationFormRequest\.jsp/;
-	const ticklerPage = /tickler\/ticklerAdd\.jsp/;
+function keydownEventListener_eChart(){
+	window.addEventListener('keydown', function(theEvent) {
+		//theEvent.stopPropagation();
+		//theEvent.preventDefault();
+		// const theKeyCode = theEvent.charCode;// || event.which;
+		// const theKey = String.fromCharCode(theKeyCode);
+		const theKey = theEvent.key;
+		const theAltKey = theEvent.altKey;
+		const theCtrlKey = theEvent.ctrlKey;
+		const theShiftKey= theEvent.shiftKey;
+		
+		let currentURL = window.location.href;
+		const medPage = /oscarRx\/choosePatient\.do/
+		const eChartPage = /casemgmt\/forward\.jsp\?action\=view\&/;
+		const eFormsPage = /eform\/efmformslistadd\.jsp/;
+		const consultationPage = /oscarConsultationRequest\/ConsultationFormRequest\.jsp/;
+		const ticklerPage = /tickler\/ticklerAdd\.jsp/;
+		
+		// console.log(CPPWindowPresent());
 	
-	// console.log(CPPWindowPresent());
+		if (CPPWindowPresent()){
+			console.log('cpp window present');
+			CPPWindowHotkeys(theEvent);
+		}
+		else {
+			eChartPageHotkeys(theEvent);
+		}
+	
+	}, true);
+}
 
-	if (CPPWindowPresent()){
-		console.log('cpp window present');
-		CPPWindowHotkeys(theEvent);
-	}
-	else {
-		eChartPageHotkeys(theEvent);
-	}
 
-}, true);
 
 
 function eChartPageHotkeys(theEvent){
+	const medicationHotkey = 'q';
+	const consultationHotkey = 'w';
+	const eFormsHotkey = 'a';
+	const ticklerHotkey = 'z';
+
 	const theKey = theEvent.key;
 	const theAltKey = theEvent.altKey;
 	const theCtrlKey = theEvent.ctrlKey;

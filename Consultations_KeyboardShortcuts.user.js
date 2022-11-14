@@ -12,8 +12,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
-checkGlobalEnabled();
-async function checkGlobalEnabled(){
+checkEnabled_EChart();
+async function checkEnabled_EChart(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){

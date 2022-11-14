@@ -1,7 +1,6 @@
 // ==UserScript==
 // @name        EChart_eFormSearch
 // @namespace   Stanscript
-// @include    *efmformslistadd.jsp*
 // @include     */casemgmt/forward.jsp?action=view&demographic*
 // @description In the E-chart, a search box to search e-forms by title. Alt+Shift+A toggles focus between e-forms search box and the note text area.
 // @require   http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js
@@ -10,23 +9,23 @@
 // ==/UserScript==
 
 
-///////////////////////////////////////////////////////////////////////////////////////////
-// Check Enabled
-///////////////////////////////////////////////////////////////////////////////////////////
-checkGlobalEnabled();
-async function checkGlobalEnabled(){
-	const isEnabled = await browser.storage.sync.get('enabled');
-	console.log("Global enabled? " + isEnabled.enabled);
-	if(!isEnabled.enabled){
-		return;
-	}
-	else {
+// ///////////////////////////////////////////////////////////////////////////////////////////
+// // Check Enabled
+// ///////////////////////////////////////////////////////////////////////////////////////////
+// checkEnabled_EChart();
+// async function checkEnabled_EChart(){
+// 	const isEnabled = await browser.storage.sync.get('enabled');
+// 	console.log("Global enabled? " + isEnabled.enabled);
+// 	if(!isEnabled.enabled){
+// 		return;
+// 	}
+// 	else {
         
-		keydownEventListener_eformSearch();
-        addSearchBar();
-        getMeasures();
-	}
-}
+// 		keydownEventListener_eformSearch();
+//         addSearchBar();
+//         getMeasures();
+// 	}
+// }
 
 /////////////////////////////////////////////////////////////
 // Eventlistener
@@ -109,6 +108,7 @@ function addSearchBar(){
         }
     })
 
+    getAllEFormLinks();
 }
 
 
@@ -133,7 +133,7 @@ function addSearchBar(){
 /////////////////////////////////////////////////////////////
 
 
-function getMeasures(measure) {
+function getAllEFormLinks(measure) {
     xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {

@@ -117,12 +117,17 @@
             "matches": [
                 "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
             ],
+            "js": ["EChart.user.js"]
+        },
+        {
+            "matches": [
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
+            ],
             "js": ["EChart_Buttons.user.js"]
         },
         {
             "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*", 
-                "*://*/*efmformslistadd.jsp*"
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
