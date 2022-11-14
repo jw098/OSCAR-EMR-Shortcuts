@@ -2,7 +2,6 @@
 // @name           Inbox_KeyboardShortcuts
 // @namespace      oscar
 // @include        */lab/CA/ALL/labDisplay*
-// @include        */dms/inboxManage*
 // @include        */dms/showDocument*
 // @include        */dms/MultiPageDocDisplay.jsp*
 // @description		Within Inbox: Alt+1 to open first item. Within the Lab result: Alt+1 to Acknowledge. Alt+Q to open E-chart. Alt+W to open Tickler. 
@@ -10,7 +9,12 @@
 // ==/UserScript==
 
 
-function keydownEventListener_Inbox(){
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Keydown Event Listener
+///////////////////////////////////////////////////////////////////////////////////////////
+
+function keydownEventListener_InboxResult(){
 	window.addEventListener('keydown', function(theEvent) {
 		//theEvent.stopPropagation();
 		//theEvent.preventDefault();
@@ -26,14 +30,18 @@ function keydownEventListener_Inbox(){
 		const ticklerPage = /tickler\/ForwardDemographicTickler/
 		const documentPage = /dms\/showDocument/
 
-		// case (!!document.getElementById("docViews")):	// If in the inbox, whose XML contains id = "docViews"
 		switch(true){
-			case (theAltKey && theKey == 1): // Alt+1: Open first item in inbox		
-				getNextTarget().click();
-				console.log("test")
+			case (theAltKey && theKey == 1):			// Alt+1: Acknowledge the result.
+				var theTarget = document.evaluate("//input[@value='Acknowledge']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+				theTarget.click();					
+				break;		
+			case (theAltKey && theKey == 'q'):  							// Alt+Q: open E-chart
+				var theTarget = document.evaluate("//input[contains(@value, 'E-Chart') or contains(@value, 'eChart')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+				theTarget.click();
 				break;
-			case (theAltKey && theKey == 'z'): // Alt+z: Close inbox		
-				window.close();
+			case (theAltKey && theKey == 'w'):  							// Alt+W: open Tickler
+				var theTarget = document.evaluate("//input[@value='Tickler']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+				theTarget.click();
 				break;
 		}
 
@@ -41,23 +49,4 @@ function keydownEventListener_Inbox(){
 	}, true);
 }
 
-
-
-function getNextTarget() {
-	
-	const allInTBody = document.querySelectorAll('tbody[id="summaryBody"] > tr');
-	console.log(allInTBody);
-	let index = 1;
-	for (const element of allInTBody) {
-		// console.log(index);
-		const styleAttribute = element.getAttribute('style');
-		if (styleAttribute != 'display: none;'){  // Lab result not hidden. i.e not recently acknowledged.
-			break;
-		}
-    index++;
-	}
-	console.log(index);
-	
-	return document.evaluate("//tbody[@id='summaryBody']/tr[" + index + "]/td[2]/a",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-}
 

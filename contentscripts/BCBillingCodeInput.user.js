@@ -33,7 +33,7 @@ async function checkEnabled_BCBillingCodeInput(){
 		addAllBillingButtons();
 
 		// Keyboard shortcuts
-		scrollToPageEnd();
+		scrollToPageEnd_BCBillingConfirm();
 		billingCodeInputPage_KeydownListeners();
 	}
 }

@@ -1,7 +1,6 @@
 // ==UserScript==
 // @name           Inbox_Buttons
 // @namespace      oscar
-// @include        */lab/CA/ALL/labDisplay*
 // @include        */dms/inboxManage*
 // @description		Within Inbox: A button that opens all reports (including acknowledged and filed reports), as well as one that open just new reports.
 // @grant	   none
@@ -12,11 +11,10 @@
 /////////////////////////////////
 // Load New Reports Button
 /////////////////////////////////
-addButtonLoadNewReports();
 
 function addButtonLoadNewReports(){
 	// if the button already exists, delete it before reloading the button with a new listener.
-	removeAlreadyExistingElement(document.getElementById('loadNewReports'));
+	removeAlreadyExistingElement_Inbox(document.getElementById('loadNewReports'));
 
 	let targetDiv = document.querySelectorAll('#lab_form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1)')[0];
 	console.log(targetDiv);
@@ -43,7 +41,7 @@ function addButtonLoadNewReportsListener(){
 PURPOSE
 - if the given element already exists in the document, remove it.
  */
-function removeAlreadyExistingElement(element){
+function removeAlreadyExistingElement_Inbox(element){
 	if(!!element){
 		element.remove();
 	}
@@ -52,11 +50,10 @@ function removeAlreadyExistingElement(element){
 /////////////////////////////////
 // Load All Reports Button
 /////////////////////////////////
-addButtonLoadAllReports();
 
 function addButtonLoadAllReports(){
 	// if the button already exists, delete it before reloading the button with a new listener.
-	removeAlreadyExistingElement(document.getElementById('loadAllReports'));
+	removeAlreadyExistingElement_Inbox(document.getElementById('loadAllReports'));
 
 	let targetDiv = document.querySelectorAll('#lab_form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1)')[0];
 	console.log(targetDiv);

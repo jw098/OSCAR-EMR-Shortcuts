@@ -17,7 +17,7 @@ async function checkEnabled_BCBilling_Confirm(){
 		return;
 	}
 	else {
-		scrollToPageEnd();
+		window.scrollTo(0, document.body.scrollHeight);
 		billingConfirmPage_KeydownListeners();
 	}
 }
@@ -47,8 +47,4 @@ function billingConfirmPage_KeydownListeners(){
 	}, true);
 }
 
-
-// function scrollToPageEnd(){
-// 	window.scrollTo(0, document.body.scrollHeight);
-// }
 

@@ -7,8 +7,6 @@
 // ==/UserScript==
 
 
-
-
 function keydownEventListener_eChart(){
 	window.addEventListener('keydown', function(theEvent) {
 		//theEvent.stopPropagation();

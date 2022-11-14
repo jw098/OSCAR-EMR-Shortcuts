@@ -12,8 +12,8 @@
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-checkEnabled();
-async function checkEnabled(){
+checkEnabled_Tickler();
+async function checkEnabled_Tickler(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Tickler_KeyboardShortcuts enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){

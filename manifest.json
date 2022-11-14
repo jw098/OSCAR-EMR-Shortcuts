@@ -55,31 +55,11 @@
                 "*://*/*billing/CA/BC/CreateBilling*"
             ],
             "js": [
-                "contentscripts/BCBillingCodeInput.user.js"
-            ]
-        },
-        {
-            "matches": [
-                "*://*/*billing.do?billRegion=BC*", 
-                "*://*/*oscar/CaseManagementEntry*",
-                "*://*/*billing/CA/BC/billingBC.jsp*",
-                "*://*/*SaveBilling.do*",
-                "*://*/*billing/CA/BC/CreateBilling*"
-            ],
-            "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/BCBillingCodeInput_Buttons.user.js"
+                "contentscripts/BCBillingCodeInput.user.js",
+                "contentscripts/BCBillingCodeInput_Buttons.user.js",
+                "contentscripts/BCBillingCodeInput_KeyboardShortcuts.user.js"
             ]
-        },
-        {
-            "matches": [
-                "*://*/*billing.do?billRegion=BC*", 
-                "*://*/*billing/CA/BC/CreateBilling*",
-                "*://*/*oscar/CaseManagementEntry.do*",
-                "*://*/*billing/CA/BC/billingBC.jsp*",
-                "*://*/*SaveBilling.do*"
-            ],
-            "js": ["contentscripts/BCBillingCodeInput_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [
@@ -165,27 +145,9 @@
                 "*://*/*/dms/inboxManage*"
             ],
             "js": [
-                "contentscripts/Inbox_Buttons.user.js"
-            ]
-        },
-        {
-            "matches": [
-                "*://*/*/lab/CA/ALL/labDisplay*",
-                "*://*/*/dms/inboxManage*",
-                "*://*/*/dms/showDocument*",
-                "*://*/*/dms/MultiPageDocDisplay.jsp*"
-            ],
-            "js": [
+                "contentscripts/Inbox.user.js",
+                "contentscripts/Inbox_Buttons.user.js",
                 "contentscripts/Inbox_KeyboardShortcuts.user.js"
-            ]
-        },
-        {
-            "matches": [
-                "*://*/*/lab/CA/ALL/labDisplay*"
-            ],
-            "js": [
-                "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/Inbox_LabelLabs.user.js"
             ]
         },
         {
@@ -199,6 +161,19 @@
                 "contentscripts/Inbox_StyleChange.user.js"
             ],
             "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "*://*/*/lab/CA/ALL/labDisplay*",
+                "*://*/*/dms/showDocument*",
+                "*://*/*/dms/MultiPageDocDisplay.jsp*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/InboxResult.user.js",
+                "contentscripts/InboxResult_KeyboardShortcuts.user.js",
+                "contentscripts/InboxResult_LabelLabs.user.js"
+            ]
         },
         {
             "matches": [

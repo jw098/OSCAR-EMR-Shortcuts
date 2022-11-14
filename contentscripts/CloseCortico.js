@@ -10,8 +10,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
-checkEnabled_EChart();
-async function checkEnabled_EChart(){
+checkEnabled_CloseCortico();
+async function checkEnabled_CloseCortico(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	// console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){

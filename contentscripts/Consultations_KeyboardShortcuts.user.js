@@ -12,8 +12,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
-checkEnabled_EChart();
-async function checkEnabled_EChart(){
+checkEnabled_Consultations();
+async function checkEnabled_Consultations(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){

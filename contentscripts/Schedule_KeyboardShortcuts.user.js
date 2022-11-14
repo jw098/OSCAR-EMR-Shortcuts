@@ -11,8 +11,8 @@
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-checkEnabled();
-async function checkEnabled(){
+checkEnabled_Schedule();
+async function checkEnabled_Schedule(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Schedule_KeyboardShortcuts enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){

@@ -14,8 +14,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
-checkEnabled_eFormsShortcuts();
-async function checkEnabled_eFormsShortcuts(){
+checkEnabled_Allergy();
+async function checkEnabled_Allergy(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Allergy_QuickAdd enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){

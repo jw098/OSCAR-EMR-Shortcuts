@@ -8,22 +8,6 @@
 // ==/UserScript==
 
 
-///////////////////////////////////////////////////////////////////////////////////////////
-// Check Enabled
-///////////////////////////////////////////////////////////////////////////////////////////
-
-checkEnabled();
-async function checkEnabled(){
-	const isEnabled = await browser.storage.sync.get('enabled');
-	console.log("Inbox_LabelLabs enabled? " + isEnabled.enabled);
-	if(!isEnabled.enabled){
-		return;
-	}
-	else {
-		labelAllLabs();
-		labelLabsKeydownListener();
-	}
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Event Listeners
@@ -75,6 +59,7 @@ PURPOSE:
 - and another line inserted for the new labs text.
 */
 async function labelAllLabs(){
+	console.log('hihi');
 	$("[id^='labelspan']").before('<br />');
 	$("[id^='labelspan']").after('<br />');
 

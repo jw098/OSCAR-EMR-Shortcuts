@@ -44,22 +44,22 @@ function billingCodeInputPage_KeydownListeners(){
 				break;
 			case  (theAltKey && theKey == 'q'):		// Alt+Q to input Office visit code.
 				inPersonVisit();
-				scrollToPageEnd();
+				scrollToPageEnd_BCBillingConfirm();
 				break;
 			case  (theAltKey && theKey == 'w'):		// Alt+W to input Telehealth visit code.
 				virtualVisit();
-				scrollToPageEnd();
+				scrollToPageEnd_BCBillingConfirm();
 				break;
 			case  (theAltKey && theKey == 'a'):		// Alt+A to set focus to Diagnostic code (row 1).
 				$("input[name=billing_1_fee_dx1]").focus();
-				scrollToPageEnd();
+				scrollToPageEnd_BCBillingConfirm();
 				break;
 		}
 	}, true);
 }
 
 
-function scrollToPageEnd(){
+function scrollToPageEnd_BCBillingConfirm(){
 	window.scrollTo(0, document.body.scrollHeight);
 }
 
