@@ -32,19 +32,19 @@
                 "*://*/*/oscarRx/deleteAllergy.do*",
                 "*://*/*/oscarRx/addReaction2.do*"
             ],
-            "js": ["Allergy_QuickAdd.user.js"]
+            "js": ["contentscripts/Allergy_QuickAdd.user.js"]
         },
         {
             "matches": [
                 "*://*/*billing/CA/BC/CreateBilling*"
             ],
-            "js": ["BCBilling_Confirm_KeyboardShortcuts.user.js"]
+            "js": ["contentscripts/BCBilling_Confirm_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [
                 "*://*/*billing/CA/BC/billingDigNewSearch.jsp?*"
             ],
-            "js": ["BCBilling_DxCodeSearch_KeyboardShortcuts.user.js"]
+            "js": ["contentscripts/BCBilling_DxCodeSearch_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [
@@ -55,7 +55,7 @@
                 "*://*/*billing/CA/BC/CreateBilling*"
             ],
             "js": [
-                "BCBillingCodeInput.user.js"
+                "contentscripts/BCBillingCodeInput.user.js"
             ]
         },
         {
@@ -68,7 +68,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "BCBillingCodeInput_Buttons.user.js"
+                "contentscripts/BCBillingCodeInput_Buttons.user.js"
             ]
         },
         {
@@ -79,7 +79,7 @@
                 "*://*/*billing/CA/BC/billingBC.jsp*",
                 "*://*/*SaveBilling.do*"
             ],
-            "js": ["BCBillingCodeInput_KeyboardShortcuts.user.js"]
+            "js": ["contentscripts/BCBillingCodeInput_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [
@@ -105,25 +105,25 @@
                 "*://*/*/oscarReport/reportByTemplate/GenerateReportAction.do",
                 "*://*/*/lab/*"
             ],
-            "js": ["CloseCortico.js"]
+            "js": ["contentscripts/CloseCortico.js"]
         },
         {
             "matches": [
                 "*://*/*/oscarConsultationRequest/ConsultationFormRequest.jsp*"
             ],
-            "js": ["Consultations_KeyboardShortcuts.user.js"]
+            "js": ["contentscripts/Consultations_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [
                 "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
             ],
-            "js": ["EChart.user.js"]
+            "js": ["contentscripts/EChart.user.js"]
         },
         {
             "matches": [
                 "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
             ],
-            "js": ["EChart_Buttons.user.js"]
+            "js": ["contentscripts/EChart_Buttons.user.js"]
         },
         {
             "matches": [
@@ -131,14 +131,14 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "EChart_eFormSearch.user.js"
+                "contentscripts/EChart_eFormSearch.user.js"
             ]
         },
         {
             "matches": [
                 "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
             ],
-            "js": ["EChart_KeyboardShortcuts.user.js"]
+            "js": ["contentscripts/EChart_KeyboardShortcuts.user.js"]
         },
         {
             "matches": [
@@ -146,7 +146,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "EChart_UpdateSidebar.user.js"
+                "contentscripts/EChart_UpdateSidebar.user.js"
             ]
         },
         {
@@ -157,7 +157,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "eForms_KeyboardShortcuts.user.js"
+                "contentscripts/eForms_KeyboardShortcuts.user.js"
             ]
         },
         {
@@ -165,7 +165,7 @@
                 "*://*/*/dms/inboxManage*"
             ],
             "js": [
-                "Inbox_Buttons.user.js"
+                "contentscripts/Inbox_Buttons.user.js"
             ]
         },
         {
@@ -176,7 +176,7 @@
                 "*://*/*/dms/MultiPageDocDisplay.jsp*"
             ],
             "js": [
-                "Inbox_KeyboardShortcuts.user.js"
+                "contentscripts/Inbox_KeyboardShortcuts.user.js"
             ]
         },
         {
@@ -185,7 +185,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "Inbox_LabelLabs.user.js"
+                "contentscripts/Inbox_LabelLabs.user.js"
             ]
         },
         {
@@ -196,7 +196,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "Inbox_StyleChange.user.js"
+                "contentscripts/Inbox_StyleChange.user.js"
             ],
             "run_at": "document_end"
         },
@@ -206,7 +206,7 @@
                 "*://*/*/oscarRx/SearchDrug3.jsp*"
             ],
             "js": [
-                "Medications_KeyboardShortcuts.user.js"
+                "contentscripts/Medications_KeyboardShortcuts.user.js"
             ]
         },
         {
@@ -215,7 +215,7 @@
                 "*://*/*provider/appointmentprovideradminday.jsp*"
             ],
             "js": [
-                "Schedule_KeyboardShortcuts.user.js"
+                "contentscripts/Schedule_KeyboardShortcuts.user.js"
             ]
         },
         {
@@ -224,7 +224,7 @@
                 "*://*/*/tickler/ForwardDemographicTickler*"
             ],
             "js": [
-                "Tickler_KeyboardShortcuts.user.js"
+                "contentscripts/Tickler_KeyboardShortcuts.user.js"
             ]
         }
       ]
