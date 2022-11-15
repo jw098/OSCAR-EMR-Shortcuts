@@ -60,7 +60,7 @@ function keydownEventListener_openEForm(){
 
 function loadAllEFormButtons(){
 	let buttonBlockID = 'buttonBlock1';
-	removeAlreadyExistingElement(document.getElementById(buttonBlockID));
+	removeAlreadyExistingElement_eChart(document.getElementById(buttonBlockID));
 	addBlock(buttonBlockID);
 	addButtonEForm('buttonOpenLabReq', 'Lab Req', labReqFID, buttonBlockID);
 	addButtonEForm('buttonOpenXray', 'X-ray', xrayReqFID, buttonBlockID);
@@ -71,7 +71,7 @@ function loadAllEFormButtons(){
 PURPOSE
 - if the given element already exists in the document, remove it.
  */
-function removeAlreadyExistingElement(element){
+function removeAlreadyExistingElement_eChart(element){
 	if(!!element){
 		element.remove();
 	}

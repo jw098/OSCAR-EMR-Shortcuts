@@ -57,9 +57,9 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/BCBillingCodeInput.user.js",
                 "contentscripts/BCBillingCodeInput_Buttons.user.js",
-                "contentscripts/BCBillingCodeInput_KeyboardShortcuts.user.js"
+                "contentscripts/BCBillingCodeInput_KeyboardShortcuts.user.js",
+                "contentscripts/BCBillingCodeInput.user.js"
             ]
         },
         {
@@ -100,11 +100,11 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/EChart.user.js",
                 "contentscripts/EChart_Buttons.user.js",
                 "contentscripts/EChart_eFormSearch.user.js",
                 "contentscripts/EChart_KeyboardShortcuts.user.js",
-                "contentscripts/EChart_UpdateSidebar.user.js"
+                "contentscripts/EChart_UpdateSidebar.user.js",
+                "contentscripts/EChart.user.js"
             ]
         },
         {
@@ -123,9 +123,9 @@
                 "*://*/*/dms/inboxManage*"
             ],
             "js": [
-                "contentscripts/Inbox.user.js",
                 "contentscripts/Inbox_Buttons.user.js",
-                "contentscripts/Inbox_KeyboardShortcuts.user.js"
+                "contentscripts/Inbox_KeyboardShortcuts.user.js",
+                "contentscripts/Inbox.user.js"
             ]
         },
         {
@@ -148,9 +148,9 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/InboxResult.user.js",
                 "contentscripts/InboxResult_KeyboardShortcuts.user.js",
-                "contentscripts/InboxResult_LabelLabs.user.js"
+                "contentscripts/InboxResult_LabelLabs.user.js",
+                "contentscripts/InboxResult.user.js"
             ]
         },
         {
