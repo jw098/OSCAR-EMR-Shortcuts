@@ -20,7 +20,7 @@ async function checkEnabled_EChart(){
 	}
 	else {
 		// Buttons
-		keydownEventListener_eFormButtons();
+		keydownEventListener_openEForm();
 		loadAllEFormButtons();
 		
 		// eFormSearch

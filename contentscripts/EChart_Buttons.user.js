@@ -32,7 +32,7 @@ const usReqFID = 293;
 // Event listeners
 ///////////////////////////////////////////////////////////////
 
-function keydownEventListener_eFormButtons(){
+function keydownEventListener_openEForm(){
 	window.addEventListener("keydown", function(theEvent){
 		const theKey = theEvent.key;
 		const theAltKey = theEvent.altKey;

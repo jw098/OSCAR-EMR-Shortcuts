@@ -97,35 +97,12 @@
             "matches": [
                 "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
             ],
-            "js": ["contentscripts/EChart.user.js"]
-        },
-        {
-            "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
-            ],
-            "js": ["contentscripts/EChart_Buttons.user.js"]
-        },
-        {
-            "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
-            ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/EChart_eFormSearch.user.js"
-            ]
-        },
-        {
-            "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
-            ],
-            "js": ["contentscripts/EChart_KeyboardShortcuts.user.js"]
-        },
-        {
-            "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
-            ],
-            "js": [
-                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/EChart.user.js",
+                "contentscripts/EChart_Buttons.user.js",
+                "contentscripts/EChart_eFormSearch.user.js",
+                "contentscripts/EChart_KeyboardShortcuts.user.js",
                 "contentscripts/EChart_UpdateSidebar.user.js"
             ]
         },
