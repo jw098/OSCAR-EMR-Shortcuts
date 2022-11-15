@@ -49,10 +49,11 @@
         {
             "matches": [
                 "*://*/*billing.do?billRegion=BC*", 
-                "*://*/*oscar/CaseManagementEntry*",
-                "*://*/*billing/CA/BC/billingBC.jsp*",
+                "*://*/*CaseManagementEntry.do*",
                 "*://*/*SaveBilling.do*",
-                "*://*/*billing/CA/BC/CreateBilling*"
+                "*://*/*billing/CA/BC/billingBC.jsp*",
+                "*://*/*billing/CA/BC/CreateBilling.do*",
+                "*://*/*billing/CA/BC/formwcb.do*"
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
