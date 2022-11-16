@@ -435,7 +435,10 @@ function renameLabResultInexactMatch(strOldName){
 			break;	
 		case strOldName.includes('Hepatitis C'):
 			strNewName='HepC';
-			break;		
+			break;	
+		case strOldName.includes('Varicella'):
+			strNewName='Varicella';
+			break;			
 		case strOldName.includes('Rubella'):
 			strNewName='Rubella';
 			break;	
