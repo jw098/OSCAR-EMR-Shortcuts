@@ -19,7 +19,7 @@ async function checkEnabled_Medications(){
 	}
 	else {
 		keydownEventListener_MedsWindow();
-		savePrintClickListener();
+		onSavePrint_keydownListener_iFrame();
 		confirmCloseMeds();
 	}
 }
@@ -87,7 +87,7 @@ NOTE:
 - Sets vertical scroll height 
 - activates the lightwindow mutationObserver, which then activates the iFrame listener once loaded.
 */
-function savePrintClickListener(){
+function onSavePrint_keydownListener_iFrame(){
 	const inputButton = document.getElementById("saveButton");
 	inputButton.addEventListener('click', function(theEvent){
 		console.log('clicked Save and Print button');

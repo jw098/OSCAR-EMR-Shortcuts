@@ -50,9 +50,16 @@ function closeCortico(){
 		
 		switch(true){
 			case theKey == 'Escape':  // Sign, Save, and Bill 
-				var theTarget = document.querySelectorAll("div.tw-font-sans:nth-child(3) > div:nth-child(1) > p:nth-child(2)")[0];
-				theTarget.click();
-				console.log(theTarget);
+				// const target1 = $("div.tw-font-sans:nth-child(3) > div:nth-child(1) > p:nth-child(2)");
+				// const target2 = $("div.tw-font-sans:nth-child(4) > div:nth-child(1) > p:nth-child(2)");
+				const target3 = $("div.tw-font-sans > div:nth-child(1) > p:nth-child(2):has(svg)");
+				
+				// target1.click();
+				// target2.click();
+				target3.click();
+				// console.log(target1);
+				// console.log(target2);
+				console.log(target3);
 				break;
 		}
 	
