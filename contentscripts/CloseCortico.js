@@ -26,6 +26,16 @@ async function checkEnabled_CloseCortico(){
 // Event listener
 //////////////////////////////////////////////////////////////////
 
+var theTarget2 = document.querySelectorAll(".tw-w-6")[0];
+theTarget2.addEventListener('click', function(theEvent) {
+	console.log("clicked t2");
+}, true);
+
+var theTarget3 = document.querySelectorAll(".tw-ml-1")[0];
+theTarget3.addEventListener('click', function(theEvent) {
+	console.log("clicked t3");
+}, true);
+
 function closeCortico(){
 	window.addEventListener('keydown', function(theEvent) {
 		//theEvent.stopPropagation();
@@ -36,19 +46,19 @@ function closeCortico(){
 		const theAltKey = theEvent.altKey;
 		const theCtrlKey = theEvent.ctrlKey;
 		const theShiftKey= theEvent.shiftKey;
-		
 		let currentURL = window.location.href;
-	
+		
 		switch(true){
 			case theKey == 'Escape':  // Sign, Save, and Bill 
-				var theTarget = document.querySelectorAll(".tw-absolute")[0];
-				console.log(theTarget);
+				var theTarget = document.querySelectorAll("div.tw-font-sans:nth-child(3) > div:nth-child(1) > p:nth-child(2)")[0];
 				theTarget.click();
+				console.log(theTarget);
 				break;
 		}
 	
-	}, true);
+	}, false);
 }
+
 
 
 
