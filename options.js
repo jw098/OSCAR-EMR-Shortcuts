@@ -1,6 +1,7 @@
 var regStrip = /^[\r\t\f\v ]+|[\r\t\f\v ]+$/gm;
 
 var tcDefaults = {
+  enabled: true, // default enabled
   allergyQuickAdd: true,
 
   billingButtons: true,
@@ -12,33 +13,55 @@ var tcDefaults = {
 
   cortico: true,
 
-  consultations_keyboardShortcuts: true,
-  postPatientAgeGender: true,
-  postAllHistory: true,
+  consultations:{
+    consultations_keyboardShortcuts: true,
+    postPatientAgeGender: true,
+    postAllHistory:true
+  },
 
+  schedule: {
+    schedule_keyboardShortcuts: {
+      enabled: true,
+      openEChart_enabled: true,
+      openEChart_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      openInbox_enabled: true,
+      openInbox_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'z'
+      }
+    }
+  }
+  // ,
 
-  speed: 1.0, // default:
-  displayKeyCode: 86, // default: V
-  rememberSpeed: false, // default: false
-  audioBoolean: false, // default: false
-  startHidden: false, // default: false
-  forceLastSavedSpeed: false, //default: false
-  enabled: true, // default enabled
-  controllerOpacity: 0.3, // default: 0.3
-  keyBindings: [
-    { action: "display", key: 86, value: 0, force: false, predefined: true }, // V
-    { action: "slower", key: 83, value: 0.1, force: false, predefined: true }, // S
-    { action: "faster", key: 68, value: 0.1, force: false, predefined: true }, // D
-    { action: "rewind", key: 90, value: 10, force: false, predefined: true }, // Z
-    { action: "advance", key: 88, value: 10, force: false, predefined: true }, // X
-    { action: "reset", key: 82, value: 1, force: false, predefined: true }, // R
-    { action: "fast", key: 71, value: 1.8, force: false, predefined: true } // G
-  ],
-  blacklist: `www.instagram.com
-    twitter.com
-    imgur.com
-    teams.microsoft.com
-  `.replace(regStrip, "")
+  // speed: 1.0, // default:
+  // displayKeyCode: 86, // default: V
+  // rememberSpeed: false, // default: false
+  // audioBoolean: false, // default: false
+  // startHidden: false, // default: false
+  // forceLastSavedSpeed: false, //default: false
+  
+  // controllerOpacity: 0.3, // default: 0.3
+  // keyBindings: [
+  //   { action: "display", key: 86, value: 0, force: false, predefined: true }, // V
+  //   { action: "slower", key: 83, value: 0.1, force: false, predefined: true }, // S
+  //   { action: "faster", key: 68, value: 0.1, force: false, predefined: true }, // D
+  //   { action: "rewind", key: 90, value: 10, force: false, predefined: true }, // Z
+  //   { action: "advance", key: 88, value: 10, force: false, predefined: true }, // X
+  //   { action: "reset", key: 82, value: 1, force: false, predefined: true }, // R
+  //   { action: "fast", key: 71, value: 1.8, force: false, predefined: true } // G
+  // ],
+  // blacklist: `www.instagram.com
+  //   twitter.com
+  //   imgur.com
+  //   teams.microsoft.com
+  // `.replace(regStrip, "")
 };
 
 var keyBindings = [];
@@ -95,27 +118,78 @@ var keyCodeAliases = {
   173: "-",
 };
 
-function recordKeyPress(e) {
-  if (
-    (e.keyCode >= 48 && e.keyCode <= 57) || // Numbers 0-9
-    (e.keyCode >= 65 && e.keyCode <= 90) || // Letters A-Z
-    keyCodeAliases[e.keyCode] // Other character keys
-  ) {
-    e.target.value =
-      keyCodeAliases[e.keyCode] || String.fromCharCode(e.keyCode);
-    e.target.keyCode = e.keyCode;
+// let keybindingMap = new Map();
 
+function recordKeyPress(e) {
+
+  if(e.key == "Backspace" || e.key == "Escape"){
+    e.target.value = "";
+  }
+  else {
+    const theKeybinding = {
+      ctrlKey: e.ctrlKey,
+      shiftKey: e.shiftKey,
+      altKey: e.altKey,
+      key: e.key
+    }
+  
+    const keybindingText = keybindingToText(theKeybinding);
+    e.target.value = keybindingText;
+    // keybindingMap.set()
+
+    e.target.keybinding = theKeybinding;
+    console.log(e.target);
+    // console.log(e.target.keybinding);
     e.preventDefault();
     e.stopPropagation();
-  } else if (e.keyCode === 8) {
-    // Clear input when backspace pressed
-    e.target.value = "";
-  } else if (e.keyCode === 27) {
-    // When esc clicked, clear input
-    e.target.value = "null";
-    e.target.keyCode = null;
   }
+
 }
+
+function keybindingToText(theKeybinding){
+  const theKey = theKeybinding.key;    
+  const theAltKey = theKeybinding.altKey;
+  const theCtrlKey = theKeybinding.ctrlKey;
+  const theShiftKey= theKeybinding.shiftKey;
+  let keybindingText = "";
+
+  if (theCtrlKey){
+    keybindingText += "Ctrl+"
+  }
+  if (theShiftKey){
+    keybindingText += "Shift+"
+  }
+  if (theAltKey){
+    keybindingText += "Alt+"
+  }
+  if(theKey != "Control" && theKey != "Shift" && theKey != "Alt"){
+    keybindingText += theKey;
+  }
+  return keybindingText;
+}
+
+// function keyEventToText(e){
+//   const theKey = e.key;    
+//   const theAltKey = e.altKey;
+//   const theCtrlKey = e.ctrlKey;
+//   const theShiftKey= e.shiftKey;
+//   let keybindingText = "";
+
+//   if (theCtrlKey){
+//     keybindingText += "Ctrl+"
+//   }
+//   if (theShiftKey){
+//     keybindingText += "Shift+"
+//   }
+//   if (theAltKey){
+//     keybindingText += "Alt+"
+//   }
+//   if(theKey != "Control" && theKey != "Shift" && theKey != "Alt"){
+//     keybindingText += theKey;
+//   }
+
+//   return keybindingText;
+// }
 
 function inputFilterNumbersOnly(e) {
   var char = String.fromCharCode(e.keyCode);
@@ -126,6 +200,7 @@ function inputFilterNumbersOnly(e) {
 }
 
 function inputFocus(e) {
+  console.log('hello');
   e.target.value = "";
 }
 
@@ -228,6 +303,8 @@ function save_options() {
     createKeyBindings(item)
   ); // Remove added shortcuts
 
+  const enabled = document.getElementById("enabled").checked;
+
   const allergyQuickAdd = document.getElementById("allergyQuickAdd").checked;
 
   const billingButtons = document.getElementById("billingButtons").checked;
@@ -243,22 +320,32 @@ function save_options() {
   const postPatientAgeGender = document.getElementById("postPatientAgeGender").checked;
   const postAllHistory = document.getElementById("postAllHistory").checked;
 
-  chrome.storage.sync.remove([
-    "resetSpeed",
-    "speedStep",
-    "fastSpeed",
-    "rewindTime",
-    "advanceTime",
-    "resetKeyCode",
-    "slowerKeyCode",
-    "fasterKeyCode",
-    "rewindKeyCode",
-    "advanceKeyCode",
-    "fastKeyCode"
-  ]);
+  const schedule_shortcuts_enabled = document.getElementById("schedule_shortcuts_enabled").checked;
+  const schedule_shortcut_openEChart_enabled = document.getElementById("schedule_shortcut_openEChart_enabled").checked;
+  const schedule_shortcut_openEChart_keybinding = document.getElementById("schedule_shortcut_openEChart_keybinding").keybinding;
+  const schedule_shortcut_openInbox_enabled = document.getElementById("schedule_shortcut_openInbox_enabled").checked;
+  const schedule_shortcut_openInbox_keybinding = document.getElementById("schedule_shortcut_openInbox_keybinding").keybinding;
+
+  console.log(document.getElementById("schedule_shortcut_openEChart_keybinding").keybinding)
+
+  // chrome.storage.sync.remove([
+  //   "resetSpeed",
+  //   "speedStep",
+  //   "fastSpeed",
+  //   "rewindTime",
+  //   "advanceTime",
+  //   "resetKeyCode",
+  //   "slowerKeyCode",
+  //   "fasterKeyCode",
+  //   "rewindKeyCode",
+  //   "advanceKeyCode",
+  //   "fastKeyCode"
+  // ]);
 
   chrome.storage.sync.set(
     {
+      enabled: enabled,
+
       allergyQuickAdd: allergyQuickAdd,
 
       billingCodeInput: {
@@ -280,18 +367,19 @@ function save_options() {
         consultations_keyboardShortcuts: consultations_keyboardShortcuts,
         postPatientAgeGender: postPatientAgeGender,
         postAllHistory:postAllHistory
-      }
-      
-      // ,
+      },
 
-      // rememberSpeed: rememberSpeed,
-      // forceLastSavedSpeed: forceLastSavedSpeed,
-      // audioBoolean: audioBoolean,
-      // enabled: enabled,
-      // startHidden: startHidden,
-      // controllerOpacity: controllerOpacity,
-      // keyBindings: keyBindings,
-      // blacklist: blacklist.replace(regStrip, "")
+      schedule: {
+        schedule_keyboardShortcuts: {
+          enabled: schedule_shortcuts_enabled,
+          openEChart_enabled: schedule_shortcut_openEChart_enabled,
+          openEChart_keybinding: schedule_shortcut_openEChart_keybinding,
+          openInbox_enabled: schedule_shortcut_openInbox_enabled,
+          openInbox_keybinding: schedule_shortcut_openInbox_keybinding
+        }
+      }
+
+      
     },
     function () {
       // Update status to let user know options were saved.
@@ -329,65 +417,63 @@ function restore_options() {
     document.getElementById("postPatientAgeGender").checked = storage.postPatientAgeGender;
     document.getElementById("postAllHistory").checked = storage.postAllHistory;
 
+    document.getElementById("schedule_shortcuts_enabled").checked = storage.schedule.schedule_keyboardShortcuts.enabled;
+    document.getElementById("schedule_shortcut_openEChart_enabled").checked = storage.schedule.schedule_keyboardShortcuts.openEChart_enabled;
+    document.getElementById("schedule_shortcut_openEChart_keybinding").keybinding = storage.schedule.schedule_keyboardShortcuts.openEChart_keybinding;
+    document.getElementById("schedule_shortcut_openEChart_keybinding").value = keybindingToText(storage.schedule.schedule_keyboardShortcuts.openEChart_keybinding);
+    document.getElementById("schedule_shortcut_openInbox_enabled").keybinding = storage.schedule.schedule_keyboardShortcuts.openInbox_enabled;
+    document.getElementById("schedule_shortcut_openInbox_keybinding").keybinding = storage.schedule.schedule_keyboardShortcuts.openInbox_keybinding;
+    document.getElementById("schedule_shortcut_openInbox_keybinding").value = keybindingToText(storage.schedule.schedule_keyboardShortcuts.openInbox_keybinding);
 
-    document.getElementById("rememberSpeed").checked = storage.rememberSpeed;
-    document.getElementById("forceLastSavedSpeed").checked = storage.forceLastSavedSpeed;
-    document.getElementById("audioBoolean").checked = storage.audioBoolean;
-    document.getElementById("enabled").checked = storage.enabled;
-    document.getElementById("startHidden").checked = storage.startHidden;
-    document.getElementById("controllerOpacity").value =
-      storage.controllerOpacity;
-    document.getElementById("blacklist").value = storage.blacklist;
+    // // ensure that there is a "display" binding for upgrades from versions that had it as a separate binding
+    // if (storage.keyBindings.filter((x) => x.action == "display").length == 0) {
+    //   storage.keyBindings.push({
+    //     action: "display",
+    //     value: 0,
+    //     force: false,
+    //     predefined: true
+    //   });
+    // }
 
-    // ensure that there is a "display" binding for upgrades from versions that had it as a separate binding
-    if (storage.keyBindings.filter((x) => x.action == "display").length == 0) {
-      storage.keyBindings.push({
-        action: "display",
-        value: 0,
-        force: false,
-        predefined: true
-      });
-    }
+    // for (let i in storage.keyBindings) {
+    //   var item = storage.keyBindings[i];
+    //   if (item.predefined) {
+    //     //do predefined ones because their value needed for overlay
+    //     // document.querySelector("#" + item["action"] + " .customDo").value = item["action"];
+    //     if (item["action"] == "display" && typeof item["key"] === "undefined") {
+    //       item["key"] = storage.displayKeyCode || tcDefaults.displayKeyCode; // V
+    //     }
 
-    for (let i in storage.keyBindings) {
-      var item = storage.keyBindings[i];
-      if (item.predefined) {
-        //do predefined ones because their value needed for overlay
-        // document.querySelector("#" + item["action"] + " .customDo").value = item["action"];
-        if (item["action"] == "display" && typeof item["key"] === "undefined") {
-          item["key"] = storage.displayKeyCode || tcDefaults.displayKeyCode; // V
-        }
+    //     if (customActionsNoValues.includes(item["action"]))
+    //       document.querySelector(
+    //         "#" + item["action"] + " .customValue"
+    //       ).disabled = true;
 
-        if (customActionsNoValues.includes(item["action"]))
-          document.querySelector(
-            "#" + item["action"] + " .customValue"
-          ).disabled = true;
+    //     updateCustomShortcutInputText(
+    //       document.querySelector("#" + item["action"] + " .customKey"),
+    //       item["key"]
+    //     );
+    //     document.querySelector("#" + item["action"] + " .customValue").value =
+    //       item["value"];
+    //     document.querySelector("#" + item["action"] + " .customForce").value =
+    //       item["force"];
+    //   } else {
+    //     // new ones
+    //     add_shortcut();
+    //     const dom = document.querySelector(".customs:last-of-type");
+    //     dom.querySelector(".customDo").value = item["action"];
 
-        updateCustomShortcutInputText(
-          document.querySelector("#" + item["action"] + " .customKey"),
-          item["key"]
-        );
-        document.querySelector("#" + item["action"] + " .customValue").value =
-          item["value"];
-        document.querySelector("#" + item["action"] + " .customForce").value =
-          item["force"];
-      } else {
-        // new ones
-        add_shortcut();
-        const dom = document.querySelector(".customs:last-of-type");
-        dom.querySelector(".customDo").value = item["action"];
+    //     if (customActionsNoValues.includes(item["action"]))
+    //       dom.querySelector(".customValue").disabled = true;
 
-        if (customActionsNoValues.includes(item["action"]))
-          dom.querySelector(".customValue").disabled = true;
-
-        updateCustomShortcutInputText(
-          dom.querySelector(".customKey"),
-          item["key"]
-        );
-        dom.querySelector(".customValue").value = item["value"];
-        dom.querySelector(".customForce").value = item["force"];
-      }
-    }
+    //     updateCustomShortcutInputText(
+    //       dom.querySelector(".customKey"),
+    //       item["key"]
+    //     );
+    //     dom.querySelector(".customValue").value = item["value"];
+    //     dom.querySelector(".customForce").value = item["force"];
+    //   }
+    // }
   });
 }
 
@@ -445,6 +531,9 @@ document.addEventListener("DOMContentLoaded", function () {
     funcName(event);
   }
 
+
+
+  document.getElementById("schedule_shortcut_openInbox_keybinding").value = "hihi10"; 
   document.addEventListener("keypress", (event) => {
     eventCaller(event, "customValue", inputFilterNumbersOnly);
   });
@@ -456,6 +545,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   document.addEventListener("keydown", (event) => {
     eventCaller(event, "customKey", recordKeyPress);
+    // console.log(event);
   });
   document.addEventListener("click", (event) => {
     eventCaller(event, "removeParent", function () {
@@ -473,3 +563,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+
+
+
+// window.addEventListener('keyup',
+//     function(e){
+//         keys[e.keyCode] = false;
+//         document.body.innerHTML = "Keys currently pressed: " + getNumberArray(keys);
+//     },
+// false);
+
+// function getNumberArray(arr){
+//     var newArr = new Array();
+//     for(var i = 0; i < arr.length; i++){
+//         if(typeof arr[i] == "number"){
+//             newArr[newArr.length] = arr[i];
+//         }
+//     }
+//     return newArr;
+// }

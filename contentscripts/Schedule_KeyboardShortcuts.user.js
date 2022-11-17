@@ -14,12 +14,18 @@
 checkEnabled_Schedule();
 async function checkEnabled_Schedule(){
 	const isEnabled = await browser.storage.sync.get('enabled');
+	
 	console.log("Schedule_KeyboardShortcuts enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		scheduleKeyDownListener();
+		const schedule = await browser.storage.sync.get('schedule');
+		const schedule_keyboardShortcuts = schedule.schedule.schedule_keyboardShortcuts;
+		if (schedule_keyboardShortcuts.enabled){
+			scheduleKeyDownListener(schedule_keyboardShortcuts);
+		}
+
 		
 	}
 }
@@ -27,7 +33,52 @@ async function checkEnabled_Schedule(){
 // Event Listeners
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-function scheduleKeyDownListener(){
+// const myMap = new Map();
+// window.addEventListener("keydown", function(e){
+// 	// keys[e.key] = e.key;
+// 	// keys.push(e.key);
+// 	myMap.set(e.key, e.key);
+// 	// console.log(myMap);
+// 	console.log(e);
+// });
+
+// window.addEventListener("keyup", function(e){
+// 	// keys[e.key] = e.key;
+// 	// keys.push(e.key);
+// 	// console.log(myMap);
+// 	// console.log(e.key);
+// 	myMap.delete(e.key);
+// 	// console.log(myMap);
+// });
+
+// function compareMaps(map1, map2) {
+//     var testVal;
+//     if (map1.size !== map2.size) {
+//         return false;
+//     }
+//     for (var [key, val] of map1) {
+//         testVal = map2.get(key);
+//         // in cases of an undefined value, make sure the key
+//         // actually exists on the object so there are no false positives
+//         if (testVal !== val || (testVal === undefined && !map2.has(key))) {
+//             return false;
+//         }
+//     }
+//     return true;
+// }
+
+
+
+
+function scheduleKeyDownListener(schedule_keyboardShortcuts){
+	/*           schedule_shortcut_openEChart_enabled: schedule_shortcut_openEChart_enabled,
+          schedule_shortcut_openEChart_keybinding: schedule_shortcut_openEChart_keybinding */
+	console.log(schedule_keyboardShortcuts);
+	const openEChart_enabled = schedule_keyboardShortcuts.openEChart_enabled;
+	const openEChart_keybinding = schedule_keyboardShortcuts.openEChart_keybinding;
+	const openInbox_enabled = schedule_keyboardShortcuts.openInbox_enabled;
+	const openInbox_keybinding = schedule_keyboardShortcuts.openInbox_keybinding;
+
 	// filter out title: "No Show", "signed"
 	window.addEventListener('keydown', function(theEvent) {
 		const theKey = theEvent.key;    
@@ -46,13 +97,21 @@ function scheduleKeyDownListener(){
 				theTarget = document.evaluate(xpath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE ,null).singleNodeValue;            
 				theTarget.click();
 				break;
-			case theAltKey && theKey == 'z':
+			case openInbox_enabled && keybindingMatches(openInbox_keybinding, theEvent):
 				theTarget = document.getElementById("oscar_new_lab");
 				theTarget.click();
 				break;
 		}
 	}, true);
 }
+
+function keybindingMatches(keybinding, theEvent){
+	return keybinding.ctrlKey == theEvent.ctrlKey 
+		&& keybinding.altKey == theEvent.altKey
+		&& keybinding.shiftKey == theEvent.shiftKey
+		&& keybinding.key == theEvent.key;
+}
+
 
 
 // function findFirstPendingAppt(allAppts){

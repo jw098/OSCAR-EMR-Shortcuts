@@ -45,9 +45,7 @@ header {
   background: linear-gradient(white, white 40%, rgba(255, 255, 255, 0.92));
 }
 
-#saveHeader{
-  font-size: 1.0em;
-}
+
 
 header,
 section {
@@ -68,7 +66,7 @@ section h4 {
 }
 
 button {
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   position: relative;
 
   margin: 0 1px 0 0;
@@ -98,9 +96,17 @@ input[type="text"] {
   margin: 5px 0px;
 }
 
+.shortcut{
+  margin-left: 14px;
+}
+
+shortcutLabel{
+  width: 200px;
+}
+
 label {
   display: inline-block;
-  width: 170px;
+  width: 300px;
   vertical-align: top;
 }
 
@@ -108,6 +114,11 @@ label {
   color: #9d9d9d;
   display: inline-block;
   margin-left: 50px;
+}
+
+#saveHeader{
+  font-size: 0.66em;
+  margin-left: 200px;
 }
 
 #status {

@@ -23,6 +23,7 @@
           class="customKey"
           type="text"
           value=""
+          keybinding=""
           placeholder="press a key"
         />
         <input class="customValue" type="text" placeholder="value (0.10)" />
@@ -39,6 +40,7 @@
           class="customKey"
           type="text"
           value=""
+          keybinding=""
           placeholder="press a key"
         />
         <input class="customValue" type="text" placeholder="value (0.10)" />
@@ -47,92 +49,6 @@
           <option value="true">Disable website key bindings</option>
         </select>
       </div>
-      <div class="row customs" id="faster">
-        <select class="customDo">
-          <option value="faster">Increase speed</option>
-        </select>
-        <input
-          class="customKey"
-          type="text"
-          value=""
-          placeholder="press a key"
-        />
-        <input class="customValue" type="text" placeholder="value (0.10)" />
-        <select class="customForce">
-          <option value="false">Do not disable website key bindings</option>
-          <option value="true">Disable website key bindings</option>
-        </select>
-      </div>
-      <div class="row customs" id="rewind">
-        <select class="customDo">
-          <option value="rewind">Rewind</option>
-        </select>
-        <input
-          class="customKey"
-          type="text"
-          value=""
-          placeholder="press a key"
-        />
-        <input class="customValue" type="text" placeholder="value (10)" />
-        <select class="customForce">
-          <option value="false">Do not disable website key bindings</option>
-          <option value="true">Disable website key bindings</option>
-        </select>
-      </div>
-      <div class="row customs" id="advance">
-        <select class="customDo">
-          <option value="advance">Advance</option>
-        </select>
-        <input
-          class="customKey"
-          type="text"
-          value=""
-          placeholder="press a key"
-        />
-        <input class="customValue" type="text" placeholder="value (10)" />
-        <select class="customForce">
-          <option value="false">Do not disable website key bindings</option>
-          <option value="true">Disable website key bindings</option>
-        </select>
-      </div>
-      <div class="row customs" id="reset">
-        <select class="customDo">
-          <option value="reset">Reset speed</option>
-        </select>
-        <input
-          class="customKey"
-          type="text"
-          value=""
-          placeholder="press a key"
-        />
-        <input
-          class="customValue"
-          type="text"
-          placeholder="value (1.00)"
-          disabled
-        />
-        <select class="customForce">
-          <option value="false">Do not disable website key bindings</option>
-          <option value="true">Disable website key bindings</option>
-        </select>
-      </div>
-      <div class="row customs" id="fast">
-        <select class="customDo">
-          <option value="fast">Preferred speed</option>
-        </select>
-        <input
-          class="customKey"
-          type="text"
-          value=""
-          placeholder="press a key"
-        />
-        <input class="customValue" type="text" placeholder="value (1.80)" />
-        <select class="customForce">
-          <option value="false">Do not disable website key bindings</option>
-          <option value="true">Disable website key bindings</option>
-        </select>
-      </div>
-
       <button id="add">Add New</button>
     </section>
 
@@ -152,8 +68,6 @@
         <button id="checkAllShortcuts" >Check all keyboard shortcuts</button>
         <button id="uncheckAllShortcuts" >Uncheck all keyboard shortcuts</button>
       </div>
-      <!-- <div class="row">
-      </div> -->
     </section>
 
 
@@ -183,6 +97,17 @@
       <div class="row">
         <label for="billingCodeInput_keyboardShortcuts">Enable keyboard shortcuts</label>
         <input id="billingCodeInput_keyboardShortcuts" type="checkbox" />
+      </div>
+      <div class="shortcut" id="billingCodeInput_shortcut_continue">
+        <input type="checkbox" />
+        <label>Continue</label>
+        <input
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
       </div>
       <h4>Billing Diagnostic Code Search</h4>
       <div class="row">
@@ -221,6 +146,38 @@
       <div class="row">
         <label for="postAllHistory">Post Medical, Social, and Family history in clinical information text area.</label>
         <input id="postAllHistory" type="checkbox" />
+      </div>
+    </section>
+
+    <section>
+      <h3>Schedule</h3>
+      <div class="row">
+        <label for="schedule_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <input id="schedule_shortcuts_enabled" type="checkbox" />
+      </div>
+      <div class="shortcut">
+        <input id="schedule_shortcut_openEChart_enabled" type="checkbox" />
+        <label>Open next patient's eChart</label>
+        <input
+          id="schedule_shortcut_openEChart_keybinding"
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
+      </div>
+      <div class="shortcut">
+        <input id="schedule_shortcut_openInbox_enabled" type="checkbox" />
+        <label>Open Inbox</label>
+        <input
+          id="schedule_shortcut_openInbox_keybinding"
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
       </div>
     </section>
 
