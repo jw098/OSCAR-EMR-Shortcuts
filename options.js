@@ -275,11 +275,14 @@ function save_options() {
   // if (validate() === false) {
   //   return;
   // }
-  keyBindings = [];
-  Array.from(document.querySelectorAll(".customs")).forEach((item) =>
-    createKeyBindings(item)
-  ); // Remove added shortcuts
+  // keyBindings = [];
+  // Array.from(document.querySelectorAll(".customs")).forEach((item) =>
+  //   createKeyBindings(item)
+  // ); // Remove added shortcuts
 
+
+
+    
   const enabled = document.getElementById("enabled").checked;
 
   const allergyQuickAdd = document.getElementById("allergyQuickAdd").checked;
@@ -319,43 +322,48 @@ function save_options() {
   //   "fastKeyCode"
   // ]);
 
+  
+
   chrome.storage.sync.set(
-    {
-      enabled: enabled,
+    settingsFromOption(settings)
+    // {
+    //   enabled: enabled,
 
-      allergyQuickAdd: allergyQuickAdd,
+    //   allergyQuickAdd: allergyQuickAdd,
 
-      billingCodeInput: {
-        billingButtons: billingButtons,
-        billingCodeInput_PageEnd: billingCodeInput_PageEnd,
-        billingCodeInput_keyboardShortcuts: billingCodeInput_keyboardShortcuts
-      },
+    //   billingCodeInput: {
+    //     billingButtons: billingButtons,
+    //     billingCodeInput_PageEnd: billingCodeInput_PageEnd,
+    //     billingCodeInput_keyboardShortcuts: billingCodeInput_keyboardShortcuts
+    //   },
 
-      billingDxCodeSearch_keyboardShortcuts: billingDxCodeSearch_keyboardShortcuts,
+    //   billingDxCodeSearch_keyboardShortcuts: billingDxCodeSearch_keyboardShortcuts,
 
-      billingConfirm:{
-        billingConfirm_keyboardShortcuts: billingConfirm_keyboardShortcuts,
-        billingConfirm_PageEnd: billingConfirm_PageEnd
-      },
+    //   billingConfirm:{
+    //     billingConfirm_keyboardShortcuts: billingConfirm_keyboardShortcuts,
+    //     billingConfirm_PageEnd: billingConfirm_PageEnd
+    //   },
 
-      cortico: cortico,
+    //   cortico: cortico,
 
-      consultations:{
-        consultations_keyboardShortcuts: consultations_keyboardShortcuts,
-        postPatientAgeGender: postPatientAgeGender,
-        postAllHistory:postAllHistory
-      },
+    //   consultations:{
+    //     consultations_keyboardShortcuts: consultations_keyboardShortcuts,
+    //     postPatientAgeGender: postPatientAgeGender,
+    //     postAllHistory:postAllHistory
+    //   },
 
-      schedule: {
-        schedule_keyboardShortcuts: {
-          schedule_shortcuts_enabled: schedule_shortcuts_enabled,
-          schedule_shortcut_openEChart_enabled: schedule_shortcut_openEChart_enabled,
-          schedule_shortcut_openEChart_keybinding: schedule_shortcut_openEChart_keybinding,
-          schedule_shortcut_openInbox_enabled: schedule_shortcut_openInbox_enabled,
-          schedule_shortcut_openInbox_keybinding: schedule_shortcut_openInbox_keybinding
-        }
-      }
-    },
+    //   schedule: {
+    //     schedule_keyboardShortcuts: {
+    //       schedule_shortcuts_enabled: schedule_shortcuts_enabled,
+    //       schedule_shortcut_openEChart_enabled: schedule_shortcut_openEChart_enabled,
+    //       schedule_shortcut_openEChart_keybinding: schedule_shortcut_openEChart_keybinding,
+    //       schedule_shortcut_openInbox_enabled: schedule_shortcut_openInbox_enabled,
+    //       schedule_shortcut_openInbox_keybinding: schedule_shortcut_openInbox_keybinding
+    //     }
+    //   }
+    // }
+    
+    ,
     function () {
       // Update status to let user know options were saved.
       var status = document.getElementById("status");
@@ -371,7 +379,39 @@ function save_options() {
       }, 1000);
     }
   );
+
+  (async function() {
+    console.log(await browser.storage.sync.get());
+    // console.log(await browser.storage.sync.get("tcDefaults"));
+  })();
+
 }
+
+/* 
+- given a settings object which provides the structure for the object, return a settings object with values taken from the options page.
+ */
+function settingsFromOption(settingsStructure){
+  let newSettings = {};
+  for (const [key, value] of Object.entries(settingsStructure)){
+    if (typeof value == "boolean"){
+      newSettings[key] = document.getElementById(key).checked;
+      // console.log(document.getElementById(key).checked);
+    } else if(key.includes("_keybinding")){
+      newSettings[key] = document.getElementById(key).keybinding;
+      // console.log(value);
+      // console.log(document.getElementById(key).keybinding);
+    }
+    else{
+      console.assert(typeof value == "object");
+      newSettings[key] =  settingsFromOption(value);
+    }
+
+  }
+  // console.log(newSettings);
+
+  return newSettings;
+}
+
 
 // Restores options from chrome.storage
 function restore_options() {
@@ -412,6 +452,8 @@ function restore_options() {
 
   });
 }
+
+
 
 /* 
 - with given settings object, set the values on the options page.
