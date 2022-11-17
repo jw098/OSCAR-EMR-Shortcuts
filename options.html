@@ -7,7 +7,10 @@
   </head>
   <body>
     <header>
-      <h1>OSCAR EMR Shortcuts</h1>
+      <h1>OSCAR EMR Shortcuts
+        <button id="saveHeader">Save</button>
+        <div id="statusHeader"></div>
+      </h1>
     </header>
 
     <section id="customs">
@@ -248,45 +251,6 @@
 		updateAllSidebarOnFocusChange(); -->
 
 
-
-
-    <section>
-      <h3>Other</h3>
-      <div class="row">
-        <label for="startHidden">Hide controller by default</label>
-        <input id="startHidden" type="checkbox" />
-      </div>
-      <div class="row">
-        <label for="rememberSpeed">Remember playback speed</label>
-        <input id="rememberSpeed" type="checkbox" />
-      </div>
-      <div class="row">
-        <label for="forceLastSavedSpeed">Force last saved speed<br />
-        <em>Useful for video players that override the speeds set by VideoSpeed</em></label>
-        <input id="forceLastSavedSpeed" type="checkbox" />
-      </div>
-      <div class="row">
-        <label for="audioBoolean">Work on audio</label>
-        <input id="audioBoolean" type="checkbox" />
-      </div>
-      <div class="row">
-        <label for="controllerOpacity">Controller opacity</label>
-        <input id="controllerOpacity" type="text" value="" />
-      </div>
-      <div class="row">
-        <label for="blacklist"
-          >Sites on which extension is disabled<br />
-          (one per line)<br />
-          <br />
-          <em>
-            <a href="https://www.regexpal.com/">Regex</a> is supported.<br />
-            Be sure it is in "//g" format.<br />
-            ie: /(.+)youtube\.com(\/*)$/gi
-          </em>
-        </label>
-        <textarea id="blacklist" rows="10" cols="50"></textarea>
-      </div>
-    </section>
 
     <button id="save">Save</button>
     <button id="restore">Restore Defaults</button>

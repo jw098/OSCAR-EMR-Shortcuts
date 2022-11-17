@@ -220,9 +220,9 @@ function validate() {
 
 // Saves options to chrome.storage
 function save_options() {
-  if (validate() === false) {
-    return;
-  }
+  // if (validate() === false) {
+  //   return;
+  // }
   keyBindings = [];
   Array.from(document.querySelectorAll(".customs")).forEach((item) =>
     createKeyBindings(item)
@@ -242,14 +242,6 @@ function save_options() {
   const consultations_keyboardShortcuts = document.getElementById("consultations_keyboardShortcuts").checked;
   const postPatientAgeGender = document.getElementById("postPatientAgeGender").checked;
   const postAllHistory = document.getElementById("postAllHistory").checked;
-
-  var rememberSpeed = document.getElementById("rememberSpeed").checked;
-  var forceLastSavedSpeed = document.getElementById("forceLastSavedSpeed").checked;
-  var audioBoolean = document.getElementById("audioBoolean").checked;
-  var enabled = document.getElementById("enabled").checked;
-  var startHidden = document.getElementById("startHidden").checked;
-  var controllerOpacity = document.getElementById("controllerOpacity").value;
-  var blacklist = document.getElementById("blacklist").value;
 
   chrome.storage.sync.remove([
     "resetSpeed",
@@ -307,6 +299,12 @@ function save_options() {
       status.textContent = "Options saved";
       setTimeout(function () {
         status.textContent = "";
+      }, 1000);
+
+      var statusHeader = document.getElementById("statusHeader");
+      statusHeader.textContent = "Options saved";
+      setTimeout(function () {
+        statusHeader.textContent = "";
       }, 1000);
     }
   );
@@ -418,6 +416,7 @@ document.addEventListener("DOMContentLoaded", function () {
   restore_options();
 
   document.getElementById("save").addEventListener("click", save_options);
+  document.getElementById("saveHeader").addEventListener("click", save_options);
   window.addEventListener('keydown', function(theEvent) {
 		var theKey = theEvent.key;
 		var theAltKey = theEvent.altKey;
