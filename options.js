@@ -1,6 +1,6 @@
 var regStrip = /^[\r\t\f\v ]+|[\r\t\f\v ]+$/gm;
 
-var tcDefaults = {
+var settings = {
   enabled: true, // default enabled
   allergyQuickAdd: true,
 
@@ -21,16 +21,16 @@ var tcDefaults = {
 
   schedule: {
     schedule_keyboardShortcuts: {
-      enabled: true,
-      openEChart_enabled: true,
-      openEChart_keybinding: {
+      schedule_shortcuts_enabled: true,
+      schedule_shortcut_openEChart_enabled: true,
+      schedule_shortcut_openEChart_keybinding: {
         ctrlKey: false,
         shiftKey: false,
         altKey: true,
         key: '1'
       },
-      openInbox_enabled: true,
-      openInbox_keybinding:{
+      schedule_shortcut_openInbox_enabled: true,
+      schedule_shortcut_openInbox_keybinding:{
         ctrlKey: false,
         shiftKey: false,
         altKey: true,
@@ -270,29 +270,6 @@ function createKeyBindings(item) {
   });
 }
 
-// Validates settings before saving
-function validate() {
-  var valid = true;
-  var status = document.getElementById("status");
-  document
-    .getElementById("blacklist")
-    .value.split("\n")
-    .forEach((match) => {
-      match = match.replace(regStrip, "");
-      if (match.startsWith("/")) {
-        try {
-          var regexp = new RegExp(match);
-        } catch (err) {
-          status.textContent =
-            "Error: Invalid blacklist regex: " + match + ". Unable to save";
-          valid = false;
-          return;
-        }
-      }
-    });
-  return valid;
-}
-
 // Saves options to chrome.storage
 function save_options() {
   // if (validate() === false) {
@@ -371,15 +348,13 @@ function save_options() {
 
       schedule: {
         schedule_keyboardShortcuts: {
-          enabled: schedule_shortcuts_enabled,
-          openEChart_enabled: schedule_shortcut_openEChart_enabled,
-          openEChart_keybinding: schedule_shortcut_openEChart_keybinding,
-          openInbox_enabled: schedule_shortcut_openInbox_enabled,
-          openInbox_keybinding: schedule_shortcut_openInbox_keybinding
+          schedule_shortcuts_enabled: schedule_shortcuts_enabled,
+          schedule_shortcut_openEChart_enabled: schedule_shortcut_openEChart_enabled,
+          schedule_shortcut_openEChart_keybinding: schedule_shortcut_openEChart_keybinding,
+          schedule_shortcut_openInbox_enabled: schedule_shortcut_openInbox_enabled,
+          schedule_shortcut_openInbox_keybinding: schedule_shortcut_openInbox_keybinding
         }
       }
-
-      
     },
     function () {
       // Update status to let user know options were saved.
@@ -400,85 +375,74 @@ function save_options() {
 
 // Restores options from chrome.storage
 function restore_options() {
-  chrome.storage.sync.get(tcDefaults, function (storage) {
+  (async function() {
+    console.log(await browser.storage.sync.get());
+    // console.log(await browser.storage.sync.get("tcDefaults"));
+  })();
 
-    document.getElementById("allergyQuickAdd").checked = storage.allergyQuickAdd;
+  chrome.storage.sync.get(settings, function (storage) {
+    // console.log(storage);
 
-    document.getElementById("billingButtons").checked = storage.billingButtons;
-    document.getElementById("billingCodeInput_PageEnd").checked = storage.billingCodeInput_PageEnd;
-    document.getElementById("billingCodeInput_keyboardShortcuts").checked = storage.billingCodeInput_keyboardShortcuts;
-    document.getElementById("billingDxCodeSearch_keyboardShortcuts").checked = storage.billingDxCodeSearch_keyboardShortcuts;
-    document.getElementById("billingConfirm_keyboardShortcuts").checked = storage.billingConfirm_keyboardShortcuts;
-    document.getElementById("billingConfirm_PageEnd").checked = storage.billingConfirm_PageEnd;
+    restoreOptionsPageFromSettings(storage);
+
+
+    // document.getElementById("allergyQuickAdd").checked = storage.allergyQuickAdd;
+
+    // document.getElementById("billingButtons").checked = storage.billingButtons;
+    // document.getElementById("billingCodeInput_PageEnd").checked = storage.billingCodeInput_PageEnd;
+    // document.getElementById("billingCodeInput_keyboardShortcuts").checked = storage.billingCodeInput_keyboardShortcuts;
+    // document.getElementById("billingDxCodeSearch_keyboardShortcuts").checked = storage.billingDxCodeSearch_keyboardShortcuts;
+    // document.getElementById("billingConfirm_keyboardShortcuts").checked = storage.billingConfirm_keyboardShortcuts;
+    // document.getElementById("billingConfirm_PageEnd").checked = storage.billingConfirm_PageEnd;
   
-    document.getElementById("cortico").checked = storage.cortico;
+    // document.getElementById("cortico").checked = storage.cortico;
   
-    document.getElementById("consultations_keyboardShortcuts").checked = storage.consultations_keyboardShortcuts;
-    document.getElementById("postPatientAgeGender").checked = storage.postPatientAgeGender;
-    document.getElementById("postAllHistory").checked = storage.postAllHistory;
+    // document.getElementById("consultations_keyboardShortcuts").checked = storage.consultations_keyboardShortcuts;
+    // document.getElementById("postPatientAgeGender").checked = storage.postPatientAgeGender;
+    // document.getElementById("postAllHistory").checked = storage.postAllHistory;
 
-    document.getElementById("schedule_shortcuts_enabled").checked = storage.schedule.schedule_keyboardShortcuts.enabled;
-    document.getElementById("schedule_shortcut_openEChart_enabled").checked = storage.schedule.schedule_keyboardShortcuts.openEChart_enabled;
-    document.getElementById("schedule_shortcut_openEChart_keybinding").keybinding = storage.schedule.schedule_keyboardShortcuts.openEChart_keybinding;
-    document.getElementById("schedule_shortcut_openEChart_keybinding").value = keybindingToText(storage.schedule.schedule_keyboardShortcuts.openEChart_keybinding);
-    document.getElementById("schedule_shortcut_openInbox_enabled").keybinding = storage.schedule.schedule_keyboardShortcuts.openInbox_enabled;
-    document.getElementById("schedule_shortcut_openInbox_keybinding").keybinding = storage.schedule.schedule_keyboardShortcuts.openInbox_keybinding;
-    document.getElementById("schedule_shortcut_openInbox_keybinding").value = keybindingToText(storage.schedule.schedule_keyboardShortcuts.openInbox_keybinding);
+    // document.getElementById("schedule_shortcuts_enabled").checked = storage.schedule.schedule_keyboardShortcuts.enabled;
+    // document.getElementById("schedule_shortcut_openEChart_enabled").checked = storage.schedule.schedule_keyboardShortcuts.openEChart_enabled;
+    // document.getElementById("schedule_shortcut_openEChart_keybinding").keybinding = storage.schedule.schedule_keyboardShortcuts.openEChart_keybinding;
+    // document.getElementById("schedule_shortcut_openEChart_keybinding").value = keybindingToText(storage.schedule.schedule_keyboardShortcuts.openEChart_keybinding);
+    // document.getElementById("schedule_shortcut_openInbox_enabled").keybinding = storage.schedule.schedule_keyboardShortcuts.openInbox_enabled;
+    // document.getElementById("schedule_shortcut_openInbox_keybinding").keybinding = storage.schedule.schedule_keyboardShortcuts.openInbox_keybinding;
+    // document.getElementById("schedule_shortcut_openInbox_keybinding").value = keybindingToText(storage.schedule.schedule_keyboardShortcuts.openInbox_keybinding);
 
-    // // ensure that there is a "display" binding for upgrades from versions that had it as a separate binding
-    // if (storage.keyBindings.filter((x) => x.action == "display").length == 0) {
-    //   storage.keyBindings.push({
-    //     action: "display",
-    //     value: 0,
-    //     force: false,
-    //     predefined: true
-    //   });
-    // }
 
-    // for (let i in storage.keyBindings) {
-    //   var item = storage.keyBindings[i];
-    //   if (item.predefined) {
-    //     //do predefined ones because their value needed for overlay
-    //     // document.querySelector("#" + item["action"] + " .customDo").value = item["action"];
-    //     if (item["action"] == "display" && typeof item["key"] === "undefined") {
-    //       item["key"] = storage.displayKeyCode || tcDefaults.displayKeyCode; // V
-    //     }
-
-    //     if (customActionsNoValues.includes(item["action"]))
-    //       document.querySelector(
-    //         "#" + item["action"] + " .customValue"
-    //       ).disabled = true;
-
-    //     updateCustomShortcutInputText(
-    //       document.querySelector("#" + item["action"] + " .customKey"),
-    //       item["key"]
-    //     );
-    //     document.querySelector("#" + item["action"] + " .customValue").value =
-    //       item["value"];
-    //     document.querySelector("#" + item["action"] + " .customForce").value =
-    //       item["force"];
-    //   } else {
-    //     // new ones
-    //     add_shortcut();
-    //     const dom = document.querySelector(".customs:last-of-type");
-    //     dom.querySelector(".customDo").value = item["action"];
-
-    //     if (customActionsNoValues.includes(item["action"]))
-    //       dom.querySelector(".customValue").disabled = true;
-
-    //     updateCustomShortcutInputText(
-    //       dom.querySelector(".customKey"),
-    //       item["key"]
-    //     );
-    //     dom.querySelector(".customValue").value = item["value"];
-    //     dom.querySelector(".customForce").value = item["force"];
-    //   }
-    // }
   });
 }
 
+/* 
+- with given settings object, set the values on the options page.
+ */
+function restoreOptionsPageFromSettings(settingsObject){
+  // console.log(settingsObject);
+  for (const [key, value] of Object.entries(settingsObject)){
+    // console.log(`${key}: ${value}`);
+    // console.log(typeof value == "boolean");
+    // console.log(key.includes("_keybinding"));
+    if (typeof value == "boolean"){
+      document.getElementById(key).checked = value;
+      // console.log(document.getElementById(key).checked);
+    } else if(key.includes("_keybinding")){
+      document.getElementById(key).keybinding = value;
+      document.getElementById(key).value = keybindingToText(value);
+      
+      // console.log(value);
+      // console.log(document.getElementById(key).keybinding);
+      // console.log(document.getElementById(key).value);
+    }
+    else{
+      // console.log('hihi');
+      console.assert(typeof value == "object");
+      restoreOptionsPageFromSettings(value);
+    }
+  }
+}
+
 function restore_defaults() {
-  chrome.storage.sync.set(tcDefaults, function () {
+  chrome.storage.sync.set(settings, function () {
     restore_options();
     document
       .querySelectorAll(".removeParent")
@@ -500,6 +464,7 @@ function show_experimental() {
 
 document.addEventListener("DOMContentLoaded", function () {
   restore_options();
+
 
   document.getElementById("save").addEventListener("click", save_options);
   document.getElementById("saveHeader").addEventListener("click", save_options);

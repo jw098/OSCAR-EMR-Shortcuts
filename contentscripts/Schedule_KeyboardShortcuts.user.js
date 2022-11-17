@@ -14,6 +14,7 @@
 checkEnabled_Schedule();
 async function checkEnabled_Schedule(){
 	const isEnabled = await browser.storage.sync.get('enabled');
+	console.log(await browser.storage.sync.get(null));
 	
 	console.log("Schedule_KeyboardShortcuts enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
@@ -22,7 +23,7 @@ async function checkEnabled_Schedule(){
 	else {
 		const schedule = await browser.storage.sync.get('schedule');
 		const schedule_keyboardShortcuts = schedule.schedule.schedule_keyboardShortcuts;
-		if (schedule_keyboardShortcuts.enabled){
+		if (schedule_keyboardShortcuts.schedule_shortcuts_enabled){
 			scheduleKeyDownListener(schedule_keyboardShortcuts);
 		}
 
@@ -74,10 +75,12 @@ function scheduleKeyDownListener(schedule_keyboardShortcuts){
 	/*           schedule_shortcut_openEChart_enabled: schedule_shortcut_openEChart_enabled,
           schedule_shortcut_openEChart_keybinding: schedule_shortcut_openEChart_keybinding */
 	console.log(schedule_keyboardShortcuts);
-	const openEChart_enabled = schedule_keyboardShortcuts.openEChart_enabled;
-	const openEChart_keybinding = schedule_keyboardShortcuts.openEChart_keybinding;
-	const openInbox_enabled = schedule_keyboardShortcuts.openInbox_enabled;
-	const openInbox_keybinding = schedule_keyboardShortcuts.openInbox_keybinding;
+	const openEChart_enabled = 
+		schedule_keyboardShortcuts.schedule_shortcut_openEChart_enabled;
+	const openEChart_keybinding = 
+		schedule_keyboardShortcuts.schedule_shortcut_openEChart_keybinding;
+	const openInbox_enabled = schedule_keyboardShortcuts.schedule_shortcut_openInbox_enabled;
+	const openInbox_keybinding = schedule_keyboardShortcuts.schedule_shortcut_openInbox_keybinding;
 
 	// filter out title: "No Show", "signed"
 	window.addEventListener('keydown', function(theEvent) {

@@ -73,7 +73,11 @@ function keyDownListener_Tickler(){
 
 function setFocusToTicklerTextArea(){
 	const theTarget = document.evaluate("//textarea",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-	theTarget.focus();
+	
+	setTimeout(function(){
+		theTarget.focus();
+	}, 200);
+	
 }
 
 
