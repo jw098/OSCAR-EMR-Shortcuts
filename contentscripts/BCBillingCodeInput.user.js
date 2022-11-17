@@ -21,6 +21,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_BCBillingCodeInput();
 async function checkEnabled_BCBillingCodeInput(){
+	const all = await browser.storage.sync.get(null);
+	console.log(all);
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	const isBillingCodeInputPage = !!document.getElementById("billingFormTable");
@@ -29,12 +31,22 @@ async function checkEnabled_BCBillingCodeInput(){
 		return;
 	}
 	else {
+		const billingCodeInput = await browser.storage.sync.get('billingCodeInput');
+		console.log(billingCodeInput.billingCodeInput);
 		// Buttons
-		addAllBillingButtons();
-
+		if (billingCodeInput.billingCodeInput.billingButtons){
+			addAllBillingButtons();
+		}
+		
 		// Keyboard shortcuts
-		scrollToPageEnd_BCBillingConfirm();
-		billingCodeInputPage_KeydownListeners();
+		if (billingCodeInput.billingCodeInput.billingCodeInput_PageEnd){
+			scrollToPageEnd_BCBillingConfirm();
+		}
+		if (billingCodeInput.billingCodeInput.billingCodeInput_keyboardShortcuts){
+			billingCodeInputPage_KeydownListeners();
+		}
+		
+		
 	}
 }
 

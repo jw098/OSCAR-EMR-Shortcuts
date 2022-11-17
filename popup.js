@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", function () {
     window.open("https://github.com/jw098/OSCAR-EMR-Shortcuts");
   });
 
+  document.querySelector("#firefox").addEventListener("click", function () {
+    window.open("https://addons.mozilla.org/en-US/firefox/addon/oscar-emr-shortcuts/");
+  });
+
   document.querySelector("#feedback").addEventListener("click", function () {
     window.open("https://github.com/jw098/OSCAR-EMR-Shortcuts/issues");
   });

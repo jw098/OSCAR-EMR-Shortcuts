@@ -17,12 +17,21 @@
 checkEnabled_Allergy();
 async function checkEnabled_Allergy(){
 	const isEnabled = await browser.storage.sync.get('enabled');
+	const allergyQuickAdd = await browser.storage.sync.get('allergyQuickAdd');
+
 	console.log("Allergy_QuickAdd enabled? " + isEnabled.enabled);
+	console.log(isEnabled);
+	console.log(allergyQuickAdd);
+	// console.log(await browser.storage.sync.get('allergyQuickAdd2'));
+
+
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		doPageAction();
+		if (allergyQuickAdd.allergyQuickAdd){
+			doPageAction();
+		}
 	}
 }
 

@@ -20,9 +20,16 @@ async function checkEnabled_Consultations(){
 		return;
 	}
 	else {
-		keydownEventListener();
-		postPatientAgeGender();
-		getAllHistory();
+		const consultations = await browser.storage.sync.get('consultations');
+		if (consultations.consultations.consultations_keyboardShortcuts){
+			keydownEventListener_Consultations();
+		}
+		if (consultations.consultations.postPatientAgeGender){
+			postPatientAgeGender();
+		}
+		if (consultations.consultations.postAllHistory){
+			postAllHistory();
+		}
 	}
 }
 
@@ -31,7 +38,7 @@ async function checkEnabled_Consultations(){
 // Keydown Event Listeners
 ////////////////////////////////
 
-function keydownEventListener(){
+function keydownEventListener_Consultations(){
 	const consultationHotkey = 'w';
 
 	// let currentURL = window.location.href;
@@ -147,7 +154,7 @@ function yearsDiff(d1, d2) {
 
 
 
-async function getAllHistory() {
+async function postAllHistory() {
 
 	const [medHistory, socHistory, famHistory] = await Promise.all([getHistory(urlMedHistory()), getHistory(urlSocHistory()), getHistory(urlFamHistory())]);
 
@@ -203,7 +210,7 @@ async function getHistory(URL) {
   }
   else {
 		const historyText = getHistoryAsText(historyDivList);
-		// console.log(historyText);
+		console.log(historyText);
 
 		return historyText;
   }

@@ -17,7 +17,11 @@ async function checkEnabled_BCBilling_DxCodeSearch(){
 		return;
 	}
 	else {
-		dxCodeSearchPage_KeydownListeners();
+		const billingDxCodeSearch_keyboardShortcuts = await browser.storage.sync.get('billingDxCodeSearch_keyboardShortcuts');
+		if (billingDxCodeSearch_keyboardShortcuts.billingDxCodeSearch_keyboardShortcuts){
+			dxCodeSearchPage_KeydownListeners();
+		}
+		
 	}
 }
 

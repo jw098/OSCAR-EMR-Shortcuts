@@ -2,84 +2,57 @@
 
 Keyboard shortcuts, buttons, automated actions for OSCAR EMR.
 
-# Disclaimer
+# Features:
 
-This collection of scripts has only been tested on the WELL Health implementation of OSCAR EMR, in Classic view. Feel free to contact me here if you notice any bugs.
+- Automated actions
 
-# What this extension does
+- Buttons for common actions
 
-## Allergy_QuickAdd
+- Keyboard shortcuts for commonly used actions
 
-Buttons to quickly add allergies. On Medications: Alt+Z to quickly add NKDA.
+# Disclaimer:
 
-## BCBilling_KeyboardShortcuts
+This extension has only been tested on the WELL Health implementation of OSCAR EMR, in BC, in Classic view. Feel free to contact me if you notice any bugs.
 
-In the BC Billing page: Alt+1 to Continue, Alt+Q to input in person visit billing code, Alt+W to input telehealth visit billing code, Alt+A to set focus to Dx code. The above keyboard shortcuts will also scroll to the bottom of the page. 
+# Detailed feature list
 
-In Diagnostic Code search: Alt+1 to Confirm, Escape to Cancel. 
+## Automated actions: 
 
-In Billing confirmation page: Alt+1 to Save Bill. Alt+A to scroll to bottom of page.
+- Consultations: Automatically pastes Past Medical history, Social history, and Family history to the Clinical information text area. Post patient's age and gender in Reason for Consultation text area.
 
-## BCBilling_ScreenButtons
+- EChart: Update the sidebar with newly created eForms, Consults, Ticklers, Medications when posted, without needing to refresh.
 
-On the BC Billing page, buttons to automatically bill age-related codes and other common codes. 
+- Inbox: Automatically label labs with the actual names of each test (e.g. CBC, A1c, Electrolytes as opposed to cryptic labels like HAEM1, CHEM4, etc.). Also, the label of the previous version of the lab result is shown, as well any new results compared to the previous version.
 
-## CloseCortico
+- Medications: A pop-up confirmation dialog will appear if there are medications pending submission.
 
-On any OSCAR page, press Escape to close the popup from the Cortico extension.
+## Buttons
 
-## Consultations_KeyboardShortcuts
+- Allergy: Quickly add allergies.
 
-Within Consultations: Alt+1 to 'Submit Consultation Request'. Alt+W to close the window. Automatically pastes Past Medical history, Social history, and Family history to the Clinical information text area.
+- BC Billing:  Automatically bill age-related codes and other common codes.
 
-## EChart_Buttons
+- EChart: Search box to search e-forms by title. Various navigation buttons for e-chart screen (e.g. Lab req, Ultrasound req, X-ray req). 
 
-Various navigation buttons for e-chart screen (e.g. Lab req, Ultrasound req, X-ray req).  Set your own specific fid (form number ID) or Measurement groupName. Alt+Shift+Q,W,Z opens the eForms specified.
+- Inbox: Button that opens all new and old reports (including acknowledged and filed reports). Another button that opens just new reports.
 
-## EChart_eFormSearch
+## Keyboard shortcuts:
 
-In the E-chart, a search box to search e-forms by title. Alt+Shift+A toggles focus between e-forms search box and the note text area.
+- BC Billing page: Alt+1 to Continue, Alt+Q to input in person visit billing code, Alt+W to input telehealth visit billing code, Alt+A to set focus to Dx code.
 
-## EChart_KeyboardShortcuts
+- Cortico: Escape to close Cortico pop-up
 
-Within the E-chart: Alt+1 to Sign/Save/Bill. Alt+2 to Save. Alt+3 to Sign/Save. Alt+4 to Exit. Alt+W, Alt+Q, Alt+A to open/close Consultation, eForms, Ticklers respectively. 
+- Consultation: Alt+1 to 'Submit Consultation Request'. Alt+W to close the window. 
 
-When the CPP pop-up windows are open (e.g. for Social History, Medical History, etc.), Alt+1 to Sign & Save, Escape to close the pop-up window.
+- EChart: Alt+1 to Sign/Save/Bill. Alt+2 to Save. Alt+3 to Sign/Save. Alt+4 to Exit. Alt+W, Alt+Q, Alt+A to open Consultation, eForms, Ticklers respectively. 
 
-## EChart_UpdateSidebar
+- eForms: Within e-forms repository, Alt+A to close. Within an individual e-form: Alt+1 to Submit. Alt+2 to Print & Submit.
 
-Within the E-chart: Update the sidebar with newly created eForms, Consults, Ticklers, Medications when posted.
+- Inbox: Within Inbox, Alt+1 to open first item. Within the Lab result: Alt+1 to Acknowledge. Alt+Q to open E-chart. Alt+W to open Tickler.
 
-## eForms_KeyboardShortcuts
+- Medications: Alt+1 to 'Save And Print', Alt+A to set focus to 'Drug Name' text area (to enter a new medication), Alt+Q to close the window. When the prescription print window pops up, Alt+1 to 'Print & Paste into EMR'. Alt+2 to 'Fax & Paste into EMR'. 
 
-Within e-forms repository, Alt+A to close. Within an individual e-form: Alt+1 to Submit. Alt+2 to Print & Submit.
+- Schedule: Alt+1 opens the e-chart for the next patient. i.e. the first patient that is not Billed, not Signed, not No show, and not Cancelled.
 
-## Inbox_Buttons
+- Tickler:  Alt+1 to 'Submit and EXIT', Alt+2 to 'Submit & Write to Encounter', Alt+A to set focus to text box. When the Tickler page loads, it also automatically sets focus to the text box. Note: if not already done, you should consider setting a 'Default Tickler Recipient' under OSCAR Preferences.
 
-Within Inbox: A button that opens all reports (including acknowledged and filed reports), as well as one that open just new reports.
-
-## Inbox_KeyboardShortcuts
-
-Within Inbox: Alt+1 to open first item. 
-
-Within the Lab result: Alt+1 to Acknowledge and label labs with the actual names of each test (as opposed to cryptic labels like HAEM1, CHEM4, etc.). Alt+Q to open E-chart. Alt+W to open Tickler. Alt+Z to only label Labs without acknowleding.
-
-Also, the label of the previous version of the lab result is shown, as well any new results compared to the previous version.
-
-## Medications_KeyboardShortcuts
-
-Within Medications, Alt+1 to 'Save And Print', Alt+A to set focus to 'Drug Name' text area (to enter a new medication), Alt+Q to close the window. 
-
-When the prescription print window pops up, Alt+1 to 'Print & Paste into EMR'. Alt+2 to 'Fax & Paste into EMR'. 
-
-When closing the Medications page, a pop-up confirmation dialog will appear if there are medications pending submission.
-
-## Schedule_KeyboardShortcuts
-
-Within the Schedule page: Alt+1 opens the e-chart for the next patient. i.e. the first patient that is not Billed, not Signed, not No show, and not Cancelled.
-
-## Tickler_KeyboardShortcuts
-
-Within Ticklers, Alt+1 to 'Submit and EXIT', Alt+2 to 'Submit & Write to Encounter', Alt+A to set focus to text box. When the Tickler page loads, it also automatically sets focus to the text box. 
-
-Note: if not already done, you should consider setting a 'Default Tickler Recipient' under OSCAR Preferences.

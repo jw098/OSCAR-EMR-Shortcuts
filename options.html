@@ -134,11 +134,124 @@
     </section>
 
     <section>
-      <h3>Other</h3>
+      <h3>Enable/Disable</h3>
       <div class="row">
-        <label for="enabled">Enable</label>
+        <label for="enabled">Enabled</label>
         <input id="enabled" type="checkbox" />
       </div>
+      <div class="row">
+        <button id="checkAllSettings" >Check all settings</button>
+        <button id="uncheckAllSettings" >Uncheck all settings</button>
+      </div>
+      <!-- <div class="row">
+      </div> -->
+      <div class="row">
+        <button id="checkAllShortcuts" >Check all keyboard shortcuts</button>
+        <button id="uncheckAllShortcuts" >Uncheck all keyboard shortcuts</button>
+      </div>
+      <!-- <div class="row">
+      </div> -->
+    </section>
+
+
+
+
+
+    
+    <section>
+      <h3>Allergy</h3>
+      <div class="row">
+        <label for="allergyQuickAdd">Buttons to quickly add allergies</label>
+        <input id="allergyQuickAdd" type="checkbox" />
+      </div>
+    </section>
+
+    <section>
+      <h3>BC Billing</h3>
+      <h4>Billing Code Input</h4>
+      <div class="row">
+        <label for="billingButtons">Buttons to input billing codes</label>
+        <input id="billingButtons" type="checkbox" />
+      </div>
+      <div class="row">
+        <label for="billingCodeInput_PageEnd">Automatically scroll to end of page</label>
+        <input id="billingCodeInput_PageEnd" type="checkbox" />
+      </div>
+      <div class="row">
+        <label for="billingCodeInput_keyboardShortcuts">Enable keyboard shortcuts</label>
+        <input id="billingCodeInput_keyboardShortcuts" type="checkbox" />
+      </div>
+      <h4>Billing Diagnostic Code Search</h4>
+      <div class="row">
+        <label for="billingDxCodeSearch_keyboardShortcuts">Enable keyboard shortcuts</label>
+        <input id="billingDxCodeSearch_keyboardShortcuts" type="checkbox" />
+      </div>
+      <h4>Billing Confirm</h4>
+      <div class="row">
+        <label for="billingConfirm_keyboardShortcuts">Enable keyboard shortcuts</label>
+        <input id="billingConfirm_keyboardShortcuts" type="checkbox" />
+      </div>
+      <div class="row">
+        <label for="billingConfirm_PageEnd">Automatically scroll to end of page</label>
+        <input id="billingConfirm_PageEnd" type="checkbox" />
+      </div>
+    </section>
+
+    <section>
+      <h3>Cortico</h3>
+      <div class="row">
+        <label for="cortico">Enable keyboard shortcuts</label>
+        <input id="cortico" type="checkbox" />
+      </div>
+    </section>
+
+    <section>
+      <h3>Consultations</h3>
+      <div class="row">
+        <label for="consultations_keyboardShortcuts">Enable keyboard shortcuts</label>
+        <input id="consultations_keyboardShortcuts" type="checkbox" />
+      </div>
+      <div class="row">
+        <label for="postPatientAgeGender">Post patient age and gender in the Reason for Consultation</label>
+        <input id="postPatientAgeGender" type="checkbox" />
+      </div>
+      <div class="row">
+        <label for="postAllHistory">Post Medical, Social, and Family history in clinical information text area.</label>
+        <input id="postAllHistory" type="checkbox" />
+      </div>
+    </section>
+
+    <!-- <section>
+      <h3>E-Chart</h3>
+      <div class="row">
+        <label for="eChartButtons">Buttons to open eForms</label>
+        <input id="eChartButtons" type="checkbox" />
+      </div>
+      <div class="row">
+        <label for="eChartButtons">Enable keyboard shortcuts to open eForms</label>
+        <input id="eChartButtons" type="checkbox" />
+      </div>
+      <div class="row">
+        <label for="eChartButtons">Enable keyboard shortcuts to open eForms</label>
+        <input id="eChartButtons" type="checkbox" />
+      </div>
+    </section> -->
+
+<!-- 		// eFormSearch
+		keydownEventListener_eformSearch();
+        addSearchBar();
+
+		// KeyboardShortcuts
+		keydownEventListener_eChart();
+
+		// UpdateSidebar
+		updateAllSidebarOnFocusChange(); -->
+
+
+
+
+    <section>
+      <h3>Other</h3>
       <div class="row">
         <label for="startHidden">Hide controller by default</label>
         <input id="startHidden" type="checkbox" />

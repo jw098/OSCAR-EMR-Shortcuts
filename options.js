@@ -1,6 +1,22 @@
 var regStrip = /^[\r\t\f\v ]+|[\r\t\f\v ]+$/gm;
 
 var tcDefaults = {
+  allergyQuickAdd: true,
+
+  billingButtons: true,
+  billingCodeInput_PageEnd: true,
+  billingCodeInput_keyboardShortcuts: true,
+  billingDxCodeSearch_keyboardShortcuts: true,
+  billingConfirm_keyboardShortcuts: true,
+  billingConfirm_PageEnd: true,
+
+  cortico: true,
+
+  consultations_keyboardShortcuts: true,
+  postPatientAgeGender: true,
+  postAllHistory: true,
+
+
   speed: 1.0, // default:
   displayKeyCode: 86, // default: V
   rememberSpeed: false, // default: false
@@ -212,6 +228,21 @@ function save_options() {
     createKeyBindings(item)
   ); // Remove added shortcuts
 
+  const allergyQuickAdd = document.getElementById("allergyQuickAdd").checked;
+
+  const billingButtons = document.getElementById("billingButtons").checked;
+  const billingCodeInput_PageEnd = document.getElementById("billingCodeInput_PageEnd").checked;
+  const billingCodeInput_keyboardShortcuts = document.getElementById("billingCodeInput_keyboardShortcuts").checked;
+  const billingDxCodeSearch_keyboardShortcuts = document.getElementById("billingDxCodeSearch_keyboardShortcuts").checked;
+  const billingConfirm_keyboardShortcuts = document.getElementById("billingConfirm_keyboardShortcuts").checked;
+  const billingConfirm_PageEnd = document.getElementById("billingConfirm_PageEnd").checked;
+
+  const cortico = document.getElementById("cortico").checked;
+
+  const consultations_keyboardShortcuts = document.getElementById("consultations_keyboardShortcuts").checked;
+  const postPatientAgeGender = document.getElementById("postPatientAgeGender").checked;
+  const postAllHistory = document.getElementById("postAllHistory").checked;
+
   var rememberSpeed = document.getElementById("rememberSpeed").checked;
   var forceLastSavedSpeed = document.getElementById("forceLastSavedSpeed").checked;
   var audioBoolean = document.getElementById("audioBoolean").checked;
@@ -233,16 +264,42 @@ function save_options() {
     "advanceKeyCode",
     "fastKeyCode"
   ]);
+
   chrome.storage.sync.set(
     {
-      rememberSpeed: rememberSpeed,
-      forceLastSavedSpeed: forceLastSavedSpeed,
-      audioBoolean: audioBoolean,
-      enabled: enabled,
-      startHidden: startHidden,
-      controllerOpacity: controllerOpacity,
-      keyBindings: keyBindings,
-      blacklist: blacklist.replace(regStrip, "")
+      allergyQuickAdd: allergyQuickAdd,
+
+      billingCodeInput: {
+        billingButtons: billingButtons,
+        billingCodeInput_PageEnd: billingCodeInput_PageEnd,
+        billingCodeInput_keyboardShortcuts: billingCodeInput_keyboardShortcuts
+      },
+
+      billingDxCodeSearch_keyboardShortcuts: billingDxCodeSearch_keyboardShortcuts,
+
+      billingConfirm:{
+        billingConfirm_keyboardShortcuts: billingConfirm_keyboardShortcuts,
+        billingConfirm_PageEnd: billingConfirm_PageEnd
+      },
+
+      cortico: cortico,
+
+      consultations:{
+        consultations_keyboardShortcuts: consultations_keyboardShortcuts,
+        postPatientAgeGender: postPatientAgeGender,
+        postAllHistory:postAllHistory
+      }
+      
+      // ,
+
+      // rememberSpeed: rememberSpeed,
+      // forceLastSavedSpeed: forceLastSavedSpeed,
+      // audioBoolean: audioBoolean,
+      // enabled: enabled,
+      // startHidden: startHidden,
+      // controllerOpacity: controllerOpacity,
+      // keyBindings: keyBindings,
+      // blacklist: blacklist.replace(regStrip, "")
     },
     function () {
       // Update status to let user know options were saved.
@@ -258,6 +315,23 @@ function save_options() {
 // Restores options from chrome.storage
 function restore_options() {
   chrome.storage.sync.get(tcDefaults, function (storage) {
+
+    document.getElementById("allergyQuickAdd").checked = storage.allergyQuickAdd;
+
+    document.getElementById("billingButtons").checked = storage.billingButtons;
+    document.getElementById("billingCodeInput_PageEnd").checked = storage.billingCodeInput_PageEnd;
+    document.getElementById("billingCodeInput_keyboardShortcuts").checked = storage.billingCodeInput_keyboardShortcuts;
+    document.getElementById("billingDxCodeSearch_keyboardShortcuts").checked = storage.billingDxCodeSearch_keyboardShortcuts;
+    document.getElementById("billingConfirm_keyboardShortcuts").checked = storage.billingConfirm_keyboardShortcuts;
+    document.getElementById("billingConfirm_PageEnd").checked = storage.billingConfirm_PageEnd;
+  
+    document.getElementById("cortico").checked = storage.cortico;
+  
+    document.getElementById("consultations_keyboardShortcuts").checked = storage.consultations_keyboardShortcuts;
+    document.getElementById("postPatientAgeGender").checked = storage.postPatientAgeGender;
+    document.getElementById("postAllHistory").checked = storage.postAllHistory;
+
+
     document.getElementById("rememberSpeed").checked = storage.rememberSpeed;
     document.getElementById("forceLastSavedSpeed").checked = storage.forceLastSavedSpeed;
     document.getElementById("audioBoolean").checked = storage.audioBoolean;
@@ -344,6 +418,19 @@ document.addEventListener("DOMContentLoaded", function () {
   restore_options();
 
   document.getElementById("save").addEventListener("click", save_options);
+  window.addEventListener('keydown', function(theEvent) {
+		var theKey = theEvent.key;
+		var theAltKey = theEvent.altKey;
+		var theCtrlKey = theEvent.ctrlKey;
+		var theShiftKey= theEvent.shiftKey;
+		let theTarget;		
+		switch(true){				
+			case (theAltKey && theKey ==  1):				// Alt+1 to Confirm.
+      document.getElementById("save").click();
+				break;	
+		}
+	}, true);
+
   document.getElementById("add").addEventListener("click", add_shortcut);
   document
     .getElementById("restore")

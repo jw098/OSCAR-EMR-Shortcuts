@@ -17,8 +17,14 @@ async function checkEnabled_BCBilling_Confirm(){
 		return;
 	}
 	else {
-		window.scrollTo(0, document.body.scrollHeight);
-		billingConfirmPage_KeydownListeners();
+		const billingConfirm = await browser.storage.sync.get('billingConfirm');
+
+		if (billingConfirm.billingConfirm.billingConfirm_keyboardShortcuts){
+			billingConfirmPage_KeydownListeners();
+		}
+		if (billingConfirm.billingConfirm.billingConfirm_PageEnd){
+			window.scrollTo(0, document.body.scrollHeight);
+		}
 	}
 }
 
