@@ -90,7 +90,7 @@ function scheduleKeyDownListener(schedule_keyboardShortcuts){
 		const theShiftKey= theEvent.shiftKey;
 		let theTarget;
 		switch(true){
-			case theAltKey && theKey == '1':
+			case openEChart_enabled && keybindingMatches(openEChart_keybinding, theEvent):
 				/* 
 				- Gets the first td element where the icon image doesn't contain "cancel" or "noshow" or "signed. 
 				- Billed items are filtered out as well because the billing image is not located in the structure td/a/img, but rather td/img. The td element must also contain the Encounter node (e.g. not appointments such as LUNCH or DO_NOT_BOOK). The Encounter node is then selected.
@@ -107,14 +107,6 @@ function scheduleKeyDownListener(schedule_keyboardShortcuts){
 		}
 	}, true);
 }
-
-function keybindingMatches(keybinding, theEvent){
-	return keybinding.ctrlKey == theEvent.ctrlKey 
-		&& keybinding.altKey == theEvent.altKey
-		&& keybinding.shiftKey == theEvent.shiftKey
-		&& keybinding.key == theEvent.key;
-}
-
 
 
 // function findFirstPendingAppt(allAppts){

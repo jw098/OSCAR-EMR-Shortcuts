@@ -42,8 +42,9 @@ async function checkEnabled_BCBillingCodeInput(){
 		if (billingCodeInput.billingCodeInput.billingCodeInput_PageEnd){
 			scrollToPageEnd_BCBillingConfirm();
 		}
-		if (billingCodeInput.billingCodeInput.billingCodeInput_keyboardShortcuts){
-			billingCodeInputPage_KeydownListeners();
+		const billingCodeInput_keyboardShortcuts = billingCodeInput.billingCodeInput.billingCodeInput_keyboardShortcuts;
+		if (billingCodeInput_keyboardShortcuts.billingCodeInput_shortcuts_enabled){
+			billingCodeInputPage_KeydownListeners(billingCodeInput_keyboardShortcuts);
 		}
 		
 		

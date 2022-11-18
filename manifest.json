@@ -38,13 +38,19 @@
             "matches": [
                 "*://*/*billing/CA/BC/CreateBilling*"
             ],
-            "js": ["contentscripts/BCBilling_Confirm_KeyboardShortcuts.user.js"]
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/BCBilling_Confirm_KeyboardShortcuts.user.js"
+            ]
         },
         {
             "matches": [
                 "*://*/*billing/CA/BC/billingDigNewSearch.jsp?*"
             ],
-            "js": ["contentscripts/BCBilling_DxCodeSearch_KeyboardShortcuts.user.js"]
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/BCBilling_DxCodeSearch_KeyboardShortcuts.user.js"
+            ]
         },
         {
             "matches": [
@@ -57,6 +63,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
                 "contentscripts/BCBillingCodeInput_Buttons.user.js",
                 "contentscripts/BCBillingCodeInput_KeyboardShortcuts.user.js",
                 "contentscripts/BCBillingCodeInput.user.js"
@@ -95,7 +102,10 @@
             "matches": [
                 "*://*/*/oscarConsultationRequest/ConsultationFormRequest.jsp*"
             ],
-            "js": ["contentscripts/Consultations_KeyboardShortcuts.user.js"]
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/Consultations_KeyboardShortcuts.user.js"
+            ]
         },
         {
             "matches": [
@@ -103,6 +113,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
                 "contentscripts/EChart_Buttons.user.js",
                 "contentscripts/EChart_eFormSearch.user.js",
                 "contentscripts/EChart_KeyboardShortcuts.user.js",
@@ -118,6 +129,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
                 "contentscripts/eForms_KeyboardShortcuts.user.js"
             ]
         },
@@ -126,6 +138,7 @@
                 "*://*/*/dms/inboxManage*"
             ],
             "js": [
+                "contentscripts/utils.js",
                 "contentscripts/Inbox_Buttons.user.js",
                 "contentscripts/Inbox_KeyboardShortcuts.user.js",
                 "contentscripts/Inbox.user.js"
@@ -151,6 +164,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
                 "contentscripts/InboxResult_KeyboardShortcuts.user.js",
                 "contentscripts/InboxResult_LabelLabs.user.js",
                 "contentscripts/InboxResult.user.js"
@@ -162,6 +176,7 @@
                 "*://*/*/oscarRx/SearchDrug3.jsp*"
             ],
             "js": [
+                "contentscripts/utils.js",
                 "contentscripts/Medications_KeyboardShortcuts.user.js"
             ]
         },
@@ -171,6 +186,7 @@
                 "*://*/*provider/appointmentprovideradminday.jsp*"
             ],
             "js": [
+                "contentscripts/utils.js",
                 "contentscripts/Schedule_KeyboardShortcuts.user.js"
             ]
         },
@@ -180,6 +196,7 @@
                 "*://*/*/tickler/ForwardDemographicTickler*"
             ],
             "js": [
+                "contentscripts/utils.js",
                 "contentscripts/Tickler_KeyboardShortcuts.user.js"
             ]
         }

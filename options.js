@@ -1,15 +1,52 @@
-var regStrip = /^[\r\t\f\v ]+|[\r\t\f\v ]+$/gm;
-
 var settings = {
   enabled: true, // default enabled
   allergyQuickAdd: true,
 
-  billingButtons: true,
-  billingCodeInput_PageEnd: true,
-  billingCodeInput_keyboardShortcuts: true,
+  billingCodeInput:{
+    billingButtons: true,
+    billingCodeInput_PageEnd: true,
+    billingCodeInput_keyboardShortcuts:{
+      billingCodeInput_shortcuts_enabled: true,
+
+      billingCodeInput_shortcut_continue_enabled: true,
+      billingCodeInput_shortcut_continue_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      billingCodeInput_shortcut_officeVisitInputCode_enabled: true,
+      billingCodeInput_shortcut_officeVisitInputCode_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'q'
+      },
+      billingCodeInput_shortcut_teleVisitInputCode_enabled: true,
+      billingCodeInput_shortcut_teleVisitInputCode_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+      billingCodeInput_shortcut_setFocusDxCode_enabled: true,
+      billingCodeInput_shortcut_setFocusDxCode_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      }
+
+    }
+  },
+  
   billingDxCodeSearch_keyboardShortcuts: true,
-  billingConfirm_keyboardShortcuts: true,
-  billingConfirm_PageEnd: true,
+
+  billingConfirm:{
+    billingConfirm_keyboardShortcuts: true,
+    billingConfirm_PageEnd: true
+  },
+
 
   cortico: true,
 
@@ -38,30 +75,7 @@ var settings = {
       }
     }
   }
-  // ,
 
-  // speed: 1.0, // default:
-  // displayKeyCode: 86, // default: V
-  // rememberSpeed: false, // default: false
-  // audioBoolean: false, // default: false
-  // startHidden: false, // default: false
-  // forceLastSavedSpeed: false, //default: false
-  
-  // controllerOpacity: 0.3, // default: 0.3
-  // keyBindings: [
-  //   { action: "display", key: 86, value: 0, force: false, predefined: true }, // V
-  //   { action: "slower", key: 83, value: 0.1, force: false, predefined: true }, // S
-  //   { action: "faster", key: 68, value: 0.1, force: false, predefined: true }, // D
-  //   { action: "rewind", key: 90, value: 10, force: false, predefined: true }, // Z
-  //   { action: "advance", key: 88, value: 10, force: false, predefined: true }, // X
-  //   { action: "reset", key: 82, value: 1, force: false, predefined: true }, // R
-  //   { action: "fast", key: 71, value: 1.8, force: false, predefined: true } // G
-  // ],
-  // blacklist: `www.instagram.com
-  //   twitter.com
-  //   imgur.com
-  //   teams.microsoft.com
-  // `.replace(regStrip, "")
 };
 
 var keyBindings = [];
@@ -118,8 +132,6 @@ var keyCodeAliases = {
   173: "-",
 };
 
-// let keybindingMap = new Map();
-
 function recordKeyPress(e) {
 
   if(e.key == "Backspace" || e.key == "Escape"){
@@ -135,7 +147,6 @@ function recordKeyPress(e) {
   
     const keybindingText = keybindingToText(theKeybinding);
     e.target.value = keybindingText;
-    // keybindingMap.set()
 
     e.target.keybinding = theKeybinding;
     console.log(e.target);
@@ -167,29 +178,6 @@ function keybindingToText(theKeybinding){
   }
   return keybindingText;
 }
-
-// function keyEventToText(e){
-//   const theKey = e.key;    
-//   const theAltKey = e.altKey;
-//   const theCtrlKey = e.ctrlKey;
-//   const theShiftKey= e.shiftKey;
-//   let keybindingText = "";
-
-//   if (theCtrlKey){
-//     keybindingText += "Ctrl+"
-//   }
-//   if (theShiftKey){
-//     keybindingText += "Shift+"
-//   }
-//   if (theAltKey){
-//     keybindingText += "Alt+"
-//   }
-//   if(theKey != "Control" && theKey != "Shift" && theKey != "Alt"){
-//     keybindingText += theKey;
-//   }
-
-//   return keybindingText;
-// }
 
 function inputFilterNumbersOnly(e) {
   var char = String.fromCharCode(e.keyCode);
@@ -272,98 +260,8 @@ function createKeyBindings(item) {
 
 // Saves options to chrome.storage
 function save_options() {
-  // if (validate() === false) {
-  //   return;
-  // }
-  // keyBindings = [];
-  // Array.from(document.querySelectorAll(".customs")).forEach((item) =>
-  //   createKeyBindings(item)
-  // ); // Remove added shortcuts
-
-
-
-    
-  const enabled = document.getElementById("enabled").checked;
-
-  const allergyQuickAdd = document.getElementById("allergyQuickAdd").checked;
-
-  const billingButtons = document.getElementById("billingButtons").checked;
-  const billingCodeInput_PageEnd = document.getElementById("billingCodeInput_PageEnd").checked;
-  const billingCodeInput_keyboardShortcuts = document.getElementById("billingCodeInput_keyboardShortcuts").checked;
-  const billingDxCodeSearch_keyboardShortcuts = document.getElementById("billingDxCodeSearch_keyboardShortcuts").checked;
-  const billingConfirm_keyboardShortcuts = document.getElementById("billingConfirm_keyboardShortcuts").checked;
-  const billingConfirm_PageEnd = document.getElementById("billingConfirm_PageEnd").checked;
-
-  const cortico = document.getElementById("cortico").checked;
-
-  const consultations_keyboardShortcuts = document.getElementById("consultations_keyboardShortcuts").checked;
-  const postPatientAgeGender = document.getElementById("postPatientAgeGender").checked;
-  const postAllHistory = document.getElementById("postAllHistory").checked;
-
-  const schedule_shortcuts_enabled = document.getElementById("schedule_shortcuts_enabled").checked;
-  const schedule_shortcut_openEChart_enabled = document.getElementById("schedule_shortcut_openEChart_enabled").checked;
-  const schedule_shortcut_openEChart_keybinding = document.getElementById("schedule_shortcut_openEChart_keybinding").keybinding;
-  const schedule_shortcut_openInbox_enabled = document.getElementById("schedule_shortcut_openInbox_enabled").checked;
-  const schedule_shortcut_openInbox_keybinding = document.getElementById("schedule_shortcut_openInbox_keybinding").keybinding;
-
-  console.log(document.getElementById("schedule_shortcut_openEChart_keybinding").keybinding)
-
-  // chrome.storage.sync.remove([
-  //   "resetSpeed",
-  //   "speedStep",
-  //   "fastSpeed",
-  //   "rewindTime",
-  //   "advanceTime",
-  //   "resetKeyCode",
-  //   "slowerKeyCode",
-  //   "fasterKeyCode",
-  //   "rewindKeyCode",
-  //   "advanceKeyCode",
-  //   "fastKeyCode"
-  // ]);
-
-  
-
   chrome.storage.sync.set(
-    settingsFromOption(settings)
-    // {
-    //   enabled: enabled,
-
-    //   allergyQuickAdd: allergyQuickAdd,
-
-    //   billingCodeInput: {
-    //     billingButtons: billingButtons,
-    //     billingCodeInput_PageEnd: billingCodeInput_PageEnd,
-    //     billingCodeInput_keyboardShortcuts: billingCodeInput_keyboardShortcuts
-    //   },
-
-    //   billingDxCodeSearch_keyboardShortcuts: billingDxCodeSearch_keyboardShortcuts,
-
-    //   billingConfirm:{
-    //     billingConfirm_keyboardShortcuts: billingConfirm_keyboardShortcuts,
-    //     billingConfirm_PageEnd: billingConfirm_PageEnd
-    //   },
-
-    //   cortico: cortico,
-
-    //   consultations:{
-    //     consultations_keyboardShortcuts: consultations_keyboardShortcuts,
-    //     postPatientAgeGender: postPatientAgeGender,
-    //     postAllHistory:postAllHistory
-    //   },
-
-    //   schedule: {
-    //     schedule_keyboardShortcuts: {
-    //       schedule_shortcuts_enabled: schedule_shortcuts_enabled,
-    //       schedule_shortcut_openEChart_enabled: schedule_shortcut_openEChart_enabled,
-    //       schedule_shortcut_openEChart_keybinding: schedule_shortcut_openEChart_keybinding,
-    //       schedule_shortcut_openInbox_enabled: schedule_shortcut_openInbox_enabled,
-    //       schedule_shortcut_openInbox_keybinding: schedule_shortcut_openInbox_keybinding
-    //     }
-    //   }
-    // }
-    
-    ,
+    settingsFromOption(settings),
     function () {
       // Update status to let user know options were saved.
       var status = document.getElementById("status");
@@ -416,40 +314,14 @@ function settingsFromOption(settingsStructure){
 // Restores options from chrome.storage
 function restore_options() {
   (async function() {
-    console.log(await browser.storage.sync.get());
+    console.log(settings);
+    console.log(await browser.storage.sync.get(settings));
     // console.log(await browser.storage.sync.get("tcDefaults"));
   })();
 
   chrome.storage.sync.get(settings, function (storage) {
     // console.log(storage);
-
     restoreOptionsPageFromSettings(storage);
-
-
-    // document.getElementById("allergyQuickAdd").checked = storage.allergyQuickAdd;
-
-    // document.getElementById("billingButtons").checked = storage.billingButtons;
-    // document.getElementById("billingCodeInput_PageEnd").checked = storage.billingCodeInput_PageEnd;
-    // document.getElementById("billingCodeInput_keyboardShortcuts").checked = storage.billingCodeInput_keyboardShortcuts;
-    // document.getElementById("billingDxCodeSearch_keyboardShortcuts").checked = storage.billingDxCodeSearch_keyboardShortcuts;
-    // document.getElementById("billingConfirm_keyboardShortcuts").checked = storage.billingConfirm_keyboardShortcuts;
-    // document.getElementById("billingConfirm_PageEnd").checked = storage.billingConfirm_PageEnd;
-  
-    // document.getElementById("cortico").checked = storage.cortico;
-  
-    // document.getElementById("consultations_keyboardShortcuts").checked = storage.consultations_keyboardShortcuts;
-    // document.getElementById("postPatientAgeGender").checked = storage.postPatientAgeGender;
-    // document.getElementById("postAllHistory").checked = storage.postAllHistory;
-
-    // document.getElementById("schedule_shortcuts_enabled").checked = storage.schedule.schedule_keyboardShortcuts.enabled;
-    // document.getElementById("schedule_shortcut_openEChart_enabled").checked = storage.schedule.schedule_keyboardShortcuts.openEChart_enabled;
-    // document.getElementById("schedule_shortcut_openEChart_keybinding").keybinding = storage.schedule.schedule_keyboardShortcuts.openEChart_keybinding;
-    // document.getElementById("schedule_shortcut_openEChart_keybinding").value = keybindingToText(storage.schedule.schedule_keyboardShortcuts.openEChart_keybinding);
-    // document.getElementById("schedule_shortcut_openInbox_enabled").keybinding = storage.schedule.schedule_keyboardShortcuts.openInbox_enabled;
-    // document.getElementById("schedule_shortcut_openInbox_keybinding").keybinding = storage.schedule.schedule_keyboardShortcuts.openInbox_keybinding;
-    // document.getElementById("schedule_shortcut_openInbox_keybinding").value = keybindingToText(storage.schedule.schedule_keyboardShortcuts.openInbox_keybinding);
-
-
   });
 }
 
@@ -505,6 +377,7 @@ function show_experimental() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  // save_options();
   restore_options();
 
 
@@ -523,13 +396,13 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	}, true);
 
-  document.getElementById("add").addEventListener("click", add_shortcut);
+  // document.getElementById("add").addEventListener("click", add_shortcut);
   document
     .getElementById("restore")
     .addEventListener("click", restore_defaults);
-  document
-    .getElementById("experimental")
-    .addEventListener("click", show_experimental);
+  // document
+  //   .getElementById("experimental")
+  //   .addEventListener("click", show_experimental);
 
   function eventCaller(event, className, funcName) {
     if (!event.target.classList || !event.target.classList.contains(className)) {
@@ -573,20 +446,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
-// window.addEventListener('keyup',
-//     function(e){
-//         keys[e.keyCode] = false;
-//         document.body.innerHTML = "Keys currently pressed: " + getNumberArray(keys);
-//     },
-// false);
-
-// function getNumberArray(arr){
-//     var newArr = new Array();
-//     for(var i = 0; i < arr.length; i++){
-//         if(typeof arr[i] == "number"){
-//             newArr[newArr.length] = arr[i];
-//         }
-//     }
-//     return newArr;
-// }

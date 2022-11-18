@@ -13,7 +13,7 @@
       </h1>
     </header>
 
-    <section id="customs">
+    <!-- <section id="customs">
       <h3>Shortcuts</h3>
       <div class="row customs" id="display">
         <select class="customDo">
@@ -50,7 +50,7 @@
         </select>
       </div>
       <button id="add">Add New</button>
-    </section>
+    </section> -->
 
     <section>
       <h3>Enable/Disable</h3>
@@ -95,13 +95,50 @@
         <input id="billingCodeInput_PageEnd" type="checkbox" />
       </div>
       <div class="row">
-        <label for="billingCodeInput_keyboardShortcuts">Enable keyboard shortcuts</label>
-        <input id="billingCodeInput_keyboardShortcuts" type="checkbox" />
+        <label for="billingCodeInput_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <input id="billingCodeInput_shortcuts_enabled" type="checkbox" />
       </div>
-      <div class="shortcut" id="billingCodeInput_shortcut_continue">
-        <input type="checkbox" />
+      <div class="shortcut">
+        <input id="billingCodeInput_shortcut_continue_enabled" type="checkbox" />
         <label>Continue</label>
         <input
+          id="billingCodeInput_shortcut_continue_keybinding" 
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
+      </div>
+      <div class="shortcut">
+        <input id="billingCodeInput_shortcut_officeVisitInputCode_enabled" type="checkbox" />
+        <label>Input Office visit service code</label>
+        <input
+          id="billingCodeInput_shortcut_officeVisitInputCode_keybinding" 
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
+      </div>
+      <div class="shortcut">
+        <input id="billingCodeInput_shortcut_teleVisitInputCode_enabled" type="checkbox" />
+        <label>Input Telehealth visit service code</label>
+        <input
+          id="billingCodeInput_shortcut_teleVisitInputCode_keybinding" 
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
+      </div>
+      <div class="shortcut">
+        <input id="billingCodeInput_shortcut_setFocusDxCode_enabled" type="checkbox" />
+        <label>Set cursor to diagnostic code text box</label>
+        <input
+          id="billingCodeInput_shortcut_setFocusDxCode_keybinding" 
           class="customKey"
           type="text"
           value=""
@@ -211,7 +248,6 @@
 
     <button id="save">Save</button>
     <button id="restore">Restore Defaults</button>
-    <button id="experimental">Show Experimental Features</button>
 
     <div id="status"></div>
 
