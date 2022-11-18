@@ -95,6 +95,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
                 "contentscripts/CloseCortico.js"
             ]
         },

@@ -1,4 +1,135 @@
-var settings = {
+var defaultSettings = {
+  enabled: true, // default enabled
+  allergyQuickAdd: true,
+
+  billingCodeInput:{
+    billingButtons: true,
+    billingCodeInput_PageEnd: true,
+    billingCodeInput_keyboardShortcuts:{
+      billingCodeInput_shortcuts_enabled: true,
+
+      billingCodeInput_shortcut_continue_enabled: true,
+      billingCodeInput_shortcut_continue_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      billingCodeInput_shortcut_officeVisitInputCode_enabled: true,
+      billingCodeInput_shortcut_officeVisitInputCode_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'q'
+      },
+      billingCodeInput_shortcut_teleVisitInputCode_enabled: true,
+      billingCodeInput_shortcut_teleVisitInputCode_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+      billingCodeInput_shortcut_setFocusDxCode_enabled: true,
+      billingCodeInput_shortcut_setFocusDxCode_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      }
+
+    }
+  },
+  
+  billingDxCodeSearch:{
+    billingDxCodeSearch_keyboardShortcuts: {
+      billingDxCodeSearch_shortcuts_enabled: true,
+
+      billingDxCodeSearch_shortcuts_confirm_enabled: true,
+      billingDxCodeSearch_shortcuts_confirm_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      billingDxCodeSearch_shortcuts_cancel_enabled: true,
+      billingDxCodeSearch_shortcuts_cancel_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        key: 'Escape'
+      },
+    }
+  },
+
+  billingConfirm:{
+    billingConfirm_PageEnd: true,
+    billingConfirm_keyboardShortcuts: {
+      billingConfirm_shortcuts_enabled: true,
+
+      billingConfirm_shortcuts_saveBill_enabled: true,
+      billingConfirm_shortcuts_saveBill_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      billingConfirm_shortcuts_pageEnd_enabled: true,
+      billingConfirm_shortcuts_pageEnd_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      },
+    }
+  },
+
+
+  // cortico: true,
+  cortico: {
+    cortico_keyboardShortcuts: {
+      cortico_shortcuts_enabled: true,
+
+      cortico_shortcut_closeModal_enabled: true,
+      cortico_shortcut_closeModal_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        key: 'Escape'
+      },
+    }
+  },
+
+  consultations:{
+    consultations_keyboardShortcuts: true,
+    postPatientAgeGender: true,
+    postAllHistory:true
+  },
+
+  schedule: {
+    schedule_keyboardShortcuts: {
+      schedule_shortcuts_enabled: true,
+
+      schedule_shortcut_openEChart_enabled: true,
+      schedule_shortcut_openEChart_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      schedule_shortcut_openInbox_enabled: true,
+      schedule_shortcut_openInbox_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'z'
+      }
+    }
+  }
+
+};
+
+
+var testSettings = {
   enabled: true, // default enabled
   allergyQuickAdd: true,
 
@@ -85,6 +216,19 @@ var settings = {
 
 
   cortico: true,
+  // cortico: {
+  //   cortico_keyboardShortcuts: {
+  //     cortico_shortcuts_enabled: true,
+
+  //     cortico_shortcut_closeModal_enabled: true,
+  //     cortico_shortcut_closeModal_keybinding: {
+  //       ctrlKey: false,
+  //       shiftKey: false,
+  //       altKey: false,
+  //       key: 'Escape'
+  //     },
+  //   }
+  // },
 
   consultations:{
     consultations_keyboardShortcuts: true,
@@ -95,6 +239,7 @@ var settings = {
   schedule: {
     schedule_keyboardShortcuts: {
       schedule_shortcuts_enabled: true,
+
       schedule_shortcut_openEChart_enabled: true,
       schedule_shortcut_openEChart_keybinding: {
         ctrlKey: false,
@@ -185,7 +330,7 @@ function recordKeyPress(e) {
     e.target.value = keybindingText;
 
     e.target.keybinding = theKeybinding;
-    console.log(e.target);
+    // console.log(e.target);
     // console.log(e.target.keybinding);
     e.preventDefault();
     e.stopPropagation();
@@ -294,10 +439,17 @@ function createKeyBindings(item) {
   });
 }
 
-// Saves options to chrome.storage
+
+/* 
+- Saves options to chrome.storage. 
+
+NOTE:
+- if the storedSettings object doesn't match the structure of defaultSettings, storedSettings will have its structure updated to match settingsStructure. (This can happen if options.js and defaultSettings was updated, but the user has an old version still stored in storage).
+  - but the values will be from options, instead of from the default values of defaultSettings.
+*/
 function save_options() {
   chrome.storage.sync.set(
-    settingsFromOption(settings),
+    settingsFromOption(defaultSettings),
     function () {
       // Update status to let user know options were saved.
       var status = document.getElementById("status");
@@ -315,7 +467,7 @@ function save_options() {
   );
 
   (async function() {
-    console.log(await browser.storage.sync.get());
+    console.log(await browser.storage.sync.get(defaultSettings));
     // console.log(await browser.storage.sync.get("tcDefaults"));
   })();
 
@@ -323,6 +475,8 @@ function save_options() {
 
 /* 
 - given a settings object which provides the structure for the object, return a settings object with values taken from the options page.
+
+
  */
 function settingsFromOption(settingsStructure){
   let newSettings = {};
@@ -348,15 +502,12 @@ function settingsFromOption(settingsStructure){
 }
 
 
-// Restores options from chrome.storage
+/* 
+- Restores options from chrome.storage. 
+- if a given setting wasn't present in storage, it takes the default value from defaultSettings. 
+*/
 function restore_options() {
-  (async function() {
-    console.log(settings);
-    console.log(await browser.storage.sync.get(settings));
-    // console.log(await browser.storage.sync.get("tcDefaults"));
-  })();
-
-  chrome.storage.sync.get(settings, function (storage) {
+  chrome.storage.sync.get(defaultSettings, function (storage) {
     // console.log(storage);
     restoreOptionsPageFromSettings(storage);
   });
@@ -392,8 +543,11 @@ function restoreOptionsPageFromSettings(settingsObject){
   }
 }
 
+/* 
+- stores the default settings to storage.
+ */
 function restore_defaults() {
-  chrome.storage.sync.set(settings, function () {
+  chrome.storage.sync.set(defaultSettings, function () {
     restore_options();
     document
       .querySelectorAll(".removeParent")
@@ -413,10 +567,60 @@ function show_experimental() {
     .forEach((item) => (item.style.display = "inline-block"));
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+/* 
+- rebuild the settings object according to the structure of settingsStructure (derived from defaultSettings), 
+- if structure is the same, retain the value of storedSettings. if different, take on the value of defaultSettings
+
+*/
+function rebuildSettingsStructure(settingsStructure, storedSettings){
+  let rebuiltSettings = {};
+  for (const [key, value] of Object.entries(settingsStructure)){
+    // console.log(storedSettings);
+    const storedValue = storedSettings[key];
+    // console.log(value);
+    // console.log(storedValue);
+    if (typeof value != typeof storedValue){
+      rebuiltSettings[key] = value;
+    } else { // value types match
+      if (typeof value == "object" && typeof storedValue == "object"){
+        rebuiltSettings[key] = rebuildSettingsStructure(value, storedValue);
+      } else { // value types match and both aren't objects. i.e. they are primitives or functions.
+        rebuiltSettings[key] = storedValue;
+      }
+    }
+  }
+  return rebuiltSettings;
+}
+
+/* 
+- ensure stored settings matches the given settings object. if doesn't match. then fixes it.
+NOTE
+- this rebuilds the settings according to the structure of settingsStructure and stores it in storage.
+ */
+async function checkStoredSettingsStructure(){
+  const storedSettings = await browser.storage.sync.get(defaultSettings);
+  const rebuiltSettings = rebuildSettingsStructure(defaultSettings, storedSettings);
+  // console.log(rebuiltSettings);
+  browser.storage.sync.set(rebuiltSettings);
+}
+
+// just for testing
+async function setTestSettings(){
+  browser.storage.sync.set(testSettings);
+}
+
+
+document.addEventListener("DOMContentLoaded", async function () {
   // save_options();
+
+  // await setTestSettings();
+  // console.log(defaultSettings);
+  // console.log(await browser.storage.sync.get(defaultSettings));
+
+  await checkStoredSettingsStructure();
   restore_options();
 
+  console.log(await browser.storage.sync.get(defaultSettings));
 
   document.getElementById("save").addEventListener("click", save_options);
   document.getElementById("saveHeader").addEventListener("click", save_options);
@@ -448,9 +652,7 @@ document.addEventListener("DOMContentLoaded", function () {
     funcName(event);
   }
 
-
-
-  document.getElementById("schedule_shortcut_openInbox_keybinding").value = "hihi10"; 
+  // document.getElementById("schedule_shortcut_openInbox_keybinding").value = "hihi100"; 
   document.addEventListener("keypress", (event) => {
     eventCaller(event, "customValue", inputFilterNumbersOnly);
   });

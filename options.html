@@ -213,8 +213,20 @@
     <section>
       <h3>Cortico</h3>
       <div class="row">
-        <label for="cortico">Enable keyboard shortcuts</label>
-        <input id="cortico" type="checkbox" />
+        <label for="cortico_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <input id="cortico_shortcuts_enabled" type="checkbox" />
+      </div>
+      <div class="shortcut">
+        <input id="cortico_shortcut_closeModal_enabled" type="checkbox" />
+        <label>Close Cortico popup</label>
+        <input
+          id="cortico_shortcut_closeModal_keybinding" 
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
       </div>
     </section>
 

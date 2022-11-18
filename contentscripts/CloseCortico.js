@@ -20,8 +20,9 @@ async function checkEnabled_CloseCortico(){
 	else {
 		const corticoObj = await browser.storage.sync.get('cortico');
 		const cortico = corticoObj.cortico;
-		if (cortico){
-			closeCortico();
+		const cortico_keyboardShortcuts = cortico.cortico_keyboardShortcuts;
+		if (cortico_keyboardShortcuts.cortico_shortcuts_enabled){
+			keydownlistener_cortico(cortico_keyboardShortcuts);
 		}
 		
 	}
@@ -41,20 +42,15 @@ theTarget3.addEventListener('click', function(theEvent) {
 	console.log("clicked t3");
 }, true);
 
-function closeCortico(){
+function keydownlistener_cortico(cortico_keyboardShortcuts){
+	const closeModal_enabled = 
+	cortico_keyboardShortcuts.cortico_shortcut_closeModal_enabled;
+	const closeModal_keybinding = 
+	cortico_keyboardShortcuts.cortico_shortcut_closeModal_keybinding;
+
 	window.addEventListener('keydown', function(theEvent) {
-		//theEvent.stopPropagation();
-		//theEvent.preventDefault();
-		// var theKeyCode = theEvent.charCode;// || event.which;
-		// var theKey = String.fromCharCode(theKeyCode);
-		const theKey = theEvent.key;
-		const theAltKey = theEvent.altKey;
-		const theCtrlKey = theEvent.ctrlKey;
-		const theShiftKey= theEvent.shiftKey;
-		let currentURL = window.location.href;
-		
 		switch(true){
-			case theKey == 'Escape':  // Sign, Save, and Bill 
+			case closeModal_enabled && keybindingMatches(closeModal_keybinding, theEvent):
 				// const target1 = $("div.tw-font-sans:nth-child(3) > div:nth-child(1) > p:nth-child(2)");
 				// const target2 = $("div.tw-font-sans:nth-child(4) > div:nth-child(1) > p:nth-child(2)");
 				const target3 = $("div.tw-font-sans > div:nth-child(1) > p:nth-child(2):has(svg)");
