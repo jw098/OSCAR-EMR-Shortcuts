@@ -91,7 +91,7 @@
         <input id="billingButtons" type="checkbox" />
       </div>
       <div class="row">
-        <label for="billingCodeInput_PageEnd">Automatically scroll to end of page</label>
+        <label for="billingCodeInput_PageEnd">Scroll to bottom of page on page load</label>
         <input id="billingCodeInput_PageEnd" type="checkbox" />
       </div>
       <div class="row">
@@ -100,7 +100,7 @@
       </div>
       <div class="shortcut">
         <input id="billingCodeInput_shortcut_continue_enabled" type="checkbox" />
-        <label>Continue</label>
+        <label>Click 'Continue'</label>
         <input
           id="billingCodeInput_shortcut_continue_keybinding" 
           class="customKey"
@@ -148,17 +148,65 @@
       </div>
       <h4>Billing Diagnostic Code Search</h4>
       <div class="row">
-        <label for="billingDxCodeSearch_keyboardShortcuts">Enable keyboard shortcuts</label>
-        <input id="billingDxCodeSearch_keyboardShortcuts" type="checkbox" />
+        <label for="billingDxCodeSearch_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <input id="billingDxCodeSearch_shortcuts_enabled" type="checkbox" />
+      </div>
+      <div class="shortcut">
+        <input id="billingDxCodeSearch_shortcuts_confirm_enabled" type="checkbox" />
+        <label>Click 'Confirm'</label>
+        <input
+          id="billingDxCodeSearch_shortcuts_confirm_keybinding" 
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
+      </div>
+      <div class="shortcut">
+        <input id="billingDxCodeSearch_shortcuts_cancel_enabled" type="checkbox" />
+        <label>Click 'Cancel'</label>
+        <input
+          id="billingDxCodeSearch_shortcuts_cancel_keybinding" 
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
       </div>
       <h4>Billing Confirm</h4>
       <div class="row">
-        <label for="billingConfirm_keyboardShortcuts">Enable keyboard shortcuts</label>
-        <input id="billingConfirm_keyboardShortcuts" type="checkbox" />
+        <label for="billingConfirm_PageEnd">Scroll to bottom of page on page load</label>
+        <input id="billingConfirm_PageEnd" type="checkbox" />
       </div>
       <div class="row">
-        <label for="billingConfirm_PageEnd">Automatically scroll to end of page</label>
-        <input id="billingConfirm_PageEnd" type="checkbox" />
+        <label for="billingConfirm_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <input id="billingConfirm_shortcuts_enabled" type="checkbox" />
+      </div>
+      <div class="shortcut">
+        <input id="billingConfirm_shortcuts_saveBill_enabled" type="checkbox" />
+        <label>Click 'Save Bill'</label>
+        <input
+          id="billingConfirm_shortcuts_saveBill_keybinding" 
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
+      </div>
+      <div class="shortcut">
+        <input id="billingConfirm_shortcuts_pageEnd_enabled" type="checkbox" />
+        <label>Scroll to bottom of page</label>
+        <input
+          id="billingConfirm_shortcuts_pageEnd_keybinding" 
+          class="customKey"
+          type="text"
+          value=""
+          keybinding=""
+          placeholder="press a key"
+        />
       </div>
     </section>
 
@@ -172,17 +220,18 @@
 
     <section>
       <h3>Consultations</h3>
+
       <div class="row">
-        <label for="consultations_keyboardShortcuts">Enable keyboard shortcuts</label>
-        <input id="consultations_keyboardShortcuts" type="checkbox" />
-      </div>
-      <div class="row">
-        <label for="postPatientAgeGender">Post patient age and gender in the Reason for Consultation</label>
+        <label for="postPatientAgeGender">Post patient age and gender in the 'Reason for Consultation' text area</label>
         <input id="postPatientAgeGender" type="checkbox" />
       </div>
       <div class="row">
-        <label for="postAllHistory">Post Medical, Social, and Family history in clinical information text area.</label>
+        <label for="postAllHistory">Post Medical, Social, and Family history in 'Pertinent clinical information' text area</label>
         <input id="postAllHistory" type="checkbox" />
+      </div>
+      <div class="row">
+        <label for="consultations_keyboardShortcuts">Enable keyboard shortcuts</label>
+        <input id="consultations_keyboardShortcuts" type="checkbox" />
       </div>
     </section>
 

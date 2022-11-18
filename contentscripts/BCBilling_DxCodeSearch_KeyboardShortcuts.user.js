@@ -17,9 +17,12 @@ async function checkEnabled_BCBilling_DxCodeSearch(){
 		return;
 	}
 	else {
-		const billingDxCodeSearch_keyboardShortcuts = await browser.storage.sync.get('billingDxCodeSearch_keyboardShortcuts');
-		if (billingDxCodeSearch_keyboardShortcuts.billingDxCodeSearch_keyboardShortcuts){
-			dxCodeSearchPage_KeydownListeners();
+		const billingDxCodeSearchObj = await browser.storage.sync.get('billingDxCodeSearch');
+		const billingDxCodeSearch = billingDxCodeSearchObj.billingDxCodeSearch;
+		const billingDxCodeSearch_keyboardShortcuts = 
+			billingDxCodeSearch.billingDxCodeSearch_keyboardShortcuts
+		if (billingDxCodeSearch_keyboardShortcuts.billingDxCodeSearch_shortcuts_enabled){
+			dxCodeSearchPage_KeydownListeners(billingDxCodeSearch_keyboardShortcuts);
 		}
 		
 	}
@@ -31,19 +34,24 @@ async function checkEnabled_BCBilling_DxCodeSearch(){
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 
-function dxCodeSearchPage_KeydownListeners(){
+function dxCodeSearchPage_KeydownListeners(billingDxCodeSearch_keyboardShortcuts){
+	const confirm_enabled = 
+	billingDxCodeSearch_keyboardShortcuts.billingDxCodeSearch_shortcuts_confirm_enabled;
+	const confirm_keybinding = 
+	billingDxCodeSearch_keyboardShortcuts.billingDxCodeSearch_shortcuts_confirm_keybinding;
+	const cancel_enabled = 
+	billingDxCodeSearch_keyboardShortcuts.billingDxCodeSearch_shortcuts_cancel_enabled;
+	const cancel_keybinding = 
+	billingDxCodeSearch_keyboardShortcuts.billingDxCodeSearch_shortcuts_cancel_keybinding;
+
 	window.addEventListener('keydown', function(theEvent) {
-		var theKey = theEvent.key;
-		var theAltKey = theEvent.altKey;
-		var theCtrlKey = theEvent.ctrlKey;
-		var theShiftKey= theEvent.shiftKey;
 		let theTarget;		
 		switch(true){				
-			case (theAltKey && theKey ==  1):				// Alt+1 to Confirm.
+			case confirm_enabled && keybindingMatches(confirm_keybinding, theEvent):
 				theTarget = document.evaluate("id('servicecode')/input[@value='Confirm']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();
 				break;	
-			case (theKey == "Escape"):						// Escape to Cancel. 
+			case cancel_enabled && keybindingMatches(cancel_keybinding, theEvent):
 				// alert("dxCodeSearch");
 				theTarget = document.evaluate("id('servicecode')/input[@value='Cancel']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();

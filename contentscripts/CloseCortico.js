@@ -18,9 +18,9 @@ async function checkEnabled_CloseCortico(){
 		return;
 	}
 	else {
-		const cortico = await browser.storage.sync.get('cortico');
-		console.log(cortico.cortico);
-		if (cortico.cortico){
+		const corticoObj = await browser.storage.sync.get('cortico');
+		const cortico = corticoObj.cortico;
+		if (cortico){
 			closeCortico();
 		}
 		

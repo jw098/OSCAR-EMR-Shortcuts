@@ -40,11 +40,47 @@ var settings = {
     }
   },
   
-  billingDxCodeSearch_keyboardShortcuts: true,
+  billingDxCodeSearch:{
+    billingDxCodeSearch_keyboardShortcuts: {
+      billingDxCodeSearch_shortcuts_enabled: true,
+
+      billingDxCodeSearch_shortcuts_confirm_enabled: true,
+      billingDxCodeSearch_shortcuts_confirm_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      billingDxCodeSearch_shortcuts_cancel_enabled: true,
+      billingDxCodeSearch_shortcuts_cancel_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        key: 'Escape'
+      },
+    }
+  },
 
   billingConfirm:{
-    billingConfirm_keyboardShortcuts: true,
-    billingConfirm_PageEnd: true
+    billingConfirm_PageEnd: true,
+    billingConfirm_keyboardShortcuts: {
+      billingConfirm_shortcuts_enabled: true,
+
+      billingConfirm_shortcuts_saveBill_enabled: true,
+      billingConfirm_shortcuts_saveBill_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      billingConfirm_shortcuts_pageEnd_enabled: true,
+      billingConfirm_shortcuts_pageEnd_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        key: 'a'
+      },
+    }
   },
 
 
@@ -134,7 +170,7 @@ var keyCodeAliases = {
 
 function recordKeyPress(e) {
 
-  if(e.key == "Backspace" || e.key == "Escape"){
+  if(e.key == "Backspace"){
     e.target.value = "";
   }
   else {
@@ -292,6 +328,7 @@ function settingsFromOption(settingsStructure){
   let newSettings = {};
   for (const [key, value] of Object.entries(settingsStructure)){
     if (typeof value == "boolean"){
+      // console.log(key);
       newSettings[key] = document.getElementById(key).checked;
       // console.log(document.getElementById(key).checked);
     } else if(key.includes("_keybinding")){
@@ -390,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		var theShiftKey= theEvent.shiftKey;
 		let theTarget;		
 		switch(true){				
-			case (theAltKey && theKey ==  1):				// Alt+1 to Confirm.
+			case (theCtrlKey && theAltKey && theKey ==  'z'):
       document.getElementById("save").click();
 				break;	
 		}

@@ -17,12 +17,13 @@ async function checkEnabled_BCBilling_Confirm(){
 		return;
 	}
 	else {
-		const billingConfirm = await browser.storage.sync.get('billingConfirm');
-
-		if (billingConfirm.billingConfirm.billingConfirm_keyboardShortcuts){
-			billingConfirmPage_KeydownListeners();
+		const billingConfirmObj = await browser.storage.sync.get('billingConfirm');
+		const billingConfirm = billingConfirmObj.billingConfirm;
+		const billingConfirm_keyboardShortcuts = billingConfirm.billingConfirm_keyboardShortcuts;
+		if (billingConfirm_keyboardShortcuts.billingConfirm_shortcuts_enabled){
+			billingConfirmPage_KeydownListeners(billingConfirm_keyboardShortcuts);
 		}
-		if (billingConfirm.billingConfirm.billingConfirm_PageEnd){
+		if (billingConfirm.billingConfirm_PageEnd){
 			window.scrollTo(0, document.body.scrollHeight);
 		}
 	}
@@ -34,19 +35,26 @@ async function checkEnabled_BCBilling_Confirm(){
 // Event listeners
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-function billingConfirmPage_KeydownListeners(){
+function billingConfirmPage_KeydownListeners(billingConfirm_keyboardShortcuts){
+	const saveBill_enabled = 
+	billingConfirm_keyboardShortcuts.billingConfirm_shortcuts_saveBill_enabled;
+	const saveBill_keybinding = 
+	billingConfirm_keyboardShortcuts.billingConfirm_shortcuts_saveBill_keybinding;
+	const pageEnd_enabled = 
+	billingConfirm_keyboardShortcuts.billingConfirm_shortcuts_pageEnd_enabled;
+	const pageEnd_keybinding = 
+	billingConfirm_keyboardShortcuts.billingConfirm_shortcuts_pageEnd_keybinding;
+
+
 	window.addEventListener('keydown', function(theEvent) {
-		var theKey = theEvent.key;
-		var theAltKey = theEvent.altKey;
-		var theCtrlKey = theEvent.ctrlKey;
-		var theShiftKey= theEvent.shiftKey;
+
 		let theTarget;		
 		switch(true){
-			case(theAltKey && theKey == 1):		// Alt+1 to Save Bill. 
+			case saveBill_enabled && keybindingMatches(saveBill_keybinding, theEvent):
 				theTarget = document.evaluate("//input[@value='Save Bill']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();
 				break;
-			case theAltKey && theKey == 'a':
+			case pageEnd_enabled && keybindingMatches(pageEnd_keybinding, theEvent):
 				window.scrollTo(0, document.body.scrollHeight);
 				break;	
 		}

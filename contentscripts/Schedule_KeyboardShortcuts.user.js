@@ -21,13 +21,12 @@ async function checkEnabled_Schedule(){
 		return;
 	}
 	else {
-		const schedule = await browser.storage.sync.get('schedule');
-		const schedule_keyboardShortcuts = schedule.schedule.schedule_keyboardShortcuts;
+		const scheduleObj = await browser.storage.sync.get('schedule');
+		const schedule = scheduleObj.schedule;
+		const schedule_keyboardShortcuts = schedule.schedule_keyboardShortcuts;
 		if (schedule_keyboardShortcuts.schedule_shortcuts_enabled){
 			scheduleKeyDownListener(schedule_keyboardShortcuts);
 		}
-
-		
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -72,9 +71,6 @@ async function checkEnabled_Schedule(){
 
 
 function scheduleKeyDownListener(schedule_keyboardShortcuts){
-	/*           schedule_shortcut_openEChart_enabled: schedule_shortcut_openEChart_enabled,
-          schedule_shortcut_openEChart_keybinding: schedule_shortcut_openEChart_keybinding */
-	console.log(schedule_keyboardShortcuts);
 	const openEChart_enabled = 
 		schedule_keyboardShortcuts.schedule_shortcut_openEChart_enabled;
 	const openEChart_keybinding = 
@@ -84,10 +80,6 @@ function scheduleKeyDownListener(schedule_keyboardShortcuts){
 
 	// filter out title: "No Show", "signed"
 	window.addEventListener('keydown', function(theEvent) {
-		const theKey = theEvent.key;    
-		const theAltKey = theEvent.altKey;
-		const theCtrlKey = theEvent.ctrlKey;
-		const theShiftKey= theEvent.shiftKey;
 		let theTarget;
 		switch(true){
 			case openEChart_enabled && keybindingMatches(openEChart_keybinding, theEvent):
