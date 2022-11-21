@@ -15,6 +15,10 @@ document.addEventListener("DOMContentLoaded", function () {
     window.open("https://github.com/jw098/OSCAR-EMR-Shortcuts/issues");
   });
 
+  document.querySelector("#readme").addEventListener("click", function () {
+    window.open(browser.runtime.getURL("README.md"));
+  });
+
   document.querySelector("#enable").addEventListener("click", function () {
     toggleEnabled(true, settingsSavedReloadMessage);
   });

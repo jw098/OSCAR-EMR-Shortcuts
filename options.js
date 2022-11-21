@@ -397,6 +397,7 @@ function restoreOptionsPageFromSettings(settingsObject){
     // console.log(key.includes("_keybinding"));
     if (typeof value == "boolean"){
       document.getElementById(key).checked = value;
+      setGreyout(document.getElementById(key));
       // console.log(document.getElementById(key).checked);
     } else if(key.includes("_keybinding")){
       document.getElementById(key).keybinding = value;
@@ -442,6 +443,24 @@ function show_experimental() {
 // just for testing
 async function setTestSettings(){
   browser.storage.sync.set(testSettings);
+}
+/* 
+- assumes the element is an input type checkbox.
+ */
+function setGreyout(theElement){
+  const parentTarget = theElement.parentNode;
+  let greyout;
+  if(parentTarget.classList.contains("shortcut")){
+    greyout = "greyoutRow"
+  }else {
+    greyout = "greyoutBlock"
+  }
+  parentTarget.classList.toggle(greyout, !theElement.checked);
+  const customKeyInputList = parentTarget.getElementsByClassName("customKey");
+  for (i = 0 ;i < customKeyInputList.length; i++){
+    const customKeyInput = customKeyInputList[i];
+    customKeyInput.classList.toggle(greyout, !theElement.checked);  
+  }
 }
 
 
@@ -505,6 +524,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     eventCaller(event, "removeParent", function () {
       event.target.parentNode.remove();
     });
+    let theTarget = event.target;
+    if(theTarget.type == "checkbox"){//theTarget.tagName  == "INPUT" && 
+      setGreyout(theTarget);
+    }
   });
   document.addEventListener("change", (event) => {
     eventCaller(event, "customDo", function () {

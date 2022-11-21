@@ -45,8 +45,6 @@ header {
   background: linear-gradient(white, white 40%, rgba(255, 255, 255, 0.92));
 }
 
-
-
 header,
 section {
   min-width: 600px;
@@ -90,14 +88,33 @@ button {
 input[type="text"] {
   width: 75px;
   text-align: center;
+  /* background-color: darkgrey; */
 }
 
 .row {
   margin: 5px 0px;
 }
 
+.greyoutRow,
+.greyoutBlock {
+  background-color: lightgrey;
+  color: grey;
+}
+
+.customKey {
+  /* color: transparent; */
+  /* color: red; */
+  /* text-shadow: 0 0 0 #000000; */
+}
+
+
+/* input:checked{
+  background-color: darkgrey;
+} */
+
 .shortcut{
   margin-left: 14px;
+  /* background-color: darkgrey; */
 }
 
 shortcutLabel{
@@ -144,7 +161,4 @@ select {
   width: 250px;
 }
 
-.customKey {
-  color: transparent;
-  text-shadow: 0 0 0 #000000;
-}
+
