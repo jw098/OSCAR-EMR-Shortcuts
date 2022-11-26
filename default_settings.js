@@ -98,9 +98,26 @@ var defaultSettings = {
   },
 
   consultations:{
-    consultations_keyboardShortcuts: true,
     postPatientAgeGender: true,
-    postAllHistory:true
+    postAllHistory:true,
+    consultations_keyboardShortcuts: {
+      consultations_shortcuts_enabled: true,
+
+      consultations_shortcuts_close_enabled: true,
+      consultations_shortcuts_close_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+      consultations_shortcuts_submit_enabled: true,
+      consultations_shortcuts_submit_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 1
+      },
+    }
   },
 
   schedule: {

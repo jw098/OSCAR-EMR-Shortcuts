@@ -247,8 +247,32 @@
         <input id="postAllHistory" type="checkbox" />
       </div>
       <div class="row">
-        <label for="consultations_keyboardShortcuts">Enable keyboard shortcuts</label>
-        <input id="consultations_keyboardShortcuts" type="checkbox" />
+        <label for="consultations_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <input id="consultations_shortcuts_enabled" type="checkbox" />
+        <div class="shortcut">
+          <input id="consultations_shortcuts_close_enabled" type="checkbox" />
+          <label>Close Consultations window</label>
+          <input
+            id="consultations_shortcuts_close_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+        <div class="shortcut">
+          <input id="consultations_shortcuts_submit_enabled" type="checkbox" />
+          <label>Submit Consultation Request</label>
+          <input
+            id="consultations_shortcuts_submit_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
       </div>
     </section>
 

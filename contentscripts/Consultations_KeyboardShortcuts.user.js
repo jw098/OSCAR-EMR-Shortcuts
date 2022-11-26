@@ -20,14 +20,16 @@ async function checkEnabled_Consultations(){
 		return;
 	}
 	else {
-		const consultations = await browser.storage.sync.get('consultations');
-		if (consultations.consultations.consultations_keyboardShortcuts){
-			keydownEventListener_Consultations();
+		const consultationsObj = await browser.storage.sync.get('consultations');
+		const consultations = consultationsObj.consultations;
+		const consultations_keyboardShortcuts = consultations.consultations_keyboardShortcuts;
+		if (consultations_keyboardShortcuts.consultations_shortcuts_enabled){
+			keydownEventListener_Consultations(consultations_keyboardShortcuts);
 		}
-		if (consultations.consultations.postPatientAgeGender){
+		if (consultations.postPatientAgeGender){
 			postPatientAgeGender();
 		}
-		if (consultations.consultations.postAllHistory){
+		if (consultations.postAllHistory){
 			postAllHistory();
 		}
 	}
@@ -38,23 +40,27 @@ async function checkEnabled_Consultations(){
 // Keydown Event Listeners
 ////////////////////////////////
 
-function keydownEventListener_Consultations(){
-	const consultationHotkey = 'w';
+function keydownEventListener_Consultations(consultations_keyboardShortcuts){
+	const close_enabled = 
+	consultations_keyboardShortcuts.consultations_shortcuts_close_enabled;
+	const close_keybinding = 
+	consultations_keyboardShortcuts.consultations_shortcuts_close_keybinding;
+	const submit_enabled = 
+	consultations_keyboardShortcuts.consultations_shortcuts_submit_enabled;
+	const submit_keybinding = 
+	consultations_keyboardShortcuts.consultations_shortcuts_submit_keybinding;
+
 
 	// let currentURL = window.location.href;
 	// const eChartPage = /casemgmt\/forward\.jsp\?action\=view\&/;
 	// const consultationPage = /oscarConsultationRequest\/ConsultationFormRequest\.jsp/;
 	
 	window.addEventListener('keydown', function(theEvent) {
-		const theKey = theEvent.key;
-		const theAltKey = theEvent.altKey;
-		const theCtrlKey = theEvent.ctrlKey;
-		const theShiftKey= theEvent.shiftKey;
 		switch(true){
-			case theAltKey && theKey == consultationHotkey:	// If on Consultation page, hotkey to close window.
+			case close_enabled && keybindingMatches(close_keybinding, theEvent):	// If on Consultation page, hotkey to close window.
 				window.close();
 				break;
-			case theAltKey && theKey == 1:
+			case submit_enabled && keybindingMatches(submit_keybinding, theEvent):
 				var theTarget = document.evaluate("//input[@value='Submit Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();
 				break;					
