@@ -7,32 +7,20 @@
 // ==/UserScript==
 
 
-function keydownEventListener_eChart(){
+function keydownEventListener_mainWindow(eChart_mainWindow_keyboardShortcuts){
 	window.addEventListener('keydown', function(theEvent) {
-		//theEvent.stopPropagation();
-		//theEvent.preventDefault();
-		// const theKeyCode = theEvent.charCode;// || event.which;
-		// const theKey = String.fromCharCode(theKeyCode);
-		const theKey = theEvent.key;
-		const theAltKey = theEvent.altKey;
-		const theCtrlKey = theEvent.ctrlKey;
-		const theShiftKey= theEvent.shiftKey;
-		
-		let currentURL = window.location.href;
-		const medPage = /oscarRx\/choosePatient\.do/
-		const eChartPage = /casemgmt\/forward\.jsp\?action\=view\&/;
-		const eFormsPage = /eform\/efmformslistadd\.jsp/;
-		const consultationPage = /oscarConsultationRequest\/ConsultationFormRequest\.jsp/;
-		const ticklerPage = /tickler\/ticklerAdd\.jsp/;
-		
-		// console.log(CPPWindowPresent());
+		if (!CPPWindowPresent()){
+			eChartPageHotkeys(eChart_mainWindow_keyboardShortcuts, theEvent);
+		}
 	
+	}, true);
+}
+
+function keydownEventListener_CPPWindow(eChart_CPPWindow_keyboardShortcuts){
+	window.addEventListener('keydown', function(theEvent) {
 		if (CPPWindowPresent()){
 			console.log('cpp window present');
-			CPPWindowHotkeys(theEvent);
-		}
-		else {
-			eChartPageHotkeys(theEvent);
+			CPPWindowHotkeys(eChart_CPPWindow_keyboardShortcuts, theEvent);
 		}
 	
 	}, true);
@@ -41,50 +29,92 @@ function keydownEventListener_eChart(){
 
 
 
-function eChartPageHotkeys(theEvent){
-	const medicationHotkey = 'q';
-	const consultationHotkey = 'w';
-	const eFormsHotkey = 'a';
-	const ticklerHotkey = 'z';
+function eChartPageHotkeys(eChart_mainWindow_keyboardShortcuts, theEvent){
+	const eChart_shortcut_meds_enabled = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_meds_enabled;
+	const eChart_shortcut_meds_keybinding = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_meds_keybinding;
+	const eChart_shortcut_eforms_enabled = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_eforms_enabled;
+	const eChart_shortcut_eforms_keybinding = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_eforms_keybinding;		
+	const eChart_shortcut_tickler_enabled = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_tickler_enabled;
+	const eChart_shortcut_tickler_keybinding = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_tickler_keybinding;		
+	const eChart_shortcut_consults_enabled = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_consults_enabled;
+	const eChart_shortcut_consults_keybinding = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_consults_keybinding;			
+	const eChart_shortcut_SignSaveBill_enabled = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_SignSaveBill_enabled;
+	const eChart_shortcut_SignSaveBill_keybinding = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_SignSaveBill_keybinding;	
+	const eChart_shortcut_save_enabled = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_save_enabled;
+	const eChart_shortcut_save_keybinding = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_save_keybinding;	
+	const eChart_shortcut_signSave_enabled = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_signSave_enabled;
+	const eChart_shortcut_signSave_keybinding = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_signSave_keybinding;	
+	const eChart_shortcut_exit_enabled = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_exit_enabled;
+	const eChart_shortcut_exit_keybinding = 
+		eChart_mainWindow_keyboardShortcuts.eChart_shortcut_exit_keybinding;	
+	
 
-	const theKey = theEvent.key;
-	const theAltKey = theEvent.altKey;
-	const theCtrlKey = theEvent.ctrlKey;
-	const theShiftKey= theEvent.shiftKey;
 	let theTarget = null;
 	switch(true){
-		case theAltKey && theKey == 1:  // Sign, Save, and Bill
-			theTarget = document.evaluate("id('save')/span/input[contains(@src,'dollar-sign-icon.png')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-			theTarget.click();
-			break;
-		case theAltKey && theKey == medicationHotkey:  // Medications
+
+		case eChart_shortcut_meds_enabled && 
+			keybindingMatches(eChart_shortcut_meds_keybinding, theEvent):  // Medications
+
 			theTarget = document.evaluate("//div[@id='Rx']/div/div/h3/a",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			break;
-		case theAltKey && theKey == eFormsHotkey:  // eForms
+		case eChart_shortcut_eforms_enabled && 
+			keybindingMatches(eChart_shortcut_eforms_keybinding, theEvent):  // eForms
+
 			theTarget = document.evaluate("//div[@id='menuTitleeforms ']/h3/a",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			break;
-		case theAltKey && theKey == consultationHotkey:  // Consultation			
+		case eChart_shortcut_consults_enabled && 
+			keybindingMatches(eChart_shortcut_consults_keybinding, theEvent): // Consultation			
+
 			theTarget = document.evaluate("//div[@id='menuTitleconsultation ']/h3/a",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			break;  //"id('menuTitleconsultation ')/h3/a"  //"id('consultation')/div/div[2]/h3/a"  /html/body/div/div/div[4]/div[10]/div/div[2]/h3/a
-		case theAltKey && theKey == ticklerHotkey:  // Tickler
+		case eChart_shortcut_tickler_enabled && 
+			keybindingMatches(eChart_shortcut_tickler_keybinding, theEvent):  // Tickler
+
 			theTarget = document.evaluate("//div[@id='menuTitletickler ']/h3/a",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			break;
-		case theAltKey && theKey == 2:  // Save
+		case eChart_shortcut_SignSaveBill_enabled && 
+			keybindingMatches(eChart_shortcut_SignSaveBill_keybinding, theEvent):  // Sign, Save, and Bill
+
+			theTarget = document.evaluate("id('save')/span/input[contains(@src,'dollar-sign-icon.png')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+			theTarget.click();
+			break;
+		case eChart_shortcut_save_enabled && 
+			keybindingMatches(eChart_shortcut_save_keybinding, theEvent):  // Save
+
 			theTarget = document.evaluate("id('save')/span/input[contains(@src,'media-floppy.png')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			break;
-		case theAltKey && theKey == 3:  // Sign and Save
+		case eChart_shortcut_signSave_enabled && 
+			keybindingMatches(eChart_shortcut_signSave_keybinding, theEvent):  // Sign and Save
+
 			theTarget = document.evaluate("id('save')/span/input[contains(@src,'note-save.png')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			// document.getElementById("caseNote_note0").blur();
 			theTarget.focus();
 			setTimeout(function() {theTarget.click();}, 50);
 			// theTarget.click()
 			break;
-		case theAltKey && theKey == 4: // Exit
+		case eChart_shortcut_exit_enabled && 
+			keybindingMatches(eChart_shortcut_exit_keybinding, theEvent): // Exit
+
 			theTarget = document.evaluate("id('save')/span/input[contains(@src,'system-log-out.png')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			break;
@@ -101,19 +131,27 @@ function CPPWindowPresent(){
 }
 
 
-function CPPWindowHotkeys(theEvent){
-	const theKey = theEvent.key;
-	const theAltKey = theEvent.altKey;
-	const theCtrlKey = theEvent.ctrlKey;
-	const theShiftKey= theEvent.shiftKey;
-	
+function CPPWindowHotkeys(eChart_CPPWindow_keyboardShortcuts, theEvent){
+	const CPPWindow_signSave_enabled = 
+	eChart_CPPWindow_keyboardShortcuts.CPPWindow_shortcut_signSave_enabled;
+	const CPPWindow_signSave_keybinding = 
+	eChart_CPPWindow_keyboardShortcuts.CPPWindow_shortcut_signSave_keybinding;
+	const CPPWindow_cancel_enabled = 
+	eChart_CPPWindow_keyboardShortcuts.CPPWindow_shortcut_cancel_enabled;
+	const CPPWindow_cancel_keybinding = 
+	eChart_CPPWindow_keyboardShortcuts.CPPWindow_shortcut_cancel_keybinding;
+
+
 	let theTarget = null;
 	switch(true){
-		case theAltKey && theKey == 1:  // Sign & Save
+		case CPPWindow_signSave_enabled && 
+			keybindingMatches(CPPWindow_signSave_keybinding, theEvent):  // Sign & Save
+
 			theTarget = document.evaluate("id('frmIssueNotes')/span/input[contains(@src,'note-save.png')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			break;
-		case theKey == 'Escape':
+		case CPPWindow_cancel_enabled && keybindingMatches(CPPWindow_cancel_keybinding, theEvent):
+
 			theTarget = document.evaluate("id('frmIssueNotes')/span/input[contains(@src,'system-log-out.png')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			break;

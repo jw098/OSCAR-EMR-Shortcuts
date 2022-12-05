@@ -120,6 +120,218 @@ var defaultSettings = {
     }
   },
 
+  eChart:{
+    updateSidebar: true,
+    eformSearchBar_enabled: true,
+
+    eChartButtons:{
+      eChartButtons_enabled: true,
+
+      eChartButtonVitals:{
+        eChartButtonVitals_enabled: true,
+
+        eChartButtonVitals_button_enabled: true,
+        eChartButtonVitals_shortcuts:{
+          eChartButtonVitals_shortcuts_enabled: true,
+          eChartButtonVitals_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: true,
+            key: 'x'
+          },
+        }
+      },
+      eChartButton1:{
+        eChartButton1_enabled: true,
+        eChartButton1_name: "Lab Req",
+        eChartButton1_fid: "",
+
+        eChartButton1_button_enabled: true,
+        eChartButton1_shortcuts:{
+          eChartButton1_shortcuts_enabled: true,
+          eChartButton1_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: true,
+            altKey: true,
+            key: 'Q'
+          }
+        }
+      },
+      eChartButton2:{
+        eChartButton2_enabled: true,
+        eChartButton2_name: "X-ray",
+        eChartButton2_fid: "",
+
+        eChartButton2_button_enabled: true,
+        eChartButton2_shortcuts:{
+          eChartButton2_shortcuts_enabled: true,
+          eChartButton2_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: true,
+            altKey: true,
+            key: 'W'
+          }
+        }
+        
+      },
+      eChartButton3:{
+        eChartButton3_enabled: true,
+        eChartButton3_name: "U/S",
+        eChartButton3_fid: "",
+
+        eChartButton3_button_enabled: true,
+        eChartButton3_shortcuts:{
+          eChartButton3_shortcuts_enabled: true,
+          eChartButton3_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: true,
+            altKey: true,
+            key: 'Z'
+          }
+        }
+        
+      },
+      eChartButton4:{
+        eChartButton4_enabled: true,
+        eChartButton4_name: "Doctors Note",
+        eChartButton4_fid: "",
+
+        eChartButton4_button_enabled: true,
+        eChartButton4_shortcuts:{
+          eChartButton4_shortcuts_enabled: true,
+          eChartButton4_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: true,
+            altKey: true,
+            key: 'X'
+          }
+        }
+        
+      },
+      eChartButton5:{
+        eChartButton5_enabled: false,
+        eChartButton5_name: "",
+        eChartButton5_fid: "",
+
+        eChartButton5_button_enabled: false,
+        eChartButton5_shortcuts:{
+          eChartButton5_shortcuts_enabled: false,
+          eChartButton5_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          }
+        }
+        
+      },
+      eChartButton6:{
+        eChartButton6_enabled: false,
+        eChartButton6_name: "",
+        eChartButton6_fid: "",
+
+        eChartButton6_button_enabled: false,
+        eChartButton6_shortcuts:{
+          eChartButton6_shortcuts_enabled: false,
+          eChartButton6_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          }
+        }
+        
+      },
+    },
+    eChart_mainWindow_keyboardShortcuts:{
+      eChart_mainWindow_shortcuts_enabled: true,
+
+      eformSearchBar_shortcuts_enabled: true,
+      eformSearchBar_shortcuts_keybinding: {
+        ctrlKey: false,
+        shiftKey: true,
+        altKey: true,
+        key: 'A'
+      },
+      eChart_shortcut_meds_enabled: true,
+      eChart_shortcut_meds_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'q'
+      },
+      eChart_shortcut_eforms_enabled: true,
+      eChart_shortcut_eforms_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      },
+      eChart_shortcut_consults_enabled: true,
+      eChart_shortcut_consults_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+      eChart_shortcut_tickler_enabled: true,
+      eChart_shortcut_tickler_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'z'
+      },
+      eChart_shortcut_SignSaveBill_enabled: true,
+      eChart_shortcut_SignSaveBill_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      eChart_shortcut_save_enabled: true,
+      eChart_shortcut_save_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '2'
+      },
+      eChart_shortcut_signSave_enabled: true,
+      eChart_shortcut_signSave_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '3'
+      },
+      eChart_shortcut_exit_enabled: true,
+      eChart_shortcut_exit_keybinding:{
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '4'
+      }
+    },
+    eChart_CPPWindow_keyboardShortcuts:{
+      eChart_CPPWindow_shortcuts_enabled: true,
+
+      CPPWindow_shortcut_signSave_enabled: true,
+      CPPWindow_shortcut_signSave_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 1
+      },
+      CPPWindow_shortcut_cancel_enabled: true,
+      CPPWindow_shortcut_cancel_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        key: 'Escape'
+      }
+    }
+    
+
+  },
+
   schedule: {
     schedule_keyboardShortcuts: {
       schedule_shortcuts_enabled: true,

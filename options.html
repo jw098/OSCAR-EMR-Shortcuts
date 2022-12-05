@@ -56,8 +56,8 @@
     <section>
       <h3>Enable/Disable</h3>
       <div class="row">
-        <label for="enabled">Enabled</label>
         <input id="enabled" type="checkbox" />
+        <label for="enabled">Enabled</label>
       </div>
       <div class="row">
         <button id="checkAllSettings" >Check all settings</button>
@@ -79,8 +79,8 @@
     <section>
       <h3>Allergy</h3>
       <div class="row">
-        <label for="allergyQuickAdd">Buttons to quickly add allergies</label>
         <input id="allergyQuickAdd" type="checkbox" />
+        <label for="allergyQuickAdd">Buttons to quickly add allergies</label>
       </div>
     </section>
 
@@ -88,19 +88,19 @@
       <h3>BC Billing</h3>
       <h4>Billing Code Input</h4>
       <div class="row">
-        <label for="billingButtons">Buttons to input billing codes</label>
         <input id="billingButtons" type="checkbox" />
+        <label for="billingButtons">Buttons to input billing codes</label>
       </div>
       <div class="row">
-        <label for="billingCodeInput_PageEnd">Scroll to bottom of page on page load</label>
         <input id="billingCodeInput_PageEnd" type="checkbox" />
+        <label for="billingCodeInput_PageEnd">Scroll to bottom of page on page load</label>
       </div>
       <div class="row">
-        <label for="billingCodeInput_shortcuts_enabled">Enable keyboard shortcuts</label>
         <input id="billingCodeInput_shortcuts_enabled" type="checkbox" />
-        <div class="shortcut">
+        <label for="billingCodeInput_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <div class="shortcut subRow1">
           <input id="billingCodeInput_shortcut_continue_enabled" type="checkbox" />
-          <label>Click 'Continue'</label>
+          <label class="shortcutLabel">Click 'Continue'</label>
           <input
             id="billingCodeInput_shortcut_continue_keybinding" 
             class="customKey"
@@ -110,9 +110,9 @@
             placeholder="press a key"
           />
         </div>
-        <div class="shortcut">
+        <div class="shortcut subRow1">
           <input id="billingCodeInput_shortcut_officeVisitInputCode_enabled" type="checkbox" />
-          <label>Input Office visit service code</label>
+          <label class="shortcutLabel">Input Office visit service code</label>
           <input
             id="billingCodeInput_shortcut_officeVisitInputCode_keybinding" 
             class="customKey"
@@ -122,9 +122,9 @@
             placeholder="press a key"
           />
         </div>
-        <div class="shortcut">
+        <div class="shortcut subRow1">
           <input id="billingCodeInput_shortcut_teleVisitInputCode_enabled" type="checkbox" />
-          <label>Input Telehealth visit service code</label>
+          <label class="shortcutLabel">Input Telehealth visit service code</label>
           <input
             id="billingCodeInput_shortcut_teleVisitInputCode_keybinding" 
             class="customKey"
@@ -134,9 +134,9 @@
             placeholder="press a key"
           />
         </div>
-        <div class="shortcut">
+        <div class="shortcut subRow1">
           <input id="billingCodeInput_shortcut_setFocusDxCode_enabled" type="checkbox" />
-          <label>Set cursor to diagnostic code text box</label>
+          <label class="shortcutLabel">Set cursor to diagnostic code text box</label>
           <input
             id="billingCodeInput_shortcut_setFocusDxCode_keybinding" 
             class="customKey"
@@ -151,11 +151,11 @@
 
       <h4>Billing Diagnostic Code Search</h4>
       <div class="row">
-        <label for="billingDxCodeSearch_shortcuts_enabled">Enable keyboard shortcuts</label>
         <input id="billingDxCodeSearch_shortcuts_enabled" type="checkbox" />
-        <div class="shortcut">
+        <label for="billingDxCodeSearch_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <div class="shortcut subRow1">
           <input id="billingDxCodeSearch_shortcuts_confirm_enabled" type="checkbox" />
-          <label>Click 'Confirm'</label>
+          <label class="shortcutLabel">Click 'Confirm'</label>
           <input
             id="billingDxCodeSearch_shortcuts_confirm_keybinding" 
             class="customKey"
@@ -165,9 +165,9 @@
             placeholder="press a key"
           />
         </div>
-        <div class="shortcut">
+        <div class="shortcut subRow1">
           <input id="billingDxCodeSearch_shortcuts_cancel_enabled" type="checkbox" />
-          <label>Click 'Cancel'</label>
+          <label class="shortcutLabel">Click 'Cancel'</label>
           <input
             id="billingDxCodeSearch_shortcuts_cancel_keybinding" 
             class="customKey"
@@ -181,15 +181,15 @@
       
       <h4>Billing Confirm</h4>
       <div class="row">
-        <label for="billingConfirm_PageEnd">Scroll to bottom of page on page load</label>
         <input id="billingConfirm_PageEnd" type="checkbox" />
+        <label for="billingConfirm_PageEnd">Scroll to bottom of page on page load</label>
       </div>
       <div class="row">
-        <label for="billingConfirm_shortcuts_enabled">Enable keyboard shortcuts</label>
         <input id="billingConfirm_shortcuts_enabled" type="checkbox" />
-        <div class="shortcut">
+        <label for="billingConfirm_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <div class="shortcut subRow1">
           <input id="billingConfirm_shortcuts_saveBill_enabled" type="checkbox" />
-          <label>Click 'Save Bill'</label>
+          <label class="shortcutLabel">Click 'Save Bill'</label>
           <input
             id="billingConfirm_shortcuts_saveBill_keybinding" 
             class="customKey"
@@ -199,9 +199,9 @@
             placeholder="press a key"
           />
         </div>
-        <div class="shortcut">
+        <div class="shortcut subRow1">
           <input id="billingConfirm_shortcuts_pageEnd_enabled" type="checkbox" />
-          <label>Scroll to bottom of page</label>
+          <label class="shortcutLabel">Scroll to bottom of page</label>
           <input
             id="billingConfirm_shortcuts_pageEnd_keybinding" 
             class="customKey"
@@ -218,11 +218,11 @@
     <section>
       <h3>Cortico</h3>
       <div class="row">
-        <label for="cortico_shortcuts_enabled">Enable keyboard shortcuts</label>
         <input id="cortico_shortcuts_enabled" type="checkbox" />
-        <div class="shortcut">
+        <label for="cortico_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <div class="shortcut subRow1">
           <input id="cortico_shortcut_closeModal_enabled" type="checkbox" />
-          <label>Close Cortico popup</label>
+          <label class="shortcutLabel">Close Cortico popup</label>
           <input
             id="cortico_shortcut_closeModal_keybinding" 
             class="customKey"
@@ -239,19 +239,19 @@
       <h3>Consultations</h3>
 
       <div class="row">
-        <label for="postPatientAgeGender">Post patient age and gender in the 'Reason for Consultation' text area</label>
         <input id="postPatientAgeGender" type="checkbox" />
+        <label for="postPatientAgeGender">Post patient age and gender in the 'Reason for Consultation' text area</label>
       </div>
       <div class="row">
-        <label for="postAllHistory">Post Medical, Social, and Family history in 'Pertinent clinical information' text area</label>
         <input id="postAllHistory" type="checkbox" />
+        <label for="postAllHistory">Post Medical, Social, and Family history in 'Pertinent clinical information' text area</label>
       </div>
       <div class="row">
-        <label for="consultations_shortcuts_enabled">Enable keyboard shortcuts</label>
         <input id="consultations_shortcuts_enabled" type="checkbox" />
-        <div class="shortcut">
+        <label for="consultations_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <div class="shortcut subRow1">
           <input id="consultations_shortcuts_close_enabled" type="checkbox" />
-          <label>Close Consultations window</label>
+          <label class="shortcutLabel">Close Consultations window</label>
           <input
             id="consultations_shortcuts_close_keybinding"
             class="customKey"
@@ -261,9 +261,9 @@
             placeholder="press a key"
           />
         </div>
-        <div class="shortcut">
+        <div class="shortcut subRow1">
           <input id="consultations_shortcuts_submit_enabled" type="checkbox" />
-          <label>Submit Consultation Request</label>
+          <label class="shortcutLabel">Submit Consultation Request</label>
           <input
             id="consultations_shortcuts_submit_keybinding"
             class="customKey"
@@ -279,11 +279,11 @@
     <section>
       <h3>Schedule</h3>
       <div class="row">
-        <label for="schedule_shortcuts_enabled">Enable keyboard shortcuts</label>
         <input id="schedule_shortcuts_enabled" type="checkbox" />
-        <div class="shortcut">
+        <label for="schedule_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <div class="shortcut subRow1">
           <input id="schedule_shortcut_openEChart_enabled" type="checkbox" />
-          <label>Open next patient's eChart</label>
+          <label class="shortcutLabel">Open next patient's eChart</label>
           <input
             id="schedule_shortcut_openEChart_keybinding"
             class="customKey"
@@ -293,11 +293,286 @@
             placeholder="press a key"
           />
         </div>
-        <div class="shortcut">
+        <div class="shortcut subRow1">
           <input id="schedule_shortcut_openInbox_enabled" type="checkbox" />
-          <label>Open Inbox</label>
+          <label class="shortcutLabel">Open Inbox</label>
           <input
             id="schedule_shortcut_openInbox_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+      </div>
+      
+    </section>
+
+    <section>
+      <h3>E-Chart</h3>
+      <div class="row">
+        <input id="updateSidebar" type="checkbox" />
+        <label for="updateSidebar">Update sidebar after posting new Meds,Consults,Ticklers without needing to refresh</label>
+      </div>
+      <div class="row">
+        <input id="eformSearchBar_enabled" type="checkbox" />
+        <label for="eformSearchBar_enabled">Search bar that searches eForms by title</label>
+      </div>
+      <div class="row">
+        <input id="eChartButtons_enabled" type="checkbox" />
+        <label for="eChartButtons_enabled">Buttons/Shortcuts for Vitals and eForms</label>
+        <div class="subRow1">
+          <input id="eChartButtonVitals_enabled" type="checkbox" />
+          <label for="eChartButtonVitals_enabled">Vitals</label>
+          <div class="subRow2">
+            <div class="buttonShortcut">
+              <input id="eChartButtonVitals_button_enabled" type="checkbox" />
+              <label for="eChartButtonVitals_button_enabled" class="enableButton">Enable button</label>
+            </div>
+            <div class="shortcut buttonShortcut">
+              <input id="eChartButtonVitals_shortcuts_enabled" type="checkbox" />
+              <label>Shortcut Keys:</label>
+              <input
+                id="eChartButtonVitals_shortcuts_keybinding"
+                class="customKey"
+                type="text"
+                value=""
+                keybinding=""
+                placeholder="shortcut keys"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChartButton1_enabled" type="checkbox" />
+          <input
+            id="eChartButton1_name"
+            class="customButtonTitle"
+            type="text"
+            value=""
+            placeholder="button name"
+          />
+          <label for="eChartButton1_fid">eForm ID:</label>
+          <!-- Lab req: 510 -->
+          <input
+            id="eChartButton1_fid"
+            class="customFID"
+            type="text"
+            value=""
+            placeholder="eForm FID or URL"
+          />
+          <div class="subRow2">
+            <div class="buttonShortcut">
+              <input id="eChartButton1_button_enabled" type="checkbox" />
+              <label for="eChartButton1_button_enabled" class="enableButton">Enable button</label>
+            </div>
+            <div class="shortcut buttonShortcut">
+              <input id="eChartButton1_shortcuts_enabled" type="checkbox" />
+              <label>Shortcut Keys:</label>
+              <input
+                id="eChartButton1_shortcuts_keybinding"
+                class="customKey"
+                type="text"
+                value=""
+                keybinding=""
+                placeholder="shortcut keys"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChartButton2_enabled" type="checkbox" />
+          <input
+            id="eChartButton2_name"
+            class="customButtonTitle"
+            type="text"
+            value=""
+            placeholder="button name"
+          />
+          <label for="eChartButton2_fid">eForm ID:</label>
+          <!-- X-ray req: 359 -->
+          <input
+            id="eChartButton2_fid"
+            class="customFID"
+            type="text"
+            value=""
+            placeholder="eForm FID or URL"
+          />
+          <div class="subRow2">
+            <div class="buttonShortcut">
+              <input id="eChartButton2_button_enabled" type="checkbox" />
+              <label for="eChartButton2_button_enabled" class="enableButton">Enable button</label>
+            </div>
+            <div class="shortcut buttonShortcut">
+              <input id="eChartButton2_shortcuts_enabled" type="checkbox" />
+              <label>Shortcut Keys:</label>
+              <input
+                id="eChartButton2_shortcuts_keybinding"
+                class="customKey"
+                type="text"
+                value=""
+                keybinding=""
+                placeholder="shortcut keys"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChartButton3_enabled" type="checkbox" />
+          <input
+            id="eChartButton3_name"
+            class="customButtonTitle"
+            type="text"
+            value=""
+            placeholder="button name"
+          />
+          <label for="eChartButton3_fid">eForm ID:</label>
+          <!-- U/S req: 293 -->
+          <input
+            id="eChartButton3_fid"
+            class="customFID"
+            type="text"
+            value=""
+            placeholder="eForm FID or URL"
+          />
+          <div class="subRow2">
+            <div class="buttonShortcut">
+              <input id="eChartButton3_button_enabled" type="checkbox" />
+              <label for="eChartButton3_button_enabled" class="enableButton">Enable button</label>
+            </div>
+            <div class="shortcut buttonShortcut">
+              <input id="eChartButton3_shortcuts_enabled" type="checkbox" />
+              <label>Shortcut Keys:</label>
+              <input
+                id="eChartButton3_shortcuts_keybinding"
+                class="customKey"
+                type="text"
+                value=""
+                keybinding=""
+                placeholder="shortcut keys"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChartButton4_enabled" type="checkbox" />
+          <input
+            id="eChartButton4_name"
+            class="customButtonTitle"
+            type="text"
+            value=""
+            placeholder="button name"
+          />
+          <label for="eChartButton4_fid">eForm ID:</label>
+          <!-- Doctors note req: 291 -->
+          <input
+            id="eChartButton4_fid"
+            class="customFID"
+            type="text"
+            value=""
+            placeholder="eForm FID or URL"
+          />
+          <div class="subRow2">
+            <div class="buttonShortcut">
+              <input id="eChartButton4_button_enabled" type="checkbox" />
+              <label for="eChartButton5_button_enabled" class="enableButton">Enable button</label>
+            </div>
+            <div class="shortcut buttonShortcut">
+              <input id="eChartButton4_shortcuts_enabled" type="checkbox" />
+              <label>Shortcut Keys:</label>
+              <input
+                id="eChartButton4_shortcuts_keybinding"
+                class="customKey"
+                type="text"
+                value=""
+                keybinding=""
+                placeholder="shortcut keys"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChartButton5_enabled" type="checkbox" />
+          <input
+            id="eChartButton5_name"
+            class="customButtonTitle"
+            type="text"
+            value=""
+            placeholder="button name"
+          />
+          <label for="eChartButton5_fid">eForm ID:</label>
+          <input
+            id="eChartButton5_fid"
+            class="customFID"
+            type="text"
+            value=""
+            placeholder="eForm FID or URL"
+          />
+          <div class="subRow2">
+            <div class="buttonShortcut">
+              <input id="eChartButton5_button_enabled" type="checkbox" />
+              <label for="eChartButton5_button_enabled" class="enableButton">Enable button</label>
+            </div>
+            <div class="shortcut buttonShortcut">
+              <input id="eChartButton5_shortcuts_enabled" type="checkbox" />
+              <label>Shortcut Keys:</label>
+              <input
+                id="eChartButton5_shortcuts_keybinding"
+                class="customKey"
+                type="text"
+                value=""
+                keybinding=""
+                placeholder="shortcut keys"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChartButton6_enabled" type="checkbox" />
+          <input
+            id="eChartButton6_name"
+            class="customButtonTitle"
+            type="text"
+            value=""
+            placeholder="button name"
+          />
+          <label for="eChartButton6_fid">eForm ID:</label>
+          <input
+            id="eChartButton6_fid"
+            class="customFID"
+            type="text"
+            value=""
+            placeholder="eForm FID or URL"
+          />
+          <div class="subRow2">
+            <div class="buttonShortcut">
+              <input id="eChartButton6_button_enabled" type="checkbox" />
+              <label for="eChartButton6_button_enabled" class="enableButton">Enable button</label>
+            </div>
+            <div class="shortcut buttonShortcut">
+              <input id="eChartButton6_shortcuts_enabled" type="checkbox" />
+              <label>Shortcut Keys:</label>
+              <input
+                id="eChartButton6_shortcuts_keybinding"
+                class="customKey"
+                type="text"
+                value=""
+                keybinding=""
+                placeholder="shortcut keys"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <input id="eChart_mainWindow_shortcuts_enabled" type="checkbox" />
+        <label for="eChart_mainWindow_shortcuts_enabled">Enable keyboard shortcuts</label>
+        <div class="shortcut subRow1">
+          <input id="eformSearchBar_shortcuts_enabled" type="checkbox" />
+          <label class="shortcutLabel">Set cursor to note text area. If eForm searchbar enabled, toggle between the two.</label>
+          <input
+            id="eformSearchBar_shortcuts_keybinding"
             class="customKey"
             type="text"
             value=""
@@ -305,25 +580,133 @@
             placeholder="press a key"
           />
         </div>
+        
+        <div class="shortcut subRow1">
+          <input id="eChart_shortcut_meds_enabled" type="checkbox" />
+          <label class="shortcutLabel">Open Medications</label>
+          <input
+            id="eChart_shortcut_meds_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChart_shortcut_eforms_enabled" type="checkbox" />
+          <label class="shortcutLabel">Open eForms library</label>
+          <input
+            id="eChart_shortcut_eforms_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChart_shortcut_consults_enabled" type="checkbox" />
+          <label class="shortcutLabel">Open Consultations</label>
+          <input
+            id="eChart_shortcut_consults_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChart_shortcut_tickler_enabled" type="checkbox" />
+          <label class="shortcutLabel">Open Ticklers</label>
+          <input
+            id="eChart_shortcut_tickler_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChart_shortcut_SignSaveBill_enabled" type="checkbox" />
+          <label class="shortcutLabel">Sign, Save and Bill</label>
+          <input
+            id="eChart_shortcut_SignSaveBill_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChart_shortcut_save_enabled" type="checkbox" />
+          <label class="shortcutLabel">Save</label>
+          <input
+            id="eChart_shortcut_save_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChart_shortcut_signSave_enabled" type="checkbox" />
+          <label class="shortcutLabel">Sign and Save</label>
+          <input
+            id="eChart_shortcut_signSave_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="eChart_shortcut_exit_enabled" type="checkbox" />
+          <label class="shortcutLabel">Exit</label>
+          <input
+            id="eChart_shortcut_exit_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="shortcut keys"
+          />
+        </div>
+        <div class="row">
+          <input id="eChart_CPPWindow_shortcuts_enabled" type="checkbox" />
+          <label for="eChart_CPPWindow_shortcuts_enabled">Enable keyboard shortcuts in Medical History, Social History pop-up window, etc.</label>
+          <div class="shortcut subRow1">
+            <input id="CPPWindow_shortcut_signSave_enabled" type="checkbox" />
+            <label class="shortcutLabel">Save and Sign in medical history pop-up window</label>
+            <input
+              id="CPPWindow_shortcut_signSave_keybinding"
+              class="customKey"
+              type="text"
+              value=""
+              keybinding=""
+              placeholder="press a key"
+            />
+          </div>
+          <div class="shortcut subRow1">
+            <input id="CPPWindow_shortcut_cancel_enabled" type="checkbox" />
+            <label class="shortcutLabel">Cancel and close medical history pop-up window</label>
+            <input
+              id="CPPWindow_shortcut_cancel_keybinding"
+              class="customKey"
+              type="text"
+              value=""
+              keybinding=""
+              placeholder="press a key"
+            />
+          </div>
+        </div>
       </div>
-      
     </section>
-
-    <!-- <section>
-      <h3>E-Chart</h3>
-      <div class="row">
-        <label for="eChartButtons">Buttons to open eForms</label>
-        <input id="eChartButtons" type="checkbox" />
-      </div>
-      <div class="row">
-        <label for="eChartButtons">Enable keyboard shortcuts to open eForms</label>
-        <input id="eChartButtons" type="checkbox" />
-      </div>
-      <div class="row">
-        <label for="eChartButtons">Enable keyboard shortcuts to open eForms</label>
-        <input id="eChartButtons" type="checkbox" />
-      </div>
-    </section> -->
 
 <!-- 		// eFormSearch
 		keydownEventListener_eformSearch();

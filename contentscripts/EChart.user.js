@@ -19,18 +19,46 @@ async function checkEnabled_EChart(){
 		return;
 	}
 	else {
-		// Buttons
-		keydownEventListener_openEForm();
-		loadAllEFormButtons();
-		
-		// eFormSearch
-		keydownEventListener_eformSearch();
-        addSearchBar();
-
-		// KeyboardShortcuts
-		keydownEventListener_eChart();
+		const eChartObj = await browser.storage.sync.get('eChart');
+		const eChart = eChartObj.eChart;
+		const updateSidebar = eChart.updateSidebar;
+		const eformSearchBar_enabled = eChart.eformSearchBar_enabled;
+		const eChartButtons = eChart.eChartButtons;
+		const eChart_mainWindow_keyboardShortcuts = eChart.eChart_mainWindow_keyboardShortcuts;
+		const eChart_CPPWindow_keyboardShortcuts = eChart.eChart_CPPWindow_keyboardShortcuts;
 
 		// UpdateSidebar
-		updateAllSidebarOnFocusChange();
+		if(updateSidebar){
+			updateAllSidebarOnFocusChange();
+		}
+		
+
+		// eFormSearch
+		if(eformSearchBar_enabled){
+			addSearchBar();		
+		}
+
+
+		// Buttons
+		if(eChartButtons.eChartButtons_enabled){
+			loadAllEFormButtons(eChartButtons);
+			keydownEventListener_openEForm(eChartButtons);
+		}
+
+		// KeyboardShortcuts
+		if (eChart_mainWindow_keyboardShortcuts.eChart_mainWindow_shortcuts_enabled){
+			if(eChart_mainWindow_keyboardShortcuts.eformSearchBar_shortcuts_enabled){
+				keydownEventListener_eformSearch(eChart_mainWindow_keyboardShortcuts);
+			}
+
+			keydownEventListener_mainWindow(eChart_mainWindow_keyboardShortcuts);
+		}
+
+		if (eChart_CPPWindow_keyboardShortcuts.eChart_CPPWindow_shortcuts_enabled){
+			keydownEventListener_CPPWindow(eChart_CPPWindow_keyboardShortcuts);
+		}
+
+
 	}
 }
+

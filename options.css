@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding-left: 15px;
   padding-top: 53px;
-  font-family: sans-serif;
+  font-family: Arial;
   font-size: 12px;
   color: rgb(48, 57, 66);
 }
@@ -86,9 +86,9 @@ button {
 }
 
 input[type="text"] {
-  width: 75px;
-  text-align: center;
-  /* background-color: darkgrey; */
+  font-family: Arial;
+  font-size: 12px;
+  color: rgb(48, 57, 66);
 }
 
 .row {
@@ -101,7 +101,17 @@ input[type="text"] {
   color: grey;
 }
 
+.customFID {
+  width: 100px;
+  text-align: center;
+  /* color: transparent; */
+  /* color: red; */
+  /* text-shadow: 0 0 0 #000000; */
+}
+
 .customKey {
+  width: 80px;
+  text-align: center;
   /* color: transparent; */
   /* color: red; */
   /* text-shadow: 0 0 0 #000000; */
@@ -112,19 +122,65 @@ input[type="text"] {
   background-color: darkgrey;
 } */
 
+/* 
 .shortcut{
   margin-left: 14px;
+  background-color: darkgrey;
+  vertical-align: middle;
+} */
+
+.subRow1{
+  margin-left: 14px;
   /* background-color: darkgrey; */
+  /* vertical-align: middle; */
 }
 
-shortcutLabel{
+.subRow2{
+  margin-left: 14px;
+  /* background-color: darkgrey; */
+  /* vertical-align: middle; */
+}
+
+
+/* shortcutLabel{
   width: 200px;
-}
+} */
 
-label {
+/* 
+label{
   display: inline-block;
   width: 300px;
-  vertical-align: top;
+  vertical-align: middle;
+} */
+
+/* div[class*="shortcut"]>label + input[class*=customKey]{
+
+} */
+
+div[class*="row"]>label,
+div[class*="subRow1"]>label[class*="shortcutLabel"]{
+  display: inline-block;
+  width: 300px;
+  vertical-align: middle;
+}
+
+/* div[class*="buttonShortcut"]>label{
+  width: 100px;
+  display: inline-block;
+} */
+
+.enableButton{
+  margin-right: 97px;
+}
+
+.buttonShortcut {
+  display: inline-block;
+  /* width: 150px; */
+}
+
+
+.customButtonTitle{
+  margin-right: 100px;
 }
 
 #statusHeader {

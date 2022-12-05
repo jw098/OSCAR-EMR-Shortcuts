@@ -376,9 +376,12 @@ function settingsFromOption(settingsStructure){
   let newSettings = {};
   for (const [key, value] of Object.entries(settingsStructure)){
     if (typeof value == "boolean"){
-      // console.log(key);
+      console.log(key);
       newSettings[key] = document.getElementById(key).checked;
       // console.log(document.getElementById(key).checked);
+    } else if(typeof value == "string"){
+      console.log(key);
+      newSettings[key] = document.getElementById(key).value;
     } else if(key.includes("_keybinding")){
       newSettings[key] = document.getElementById(key).keybinding;
       // console.log(value);
@@ -422,6 +425,8 @@ function restoreOptionsPageFromSettings(settingsObject){
       document.getElementById(key).checked = value;
       setGreyout(document.getElementById(key));
       // console.log(document.getElementById(key).checked);
+    } else if(typeof value == "string"){
+      document.getElementById(key).value = value;
     } else if(key.includes("_keybinding")){
       document.getElementById(key).keybinding = value;
       document.getElementById(key).value = keybindingToText(value);
@@ -473,15 +478,15 @@ async function setTestSettings(){
 function setGreyout(theElement){
   const parentTarget = theElement.parentNode;
   let greyout;
-  if(parentTarget.classList.contains("shortcut")){
+  if(parentTarget.classList.contains("subRow")){
     greyout = "greyoutRow"
   }else {
     greyout = "greyoutBlock"
   }
   parentTarget.classList.toggle(greyout, !theElement.checked);
-  const customKeyInputList = parentTarget.getElementsByClassName("customKey");
-  for (i = 0 ;i < customKeyInputList.length; i++){
-    const customKeyInput = customKeyInputList[i];
+  const customTextInputList = parentTarget.getElementsByTagName("INPUT");
+  for (i = 0 ;i < customTextInputList.length; i++){
+    const customKeyInput = customTextInputList[i];
     customKeyInput.classList.toggle(greyout, !theElement.checked);  
   }
 }

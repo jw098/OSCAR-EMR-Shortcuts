@@ -30,14 +30,15 @@
 /////////////////////////////////////////////////////////////
 // Eventlistener
 /////////////////////////////////////////////////////////////
-function keydownEventListener_eformSearch(){
+function keydownEventListener_eformSearch(eChart_mainWindow_keyboardShortcuts){
+    const eformSearchBar_enabled = 
+    eChart_mainWindow_keyboardShortcuts.eformSearchBar_shortcuts_enabled;
+    const eformSearchBar_keybinding = 
+    eChart_mainWindow_keyboardShortcuts.eformSearchBar_shortcuts_keybinding;
+
     window.addEventListener("keydown", function(theEvent){
-        const theKey = theEvent.key;
-        const theAltKey = theEvent.altKey;
-        const theCtrlKey = theEvent.ctrlKey;
-        const theShiftKey= theEvent.shiftKey;
         switch(true){
-            case theShiftKey && theAltKey && theKey == "A":
+            case eformSearchBar_enabled && keybindingMatches(eformSearchBar_keybinding, theEvent):
                 if(document.activeElement == document.getElementById("caseNote_note0")){
                     document.getElementById("referral_name").focus();
                 }

@@ -1,5 +1,6 @@
 body {
   min-width: 8em;
+  max-width: 8em;
 }
 
 hr {
@@ -21,11 +22,12 @@ button {
   color: #444;
   text-shadow: 0 1px 0 rgb(240, 240, 240);
   font: inherit;
+  font-family: Arial;
   user-select: none;
 }
 
 .secondary {
-  font-size: 0.95em;
+  font-size: 0.75em;
   margin: 0.15em 0;
 }
 
