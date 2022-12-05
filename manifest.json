@@ -206,6 +206,15 @@
                 "contentscripts/utils.js",
                 "contentscripts/Tickler_KeyboardShortcuts.user.js"
             ]
+        },
+        {
+            "matches": [
+                "*://*/*/appointment/appointmentcontrol.jsp*"
+            ],
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/AppointmentsEdit.user.js"
+            ]
         }
       ]
 

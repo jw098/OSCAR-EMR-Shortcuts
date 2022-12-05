@@ -351,6 +351,21 @@ var defaultSettings = {
         key: 'z'
       }
     }
+  },
+
+  apptEdit:{
+    apptEdit_keyboardShortcuts: {
+      apptEdit_shortcuts_enabled: true,
+
+      apptEdit_shortcut_updateAppt_enabled: true,
+      apptEdit_shortcut_updateAppt_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+    }
+
   }
 
 };
