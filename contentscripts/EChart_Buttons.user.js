@@ -34,6 +34,12 @@ const usReqFID = 293;
 
 function keydownEventListener_openEForm(eChartButtons){
 	const eChartButtonVitals = eChartButtons.eChartButtonVitals;
+	const eChartButtonVitals_enabled = eChartButtonVitals.eChartButtonVitals_enabled;
+	const eChartButtonVitals_shortcuts = eChartButtonVitals.eChartButtonVitals_shortcuts;
+	const eChartButtonVitals_shortcuts_enabled = 
+		eChartButtonVitals_shortcuts.eChartButtonVitals_shortcuts_enabled;
+	const eChartButtonVitals_shortcuts_keybinding = 
+		eChartButtonVitals_shortcuts.eChartButtonVitals_shortcuts_keybinding;
 
 	const eChartButton1 = eChartButtons.eChartButton1;
 	const eChartButton1_fid = eChartButton1.eChartButton1_fid;
@@ -91,46 +97,46 @@ function keydownEventListener_openEForm(eChartButtons){
 
 	window.addEventListener("keydown", function(theEvent){
 		switch(true){
+			case eChartButtonVitals_enabled && 
+				eChartButtonVitals_shortcuts_enabled && 
+				keybindingMatches(eChartButtonVitals_shortcuts_keybinding, theEvent):
+				
+				openVitalsLink();
+				break;
 			case eChartButton1_enabled && 
 				eChartButton1_shortcuts_enabled && 
 				keybindingMatches(eChartButton1_shortcuts_keybinding, theEvent):
 				
-				console.log('hi1');
 				openLink(eChartButton1_fid);
 				break;
 			case eChartButton2_enabled && 
 				eChartButton2_shortcuts_enabled && 
 				keybindingMatches(eChartButton2_shortcuts_keybinding, theEvent):
 				
-				console.log('hi2');
 				openLink(eChartButton2_fid);
 				break;
 			case eChartButton3_enabled && 
 				eChartButton3_shortcuts_enabled && 
 				keybindingMatches(eChartButton3_shortcuts_keybinding, theEvent):
 				
-				console.log('hi3');
 				openLink(eChartButton3_fid);
 				break;
 			case eChartButton4_enabled && 
 				eChartButton4_shortcuts_enabled && 
 				keybindingMatches(eChartButton4_shortcuts_keybinding, theEvent):
 				
-				console.log('hi4');
 				openLink(eChartButton4_fid);
 				break;
 			case eChartButton5_enabled && 
 				eChartButton5_shortcuts_enabled && 
 				keybindingMatches(eChartButton5_shortcuts_keybinding, theEvent):
 				
-				console.log('hi5');
 				openLink(eChartButton5_fid);
 				break;			
 			case eChartButton6_enabled && 
 				eChartButton6_shortcuts_enabled && 
 				keybindingMatches(eChartButton6_shortcuts_keybinding, theEvent):
 				
-				console.log('hi6');
 				openLink(eChartButton6_fid);
 				break;	
 		}
@@ -158,6 +164,7 @@ function loadAllEFormButtons(eChartButtons){
 
 	if(eChartButtonVitals.eChartButtonVitals_enabled){
 		// addButtonEForm('buttonOpenVitals', 'Vitals', labReqFID, buttonBlockID);
+		addButtonVitals(buttonBlockID);
 	}
 
 	if(eChartButton1.eChartButton1_enabled && eChartButton1.eChartButton1_button_enabled){
@@ -248,12 +255,41 @@ function addButtonEForm(id, value, fid, divBlock){
 	targetDiv.appendChild(inputButton);	
 	openEFormButton_KeyDownListener(id, fid);
 }
- 
+
 function openEFormButton_KeyDownListener(id, fid){
-  var theButton = document.getElementById(id);
-  theButton.addEventListener('click',function () { openLink(fid); },true);
+	var theButton = document.getElementById(id);
+	theButton.addEventListener('click',function () { openLink(fid); },true);
+  }
+   
+
+ // wrap in block level element so button is next line.
+ function addButtonVitals(divBlock){
+	let targetDiv = document.getElementById(divBlock);
+	if (targetDiv == null){
+		targetDiv = document.getElementById('rightNavBar');
+	}
+	var inputButton = document.createElement('input');
+	inputButton.id = "vitalsButtons";
+	inputButton.type = 'button';
+	inputButton.value = "Vitals";
+	targetDiv.appendChild(inputButton);	
+	openVitalsButton_KeyDownListener();
+}
+
+function openVitalsButton_KeyDownListener(){
+	var theButton = document.getElementById("vitalsButtons");
+	theButton.addEventListener('click',function () { openVitalsLink(); },true);
 }
  
+function openVitalsLink(){
+	var elements = (window.location.pathname.split('/', 2));
+	firstElement = (elements.slice(1));
+	vPath = ("https://" + location.host + "/"  + firstElement + "/");
+  	
+	var vitalsPath = vPath + "oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Vitals";
+	window.open(vitalsPath)
+}
+
 
 function openLink(fid){
 	var elements = (window.location.pathname.split('/', 2));
