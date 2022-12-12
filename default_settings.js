@@ -405,6 +405,57 @@ var defaultSettings = {
     }
   },
 
+  inbox:{
+    inbox_buttons: true,
+    
+    inbox_keyboardShortcuts: {
+      inbox_shortcuts_enabled: true,
+
+      inbox_shortcut_close_enabled: true,
+      inbox_shortcut_close_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'z'
+      },
+      inbox_shortcut_openResult_enabled: true,
+      inbox_shortcut_openResult_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+    }
+  },
+
+  // inboxResult:{
+  //   inboxResult_keyboardShortcuts: {
+  //     inboxResult_shortcuts_enabled: true,
+
+  //     inboxResult_shortcut_acknowledge_enabled: true,
+  //     inboxResult_shortcut_acknowledge_keybinding: {
+  //       ctrlKey: false,
+  //       shiftKey: false,
+  //       altKey: true,
+  //       key: '1'
+  //     },
+  //     inboxResult_shortcut_openEChart_enabled: true,
+  //     inboxResult_shortcut_openEChart_keybinding: {
+  //       ctrlKey: false,
+  //       shiftKey: false,
+  //       altKey: true,
+  //       key: 'q'
+  //     },
+  //     inboxResult_shortcut_openTickler_enabled: true,
+  //     inboxResult_shortcut_openTickler_keybinding: {
+  //       ctrlKey: false,
+  //       shiftKey: false,
+  //       altKey: true,
+  //       key: 'q'
+  //     },
+
+  //   }
+  // },
 
 
 };

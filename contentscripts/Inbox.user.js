@@ -17,13 +17,21 @@ async function checkEnabled_Inbox(){
 		return;
 	}
 	else {
-		// Buttons
-		addButtonLoadNewReports();
-		addButtonLoadAllReports();
+		const inboxObj = await browser.storage.sync.get('inbox');
+		const inbox = inboxObj.inbox;
 
+		// Buttons
+		const inbox_buttons = inbox.inbox_buttons;
+		if(inbox_buttons){
+			addButtonLoadNewReports();
+			addButtonLoadAllReports();
+		}
 
 		// Keyboard shortcuts
-		keydownEventListener_Inbox();
+		const inbox_keyboardShortcuts = inbox.inbox_keyboardShortcuts;
+		if (inbox_keyboardShortcuts.inbox_shortcuts_enabled){
+			keydownEventListener_Inbox(inbox_keyboardShortcuts);
+		}
 	}
 }
 

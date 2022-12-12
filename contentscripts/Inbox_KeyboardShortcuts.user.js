@@ -10,30 +10,24 @@
 // ==/UserScript==
 
 
-function keydownEventListener_Inbox(){
-	window.addEventListener('keydown', function(theEvent) {
-		//theEvent.stopPropagation();
-		//theEvent.preventDefault();
-		// var theKeyCode = theEvent.charCode;// || event.which;
-		// var theKey = String.fromCharCode(theKeyCode);
-		var theKey = theEvent.key;
-		var theAltKey = theEvent.altKey;
-		var theCtrlKey = theEvent.ctrlKey;
-		var theShiftKey= theEvent.shiftKey;
-	  
-		let currentURL = window.location.href;
-		const labResultPage = /lab\/CA\/ALL\/labDisplay/
-		const ticklerPage = /tickler\/ForwardDemographicTickler/
-		const documentPage = /dms\/showDocument/
+function keydownEventListener_Inbox(inbox_keyboardShortcuts){
+	const close_enabled = 
+		inbox_keyboardShortcuts.inbox_shortcut_close_enabled;
+	const close_keybinding = 
+		inbox_keyboardShortcuts.inbox_shortcut_close_keybinding;
+	const openResult_enabled = 
+		inbox_keyboardShortcuts.inbox_shortcut_openResult_enabled;
+	const openResult_keybinding = 
+		inbox_keyboardShortcuts.inbox_shortcut_openResult_keybinding;
 
+	window.addEventListener('keydown', function(theEvent) {
 		// case (!!document.getElementById("docViews")):	// If in the inbox, whose XML contains id = "docViews"
 		switch(true){
-			case (theAltKey && theKey == 1): // Alt+1: Open first item in inbox		
-				getNextTarget().click();
-				console.log("test")
-				break;
-			case (theAltKey && theKey == 'z'): // Alt+z: Close inbox		
+			case close_enabled && keybindingMatches(close_keybinding, theEvent): // Alt+z: Close inbox		
 				window.close();
+				break;
+			case openResult_enabled && keybindingMatches(openResult_keybinding, theEvent): // Alt+1: Open first item in inbox		
+				getNextTarget().click();
 				break;
 		}
 

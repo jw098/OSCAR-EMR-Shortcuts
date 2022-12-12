@@ -782,15 +782,43 @@
       </div>
     </section>
 
-<!-- 		// eFormSearch
-		keydownEventListener_eformSearch();
-        addSearchBar();
 
-		// KeyboardShortcuts
-		keydownEventListener_eChart();
+    <section>
+      <h3>Inbox</h3>
+      <div class="row">
+        <input id="inbox_buttons" type="checkbox" />
+        <label for="inbox_buttons">Buttons to load all reports or load only new reports.</label>
+      </div>
+      <div class="row">
+        <input id="inbox_shortcuts_enabled" type="checkbox" />
+        <label for="inbox_shortcuts_enabled">Enable keyboard shortcuts</label>
 
-		// UpdateSidebar
-		updateAllSidebarOnFocusChange(); -->
+        <div class="shortcut subRow1">
+          <input id="inbox_shortcut_close_enabled" type="checkbox" />
+          <label class="shortcutLabel">Close Inbox</label>
+          <input
+            id="inbox_shortcut_close_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="inbox_shortcut_openResult_enabled" type="checkbox" />
+          <label class="shortcutLabel">Open first result in Inbox</label>
+          <input
+            id="inbox_shortcut_openResult_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+      </div>
+    </section>
 
 
 
