@@ -366,7 +366,46 @@ var defaultSettings = {
       },
     }
 
-  }
+  },
+
+
+  eFormIndividual:{
+    eFormIndividual_keyboardShortcuts: {
+      eFormIndividual_shortcuts_enabled: true,
+
+      eFormIndividual_shortcut_submit_enabled: true,
+      eFormIndividual_shortcut_submit_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      eFormIndividual_shortcut_printSubmit_enabled: true,
+      eFormIndividual_shortcut_printSubmit_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '2'
+      },
+    }
+  },
+
+  
+  eFormLibrary:{
+    eFormLibrary_keyboardShortcuts: {
+      eFormLibrary_shortcuts_enabled: true,
+
+      eFormLibrary_shortcut_close_enabled: true,
+      eFormLibrary_shortcut_close_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      },
+    }
+  },
+
+
 
 };
 

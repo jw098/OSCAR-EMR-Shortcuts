@@ -174,18 +174,18 @@ async function postAllHistory() {
 /*
 - returns a promise that returns the xmlhttp response text
 */
-function getXMLHTTP(URL){
-	let myPromise = new Promise(function (resolve){
+function getXMLHTTP(theURL){
+	let myPromise = new Promise(function (resolve, reject){
 		let xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("GET", URL, true);
+		xmlhttp.open("GET", theURL, true);
 		
 		xmlhttp.onload = function(){
 			if (xmlhttp.status == 200) {
 				resolve(xmlhttp.responseText);
-      } 
+      		} 
 			else {
 				reject("File not Found");
-      }
+      		}
 		};
 		xmlhttp.send();
 	});
@@ -193,6 +193,8 @@ function getXMLHTTP(URL){
 	return myPromise;
 }
 
+
+// not used.
 async function getXMLHTTP2(consultItemURL){
 	let xmlhttp = new XMLHttpRequest();
 	xmlhttp.open("GET", consultItemURL, true);

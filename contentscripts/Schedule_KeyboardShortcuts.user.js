@@ -33,42 +33,6 @@ async function checkEnabled_Schedule(){
 // Event Listeners
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-// const myMap = new Map();
-// window.addEventListener("keydown", function(e){
-// 	// keys[e.key] = e.key;
-// 	// keys.push(e.key);
-// 	myMap.set(e.key, e.key);
-// 	// console.log(myMap);
-// 	console.log(e);
-// });
-
-// window.addEventListener("keyup", function(e){
-// 	// keys[e.key] = e.key;
-// 	// keys.push(e.key);
-// 	// console.log(myMap);
-// 	// console.log(e.key);
-// 	myMap.delete(e.key);
-// 	// console.log(myMap);
-// });
-
-// function compareMaps(map1, map2) {
-//     var testVal;
-//     if (map1.size !== map2.size) {
-//         return false;
-//     }
-//     for (var [key, val] of map1) {
-//         testVal = map2.get(key);
-//         // in cases of an undefined value, make sure the key
-//         // actually exists on the object so there are no false positives
-//         if (testVal !== val || (testVal === undefined && !map2.has(key))) {
-//             return false;
-//         }
-//     }
-//     return true;
-// }
-
-
-
 
 function scheduleKeyDownListener(schedule_keyboardShortcuts){
 	const openEChart_enabled = 

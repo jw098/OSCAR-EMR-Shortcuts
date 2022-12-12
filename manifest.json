@@ -1,6 +1,6 @@
 {
     "name": "OSCAR EMR Shortcuts",
-    "version": "1.5",
+    "version": "1.6",
     "manifest_version": 2,
     "description": "Keyboard shortcuts, buttons, automated actions for OSCAR EMR.",
     "background": {
@@ -130,14 +130,23 @@
         },
         {
             "matches": [
-                "*://*/*/eform/efmformslistadd.jsp*",
                 "*://*/*/eform/efmformadd_data.jsp*",
                 "*://*/*/eform/efmshowform_data.jsp*"
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
                 "contentscripts/utils.js",
-                "contentscripts/eForms_KeyboardShortcuts.user.js"
+                "contentscripts/eFormIndividual.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/eform/efmformslistadd.jsp*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
+                "contentscripts/eFormLibrary.user.js"
             ]
         },
         {
