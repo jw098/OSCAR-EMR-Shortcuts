@@ -821,6 +821,56 @@
     </section>
 
 
+    <section>
+      <h3>Inbox Item (Lab result, Scanned documents)</h3>
+      <div class="row">
+        <input id="inboxItem_labelLabs" type="checkbox" />
+        <label for="inboxItem_labelLabs">Label lab result (automatically done when opened)</label>
+      </div>
+      <div class="row">
+        <input id="inboxItem_shortcuts_enabled" type="checkbox" />
+        <label for="inboxItem_shortcuts_enabled">Enable keyboard shortcuts</label>
+
+        <div class="shortcut subRow1">
+          <input id="inboxItem_shortcut_acknowledge_enabled" type="checkbox" />
+          <label class="shortcutLabel">Acknowledge inbox item</label>
+          <input
+            id="inboxItem_shortcut_acknowledge_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="inboxItem_shortcut_openEChart_enabled" type="checkbox" />
+          <label class="shortcutLabel">Open E-Chart</label>
+          <input
+            id="inboxItem_shortcut_openEChart_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="inboxItem_shortcut_openTickler_enabled" type="checkbox" />
+          <label class="shortcutLabel">Open Tickler</label>
+          <input
+            id="inboxItem_shortcut_openTickler_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+      </div>
+    </section>
+
+
 
     <button id="save">Save</button>
     <button id="restore">Restore Defaults</button>

@@ -428,34 +428,36 @@ var defaultSettings = {
     }
   },
 
-  // inboxResult:{
-  //   inboxResult_keyboardShortcuts: {
-  //     inboxResult_shortcuts_enabled: true,
+  inboxItem:{
+    inboxItem_labelLabs: true,
 
-  //     inboxResult_shortcut_acknowledge_enabled: true,
-  //     inboxResult_shortcut_acknowledge_keybinding: {
-  //       ctrlKey: false,
-  //       shiftKey: false,
-  //       altKey: true,
-  //       key: '1'
-  //     },
-  //     inboxResult_shortcut_openEChart_enabled: true,
-  //     inboxResult_shortcut_openEChart_keybinding: {
-  //       ctrlKey: false,
-  //       shiftKey: false,
-  //       altKey: true,
-  //       key: 'q'
-  //     },
-  //     inboxResult_shortcut_openTickler_enabled: true,
-  //     inboxResult_shortcut_openTickler_keybinding: {
-  //       ctrlKey: false,
-  //       shiftKey: false,
-  //       altKey: true,
-  //       key: 'q'
-  //     },
+    inboxItem_keyboardShortcuts: {
+      inboxItem_shortcuts_enabled: true,
 
-  //   }
-  // },
+      inboxItem_shortcut_acknowledge_enabled: true,
+      inboxItem_shortcut_acknowledge_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      inboxItem_shortcut_openEChart_enabled: true,
+      inboxItem_shortcut_openEChart_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'q'
+      },
+      inboxItem_shortcut_openTickler_enabled: true,
+      inboxItem_shortcut_openTickler_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+
+    }
+  },
 
 
 };

@@ -1,6 +1,6 @@
 {
     "name": "OSCAR EMR Shortcuts",
-    "version": "1.6",
+    "version": "1.7",
     "manifest_version": 2,
     "description": "Keyboard shortcuts, buttons, automated actions for OSCAR EMR.",
     "background": {
@@ -181,9 +181,9 @@
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
                 "contentscripts/utils.js",
-                "contentscripts/InboxResult_KeyboardShortcuts.user.js",
-                "contentscripts/InboxResult_LabelLabs.user.js",
-                "contentscripts/InboxResult.user.js"
+                "contentscripts/InboxItem_KeyboardShortcuts.user.js",
+                "contentscripts/InboxItem_LabelLabs.user.js",
+                "contentscripts/InboxItem.user.js"
             ]
         },
         {

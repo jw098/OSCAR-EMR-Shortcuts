@@ -14,32 +14,32 @@
 // Keydown Event Listener
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-function keydownEventListener_InboxResult(){
+function keydownEventListener_InboxItem(inboxItem_keyboardShortcuts){
+	const acknowledge_enabled = 
+		inboxItem_keyboardShortcuts.inboxItem_shortcut_acknowledge_enabled;
+	const acknowledge_keybinding = 
+		inboxItem_keyboardShortcuts.inboxItem_shortcut_acknowledge_keybinding;
+	const openEChart_enabled = 
+		inboxItem_keyboardShortcuts.inboxItem_shortcut_openEChart_enabled;
+	const openEChart_keybinding = 
+		inboxItem_keyboardShortcuts.inboxItem_shortcut_openEChart_keybinding;
+	const openTickler_enabled = 
+		inboxItem_keyboardShortcuts.inboxItem_shortcut_openTickler_enabled;
+	const openTickler_keybinding = 
+		inboxItem_keyboardShortcuts.inboxItem_shortcut_openTickler_keybinding;
+
 	window.addEventListener('keydown', function(theEvent) {
-		//theEvent.stopPropagation();
-		//theEvent.preventDefault();
-		// var theKeyCode = theEvent.charCode;// || event.which;
-		// var theKey = String.fromCharCode(theKeyCode);
-		var theKey = theEvent.key;
-		var theAltKey = theEvent.altKey;
-		var theCtrlKey = theEvent.ctrlKey;
-		var theShiftKey= theEvent.shiftKey;
-	  
-		let currentURL = window.location.href;
-		const labResultPage = /lab\/CA\/ALL\/labDisplay/
-		const ticklerPage = /tickler\/ForwardDemographicTickler/
-		const documentPage = /dms\/showDocument/
 
 		switch(true){
-			case (theAltKey && theKey == 1):			// Alt+1: Acknowledge the result.
+			case acknowledge_enabled && keybindingMatches(acknowledge_keybinding, theEvent):
 				var theTarget = document.evaluate("//input[@value='Acknowledge']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();					
 				break;		
-			case (theAltKey && theKey == 'q'):  							// Alt+Q: open E-chart
+			case openEChart_enabled && keybindingMatches(openEChart_keybinding, theEvent):
 				var theTarget = document.evaluate("//input[contains(@value, 'E-Chart') or contains(@value, 'eChart')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();
 				break;
-			case (theAltKey && theKey == 'w'):  							// Alt+W: open Tickler
+			case openTickler_enabled && keybindingMatches(openTickler_keybinding, theEvent):
 				var theTarget = document.evaluate("//input[@value='Tickler']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();
 				break;

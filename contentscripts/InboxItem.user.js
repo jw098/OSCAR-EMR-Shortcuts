@@ -12,20 +12,28 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
-checkEnabled_InboxResult();
-async function checkEnabled_InboxResult(){
+checkEnabled_InboxItem();
+async function checkEnabled_InboxItem(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		// Label Labs
-		labelAllLabs();
-		labelLabsKeydownListener();
+		const inboxItemObj = await browser.storage.sync.get('inboxItem');
+		const inboxItem = inboxItemObj.inboxItem;
 
+		// Label Labs
+		if(inboxItem.inboxItem_labelLabs){
+			labelAllLabs();
+		}
+
+		// labelLabsKeydownListener();
 
 		// Keyboard shortcuts
-		keydownEventListener_InboxResult();
+		const inboxItem_keyboardShortcuts = inboxItem.inboxItem_keyboardShortcuts;
+		if (inboxItem_keyboardShortcuts.inboxItem_shortcuts_enabled){
+			keydownEventListener_InboxItem(inboxItem_keyboardShortcuts);
+		}
 	}
 }
