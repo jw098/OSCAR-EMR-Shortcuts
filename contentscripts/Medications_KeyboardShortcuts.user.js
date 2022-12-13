@@ -18,8 +18,14 @@ async function checkEnabled_Medications(){
 		return;
 	}
 	else {
-		keydownEventListener_MedsWindow();
-		onSavePrint_keydownListener_iFrame();
+		// key event listener main window
+		keydownEventListener_mainWindow();
+
+		// key event listener lightwindow
+		keydownEventListener_lightwindow();
+		
+
+		// confirm close
 		confirmCloseMeds();
 	}
 }
@@ -32,11 +38,9 @@ PURPOSE: keydown event listener. Checks if lightwindow loaded and does the corre
 
 NOTE: To register all actions when the iFrame is active, need separate listeners on the top-level window as well as the iFrame(s).
 */
-function keydownEventListener_MedsWindow(){
+function keydownEventListener_mainWindow(){
 	window.addEventListener('keydown', function(theEvent) {
-		if(!!document.getElementById("lightwindow_iframe")){  	// check if lightwindow loaded
-			iFrameKeyDownAction(theEvent);
-		}else{													// if lightwindow not loaded
+		if(!document.getElementById("lightwindow_iframe")){  	// check if lightwindow loaded
 			medsPageKeyDownAction(theEvent);
 		}
 	
@@ -74,6 +78,24 @@ function medsPageKeyDownAction(theEvent){
 	}
 }
 
+/*
+PURPOSE: keydown event listener. If lightwindow loaded,  perform the corresponding keydown action.
+
+NOTE: To register all actions when the lightwindow is active, need separate listeners on the top-level window as well as the iFrame(s).
+*/
+function keydownEventListener_lightwindow(){
+	// listener at the actual iFrame activated via the Save and Print button
+	onSavePrint_keydownListener_lightwindow();
+
+	// top level window listener
+	window.addEventListener('keydown', function(theEvent) {
+		if(!!document.getElementById("lightwindow_iframe")){  	// check if lightwindow loaded
+			lightwindowKeyDownAction(theEvent);
+		}
+	
+	}, true);
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Click listener
@@ -87,7 +109,7 @@ NOTE:
 - Sets vertical scroll height 
 - activates the lightwindow mutationObserver, which then activates the iFrame listener once loaded.
 */
-function onSavePrint_keydownListener_iFrame(){
+function onSavePrint_keydownListener_lightwindow(){
 	const inputButton = document.getElementById("saveButton");
 	inputButton.addEventListener('click', function(theEvent){
 		console.log('clicked Save and Print button');
@@ -112,17 +134,17 @@ BUG:
 - If you Fax and Paste to EMR with an empty pharmacy, the iframe2 listener no longer works. Need to close the light window and re-open. But the top level window listener still works. The iframe1 listener works as well. This is because the iframe2 disappears when you get the fax error. So the listener disappears as well.
   - not an important bug, since the user is likely to close the light window anyway to enter in a pharmacy.
 */
-function iFrameListener(){
+function lightwindowiFrameListener(){
 	let iframe = document.getElementById("lightwindow_iframe");
 	let iframeDoc = iframe.contentWindow.document || iframe.contentWindow;
 	iframeDoc.addEventListener('keydown', function(theEvent) {
-		iFrameKeyDownAction(theEvent);
+		lightwindowKeyDownAction(theEvent);
 	}, true);	
 	
 	let iframe2 = iframeDoc.getElementById("preview");
 	let iframeDoc2 = iframe2.contentWindow.document || iframe2.contentWindow;
 	iframeDoc2.addEventListener('keydown', function(theEvent) {
-		iFrameKeyDownAction(theEvent);
+		lightwindowKeyDownAction(theEvent);
 	}, true);
 
 	// console.log(iframe);
@@ -134,7 +156,7 @@ function iFrameListener(){
 }
 
 
-function iFrameKeyDownAction(theEvent){
+function lightwindowKeyDownAction(theEvent){
 	console.log('iframe keydown');
 	const theKey = theEvent.key;
 	const theAltKey = theEvent.altKey;
@@ -192,7 +214,7 @@ function lightwindowIFrameMutationObserver(){
 				if (document.getElementById("lightwindow_loading").getAttribute('style') == 'display: none;'){
 					console.log('no more mutations');
 					mutationObserver.disconnect();		
-					iFrameListener();
+					lightwindowiFrameListener();
 				}
 			}
 		}
