@@ -871,6 +871,97 @@
     </section>
 
 
+    <section>
+      <h3>Medications</h3>
+      <div class="row">
+        <input id="meds_confirmClose" type="checkbox" />
+        <label for="meds_confirmClose">When closing the Medications page, a pop-up confirmation dialog will appear if there are medications pending submission.</label>
+      </div>
+      <div class="row">
+        <input id="meds_mainWindowShortcuts_enabled" type="checkbox" />
+        <label for="meds_mainWindowShortcuts_enabled">Enable keyboard shortcuts in the main Medications window</label>
+
+        <div class="shortcut subRow1">
+          <input id="meds_mainWindowShortcut_savePrint_enabled" type="checkbox" />
+          <label class="shortcutLabel">Save and Print</label>
+          <input
+            id="meds_mainWindowShortcut_savePrint_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="meds_mainWindowShortcut_setFocusDrugSearchbox_enabled" type="checkbox" />
+          <label class="shortcutLabel">Set focus to the drug search box</label>
+          <input
+            id="meds_mainWindowShortcut_setFocusDrugSearchbox_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="meds_mainWindowShortcut_close_enabled" type="checkbox" />
+          <label class="shortcutLabel">Close Medications window</label>
+          <input
+            id="meds_mainWindowShortcut_close_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <input id="meds_lightWindowShortcuts_enabled" type="checkbox" />
+        <label for="meds_lightWindowShortcuts_enabled">Enable keyboard shortcuts in the pop-up print/fax window</label>
+
+        <div class="shortcut subRow1">
+          <input id="meds_lightWindowShortcut_print_enabled" type="checkbox" />
+          <label class="shortcutLabel">Print and paste into EMR</label>
+          <input
+            id="meds_lightWindowShortcut_print_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="meds_lightWindowShortcut_fax_enabled" type="checkbox" />
+          <label class="shortcutLabel">Fax and paste into EMR</label>
+          <input
+            id="meds_lightWindowShortcut_fax_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+        <div class="shortcut subRow1">
+          <input id="meds_lightWindowShortcut_close_enabled" type="checkbox" />
+          <label class="shortcutLabel">Close Print/Fax pop-up window</label>
+          <input
+            id="meds_lightWindowShortcut_close_keybinding"
+            class="customKey"
+            type="text"
+            value=""
+            keybinding=""
+            placeholder="press a key"
+          />
+        </div>
+      </div>
+    </section>
+
+
 
     <button id="save">Save</button>
     <button id="restore">Restore Defaults</button>

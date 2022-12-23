@@ -10,6 +10,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
+let lightWindowKeyboardShortcuts;
+let mainWindowKeyboardShortcuts
 checkEnabled_Medications();
 async function checkEnabled_Medications(){
 	const isEnabled = await browser.storage.sync.get('enabled');
@@ -18,15 +20,26 @@ async function checkEnabled_Medications(){
 		return;
 	}
 	else {
+
+		const medsObj = await browser.storage.sync.get('medications');
+		const medications = medsObj.medications;
+
 		// key event listener main window
-		keydownEventListener_mainWindow();
+		mainWindowKeyboardShortcuts = medications.meds_mainWindowKeyboardShortcuts;
+		if (mainWindowKeyboardShortcuts.meds_mainWindowShortcuts_enabled){
+			keydownEventListener_medsMainWindow();
+		}
 
 		// key event listener lightwindow
-		keydownEventListener_lightwindow();
-		
+		lightWindowKeyboardShortcuts = medications.meds_lightWindowKeyboardShortcuts;
+		if (lightWindowKeyboardShortcuts.meds_lightWindowShortcuts_enabled){
+			keydownEventListener_medsLightwindow();
+		}
 
 		// confirm close
-		confirmCloseMeds();
+		if(medications.meds_confirmClose){
+			confirmCloseMeds();
+		}
 	}
 }
 
@@ -38,7 +51,7 @@ PURPOSE: keydown event listener. Checks if lightwindow loaded and does the corre
 
 NOTE: To register all actions when the iFrame is active, need separate listeners on the top-level window as well as the iFrame(s).
 */
-function keydownEventListener_mainWindow(){
+function keydownEventListener_medsMainWindow(){
 	window.addEventListener('keydown', function(theEvent) {
 		if(!document.getElementById("lightwindow_iframe")){  	// check if lightwindow loaded
 			medsPageKeyDownAction(theEvent);
@@ -51,28 +64,30 @@ function keydownEventListener_mainWindow(){
 - Alt+1 clicks the 'Save and Print' button.
 */
 function medsPageKeyDownAction(theEvent){
-	const theKey = theEvent.key;
-	const theAltKey = theEvent.altKey;
-	const theCtrlKey = theEvent.ctrlKey;
-	const theShiftKey= theEvent.shiftKey;
+	const savePrint_enabled = 
+		mainWindowKeyboardShortcuts.meds_mainWindowShortcut_savePrint_enabled;
+	const savePrint_keybinding = 
+		mainWindowKeyboardShortcuts.meds_mainWindowShortcut_savePrint_keybinding;
+	const setFocusDrugSearchbox_enabled = 
+		mainWindowKeyboardShortcuts.meds_mainWindowShortcut_setFocusDrugSearchbox_enabled;
+	const setFocusDrugSearchbox_keybinding = 
+		mainWindowKeyboardShortcuts.meds_mainWindowShortcut_setFocusDrugSearchbox_keybinding;
+	const close_enabled = 
+		mainWindowKeyboardShortcuts.meds_mainWindowShortcut_close_enabled;
+	const close_keybinding = 
+		mainWindowKeyboardShortcuts.meds_mainWindowShortcut_close_keybinding;
+
 	let theTarget;
 	switch(true){
-		case theAltKey && theKey == 1:
+		case savePrint_enabled && keybindingMatches(savePrint_keybinding, theEvent):
 			theTarget = document.evaluate("//*[@id='saveButton']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
-			
-			// window.addEventListener('load', function(theEvent) {
-			// 	console.log("window done loading");
-			// });
-
-			// setTimeout(iFrameListener, 3000);  // wait for the lightwindow to load, before attaching listeners
-
 			break;
-		case theAltKey && theKey == 'a':
+		case setFocusDrugSearchbox_enabled && keybindingMatches(setFocusDrugSearchbox_keybinding, theEvent):
 			theTarget = document.getElementById("searchString");
 			theTarget.focus();
 			break;
-		case theAltKey && theKey == 'q':
+		case close_enabled && keybindingMatches(close_keybinding, theEvent):
 			window.close();
 			break;
 	}
@@ -83,7 +98,7 @@ PURPOSE: keydown event listener. If lightwindow loaded,  perform the correspondi
 
 NOTE: To register all actions when the lightwindow is active, need separate listeners on the top-level window as well as the iFrame(s).
 */
-function keydownEventListener_lightwindow(){
+function keydownEventListener_medsLightwindow(){
 	// listener at the actual iFrame activated via the Save and Print button
 	onSavePrint_keydownListener_lightwindow();
 
@@ -158,26 +173,35 @@ function lightwindowiFrameListener(){
 
 function lightwindowKeyDownAction(theEvent){
 	console.log('iframe keydown');
-	const theKey = theEvent.key;
-	const theAltKey = theEvent.altKey;
-	const theCtrlKey = theEvent.ctrlKey;
-	const theShiftKey= theEvent.shiftKey;
+	const print_enabled = 
+		lightWindowKeyboardShortcuts.meds_lightWindowShortcut_print_enabled;
+	const print_keybinding = 
+		lightWindowKeyboardShortcuts.meds_lightWindowShortcut_print_keybinding;
+	const fax_enabled = 
+		lightWindowKeyboardShortcuts.meds_lightWindowShortcut_fax_enabled;
+	const fax_keybinding = 
+		lightWindowKeyboardShortcuts.meds_lightWindowShortcut_fax_keybinding;
+	const close_enabled = 
+		lightWindowKeyboardShortcuts.meds_lightWindowShortcut_close_enabled;
+	const close_keybinding = 
+		lightWindowKeyboardShortcuts.meds_lightWindowShortcut_close_keybinding;
+
 	let iframe = document.getElementById("lightwindow_iframe");
 	let iframeDoc = iframe.contentWindow.document || iframe.contentWindow;
 
 	let theTarget;
 	switch(true){
-		case theAltKey && theKey == 1:
+		case print_enabled && keybindingMatches(print_keybinding, theEvent):
 			theTarget = iframeDoc.evaluate("//input[@value='Print & Paste into EMR']",iframeDoc,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			rxPageLoaded = false;
 			break;
-		case theAltKey && theKey == 2:
+		case fax_enabled && keybindingMatches(fax_keybinding, theEvent):
 			theTarget = iframeDoc.evaluate("//input[@value='Fax & Paste into EMR']",iframeDoc,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 			theTarget.click();
 			rxPageLoaded = false;
 			break;	
-		case theKey == 'Escape':
+		case close_enabled && keybindingMatches(close_keybinding, theEvent):
 			theTarget = document.getElementById("lightwindow_title_bar_close_link");
 			theTarget.click();
 			break;

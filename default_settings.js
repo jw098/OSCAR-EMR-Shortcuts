@@ -459,6 +459,62 @@ var defaultSettings = {
     }
   },
 
+  medications:{
+    meds_confirmClose: true,
+    
+    meds_mainWindowKeyboardShortcuts: {
+      meds_mainWindowShortcuts_enabled: true,
+
+      meds_mainWindowShortcut_savePrint_enabled: true,
+      meds_mainWindowShortcut_savePrint_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      meds_mainWindowShortcut_setFocusDrugSearchbox_enabled: true,
+      meds_mainWindowShortcut_setFocusDrugSearchbox_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      },
+      meds_mainWindowShortcut_close_enabled: true,
+      meds_mainWindowShortcut_close_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'q'
+      },
+    },
+
+    meds_lightWindowKeyboardShortcuts: {
+      meds_lightWindowShortcuts_enabled: true,
+
+      meds_lightWindowShortcut_print_enabled: true,
+      meds_lightWindowShortcut_print_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      meds_lightWindowShortcut_fax_enabled: true,
+      meds_lightWindowShortcut_fax_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '2'
+      },
+      meds_lightWindowShortcut_close_enabled: true,
+      meds_lightWindowShortcut_close_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        key: 'Escape'
+      },
+    }
+  },
+
 
 };
 
