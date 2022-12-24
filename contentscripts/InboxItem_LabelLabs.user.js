@@ -59,7 +59,6 @@ PURPOSE:
 - and another line inserted for the new labs text.
 */
 async function labelAllLabs(){
-	console.log('hihi');
 	$("[id^='labelspan']").before('<br />');
 	$("[id^='labelspan']").after('<br />');
 
@@ -185,9 +184,16 @@ function addNewLabsLabel(){
 /* 
 PURPOSE:
 - labels the current lab result
-- then posts the new labs.
+- rename only if current label is "(not set)" or empty string. Else will not run.  
  */
 function labelCurrentLabs(){
+
+	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label:")[1];
+	console.log(currentLabsResultsText);
+	if(!(currentLabsResultsText == "" || currentLabsResultsText.trim() == "(not set)")){
+		console.log('Label already set.')
+		return;
+	}
 
 	// Gets all lab results from the XML, which are either in table/tbody/tr/td[1]/a[1] or table/tbody/tr/td[1]/span
 	const allLabResults = document.querySelectorAll('table[name="tblDiscs"]>tbody>tr>td:first-child>:is(a:first-child, span)');
