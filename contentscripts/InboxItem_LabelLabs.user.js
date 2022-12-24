@@ -192,11 +192,6 @@ PURPOSE:
 - labels the current lab result, with labelLabsTrailingMarker appended to the end, so that we know which labels were done by this script vs manually done.
 - do not re-label the lab if has been manually set by someone.
   - i.e. rename only if current label is "(not set)" or empty string or previously labeled by labelCurrentLabs, as determined by ending in labelLabsTrailingMarker.
-
-NOTE:
-- bug in OSCAR. if you input a custom label. sometimes it doesn't stick. And you have to enter it twice before it sticks.
-  - but maybe this bug is because I put it on a separate line.
-  
  */
 function labelCurrentLabs(){
 	console.log('label labs');
