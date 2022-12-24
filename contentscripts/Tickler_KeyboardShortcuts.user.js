@@ -20,8 +20,19 @@ async function checkEnabled_Tickler(){
 		return;
 	}
 	else {
-		keyDownListener_Tickler();
-		setFocusToTicklerTextArea();
+		const ticklerObj = await browser.storage.sync.get('tickler');
+		const tickler = ticklerObj.tickler;
+
+		// keydown event listener
+		const tickler_keyboardShortcuts = tickler.tickler_keyboardShortcuts;
+		if (tickler_keyboardShortcuts.tickler_shortcuts_enabled){
+			keyDownListener_Tickler(tickler_keyboardShortcuts);
+		}
+
+		// set focus to text area
+		if(tickler.tickler_setFocusTextArea){
+			setFocusToTicklerTextArea();
+		}
 		
 	}
 }
@@ -31,33 +42,49 @@ async function checkEnabled_Tickler(){
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 
-function keyDownListener_Tickler(){
-	const ticklerHotkey1 = 'z';
-	const ticklerHotkey2 = 'w';
-	
+function keyDownListener_Tickler(tickler_keyboardShortcuts){
+	const close1_enabled = 
+		tickler_keyboardShortcuts.tickler_shortcut_close1_enabled;
+	const close1_keybinding = 
+		tickler_keyboardShortcuts.tickler_shortcut_close1_keybinding;
+	const close2_enabled = 
+		tickler_keyboardShortcuts.tickler_shortcut_close2_enabled;
+	const close2_keybinding = 
+		tickler_keyboardShortcuts.tickler_shortcut_close2_keybinding;
+	const submit_enabled = 
+		tickler_keyboardShortcuts.tickler_shortcut_submit_enabled;
+	const submit_keybinding = 
+		tickler_keyboardShortcuts.tickler_shortcut_submit_keybinding;
+	const submitWrite_enabled = 
+		tickler_keyboardShortcuts.tickler_shortcut_submitWrite_enabled;
+	const submitWrite_keybinding = 
+		tickler_keyboardShortcuts.tickler_shortcut_submitWrite_keybinding;
+	const setFocusTextArea_enabled = 
+		tickler_keyboardShortcuts.tickler_shortcut_setFocusTextArea_enabled;
+	const setFocusTextArea_keybinding = 
+		tickler_keyboardShortcuts.tickler_shortcut_setFocusTextArea_keybinding;
+
 	window.addEventListener('keydown', function(theEvent) {
-		//theEvent.stopPropagation();
-		//theEvent.preventDefault();
-		// var theKeyCode = theEvent.charCode;// || event.which;
-		// var theKey = String.fromCharCode(theKeyCode);
-		const theKey = theEvent.key;
-		const theAltKey = theEvent.altKey;
-		const theCtrlKey = theEvent.ctrlKey;
-		const theShiftKey= theEvent.shiftKey;
-	
 		switch(true){
-			case theAltKey && (theKey == ticklerHotkey1 || theKey == ticklerHotkey2):	// hotkeys to close window.
+			case close1_enabled && keybindingMatches(close1_keybinding, theEvent):
+			// hotkeys to close window.
 				window.close();
 				break;
-			case theAltKey && theKey == 1:
+			case close2_enabled && keybindingMatches(close2_keybinding, theEvent):
+			// hotkeys to close window.
+				window.close();
+				break;
+			case submit_enabled && keybindingMatches(submit_keybinding, theEvent):
 				var theTarget = document.evaluate("//input[@value='Submit and EXIT']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();
 				break;
-			case theAltKey && theKey == 2:
+			case submitWrite_enabled && keybindingMatches(submitWrite_keybinding, theEvent):
 				var theTarget = document.evaluate("//input[@value='Submit & Write to Encounter']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.click();
 				break;
-			case theAltKey && theKey == 'a':
+			case setFocusTextArea_enabled 
+				&& keybindingMatches(setFocusTextArea_keybinding, theEvent):
+				
 				var theTarget = document.evaluate("//textarea",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget.focus();
 				break;				

@@ -515,6 +515,50 @@ var defaultSettings = {
     }
   },
 
+  tickler:{
+    tickler_setFocusTextArea: true,
+
+    tickler_keyboardShortcuts: {
+      tickler_shortcuts_enabled: true,
+
+      tickler_shortcut_close1_enabled: true,
+      tickler_shortcut_close1_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'z'
+      },
+      tickler_shortcut_close2_enabled: true,
+      tickler_shortcut_close2_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+      tickler_shortcut_submit_enabled: true,
+      tickler_shortcut_submit_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      tickler_shortcut_submitWrite_enabled: true,
+      tickler_shortcut_submitWrite_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '2'
+      },
+      tickler_shortcut_setFocusTextArea_enabled: true,
+      tickler_shortcut_setFocusTextArea_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      },
+    }
+  },
+
 
 };
 
