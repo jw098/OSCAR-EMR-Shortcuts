@@ -22,9 +22,9 @@ async function checkEnabled_InboxItem(){
 	else {
 		const inboxItemObj = await browser.storage.sync.get('inboxItem');
 		const inboxItem = inboxItemObj.inboxItem;
-
 		// Label Labs
 		if(inboxItem.inboxItem_labelLabs){
+			// labelCurrentLabs();
 			labelAllLabs();
 		}
 

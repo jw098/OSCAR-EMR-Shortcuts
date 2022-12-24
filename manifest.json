@@ -165,9 +165,7 @@
         },
         {
             "matches": [
-                "*://*/*/lab/CA/ALL/labDisplay*",
-                "*://*/*oscar/dms/inboxManage.do*",
-                "*://*/*kaiemr/#/inbox*"
+                "*://*/*/lab/CA/ALL/labDisplay*"
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 

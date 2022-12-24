@@ -7,7 +7,7 @@
 // @grant	   none
 // ==/UserScript==
 
-
+const labelLabsTrailingMarker = "...";
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Event Listeners
@@ -69,6 +69,7 @@ async function labelAllLabs(){
 
 	labelCurrentLabs();
 	await addPrevVersionLabel();
+	// add timeout to allow for the Prev label to fully load
 	setTimeout(addNewLabsLabel, 300);
 }
 
@@ -158,18 +159,21 @@ function getXMLHTTP(givenURL){
 	});
 }
 
-
+/* 
+NOTES:
+- extracts the current and previous lab results. stripping away "Label:", and the trailing marker.
+ */
 function addNewLabsLabel(){
 	
-	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label: ")[1];
+	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label: ")[1].split(labelLabsTrailingMarker)[0];
 	const currentLabResultsList = currentLabsResultsText.split("/");
 
 	const nbsp = String.fromCharCode(160);
-	const oldLabelResultText = $("[id^='labelspan'] > i:nth-child(3)")[0].innerText.split("Prev:" + nbsp + nbsp)[1];
+	const oldLabelResultText = $("[id^='labelspan'] > i:nth-child(3)")[0].innerText.split("Prev:" + nbsp + nbsp)[1].split(labelLabsTrailingMarker)[0];
 	const oldLabelResultsList = oldLabelResultText.split("/");
 
-	// console.log(currentLabResultsList);
-	// console.log(oldLabelResultsList);
+	console.log(currentLabsResultsText);
+	console.log(oldLabelResultText);
 	let difference = currentLabResultsList.filter(x => !oldLabelResultsList.includes(x));
 	const newResultsText = difference.join("/");
 	// console.log(newResultsText);	
@@ -181,30 +185,54 @@ function addNewLabsLabel(){
 // Label Labs. Automatically labels lab results.
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 /* 
 PURPOSE:
-- labels the current lab result
-- rename only if current label is "(not set)" or empty string. Else will not run.  
+- labels the current lab result, with labelLabsTrailingMarker appended to the end, so that we know which labels were done by this script vs manually done.
+- do not re-label the lab if has been manually set by someone.
+  - i.e. rename only if current label is "(not set)" or empty string or previously labeled by labelCurrentLabs, as determined by ending in labelLabsTrailingMarker.
+
+NOTE:
+- bug in OSCAR. if you input a custom label. sometimes it doesn't stick. And you have to enter it twice before it sticks.
+  - but maybe this bug is because I put it on a separate line.
+  
  */
 function labelCurrentLabs(){
-
-	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label:")[1];
+	console.log('label labs');
+	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label:")[1].trim();
 	console.log(currentLabsResultsText);
-	if(!(currentLabsResultsText == "" || currentLabsResultsText.trim() == "(not set)")){
-		console.log('Label already set.')
-		return;
+	if	(
+		currentLabsResultsText == "" 
+		|| currentLabsResultsText == "(not set)" 
+		|| currentLabsResultsText.endsWith(labelLabsTrailingMarker)
+		)
+	{
+		// Gets all lab results from the XML, which are either in table/tbody/tr/td[1]/a[1] or table/tbody/tr/td[1]/span
+		const allLabResults = document.querySelectorAll('table[name="tblDiscs"]>tbody>tr>td:first-child>:is(a:first-child, span)');
+		let keyLabResults = extractKeyLabResults(allLabResults);
+		
+		/* 
+		- only add the labelLabsTrailingMarker if the result is not an empty string.
+		*/
+		let labelResult = keyLabResults;
+		if(labelResult != ""){
+			labelResult = keyLabResults + labelLabsTrailingMarker;
+		}
+		$("input[id*=acklabel]").val(labelResult);
+
+		const theLabelButton = document.querySelector("button[id*=createLabel]");
+		console.log(theLabelButton);
+		theLabelButton.click();
+		
+		// console.log(keyLabResults);
+		
+		// showKeyLabResultsTextBox(keyLabResults);
 	}
+	else {
+		console.log('Label likely manually set.');
 
-	// Gets all lab results from the XML, which are either in table/tbody/tr/td[1]/a[1] or table/tbody/tr/td[1]/span
-	const allLabResults = document.querySelectorAll('table[name="tblDiscs"]>tbody>tr>td:first-child>:is(a:first-child, span)');
-	let keyLabResults = extractKeyLabResults(allLabResults);
-	$("input[id*=acklabel]").val(keyLabResults);
-	$("button[id*=createLabel]").click();
-
-	// console.log(keyLabResults);
-	
-	showKeyLabResultsTextBox(keyLabResults);
-	
+	}
 
 }
 
