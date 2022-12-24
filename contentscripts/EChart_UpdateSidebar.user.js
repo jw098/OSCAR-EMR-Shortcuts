@@ -735,7 +735,7 @@ function updateMedicationsSidebar() {
             console.log("----meds---");
             console.log(currentPatientName);
             console.log(printPagePatientName);
-            if(currentPatientName != printPagePatientName){
+            if(currentPatientName.split("(")[0] != printPagePatientName.split("(")[0]){
             	console.log("Print page patient name doesn't match current patient name.");
             	return;
             }
