@@ -292,6 +292,12 @@ function openVitalsLink(){
 
 
 function openLink(fid){
+	// if given FID is not an integer, open the emptyFID.html page.
+	console.log(Number.isInteger(Number(fid)));
+	if(!Number.isInteger(Number(fid))){
+		window.open(browser.runtime.getURL("emptyFID.html"));
+		return;
+	}
 	var elements = (window.location.pathname.split('/', 2));
 	firstElement = (elements.slice(1));
 	vPath = ("https://" + location.host + "/"  + firstElement + "/");

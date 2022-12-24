@@ -263,13 +263,26 @@ function inputFilterNumbersOnly(e) {
 }
 
 function inputFocus(e) {
-  console.log('hello');
-  e.target.value = "";
+  // e.target.value = "";
 }
 
 function inputBlur(e) {
-  e.target.value =
-    keyCodeAliases[e.target.keyCode] || String.fromCharCode(e.target.keyCode);
+  const theTarget = e.target;
+  // theTarget.value =
+  //   keyCodeAliases[e.target.keyCode] || String.fromCharCode(e.target.keyCode);
+}
+
+/* 
+PURPOSE
+- if e.target.value is a URL, it will convert it to an FID.
+*/
+function convertURLToFID(e){
+  const theTargetValue = e.target.value;
+  if(theTargetValue.includes("fid=")){
+    theFID = theTargetValue.split("fid=")[1].split("&")[0];
+    console.log(theFID);
+    e.target.value = theFID;
+  }
 }
 
 function updateShortcutInputText(inputId, keyCode) {
@@ -529,6 +542,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function eventCaller(event, className, funcName) {
     if (!event.target.classList || !event.target.classList.contains(className)) {
+      console.log("no")
+      console.log(className)
+      console.log(event)
+      console.log(event.target)
+      console.log(event.target.classList)
       return;
     }
     funcName(event);
@@ -538,25 +556,33 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.addEventListener("keypress", (event) => {
     eventCaller(event, "customValue", inputFilterNumbersOnly);
   });
-  document.addEventListener("focus", (event) => {
+
+  // use focusin instead of focus, because focusin bubbles
+  document.addEventListener("focusin", (event) => {
     eventCaller(event, "customKey", inputFocus);
   });
-  document.addEventListener("blur", (event) => {
-    eventCaller(event, "customKey", inputBlur);
-  });
-  document.addEventListener("keydown", (event) => {
-    eventCaller(event, "customKey", recordKeyPress);
-    // console.log(event);
-  });
-  document.addEventListener("click", (event) => {
-    eventCaller(event, "removeParent", function () {
-      event.target.parentNode.remove();
+
+  // // use focusout instead of blur, because focusout bubbles
+  // document.addEventListener("focusout", (event) => {
+  //   eventCaller(event, "customKey", inputBlur);
+  // });
+  // document.addEventListener("keydown", (event) => {
+  //   eventCaller(event, "customKey", recordKeyPress);
+  //   // console.log(event);
+  // });
+
+    // use focusout instead of blur, because focusout bubbles
+    document.addEventListener("focusout", (event) => {
+      eventCaller(event, "customFID", convertURLToFID);
     });
+
+  document.addEventListener("click", (event) => {
     let theTarget = event.target;
     if(theTarget.type == "checkbox"){//theTarget.tagName  == "INPUT" && 
       setGreyout(theTarget);
     }
   });
+
   document.addEventListener("change", (event) => {
     eventCaller(event, "customDo", function () {
       if (customActionsNoValues.includes(event.target.value)) {

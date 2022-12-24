@@ -21,6 +21,9 @@
           "id": "{16c32f89-98e8-40d5-a501-bad068a645fd}"
         }
     },
+    "web_accessible_resources": [
+        "emptyFID.html"
+    ],
     "browser_action": {
       "default_icon": {
         "16": "icons/OSCAR_16px.png",
