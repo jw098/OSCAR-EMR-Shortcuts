@@ -107,10 +107,15 @@ function eChartPageHotkeys(eChart_mainWindow_keyboardShortcuts, theEvent){
 			keybindingMatches(eChart_shortcut_signSave_keybinding, theEvent):  // Sign and Save
 
 			theTarget = document.evaluate("id('save')/span/input[contains(@src,'note-save.png')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-			// document.getElementById("caseNote_note0").blur();
+			// setting focus to the button, and then clicking gives more consistent behavior. Otherwise, sometimes it gives the confirm dialog on close.
 			theTarget.focus();
-			setTimeout(function() {theTarget.click();}, 50);
-			// theTarget.click()
+			setTimeout(function() {
+				theTarget.click();				
+			}, 50);
+			// the manual closure of the window is because sometimes it doesn't automatically close after Save and Signing. This often happens when automatically pasting text from submitting a Tickler.
+			setTimeout(function() {
+				window.close();
+			}, 500);
 			break;
 		case eChart_shortcut_exit_enabled && 
 			keybindingMatches(eChart_shortcut_exit_keybinding, theEvent): // Exit
