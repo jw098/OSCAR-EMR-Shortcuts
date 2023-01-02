@@ -223,7 +223,7 @@ function recordKeyPress(e) {
     const keybindingText = keybindingToText(theKeybinding);
     e.target.value = keybindingText;
 
-    e.target.keybinding = theKeybinding;
+    // e.target.keybinding = theKeybinding;
 
     e.target.dataset.keybinding = JSON.stringify(theKeybinding);
 
@@ -315,7 +315,7 @@ NOTES:
 - then check the size of shortcutGroupsInConflict. if empty, hides the warning label.
 */
 function checkShortcutGroupConflict(shortcutGroup){
-  console.log(shortcutGroup);
+  // console.log(shortcutGroup);
   const inputListInSameGroup = Array.from(document.querySelectorAll(`input[data-shortcutgroup=${shortcutGroup}]`));
 
   /* 
@@ -336,7 +336,7 @@ function checkShortcutGroupConflict(shortcutGroup){
   */
   for (let i = 0; i < inputListInSameGroup.length; i++){
     const anInput = inputListInSameGroup[i];
-    const anInputKeybinding = anInput.keybinding;
+    const anInputKeybinding = JSON.parse(anInput.dataset.keybinding);
     const anInputWarning = anInput.parentNode.querySelector(".warning");
 
     if (isEmptyKeybinding(anInputKeybinding)){
@@ -346,7 +346,7 @@ function checkShortcutGroupConflict(shortcutGroup){
     const restOfInputList = inputListInSameGroup.slice(i+1);
     for (let j = 0; j < restOfInputList.length; j++){
       const anInputFromRestOfList = restOfInputList[j];
-      const anInputFromRestOfList_keybinding = anInputFromRestOfList.keybinding;
+      const anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList.dataset.keybinding);
       // console.log(anInputFromRestOfList);
       // console.log(anInput);
       if(isSameKeybinding(anInputKeybinding, anInputFromRestOfList_keybinding)){
@@ -502,16 +502,16 @@ function setSettingsFromOptionsPage(settingsStructure){
   let newSettings = {};
   for (const [key, value] of Object.entries(settingsStructure)){
     if (typeof value == "boolean"){
-      console.log(key);
+      // console.log(key);
       newSettings[key] = document.getElementById(key).checked;
       // console.log(document.getElementById(key).checked);
     } else if(typeof value == "string"){
       console.log(key);
       newSettings[key] = document.getElementById(key).value;
     } else if(key.includes("_keybinding")){
-      newSettings[key] = document.getElementById(key).keybinding;
+      newSettings[key] = JSON.parse(document.getElementById(key).dataset.keybinding);
       // console.log(value);
-      // console.log(document.getElementById(key).keybinding);
+      // console.log(newSettings[key]);
     }
     else{
       console.assert(typeof value == "object");
@@ -555,7 +555,7 @@ function restoreOptionsPageFromSettings(settingsObject){
     } else if(typeof value == "string"){
       document.getElementById(key).value = value;
     } else if(key.includes("_keybinding")){
-      document.getElementById(key).keybinding = value;
+      document.getElementById(key).dataset.keybinding = JSON.stringify(value);
       document.getElementById(key).value = keybindingToText(value);
       
       // console.log(value);
@@ -574,8 +574,7 @@ function findAllShortcutConflicts(settingsObject){
   // console.log(settingsObject);
   
   const allShortcutGroups = findAllShortcutGroups(settingsObject, new Set());
-  console.log(allShortcutGroups);
-  console.log('hi10');
+  // console.log(allShortcutGroups);
   for (let shortcutGroup of allShortcutGroups){
     checkShortcutGroupConflict(shortcutGroup);
   }
