@@ -364,6 +364,27 @@ var defaultSettings = {
         altKey: true,
         key: '1'
       },
+      apptEdit_shortcut_dur10_enabled: true,
+      apptEdit_shortcut_dur10_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'q'
+      },
+      apptEdit_shortcut_dur15_enabled: true,
+      apptEdit_shortcut_dur15_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+      apptEdit_shortcut_dur20_enabled: true,
+      apptEdit_shortcut_dur20_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      },
     }
 
   },
