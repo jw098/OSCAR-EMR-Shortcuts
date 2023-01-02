@@ -534,6 +534,7 @@ function restore_options() {
     // console.log(storage);
     restoreOptionsPageFromSettings(storage);
     findAllShortcutConflicts(storage);
+    greyoutExtensionIcon();
   });
 }
 
@@ -626,25 +627,74 @@ function show_experimental() {
 async function setTestSettings(){
   browser.storage.sync.set(testSettings);
 }
+
 /* 
-- assumes the element is an input type checkbox.
+PURPOSE: 
+- adds greyout to classlist of the given element. so that it can be greyed out using CSS.
+ASSUME: the element is an input type checkbox.
+NOTE:
+- gets greyout type: 
+  - if under a row: type is greyoutBlock. if under a subRow1, type is greyoutRow1. if under subRow2, type is greyoutRow2.
+- toggles greyoutType in the classlist of the given element's parent and all the child inputs.
+- greyoutType is used so that a given element can have multiple greyoutTypes, and will only stop being grey when all greyoutTypes are removed from teh classlist.
  */
 function setGreyout(theElement){
-  const parentTarget = theElement.parentNode;
-  let greyout;
-  if(parentTarget.classList.contains("subRow")){
-    greyout = "greyoutRow"
-  }else {
-    greyout = "greyoutBlock"
+  if (theElement.id == "enabled"){
+    setGreyoutAllSettings();
+    return;
   }
-  parentTarget.classList.toggle(greyout, !theElement.checked);
+  const greyoutType = getGreyoutType(theElement);
+  const parentTarget = theElement.parentNode;
+  parentTarget.classList.toggle(greyoutType, !theElement.checked);
   const customTextInputList = parentTarget.getElementsByTagName("INPUT");
-  for (i = 0 ;i < customTextInputList.length; i++){
+  for (let i = 0 ; i < customTextInputList.length; i++){
     const customKeyInput = customTextInputList[i];
-    customKeyInput.classList.toggle(greyout, !theElement.checked);  
+    customKeyInput.classList.toggle(greyoutType, !theElement.checked);  
   }
 }
 
+
+function getGreyoutType(theElement){
+  const parentTarget = theElement.parentNode;
+  const parentClassList = parentTarget.classList;
+  if(parentClassList.contains("row")){
+    return "greyoutBlock"
+  } else if(parentClassList.contains("subRow1")){
+    return "greyoutRow1"
+  } else if (parentClassList.contains("subRow2")){
+    return "greyoutRow2"
+  } else {
+    return getGreyoutType(parentTarget);
+  }
+}
+
+function setGreyoutAllSettings(){
+  const globalEnable = document.getElementById("enabled");
+  const allSettings = document.getElementById("allSettings");
+  const greyoutType = "greyoutAll"
+  allSettings.classList.toggle(greyoutType, !globalEnable.checked);
+  const customTextInputList = allSettings.getElementsByTagName("INPUT");
+  for (let i = 0 ; i < customTextInputList.length; i++){
+    const customKeyInput = customTextInputList[i];
+    customKeyInput.classList.toggle(greyoutType, !globalEnable.checked);  
+  }
+}
+/* 
+PURPOSE
+- greys out the extension icon if enabled is false.
+ */
+function greyoutExtensionIcon(){
+  const globalEnable = document.getElementById("enabled");
+  const enabled = globalEnable.checked;
+  const suffix = `${enabled ? "" : "_disabled"}.png`;
+  console.log(suffix);
+  chrome.browserAction.setIcon({
+    path: {
+      "16": "icons/OSCAR_16px" + suffix,
+      "32": "icons/OSCAR_32px" + suffix
+    }
+  });
+}
 
 document.addEventListener("DOMContentLoaded", async function () {
   // save_options();
@@ -716,8 +766,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   document.addEventListener("click", (event) => {
     let theTarget = event.target;
+    console.log(theTarget);
     if(theTarget.type == "checkbox"){//theTarget.tagName  == "INPUT" && 
+      console.log(theTarget);
       setGreyout(theTarget);
+    }
+
+    if(theTarget.id == "enabled"){
+      greyoutExtensionIcon();
     }
   });
 

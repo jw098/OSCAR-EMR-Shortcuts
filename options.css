@@ -95,8 +95,10 @@ input[type="text"] {
   margin: 5px 0px;
 }
 
-.greyoutRow,
-.greyoutBlock {
+.greyoutRow1,
+.greyoutRow2,
+.greyoutBlock,
+.greyoutAll {
   background-color: lightgrey;
   color: grey;
 }
