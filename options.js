@@ -224,8 +224,13 @@ function recordKeyPress(e) {
     e.target.value = keybindingText;
 
     e.target.keybinding = theKeybinding;
+
+    e.target.dataset.keybinding = JSON.stringify(theKeybinding);
+
     // console.log(e.target);
     // console.log(e.target.keybinding);
+    // console.log(JSON.parse(e.target.dataset.keybinding));
+
     e.preventDefault();
     e.stopPropagation();
   }
@@ -283,6 +288,114 @@ function convertURLToFID(e){
     console.log(theFID);
     e.target.value = theFID;
   }
+}
+
+let shortcutGroupsInConflict = new Set();
+
+/* 
+PURPOSE
+- check conflicts in keyboard shortcuts on the same page/shortcut group, given event.
+ */
+function checkShortcutConflictFromEvent(e){
+  const theTarget = e.target;
+  const shortcutGroup = e.target.getAttribute('data-shortcutgroup');
+  checkShortcutGroupConflict(shortcutGroup);
+}
+
+
+/* 
+PURPOSE
+- check conflicts in keyboard shortcuts on the same page/shortcut group.
+NOTES:
+- first the clean slate
+  - hides all warning labels in the group 
+  - removes this group from the list of shortcutGroupsInConlict.
+- then loops through all items, checking for conflicts
+  - if conflict found, turns on the warning label for the two items found to be in conflict. and adds this shortcut group to shortcutGroupsInConflict.
+- then check the size of shortcutGroupsInConflict. if empty, hides the warning label.
+*/
+function checkShortcutGroupConflict(shortcutGroup){
+  console.log(shortcutGroup);
+  const inputListInSameGroup = Array.from(document.querySelectorAll(`input[data-shortcutgroup=${shortcutGroup}]`));
+
+  /* 
+  - first the clean slate
+    - hides all warning labels in the group 
+    - removes this group from the list of shortcutGroupsInConlict.
+  */
+  for (let i = 0; i < inputListInSameGroup.length; i++){
+    const anInput = inputListInSameGroup[i];
+    const anInputWarning = anInput.parentNode.querySelector(".warning");
+    anInputWarning.classList.toggle("hide", true);
+  }
+  shortcutGroupsInConflict.delete(shortcutGroup);
+ 
+  /* 
+  - then loops through all items, checking for conflicts
+    - if conflict found, turns on the warning label for the two items found to be in conflict. and adds this shortcut group to shortcutGroupsInConflict.
+  */
+  for (let i = 0; i < inputListInSameGroup.length; i++){
+    const anInput = inputListInSameGroup[i];
+    const anInputKeybinding = anInput.keybinding;
+    const anInputWarning = anInput.parentNode.querySelector(".warning");
+
+    if (isEmptyKeybinding(anInputKeybinding)){
+      continue;
+    }
+
+    const restOfInputList = inputListInSameGroup.slice(i+1);
+    for (let j = 0; j < restOfInputList.length; j++){
+      const anInputFromRestOfList = restOfInputList[j];
+      const anInputFromRestOfList_keybinding = anInputFromRestOfList.keybinding;
+      // console.log(anInputFromRestOfList);
+      // console.log(anInput);
+      if(isSameKeybinding(anInputKeybinding, anInputFromRestOfList_keybinding)){
+        shortcutGroupsInConflict.add(shortcutGroup);
+        const h1Warning = document.querySelector("h1").querySelector(".warning");
+        h1Warning.classList.toggle("hide", false);
+
+        anInputWarning.classList.toggle("hide", false);
+        
+        const anInputFromRestOfList_warning = anInputFromRestOfList.parentNode.querySelector(".warning");
+        anInputFromRestOfList_warning.classList.toggle("hide", false);
+      }
+    }
+  }
+  
+
+  /* 
+  - then check the size of shortcutGroupsInConflict. if empty, hides the warning label.
+  */
+  if(shortcutGroupsInConflict.size == 0){
+    const h1Warning = document.querySelector("h1").querySelector(".warning");
+    h1Warning.classList.toggle("hide", true);
+  }
+
+}
+
+// function removeFromArray(array, item){
+//   var index = array.indexOf(item);
+//   if (index !== -1) {
+//     array.splice(index, 1);
+//   }
+// }
+
+// return true if the given keybinding is empty
+function isEmptyKeybinding(keybinding){
+  return keybinding.ctrlKey == false
+  && keybinding.altKey == false
+  && keybinding.shiftKey == false
+  && keybinding.key == "";
+
+}
+
+// return true if the given keybindings are the same
+function isSameKeybinding(keybinding1, keybinding2){
+  return keybinding1.ctrlKey == keybinding2.ctrlKey 
+  && keybinding1.altKey == keybinding2.altKey
+  && keybinding1.shiftKey == keybinding2.shiftKey
+  && keybinding1.key == keybinding2.key;
+
 }
 
 function updateShortcutInputText(inputId, keyCode) {
@@ -356,7 +469,7 @@ NOTE:
 */
 function save_options() {
   chrome.storage.sync.set(
-    settingsFromOption(defaultSettings),
+    setSettingsFromOptionsPage(defaultSettings),
     function () {
       // Update status to let user know options were saved.
       var status = document.getElementById("status");
@@ -385,7 +498,7 @@ function save_options() {
 
 
  */
-function settingsFromOption(settingsStructure){
+function setSettingsFromOptionsPage(settingsStructure){
   let newSettings = {};
   for (const [key, value] of Object.entries(settingsStructure)){
     if (typeof value == "boolean"){
@@ -402,7 +515,7 @@ function settingsFromOption(settingsStructure){
     }
     else{
       console.assert(typeof value == "object");
-      newSettings[key] =  settingsFromOption(value);
+      newSettings[key] =  setSettingsFromOptionsPage(value);
     }
 
   }
@@ -420,6 +533,7 @@ function restore_options() {
   chrome.storage.sync.get(defaultSettings, function (storage) {
     // console.log(storage);
     restoreOptionsPageFromSettings(storage);
+    findAllShortcutConflicts(storage);
   });
 }
 
@@ -455,6 +569,34 @@ function restoreOptionsPageFromSettings(settingsObject){
     }
   }
 }
+
+function findAllShortcutConflicts(settingsObject){
+  // console.log(settingsObject);
+  
+  const allShortcutGroups = findAllShortcutGroups(settingsObject, new Set());
+  console.log(allShortcutGroups);
+  console.log('hi10');
+  for (let shortcutGroup of allShortcutGroups){
+    checkShortcutGroupConflict(shortcutGroup);
+  }
+
+}
+
+function findAllShortcutGroups(settingsObject, shortcutGroupsSeenSoFar){
+  for (const [key, value] of Object.entries(settingsObject)){
+    if(key.includes("_keybinding")){
+      const shortcutGroup = document.getElementById(key).getAttribute('data-shortcutgroup');
+      shortcutGroupsSeenSoFar.add(shortcutGroup);
+    }
+    else if(typeof value == "object"){
+      findAllShortcutGroups(value, shortcutGroupsSeenSoFar);
+    }
+  }
+
+  // console.log(shortcutGroupsSeenSoFar);
+  return shortcutGroupsSeenSoFar;
+}
+
 
 /* 
 - stores the default settings to storage.
@@ -542,11 +684,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function eventCaller(event, className, funcName) {
     if (!event.target.classList || !event.target.classList.contains(className)) {
-      console.log("no")
-      console.log(className)
-      console.log(event)
-      console.log(event.target)
-      console.log(event.target.classList)
+      // console.log("no")
+      // console.log(className)
+      // console.log(event)
+      // console.log(event.target)
+      // console.log(event.target.classList)
       return;
     }
     funcName(event);
@@ -562,18 +704,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     eventCaller(event, "customKey", inputFocus);
   });
 
-  // // use focusout instead of blur, because focusout bubbles
-  // document.addEventListener("focusout", (event) => {
-  //   eventCaller(event, "customKey", inputBlur);
-  // });
-  // document.addEventListener("keydown", (event) => {
-  //   eventCaller(event, "customKey", recordKeyPress);
-  //   // console.log(event);
-  // });
+  document.addEventListener("keydown", (event) => {
+    eventCaller(event, "customKey", recordKeyPress);
+    // console.log(event);
+  });
 
     // use focusout instead of blur, because focusout bubbles
     document.addEventListener("focusout", (event) => {
       eventCaller(event, "customFID", convertURLToFID);
+      eventCaller(event, "customKey", checkShortcutConflictFromEvent);
     });
 
   document.addEventListener("click", (event) => {

@@ -10,6 +10,9 @@
     <header>
       <h1>OSCAR EMR Shortcuts
         <button id="saveHeader">Save</button>
+        <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+          WARNING: Shortcut conflict exists. 
+        </label>
         <div id="statusHeader"></div>
       </h1>
     </header>
@@ -98,17 +101,23 @@
       <div class="row">
         <input id="billingCodeInput_shortcuts_enabled" type="checkbox" />
         <label for="billingCodeInput_shortcuts_enabled">Enable keyboard shortcuts</label>
+
         <div class="shortcut subRow1">
           <input id="billingCodeInput_shortcut_continue_enabled" type="checkbox" />
           <label class="shortcutLabel">Click 'Continue'</label>
           <input
             id="billingCodeInput_shortcut_continue_keybinding" 
             class="customKey"
+            data-shortcutgroup="billingCodeInput_shortcut"
             type="text"
             value=""
+            data-keybinding=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="billingCodeInput_shortcut_officeVisitInputCode_enabled" type="checkbox" />
@@ -116,11 +125,15 @@
           <input
             id="billingCodeInput_shortcut_officeVisitInputCode_keybinding" 
             class="customKey"
+            data-shortcutgroup="billingCodeInput_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="billingCodeInput_shortcut_teleVisitInputCode_enabled" type="checkbox" />
@@ -128,11 +141,15 @@
           <input
             id="billingCodeInput_shortcut_teleVisitInputCode_keybinding" 
             class="customKey"
+            data-shortcutgroup="billingCodeInput_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="billingCodeInput_shortcut_setFocusDxCode_enabled" type="checkbox" />
@@ -140,11 +157,15 @@
           <input
             id="billingCodeInput_shortcut_setFocusDxCode_keybinding" 
             class="customKey"
+            data-shortcutgroup="billingCodeInput_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
 
@@ -159,11 +180,15 @@
           <input
             id="billingDxCodeSearch_shortcuts_confirm_keybinding" 
             class="customKey"
+            data-shortcutgroup="billingDxCodeSearch_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="billingDxCodeSearch_shortcuts_cancel_enabled" type="checkbox" />
@@ -171,11 +196,15 @@
           <input
             id="billingDxCodeSearch_shortcuts_cancel_keybinding" 
             class="customKey"
+            data-shortcutgroup="billingDxCodeSearch_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
       
@@ -193,11 +222,15 @@
           <input
             id="billingConfirm_shortcuts_saveBill_keybinding" 
             class="customKey"
+            data-shortcutgroup="billingConfirm_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="billingConfirm_shortcuts_pageEnd_enabled" type="checkbox" />
@@ -205,11 +238,15 @@
           <input
             id="billingConfirm_shortcuts_pageEnd_keybinding" 
             class="customKey"
+            data-shortcutgroup="billingConfirm_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
       
@@ -226,11 +263,15 @@
           <input
             id="cortico_shortcut_closeModal_keybinding" 
             class="customKey"
+            data-shortcutgroup="cortico_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>
@@ -255,11 +296,15 @@
           <input
             id="consultations_shortcuts_close_keybinding"
             class="customKey"
+            data-shortcutgroup="consultations_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="consultations_shortcuts_submit_enabled" type="checkbox" />
@@ -267,11 +312,15 @@
           <input
             id="consultations_shortcuts_submit_keybinding"
             class="customKey"
+            data-shortcutgroup="consultations_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>
@@ -287,11 +336,15 @@
           <input
             id="schedule_shortcut_openEChart_keybinding"
             class="customKey"
+            data-shortcutgroup="schedule_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="schedule_shortcut_openInbox_enabled" type="checkbox" />
@@ -299,11 +352,15 @@
           <input
             id="schedule_shortcut_openInbox_keybinding"
             class="customKey"
+            data-shortcutgroup="schedule_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
       
@@ -336,11 +393,15 @@
               <input
                 id="eChartButtonVitals_shortcuts_keybinding"
                 class="customKey"
+                data-shortcutgroup="eChart_shortcut"
                 type="text"
                 value=""
                 keybinding=""
                 placeholder="shortcut keys"
               />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
             </div>
           </div>
         </div>
@@ -373,11 +434,15 @@
               <input
                 id="eChartButton1_shortcuts_keybinding"
                 class="customKey"
+                data-shortcutgroup="eChart_shortcut"
                 type="text"
                 value=""
                 keybinding=""
                 placeholder="shortcut keys"
               />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
             </div>
           </div>
         </div>
@@ -410,11 +475,15 @@
               <input
                 id="eChartButton2_shortcuts_keybinding"
                 class="customKey"
+                data-shortcutgroup="eChart_shortcut"
                 type="text"
                 value=""
                 keybinding=""
                 placeholder="shortcut keys"
               />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
             </div>
           </div>
         </div>
@@ -447,11 +516,15 @@
               <input
                 id="eChartButton3_shortcuts_keybinding"
                 class="customKey"
+                data-shortcutgroup="eChart_shortcut"
                 type="text"
                 value=""
                 keybinding=""
                 placeholder="shortcut keys"
               />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
             </div>
           </div>
         </div>
@@ -484,11 +557,15 @@
               <input
                 id="eChartButton4_shortcuts_keybinding"
                 class="customKey"
+                data-shortcutgroup="eChart_shortcut"
                 type="text"
                 value=""
                 keybinding=""
                 placeholder="shortcut keys"
               />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
             </div>
           </div>
         </div>
@@ -520,11 +597,15 @@
               <input
                 id="eChartButton5_shortcuts_keybinding"
                 class="customKey"
+                data-shortcutgroup="eChart_shortcut"
                 type="text"
                 value=""
                 keybinding=""
                 placeholder="shortcut keys"
               />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
             </div>
           </div>
         </div>
@@ -556,11 +637,15 @@
               <input
                 id="eChartButton6_shortcuts_keybinding"
                 class="customKey"
+                data-shortcutgroup="eChart_shortcut"
                 type="text"
                 value=""
                 keybinding=""
                 placeholder="shortcut keys"
               />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
             </div>
           </div>
         </div>
@@ -574,11 +659,15 @@
           <input
             id="eformSearchBar_shortcuts_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         
         <div class="shortcut subRow1">
@@ -587,11 +676,15 @@
           <input
             id="eChart_shortcut_meds_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="eChart_shortcut_eforms_enabled" type="checkbox" />
@@ -599,11 +692,15 @@
           <input
             id="eChart_shortcut_eforms_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="eChart_shortcut_consults_enabled" type="checkbox" />
@@ -611,11 +708,15 @@
           <input
             id="eChart_shortcut_consults_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="eChart_shortcut_tickler_enabled" type="checkbox" />
@@ -623,11 +724,15 @@
           <input
             id="eChart_shortcut_tickler_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="eChart_shortcut_SignSaveBill_enabled" type="checkbox" />
@@ -635,11 +740,15 @@
           <input
             id="eChart_shortcut_SignSaveBill_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="eChart_shortcut_save_enabled" type="checkbox" />
@@ -647,11 +756,15 @@
           <input
             id="eChart_shortcut_save_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="eChart_shortcut_signSave_enabled" type="checkbox" />
@@ -659,11 +772,15 @@
           <input
             id="eChart_shortcut_signSave_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="eChart_shortcut_exit_enabled" type="checkbox" />
@@ -671,11 +788,15 @@
           <input
             id="eChart_shortcut_exit_keybinding"
             class="customKey"
+            data-shortcutgroup="eChart_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="shortcut keys"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="row">
           <input id="eChart_CPPWindow_shortcuts_enabled" type="checkbox" />
@@ -686,11 +807,15 @@
             <input
               id="CPPWindow_shortcut_signSave_keybinding"
               class="customKey"
+              data-shortcutgroup="CPPWindow_shortcut"
               type="text"
               value=""
               keybinding=""
               placeholder="press a key"
             />
+            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+              WARNING: Shortcut conflicts with another shortcut on the same page. 
+            </label>
           </div>
           <div class="shortcut subRow1">
             <input id="CPPWindow_shortcut_cancel_enabled" type="checkbox" />
@@ -698,11 +823,15 @@
             <input
               id="CPPWindow_shortcut_cancel_keybinding"
               class="customKey"
+              data-shortcutgroup="CPPWindow_shortcut"
               type="text"
               value=""
               keybinding=""
               placeholder="press a key"
             />
+            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+              WARNING: Shortcut conflicts with another shortcut on the same page. 
+            </label>
           </div>
         </div>
       </div>
@@ -719,11 +848,15 @@
           <input
             id="apptEdit_shortcut_updateAppt_keybinding"
             class="customKey"
+            data-shortcutgroup="apptEdit_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>
@@ -740,11 +873,15 @@
           <input
             id="eFormIndividual_shortcut_submit_keybinding"
             class="customKey"
+            data-shortcutgroup="eFormIndividual_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="eFormIndividual_shortcut_printSubmit_enabled" type="checkbox" />
@@ -752,11 +889,15 @@
           <input
             id="eFormIndividual_shortcut_printSubmit_keybinding"
             class="customKey"
+            data-shortcutgroup="eFormIndividual_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>
@@ -773,11 +914,15 @@
           <input
             id="eFormLibrary_shortcut_close_keybinding"
             class="customKey"
+            data-shortcutgroup="eFormLibrary_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>
@@ -799,11 +944,15 @@
           <input
             id="inbox_shortcut_close_keybinding"
             class="customKey"
+            data-shortcutgroup="inbox_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="inbox_shortcut_openResult_enabled" type="checkbox" />
@@ -811,11 +960,15 @@
           <input
             id="inbox_shortcut_openResult_keybinding"
             class="customKey"
+            data-shortcutgroup="inbox_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>
@@ -839,11 +992,15 @@
           <input
             id="inboxItem_shortcut_acknowledge_keybinding"
             class="customKey"
+            data-shortcutgroup="inboxItem_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="inboxItem_shortcut_openEChart_enabled" type="checkbox" />
@@ -851,11 +1008,15 @@
           <input
             id="inboxItem_shortcut_openEChart_keybinding"
             class="customKey"
+            data-shortcutgroup="inboxItem_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="inboxItem_shortcut_openTickler_enabled" type="checkbox" />
@@ -863,11 +1024,15 @@
           <input
             id="inboxItem_shortcut_openTickler_keybinding"
             class="customKey"
+            data-shortcutgroup="inboxItem_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>
@@ -889,11 +1054,15 @@
           <input
             id="meds_mainWindowShortcut_savePrint_keybinding"
             class="customKey"
+            data-shortcutgroup="medsMainWindow_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="meds_mainWindowShortcut_setFocusDrugSearchbox_enabled" type="checkbox" />
@@ -901,11 +1070,15 @@
           <input
             id="meds_mainWindowShortcut_setFocusDrugSearchbox_keybinding"
             class="customKey"
+            data-shortcutgroup="medsMainWindow_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="meds_mainWindowShortcut_close_enabled" type="checkbox" />
@@ -913,11 +1086,15 @@
           <input
             id="meds_mainWindowShortcut_close_keybinding"
             class="customKey"
+            data-shortcutgroup="medsMainWindow_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
       <div class="row">
@@ -930,11 +1107,15 @@
           <input
             id="meds_lightWindowShortcut_print_keybinding"
             class="customKey"
+            data-shortcutgroup="medsLightWindow_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="meds_lightWindowShortcut_fax_enabled" type="checkbox" />
@@ -942,11 +1123,15 @@
           <input
             id="meds_lightWindowShortcut_fax_keybinding"
             class="customKey"
+            data-shortcutgroup="medsLightWindow_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="meds_lightWindowShortcut_close_enabled" type="checkbox" />
@@ -954,11 +1139,15 @@
           <input
             id="meds_lightWindowShortcut_close_keybinding"
             class="customKey"
+            data-shortcutgroup="medsLightWindow_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>
@@ -980,11 +1169,15 @@
           <input
             id="tickler_shortcut_close1_keybinding"
             class="customKey"
+            data-shortcutgroup="tickler_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="tickler_shortcut_close2_enabled" type="checkbox" />
@@ -992,11 +1185,15 @@
           <input
             id="tickler_shortcut_close2_keybinding"
             class="customKey"
+            data-shortcutgroup="tickler_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="tickler_shortcut_submit_enabled" type="checkbox" />
@@ -1004,11 +1201,15 @@
           <input
             id="tickler_shortcut_submit_keybinding"
             class="customKey"
+            data-shortcutgroup="tickler_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="tickler_shortcut_submitWrite_enabled" type="checkbox" />
@@ -1016,11 +1217,15 @@
           <input
             id="tickler_shortcut_submitWrite_keybinding"
             class="customKey"
+            data-shortcutgroup="tickler_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
         <div class="shortcut subRow1">
           <input id="tickler_shortcut_setFocusTextArea_enabled" type="checkbox" />
@@ -1028,11 +1233,15 @@
           <input
             id="tickler_shortcut_setFocusTextArea_keybinding"
             class="customKey"
+            data-shortcutgroup="tickler_shortcut"
             type="text"
             value=""
             keybinding=""
             placeholder="press a key"
           />
+          <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+            WARNING: Shortcut conflicts with another shortcut on the same page. 
+          </label>
         </div>
       </div>
     </section>

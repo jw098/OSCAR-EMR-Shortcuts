@@ -48,7 +48,7 @@ header {
 header,
 section {
   min-width: 600px;
-  max-width: 738px;
+  max-width: 850px;
 }
 section {
   padding-left: 18px;
@@ -217,4 +217,13 @@ select {
   width: 250px;
 }
 
+.warning{
+  color:white;
+  background-color: red;
+}
+
+.hide{
+  display: none;
+
+}
 
