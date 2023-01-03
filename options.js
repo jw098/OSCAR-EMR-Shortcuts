@@ -459,6 +459,36 @@ function createKeyBindings(item) {
   });
 }
 
+async function checkAllSettings(){
+  const settingsObject = await browser.storage.sync.get(defaultSettings);
+  adjustAllSettings(true, settingsObject);
+}
+
+async function uncheckAllSettings(){
+  const settingsObject = await browser.storage.sync.get(defaultSettings);
+  adjustAllSettings(false, settingsObject);
+}
+
+function adjustAllSettings(checkAllSettings, settingsObject){
+  for (const [key, value] of Object.entries(settingsObject)){
+    if (typeof value == "boolean"){
+      const theTarget = document.getElementById(key);
+      theTarget.checked = checkAllSettings;
+      highlightSaveButton(theTarget);
+      setGreyout(theTarget);
+
+      if(key == "enabled"){
+        greyoutExtensionIcon();
+      }
+    } else if(key.includes("_keybinding")){
+      continue;      
+    }
+    else if (typeof value == "object"){
+      adjustAllSettings(checkAllSettings, value);
+    }
+  }
+}
+
 
 /* 
 - Saves options to chrome.storage. 
@@ -691,6 +721,7 @@ function greyoutExtensionIcon(){
   const globalEnable = document.getElementById("enabled");
   const enabled = globalEnable.checked;
   const suffix = `${enabled ? "" : "_disabled"}.png`;
+  console.log(enabled);
   console.log(suffix);
   chrome.browserAction.setIcon({
     path: {
@@ -717,7 +748,7 @@ async function highlightSaveButton(theTarget){
   else {
     unsavedChanges.delete(theTarget);
   }
-  console.log(unsavedChanges);
+  // console.log(unsavedChanges);
 
   // toggle optionsUnsaved in the save button classlist, depending on if unsavedChanges is empty.
   document.getElementById("saveHeader").classList.toggle("optionsUnsaved", unsavedChanges.size != 0);
@@ -731,7 +762,7 @@ PURPOSE
 async function checkOptionsUnsaved(theTarget){
   const targetID = theTarget.id;
   const settingsObject = await browser.storage.sync.get(defaultSettings);
-  console.log(targetID);
+  // console.log(targetID);
   const targetValueInSettings = getTargetValueFromSettings(targetID, settingsObject);
 
   /*
@@ -794,10 +825,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   // await checkStoredSettingsStructure();
   restore_options();
 
-  console.log(await browser.storage.sync.get(defaultSettings));
+  const settingsStructure = await browser.storage.sync.get(defaultSettings)
+  // console.log(settingsStructure);
 
   document.getElementById("save").addEventListener("click", save_options);
   document.getElementById("saveHeader").addEventListener("click", save_options);
+  // document.getElementById("checkAllSettings").addEventListener("click", checkAllSettings);
+  // document.getElementById("uncheckAllSettings").addEventListener("click", uncheckAllSettings);
+
   window.addEventListener('keydown', function(theEvent) {
 		var theKey = theEvent.key;
 		var theAltKey = theEvent.altKey;

@@ -234,3 +234,8 @@ select {
   color:white;
 }
 
+#globalEnable{
+  /* background-color: orange; */
+  border: 2px solid black;
+}
+
