@@ -483,6 +483,10 @@ function save_options() {
       setTimeout(function () {
         statusHeader.textContent = "";
       }, 1000);
+
+      // remove optionsUnSaved from saveHeader classlist
+      document.getElementById("saveHeader").classList.toggle("optionsUnsaved", false);
+
     }
   );
 
@@ -696,6 +700,90 @@ function greyoutExtensionIcon(){
   });
 }
 
+let unsavedChanges = new Set();
+
+/* 
+PURPOSE
+- check if targetValue in options matches the value settings. If not, add it to set of unsavedChanges
+- toggle optionsUnsaved in the save button classlist, depending on if unsavedChanges is empty.
+*/
+async function highlightSaveButton(theTarget){
+  const isOptionsUnsaved = await checkOptionsUnsaved(theTarget);
+
+  // if the current target is not saved to settings, add it to the set of unsavedChanges.
+  if (isOptionsUnsaved){
+    unsavedChanges.add(theTarget);
+  }
+  else {
+    unsavedChanges.delete(theTarget);
+  }
+  console.log(unsavedChanges);
+
+  // toggle optionsUnsaved in the save button classlist, depending on if unsavedChanges is empty.
+  document.getElementById("saveHeader").classList.toggle("optionsUnsaved", unsavedChanges.size != 0);
+  
+}
+
+/* 
+PURPOSE
+- return true if the targetValue in options is different than the value in settings.
+ */
+async function checkOptionsUnsaved(theTarget){
+  const targetID = theTarget.id;
+  const settingsObject = await browser.storage.sync.get(defaultSettings);
+  console.log(targetID);
+  const targetValueInSettings = getTargetValueFromSettings(targetID, settingsObject);
+
+  /*
+  - get targetValue from options page. compare to the targetValue from saved settings.
+  - the targetValue from options will be different depending on the type of target.
+   */
+  let isOptionsUnsaved;
+  let targetValueInOptions;
+  if (theTarget.type == "checkbox"){
+    targetValueInOptions = theTarget.checked;
+    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
+  }
+  else if (theTarget.classList.contains("customKey")){
+    targetValueInOptions = JSON.parse(theTarget.dataset.keybinding);
+    isOptionsUnsaved = !keybindingMatches(targetValueInSettings, targetValueInOptions);
+  }
+  else if (theTarget.classList.contains("customFID")){
+    targetValueInOptions = theTarget.value;
+    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
+  }
+  else if (theTarget.classList.contains("customButtonTitle")){
+    targetValueInOptions = theTarget.value;
+    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
+  }
+
+  return isOptionsUnsaved;
+}
+
+
+function getTargetValueFromSettings(targetID, settingsStructure){
+  // console.log(targetID);
+  let targetValue = "not found";
+  for (const [key, value] of Object.entries(settingsStructure)){
+    // console.log(key);
+    if(key == targetID){
+      targetValue = value;
+      break;
+    } 
+    else if(key.includes("_keybinding")){
+      continue;
+    }
+    else if(typeof value == "object"){
+      targetValue = getTargetValueFromSettings(targetID, value);
+      if (targetValue != "not found"){
+        break;
+      }
+    }
+  }
+
+  return targetValue;
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
   // save_options();
 
@@ -733,14 +821,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function eventCaller(event, className, funcName) {
     if (!event.target.classList || !event.target.classList.contains(className)) {
-      // console.log("no")
-      // console.log(className)
-      // console.log(event)
       // console.log(event.target)
       // console.log(event.target.classList)
       return;
     }
     funcName(event);
+  }
+
+  function targetEventCaller(theTarget, className, funcName) {
+    if (!theTarget.classList || !theTarget.classList.contains(className)) {
+      return;
+    }
+    funcName(theTarget);
   }
 
   // document.getElementById("schedule_shortcut_openInbox_keybinding").value = "hihi100"; 
@@ -760,16 +852,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // use focusout instead of blur, because focusout bubbles
     document.addEventListener("focusout", (event) => {
+      let theTarget = event.target;
       eventCaller(event, "customFID", convertURLToFID);
       eventCaller(event, "customKey", checkShortcutConflictFromEvent);
+      targetEventCaller(theTarget, "customKey", highlightSaveButton);
+      targetEventCaller(theTarget, "customFID", highlightSaveButton);
+      targetEventCaller(theTarget, "customButtonTitle", highlightSaveButton);
+      
     });
 
   document.addEventListener("click", (event) => {
     let theTarget = event.target;
-    console.log(theTarget);
     if(theTarget.type == "checkbox"){//theTarget.tagName  == "INPUT" && 
-      console.log(theTarget);
       setGreyout(theTarget);
+      highlightSaveButton(theTarget);
     }
 
     if(theTarget.id == "enabled"){
