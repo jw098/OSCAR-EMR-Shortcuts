@@ -42,12 +42,26 @@ function keydownEventListener_eFormIndividual(eFormIndividual_keyboardShortcuts)
 		eFormIndividual_keyboardShortcuts.eFormIndividual_shortcut_printSubmit_keybinding;	
 	
 	window.addEventListener('keydown', function(theEvent) {
+		let theTarget;
 		switch(true){
 			case submit_enabled && keybindingMatches(submit_keybinding, theEvent):
-				$('#SubmitButton').click();
+				// console.log(document.querySelector('[type="submit"]'));
+				// console.log(document.querySelector('[name="SubmitButton"]'));
+				// console.log(document.querySelector('#SubmitButton'));
+				theTarget = 
+					document.querySelector('#SubmitButton') 
+					|| document.querySelector('[type="submit"]') 
+					|| document.querySelector('[name="SubmitButton"]')
+					|| document.querySelector('[value="Submit"]');
+				theTarget.click();
 				break;
 			case printSubmit_enabled && keybindingMatches(printSubmit_keybinding, theEvent):
-				$('#PrintSubmitButton').click();
+				theTarget = 
+					document.querySelector('#PrintSubmitButton') 
+					|| document.querySelector('[name="PrintSubmitButton"]')
+					|| document.querySelector('[value="Print and Submit"]')
+					|| document.querySelector('[value="Print & Submit"]');
+				theTarget.click();
 				break;
 		}
 	}, true);
