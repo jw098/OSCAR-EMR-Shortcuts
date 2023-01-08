@@ -61,6 +61,27 @@ var defaultSettings = {
     }
   },
 
+  billingServiceCodeSearch:{
+    billingServiceCodeSearch_keyboardShortcuts: {
+      billingServiceCodeSearch_shortcuts_enabled: true,
+
+      billingServiceCodeSearch_shortcuts_confirm_enabled: true,
+      billingServiceCodeSearch_shortcuts_confirm_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      billingServiceCodeSearch_shortcuts_cancel_enabled: true,
+      billingServiceCodeSearch_shortcuts_cancel_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        key: 'Escape'
+      },
+    }
+  },
+
   billingConfirm:{
     billingConfirm_PageEnd: true,
     billingConfirm_keyboardShortcuts: {

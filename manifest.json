@@ -63,6 +63,15 @@
         },
         {
             "matches": [
+                "*://*/*billing/CA/BC/billingCodeNewSearch.jsp?*"
+            ],
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/BCBilling_ServiceCodeSearch.js"
+            ]
+        },
+        {
+            "matches": [
                 "*://*/*billing.do?billRegion=BC*", 
                 "*://*/*CaseManagementEntry.do*",
                 "*://*/*SaveBilling.do*",
