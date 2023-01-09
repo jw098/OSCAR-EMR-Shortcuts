@@ -374,6 +374,42 @@ var defaultSettings = {
     }
   },
 
+  apptAdd:{
+    apptAdd_keyboardShortcuts: {
+      apptAdd_shortcuts_enabled: true,
+
+      apptAdd_shortcut_updateAppt_enabled: true,
+      apptAdd_shortcut_updateAppt_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+      apptAdd_shortcut_dur10_enabled: true,
+      apptAdd_shortcut_dur10_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'q'
+      },
+      apptAdd_shortcut_dur15_enabled: true,
+      apptAdd_shortcut_dur15_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+      apptAdd_shortcut_dur20_enabled: true,
+      apptAdd_shortcut_dur20_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'a'
+      },
+    }
+
+  },
+
   apptEdit:{
     apptEdit_keyboardShortcuts: {
       apptEdit_shortcuts_enabled: true,
