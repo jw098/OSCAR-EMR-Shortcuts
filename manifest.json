@@ -232,7 +232,16 @@
             ],
             "js": [
                 "contentscripts/utils.js",
-                "contentscripts/AppointmentsEdit.user.js"
+                "contentscripts/AppointmentEdit.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/appointment/addappointment.jsp*"
+            ],
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/AppointmentAdd.js"
             ]
         }
       ]

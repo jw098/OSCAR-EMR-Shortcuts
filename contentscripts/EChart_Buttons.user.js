@@ -293,8 +293,10 @@ function openVitalsLink(){
 
 function openLink(fid){
 	// if given FID is not an integer, open the emptyFID.html page.
-	console.log(Number.isInteger(Number(fid)));
-	if(!Number.isInteger(Number(fid))){
+	// console.log(fid);
+	// console.log(Number(fid));
+	// console.log(Number.isInteger(Number(fid)));
+	if(fid == "" || !Number.isInteger(Number(fid))){
 		window.open(browser.runtime.getURL("emptyFID.html"));
 		return;
 	}
