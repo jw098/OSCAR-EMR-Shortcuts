@@ -116,9 +116,21 @@ NOTE
 - adds the forms that were posted today to the sidebar.
 - for forms posted today that are already listed in the sidebar, my version override it and will be posted instead.
 */
-function updateEFormSidebar() {
+async function updateEFormSidebar() {
+	const otherPageXMLText = await getXMLHTTP(urlAddedEForms());
+	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
+	const postedItemsNodeList = otherPageHTML.querySelectorAll(".elements > tbody:nth-child(1) > tr"); 
+	const postedItemsTodayList = findEFormsPostedToday(postedItemsNodeList);
 
-    let xmlhttp = new XMLHttpRequest();
+	console.log('----eforms----');
+	console.log(postedItemsTodayList);
+
+	addPostedEFormsBlock();
+
+	$("#postedEFormsBlock").html("");
+	$("#postedEFormsBlock").append(eFormsObjectListToHTML(postedItemsTodayList));
+
+    /* let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             const otherPageXMLText = xmlhttp.responseText;   
@@ -141,7 +153,7 @@ function updateEFormSidebar() {
         }
     };
 	xmlhttp.open("GET", urlAddedEForms(), true);
-	xmlhttp.send();
+	xmlhttp.send(); */
 }
 
 // function removeEChartEFormsPostedToday(){
@@ -263,32 +275,45 @@ NOTE
 - adds the forms that were posted today to the sidebar.
 - for forms posted today that are already listed in the sidebar, my version override it and will be posted instead.
 */
-function updateConsultationsSidebar() {
+async function updateConsultationsSidebar() {
+	const otherPageXMLText = await getXMLHTTP(urlAddedConsults());
+	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
+	const postedItemsNodeList = otherPageHTML.querySelectorAll(".MainTableRightColumn > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr"); 
+	const postedItemsTodayList = findConsultsPostedToday(postedItemsNodeList);
+
+	console.log('---consults---');
+	console.log(postedItemsTodayList);
+
+	addPostedConsultsBlock();
 	
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            const otherPageXMLText = xmlhttp.responseText;   
-            if (!otherPageXMLText) { 
-                return;
-            }
+	$("#postedConsultsBlock").html("");
+	$("#postedConsultsBlock").append(consultsObjectListToHTML(postedItemsTodayList));
+	
 
-            const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
-            const postedItemsNodeList = otherPageHTML.querySelectorAll(".MainTableRightColumn > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr"); 
-            const postedItemsTodayList = findConsultsPostedToday(postedItemsNodeList);
+    // let xmlhttp = new XMLHttpRequest();
+    // xmlhttp.onreadystatechange = function() {
+    //     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    //         const otherPageXMLText = xmlhttp.responseText;   
+    //         if (!otherPageXMLText) { 
+    //             return;
+    //         }
 
-            console.log('---consults---');
-            console.log(postedItemsTodayList);
+    //         const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
+    //         const postedItemsNodeList = otherPageHTML.querySelectorAll(".MainTableRightColumn > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr"); 
+    //         const postedItemsTodayList = findConsultsPostedToday(postedItemsNodeList);
 
-            addPostedConsultsBlock();
+    //         console.log('---consults---');
+    //         console.log(postedItemsTodayList);
+
+    //         addPostedConsultsBlock();
             
-            $("#postedConsultsBlock").html("");
-			$("#postedConsultsBlock").append(consultsObjectListToHTML(postedItemsTodayList));
+    //         $("#postedConsultsBlock").html("");
+	// 		$("#postedConsultsBlock").append(consultsObjectListToHTML(postedItemsTodayList));
 
-        }
-    };
-	xmlhttp.open("GET", urlAddedConsults(), true);
-	xmlhttp.send();
+    //     }
+    // };
+	// xmlhttp.open("GET", urlAddedConsults(), true);
+	// xmlhttp.send();
 }
 
 
@@ -408,296 +433,6 @@ function isMatchingConsultReqID(otherPageReqID){
 
 
 /////////////////////////////////////////////////////
-// Update Consultations Async Sidebar
-/////////////////////////////////////////////////////
-
-/*
-NOTE
-- adds the forms that were posted today to the sidebar.
-- for forms posted today that are already listed in the sidebar, my version override it and will be posted instead.
-*/
-function updateConsultationsSidebarAsync() {
-	console.log('---consults---');
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = async function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            const otherPageXMLText = xmlhttp.responseText;   
-            if (!otherPageXMLText) { 
-                return;
-            }
-            
-            const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
-            const postedItemsNodeList = otherPageHTML.querySelectorAll(".MainTableRightColumn > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr"); 
-            
-            const postedItemsTodayList = await findConsultsPostedTodayAsync(postedItemsNodeList);
-            console.log(postedItemsTodayList);
-            addPostedConsultsBlock();
-            
-            $("#postedConsultsBlock").html("");
-			$("#postedConsultsBlock").append(consultsObjectListToHTMLAsync(postedItemsTodayList));
-
-        }
-    };
-	xmlhttp.open("GET", urlAddedConsults(), true);
-	xmlhttp.send();
-}
-
-/*
-PURPOSE:
-- given list of objects with properties URL, eFormTitle, addedInfo, date, produce HTML that produces links to the eForms in question.
-*/
-function consultsObjectListToHTMLAsync(itemsObjectList){
-    let htmlResult = "";
-    // itemsObjectList.length
-    for (let i = 0; i < itemsObjectList.length; i++){
-        itemObject = itemsObjectList[i];
-        // console.log(itemObject);
-
-        htmlResult += 
-
-        `<li style="overflow: hidden; clear:both; position:relative; display:block; white-space:nowrap; ">
-            <a border="0" style="text-decoration:none; width:7px; z-index: 100; background-color: white; position:relative; margin: 0px; padding-bottom: 0px;  vertical-align: bottom; display: inline; float: right; clear:both;"><img id="imgconsultationZ`+ i + `" src="/oscar/images/clear.gif">&nbsp;&nbsp;</a>
-            <span style=" z-index: 1; position:absolute; margin-right:10px; width:90%; overflow:hidden;  height:1.5em; white-space:nowrap; float:left; text-align:left; ">
-            <a class="links" style="" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('` + itemObject.URL + `', '_blank', 'height=700,width=800,scrollbars=yes,status=yes');return false;" title="` + itemObject.itemTitle + " " +itemObject.date + '&#10;Requesting Physician: Dr. ' + itemObject.requestingDoc + '&#10;Consultant Physician: Dr. ' + itemObject.consultantDoc + `">` + 
-            itemObject.itemTitle + 
-            `</a>
-            </span>
-            <span style="z-index: 100; background-color: white; overflow:hidden;   position:relative; height:1.5em; white-space:nowrap; float:right; text-align:right;">
-            ...<a class="links" style="margin-right: 2px;" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('`+ itemObject.URL + `', '_blank', 'height=700,width=800,scrollbars=yes,status=yes');return false;" title="` + itemObject.itemTitle + " " +itemObject.date + '&#10;Requesting Physician: Dr. ' + itemObject.requestingDoc + '&#10;Consultant Physician: Dr. ' + itemObject.consultantDoc + `">` 
-            + itemObject.date + `           
-            </a>
-            </span>
-        </li>`
-    }
-    // console.log(htmlResult);
-    return htmlResult;
-}
-
-/*
-PURPOSE:
-- takes the node list and outputs objects describing each item, with Service, referral date.
-- only outputs objects with items that match today's date.
-*/
-async function findConsultsPostedTodayAsync(postedItemNodeList){
-    let postedItemObjectList = [];
-    for (let i=1; i < postedItemNodeList.length; i++){
-        currentNode = postedItemNodeList[i];
-        nodeChildren = currentNode.children;
-        // console.log(nodeChildren);
-        nodeURLOuterHTML = nodeChildren[1].children[0].outerHTML;
-        /*
-        - gets the URL portion of the HTML in the <a> element, by using split("\'"). and selecting the item at index 1.
-        - then removes the "../.." with substring(6)
-        - then replaces &amp; with &
-        */
-        nodeURL = getURLOrigin() + nodeURLOuterHTML.split("\'")[1].substring(6).replace(/&amp;/g, "&");
-        nodeItemsTitle = nodeChildren[3].children[0].innerText.replace(/[\r\n\t]/g, "");
-        nodeRequestingDoc = nodeChildren[2].textContent;
-        nodeDate = nodeChildren[4].textContent;
-        nodeReqID = nodeURL.split("requestId=")[1].split("&")[0];
-        
-        
-        const xhrText = await getXMLHTTP(nodeURL);
-        nodeConsultantDoc = getConsultantDoctor(xhrText);
-        // console.log(nodeConsultantDoc);
-
-        /*
-        - stops when the consult date doesn't match today's date. assumes dates are sorted (which they are, but are unfortunately sorted in reverse order within a given day)
-        */
-        if (!isToday(nodeDate)){
-            break;
-        }
-        /*
-        - if consult from other page matches reqID of first consult in eChart, move onto next item.     
-        */
-        if (isMatchingConsultReqID(nodeReqID)){
-            continue;
-        }
-
-        const postedItemObject = {
-            URL: nodeURL,
-            itemTitle: nodeItemsTitle,
-            consultantDoc: nodeConsultantDoc,
-            requestingDoc: nodeRequestingDoc,
-            date: nodeDate
-        }
-        // console.log(postedItemObject);
-        postedItemObjectList.push(postedItemObject);
-        
-    }
-    return postedItemObjectList;
-}
-
-
-function getConsultantDoctor2(consultItemURL){
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            const otherPageXMLText = xmlhttp.responseText;   
-            if (!otherPageXMLText) { 
-                return;
-            }
-            
-            // console.log(otherPageXMLText);
-            const consultantDoc = otherPageXMLText.split("initService")[2].split("'")[7];
-            if (consultantDoc == ""){
-                consultantDoc == "N/A";
-            }
-            console.log(consultantDoc);
-            return consultantDoc;
-        }
-    };
-    xmlhttp.open("GET", consultItemURL, false);
-    xmlhttp.send();
-}
-
-
-/*
-- returns a promise that returns the xmlhttp response text
-*/
-function getXMLHTTP(consultItemURL){
-	let myPromise = new Promise(function (resolve, reject){
-		let xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("GET", consultItemURL, true);
-		
-		xmlhttp.onload = function(){
-			if (xmlhttp.status == 200) {
-		        resolve(xmlhttp.responseText);
-		      } else {
-		        reject("File not Found");
-		      }
-		};
-		xmlhttp.send();
-			
-	});
-
-	return myPromise;
-}
-
-function getConsultantDoctor(xhrText){
-	const otherPageXMLText = xhrText   
-    if (!otherPageXMLText) { 
-        return;
-    }
-    
-	// console.log(otherPageXMLText);
-	const consultantDoc = otherPageXMLText.split("initService")[2].split("'")[7];
-	if (consultantDoc == ""){
-		consultantDoc == "N/A";
-	}
-	return consultantDoc;
-}
-
-/////////////////////////////////////////////////////
-// Update Medications Sidebar2
-/////////////////////////////////////////////////////
-// updateMedicationsSidebar();
-/*
-NOTE
-- adds the forms that were posted today to the sidebar.
-- for forms posted today that are already listed in the sidebar, my version override it and will be posted instead.
-
-Side note
-- prescriptions with days to expire 30 or greater will be considered a current Drug and colored blue.
-- if days to expire is 29 or less, its class will be expireInReference, and colored
-*/
-function updateMedicationsSidebar2() {
-	
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            const otherPageXMLText = xmlhttp.responseText;   
-            if (!otherPageXMLText) { 
-                return;
-            }
-            
-// drugProfile
-            const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
-            const postedItemsNodeList = otherPageHTML.querySelectorAll("#reprint")[0].children; // > tbody:nth-child(1) > tr
-            const postedItemsTodayList = findMedsPostedToday2(postedItemsNodeList);
-
-            // console.log("----meds2---");
-            console.log(postedItemsTodayList);
-
-            addPostedMedsBlock();
-            $("#postedMedsBlock").html("");
-			$("#postedMedsBlock").append(medsObjectListToHTML(postedItemsTodayList));
-
-        }
-    };
-	xmlhttp.open("GET", urlAddedMedications(), false);
-	xmlhttp.send();
-}
-
-/*
-PURPOSE:
-- takes the unordered node list and outputs objects describing each item, with Service, referral date.
-- only outputs objects with items that match today's date.
-*/
-function findMedsPostedToday2(postedItemNodeList){
-	// console.log(postedItemNodeList);
-	let postedItemObjectList = [];
-	let currentDate = "";
-	for (let i=0; i < postedItemNodeList.length; i++){
-		const currentNode = postedItemNodeList[i];
-		const nodeText = currentNode.innerText;
-
-		// filters out nodes that are neither medication nor the date.
-		if (nodeText == "" || nodeText.includes("\n") || nodeText == String.fromCharCode(160)){
-			continue;
-		}
-		// console.log(currentNode);
-		// console.log(nodeText);
-
-		if (isDate(nodeText)){
-			currentDate = nodeText;
-			/*
-			- stops when the medication date doesn't match today's date. assumes dates are sorted.
-			*/
-			if (!isToday(currentDate)){
-				break;
-			}
-			continue;
-		}
-		else {  // assumes that any other remaining nodes just contain the medication as the text.
-			if(!isDuplicateMed(nodeText, postedItemObjectList)){
-				const postedItemObject = {
-					date: currentDate,
-					med: nodeText
-				}
-
-				postedItemObjectList.push(postedItemObject);
-				// console.log(postedItemObject);
-			}
-			
-		}
-		
-		// postedItemObjectList.push(postedItemObject);
-
-	}
-	// console.log(postedItemObjectList);
-	return postedItemObjectList;
-}
-
-
-
-
-/*
-- returns true if the given selectMed is already within medListSoFar.
-- medListSoFar is an objects with properties date, med.
-*/
-function isDuplicateMed(selectMed, medListSoFar){
-	for (i = 0; i < medListSoFar.length; i++){
-		const oneMed = medListSoFar[i].med;
-		if (oneMed == selectMed){
-			return true;
-		}
-	}
-	return false;
-}
-
-
-/////////////////////////////////////////////////////
 // Update Medications Sidebar
 /////////////////////////////////////////////////////
 // updateMedicationsSidebar();
@@ -710,7 +445,7 @@ Side note
 - prescriptions with days to expire 30 or greater will be considered a current Drug and colored blue.
 - if days to expire is 29 or less, its class will be expireInReference, and colored
 */
-function updateMedicationsSidebar() {
+async function updateMedicationsSidebar() {
 	/*
 	- The Print meds page doesn't have a unique URL for each patient, so I'm guessing that the server updates that page based on which patient chart is open. But the print page isn't automatically updated to the correct patient the moment you open the eChart. It seems to take 10-30s if you just stay on the eChart. But if you open the Medications page, it seems to update the print page to the correct patient right away.
 	- The below code block requests to open the Medications page. This in turn updates the print meds page to the correct patient right away.
@@ -720,7 +455,32 @@ function updateMedicationsSidebar() {
 	// xmlhttp2.open("GET", urlAddedMedications(), false);
 	// xmlhttp2.send();
 
-    let xmlhttp = new XMLHttpRequest();
+
+	const otherPageXMLText = await getXMLHTTP(urlPrintedMedications());
+	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
+	const currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
+	const printPagePatientName = otherPageHTML.querySelectorAll("#AutoNumber1 > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(1)")[0].innerHTML.split('-->')[1].split('<')[0].replace(/[\n\s]/g, "");
+
+	console.log("----meds---");
+	console.log(currentPatientName);
+	console.log(printPagePatientName);
+	if(currentPatientName.split("(")[0] != printPagePatientName.split("(")[0]){
+		console.log("Print page patient name doesn't match current patient name.");
+		return;
+	}
+
+	const postedItemsNodeList = otherPageHTML.querySelectorAll("tr[rxdate='"+ todayDateYYYYMMDD() + "']"); 
+	// console.log(postedItemsNodeList);
+	const postedItemsTodayList = findMedsPostedToday(postedItemsNodeList);
+
+	
+	console.log(postedItemsTodayList);
+
+	addPostedMedsBlock();
+	$("#postedMedsBlock").html("");
+	$("#postedMedsBlock").append(medsObjectListToHTML(postedItemsTodayList));
+
+    /* let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             const otherPageXMLText = xmlhttp.responseText;   
@@ -754,7 +514,7 @@ function updateMedicationsSidebar() {
         }
     };
 	xmlhttp.open("GET", urlPrintedMedications(), false);
-	xmlhttp.send();
+	xmlhttp.send(); */
 }
 
 /*
@@ -856,8 +616,21 @@ Side note
 - prescriptions with days to expire 30 or greater will be considered a current Drug and colored blue.
 - if days to expire is 29 or less, its class will be expireInReference, and colored
 */
-function updateTicklerSidebar() {
-    let xmlhttp = new XMLHttpRequest();
+async function updateTicklerSidebar() {
+	const otherPageXMLText = await getXMLHTTP(urlAddedTicklers());
+	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
+
+
+	console.log("----ticklers---");
+	const postedItemsNodeList = otherPageHTML.querySelectorAll("body > form:nth-child(3) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(4) > tbody:nth-child(1) > tr"); 
+	const postedItemsTodayList = findTicklersPostedToday(postedItemsNodeList);
+	console.log(postedItemsTodayList);
+
+	addPostedTicklersBlock();
+	$("#postedTicklersBlock").html("");
+	$("#postedTicklersBlock").append(ticklersObjectListToHTML(postedItemsTodayList));
+
+    /* let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             const otherPageXMLText = xmlhttp.responseText;   
@@ -879,7 +652,7 @@ function updateTicklerSidebar() {
         }
     };
 	xmlhttp.open("GET", urlAddedTicklers(), false);
-	xmlhttp.send();
+	xmlhttp.send(); */
 }
 
 /*
@@ -1084,5 +857,285 @@ function getDemographicNum(){
 
 	return params.demographicNo;
 
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Unused, experimental functions
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+// Update Consultations Async Sidebar
+/////////////////////////////////////////////////////
+
+/*
+NOTE
+- adds the forms that were posted today to the sidebar.
+- for forms posted today that are already listed in the sidebar, my version override it and will be posted instead.
+
+Difference between this version and the current version:
+- this version: gets the consultant doctor name and adds it to the postedItemObject. but this is slow
+- old version: does not include the consultant doctor name. but this runs much faster.
+*/
+function updateConsultationsSidebarAsync() {
+	console.log('---consults---');
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = async function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            const otherPageXMLText = xmlhttp.responseText;   
+            if (!otherPageXMLText) { 
+                return;
+            }
+            
+            const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
+            const postedItemsNodeList = otherPageHTML.querySelectorAll(".MainTableRightColumn > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr"); 
+            
+            const postedItemsTodayList = await findConsultsPostedTodayAsync(postedItemsNodeList);
+            console.log(postedItemsTodayList);
+            addPostedConsultsBlock();
+            
+            $("#postedConsultsBlock").html("");
+			$("#postedConsultsBlock").append(consultsObjectListToHTMLAsync(postedItemsTodayList));
+
+        }
+    };
+	xmlhttp.open("GET", urlAddedConsults(), true);
+	xmlhttp.send();
+}
+
+/*
+PURPOSE:
+- given list of objects with properties URL, eFormTitle, addedInfo, date, produce HTML that produces links to the eForms in question.
+*/
+function consultsObjectListToHTMLAsync(itemsObjectList){
+    let htmlResult = "";
+    // itemsObjectList.length
+    for (let i = 0; i < itemsObjectList.length; i++){
+        itemObject = itemsObjectList[i];
+        // console.log(itemObject);
+
+        htmlResult += 
+
+        `<li style="overflow: hidden; clear:both; position:relative; display:block; white-space:nowrap; ">
+            <a border="0" style="text-decoration:none; width:7px; z-index: 100; background-color: white; position:relative; margin: 0px; padding-bottom: 0px;  vertical-align: bottom; display: inline; float: right; clear:both;"><img id="imgconsultationZ`+ i + `" src="/oscar/images/clear.gif">&nbsp;&nbsp;</a>
+            <span style=" z-index: 1; position:absolute; margin-right:10px; width:90%; overflow:hidden;  height:1.5em; white-space:nowrap; float:left; text-align:left; ">
+            <a class="links" style="" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('` + itemObject.URL + `', '_blank', 'height=700,width=800,scrollbars=yes,status=yes');return false;" title="` + itemObject.itemTitle + " " +itemObject.date + '&#10;Requesting Physician: Dr. ' + itemObject.requestingDoc + '&#10;Consultant Physician: Dr. ' + itemObject.consultantDoc + `">` + 
+            itemObject.itemTitle + 
+            `</a>
+            </span>
+            <span style="z-index: 100; background-color: white; overflow:hidden;   position:relative; height:1.5em; white-space:nowrap; float:right; text-align:right;">
+            ...<a class="links" style="margin-right: 2px;" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('`+ itemObject.URL + `', '_blank', 'height=700,width=800,scrollbars=yes,status=yes');return false;" title="` + itemObject.itemTitle + " " +itemObject.date + '&#10;Requesting Physician: Dr. ' + itemObject.requestingDoc + '&#10;Consultant Physician: Dr. ' + itemObject.consultantDoc + `">` 
+            + itemObject.date + `           
+            </a>
+            </span>
+        </li>`
+    }
+    // console.log(htmlResult);
+    return htmlResult;
+}
+
+/*
+PURPOSE:
+- takes the node list and outputs objects describing each item, with Service, referral date.
+- only outputs objects with items that match today's date.
+*/
+async function findConsultsPostedTodayAsync(postedItemNodeList){
+    let postedItemObjectList = [];
+    for (let i=1; i < postedItemNodeList.length; i++){
+        currentNode = postedItemNodeList[i];
+        nodeChildren = currentNode.children;
+        // console.log(nodeChildren);
+        nodeURLOuterHTML = nodeChildren[1].children[0].outerHTML;
+        /*
+        - gets the URL portion of the HTML in the <a> element, by using split("\'"). and selecting the item at index 1.
+        - then removes the "../.." with substring(6)
+        - then replaces &amp; with &
+        */
+        nodeURL = getURLOrigin() + nodeURLOuterHTML.split("\'")[1].substring(6).replace(/&amp;/g, "&");
+        nodeItemsTitle = nodeChildren[3].children[0].innerText.replace(/[\r\n\t]/g, "");
+        nodeRequestingDoc = nodeChildren[2].textContent;
+        nodeDate = nodeChildren[4].textContent;
+        nodeReqID = nodeURL.split("requestId=")[1].split("&")[0];
+        
+        
+        const xhrText = await getXMLHTTP(nodeURL);
+        nodeConsultantDoc = getConsultantDoctor(xhrText);
+        // console.log(nodeConsultantDoc);
+
+        /*
+        - stops when the consult date doesn't match today's date. assumes dates are sorted (which they are, but are unfortunately sorted in reverse order within a given day)
+        */
+        if (!isToday(nodeDate)){
+            break;
+        }
+        /*
+        - if consult from other page matches reqID of first consult in eChart, move onto next item.     
+        */
+        if (isMatchingConsultReqID(nodeReqID)){
+            continue;
+        }
+
+        const postedItemObject = {
+            URL: nodeURL,
+            itemTitle: nodeItemsTitle,
+            consultantDoc: nodeConsultantDoc,
+            requestingDoc: nodeRequestingDoc,
+            date: nodeDate
+        }
+        // console.log(postedItemObject);
+        postedItemObjectList.push(postedItemObject);
+        
+    }
+    return postedItemObjectList;
+}
+
+
+function getConsultantDoctor2(consultItemURL){
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            const otherPageXMLText = xmlhttp.responseText;   
+            if (!otherPageXMLText) { 
+                return;
+            }
+            
+            // console.log(otherPageXMLText);
+            const consultantDoc = otherPageXMLText.split("initService")[2].split("'")[7];
+            if (consultantDoc == ""){
+                consultantDoc == "N/A";
+            }
+            console.log(consultantDoc);
+            return consultantDoc;
+        }
+    };
+    xmlhttp.open("GET", consultItemURL, false);
+    xmlhttp.send();
+}
+
+
+
+function getConsultantDoctor(xhrText){
+	const otherPageXMLText = xhrText   
+    if (!otherPageXMLText) { 
+        return;
+    }
+    
+	// console.log(otherPageXMLText);
+	const consultantDoc = otherPageXMLText.split("initService")[2].split("'")[7];
+	if (consultantDoc == ""){
+		consultantDoc == "N/A";
+	}
+	return consultantDoc;
+}
+
+/////////////////////////////////////////////////////
+// Update Medications Sidebar2
+/////////////////////////////////////////////////////
+// updateMedicationsSidebar();
+/*
+NOTE
+- adds the forms that were posted today to the sidebar.
+- for forms posted today that are already listed in the sidebar, my version override it and will be posted instead.
+
+Side note
+- prescriptions with days to expire 30 or greater will be considered a current Drug and colored blue.
+- if days to expire is 29 or less, its class will be expireInReference, and colored
+
+Difference between this version and the current version
+- this version: looks at the items under reprint on this page
+- current version: looks at the print page, and gets a more updated medication list.
+*/
+function updateMedicationsSidebar2() {
+	
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            const otherPageXMLText = xmlhttp.responseText;   
+            if (!otherPageXMLText) { 
+                return;
+            }
+            
+// drugProfile
+            const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
+            const postedItemsNodeList = otherPageHTML.querySelectorAll("#reprint")[0].children; // > tbody:nth-child(1) > tr
+            const postedItemsTodayList = findMedsPostedToday2(postedItemsNodeList);
+
+            // console.log("----meds2---");
+            console.log(postedItemsTodayList);
+
+            addPostedMedsBlock();
+            $("#postedMedsBlock").html("");
+			$("#postedMedsBlock").append(medsObjectListToHTML(postedItemsTodayList));
+
+        }
+    };
+	xmlhttp.open("GET", urlAddedMedications(), false);
+	xmlhttp.send();
+}
+
+/*
+PURPOSE:
+- takes the unordered node list and outputs objects describing each item, with Service, referral date.
+- only outputs objects with items that match today's date.
+*/
+function findMedsPostedToday2(postedItemNodeList){
+	// console.log(postedItemNodeList);
+	let postedItemObjectList = [];
+	let currentDate = "";
+	for (let i=0; i < postedItemNodeList.length; i++){
+		const currentNode = postedItemNodeList[i];
+		const nodeText = currentNode.innerText;
+
+		// filters out nodes that are neither medication nor the date.
+		if (nodeText == "" || nodeText.includes("\n") || nodeText == String.fromCharCode(160)){
+			continue;
+		}
+		// console.log(currentNode);
+		// console.log(nodeText);
+
+		if (isDate(nodeText)){
+			currentDate = nodeText;
+			/*
+			- stops when the medication date doesn't match today's date. assumes dates are sorted.
+			*/
+			if (!isToday(currentDate)){
+				break;
+			}
+			continue;
+		}
+		else {  // assumes that any other remaining nodes just contain the medication as the text.
+			if(!isDuplicateMed(nodeText, postedItemObjectList)){
+				const postedItemObject = {
+					date: currentDate,
+					med: nodeText
+				}
+
+				postedItemObjectList.push(postedItemObject);
+				// console.log(postedItemObject);
+			}
+			
+		}
+		
+		// postedItemObjectList.push(postedItemObject);
+
+	}
+	// console.log(postedItemObjectList);
+	return postedItemObjectList;
+}
+
+
+
+
+/*
+- returns true if the given selectMed is already within medListSoFar.
+- medListSoFar is an objects with properties date, med.
+*/
+function isDuplicateMed(selectMed, medListSoFar){
+	for (i = 0; i < medListSoFar.length; i++){
+		const oneMed = medListSoFar[i].med;
+		if (oneMed == selectMed){
+			return true;
+		}
+	}
+	return false;
 }
 

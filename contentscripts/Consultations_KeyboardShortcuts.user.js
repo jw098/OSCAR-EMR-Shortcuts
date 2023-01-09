@@ -171,27 +171,7 @@ async function postAllHistory() {
 	clinInfoTextBox.value = allHistory;
 }
 
-/*
-- returns a promise that returns the xmlhttp response text
-*/
-function getXMLHTTP(theURL){
-	let myPromise = new Promise(function (resolve, reject){
-		let xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("GET", theURL, true);
-		
-		xmlhttp.onload = function(){
-			if (xmlhttp.status == 200) {
-				resolve(xmlhttp.responseText);
-      		} 
-			else {
-				reject("File not Found");
-      		}
-		};
-		xmlhttp.send();
-	});
 
-	return myPromise;
-}
 
 
 // not used.

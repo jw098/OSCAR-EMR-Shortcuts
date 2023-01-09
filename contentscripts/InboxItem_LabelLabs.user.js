@@ -136,29 +136,6 @@ async function addPrevVersionLabel() {
 }
 
 
-/*
-- returns a promise that returns the xmlhttp response text
-*/
-function getXMLHTTP(givenURL){
-	return new Promise(function (resolve, reject){
-		let xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("GET", givenURL, true);
-		
-		xmlhttp.onload = function(){
-			if (xmlhttp.status == 200) {
-				resolve(xmlhttp.responseText);
-      		} 
-			else {
-				reject(new Error("File not Found"));
-      		}
-		};
-		xmlhttp.onerror = function () {
-			reject(new Error("File not Found"));
-		  };
-		xmlhttp.send();
-	});
-}
-
 /* 
 NOTES:
 - extracts the current and previous lab results. stripping away "Label:", and the trailing marker.
