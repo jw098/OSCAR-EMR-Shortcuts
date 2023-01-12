@@ -508,6 +508,7 @@ var defaultSettings = {
 
   inboxItem:{
     inboxItem_labelLabs: true,
+    inboxItem_styleChange: false,
 
     inboxItem_keyboardShortcuts: {
       inboxItem_shortcuts_enabled: true,
