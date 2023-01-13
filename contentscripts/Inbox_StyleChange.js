@@ -25,10 +25,29 @@ async function checkEnabled_InboxStyleChange(){
 		const inboxItem = inboxItemObj.inboxItem;
 		const inboxItem_styleChange = inboxItem.inboxItem_styleChange;
         if (inboxItem_styleChange){
-            modifyStyles();
+            // modifyStyles();
+
+
+            modifyStyles2("Inbox_StyleChange");
         }
 
 	}
+}
+
+function modifyStyles2(file){
+    var link = document.createElement("link");
+    link.href = browser.extension.getURL('contentscripts/' + file + '.css'+ '?id=' + new Date().getTime());
+    // + '?id=' + new Date().getTime()
+    // link.href = browser.runtime.getURL("contentscripts/Inbox_StyleChange.css");
+    console.log(link.href);
+    // console.log(browser.runtime.getURL("emptyFID.html"));
+    // console.log(browser.runtime.getURL("emptyFID.css"));
+    // window.open(browser.runtime.getURL("contentscript/Inbox_StyleChange.css"));
+    link.id = file;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    console.log(link);
+    document.getElementsByTagName("html")[0].appendChild(link);
 }
 
 function modifyStyles(){
@@ -52,8 +71,8 @@ function modifyStyles(){
     
     $("td object").css("height", "1080px");
     
-    $("#tblDiscs").prev().css("background-color", "#efefef");
-    $("#tblDiscs, #readerViewTable, #categoryList, #docViews").css("background-color", "#efefef");
+    // $("#tblDiscs").prev().css("background-color", "#efefef");
+    // $("#tblDiscs, #readerViewTable, #categoryList, #docViews").css("background-color", "#efefef");
     $('table[name ="tblDiscs"]').css("background-color", "#efefef");
     $('table[name ="tblDiscs"]').css("font-family", "Helvetica, Arial, sans-serif");
     $('table[name ="tblDiscs"]').css("font-size", "1.2em");

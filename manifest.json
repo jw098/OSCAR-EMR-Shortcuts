@@ -22,7 +22,8 @@
         }
     },
     "web_accessible_resources": [
-        "emptyFID.html"
+        "emptyFID.html",
+        "contentscript/InboxStyleChange.css"
     ],
     "browser_action": {
       "default_icon": {
@@ -178,9 +179,19 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/Inbox_StyleChange.user.js"
+                "contentscripts/Inbox_StyleChange_old.js"
             ],
             "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "*://*/*/lab/CA/ALL/labDisplay*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/Inbox_StyleChange.js"
+            ],
+            "run_at": "document_start"
         },
         {
             "matches": [

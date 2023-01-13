@@ -53,8 +53,8 @@ function keydownlistener_cortico(cortico_keyboardShortcuts){
 			case closeModal_enabled && keybindingMatches(closeModal_keybinding, theEvent):
 				// const target1 = $("div.tw-font-sans:nth-child(3) > div:nth-child(1) > p:nth-child(2)");
 				// const target2 = $("div.tw-font-sans:nth-child(4) > div:nth-child(1) > p:nth-child(2)");
-				const target3 = $("div.tw-font-sans > div:nth-child(1) > p:nth-child(2):has(svg)");
-				
+				const target3 = $("div.tw-font-sans > div:nth-child(1) > p:nth-child(2)");
+				//:has(svg)
 				// target1.click();
 				// target2.click();
 				target3.click();
