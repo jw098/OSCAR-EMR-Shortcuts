@@ -13,7 +13,6 @@ table{
    background-color: #888;
 }
 
-
 /* html > body > div > form:nth-child(3) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1):not(.Cell){
    background-color: #efefef !important;
 } */
@@ -21,6 +20,38 @@ table{
 table > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1):not(.Cell){
    background-color: #efefef !important;
 }
+
+.NarrativeRes, .NormalRes, .AbnormalRes, .HiLoRes{
+   /* font-family: Helvetica, Arial, sans-serif;   */
+   font-size: 1.2em;
+}
+
+table[name ="tblDiscs"]{
+   font-size: 1.2em;
+}
+
+.NarrativeRes{
+   font-weight: normal;  
+}
+
+.NarrativeRes td, .NormalRes td, .AbnormalRes td, .HiLoRes td{
+   padding: 5px;
+}
+
+.Title2{
+   font-size: 9px !important;
+}
+
+.NormalRes, .AssignedRes{
+   /* background-color: #efefef; */
+}
+
+.modal-card-body{
+   /* background-color: #f00";  */
+}
+
+
+ 
 
 
 

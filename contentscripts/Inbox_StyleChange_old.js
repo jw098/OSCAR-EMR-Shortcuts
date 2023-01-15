@@ -11,7 +11,7 @@
 // ==/UserScript==
 
 
-checkEnabled_InboxStyleChange();
+// checkEnabled_InboxStyleChange();
 async function checkEnabled_InboxStyleChange(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log(await browser.storage.sync.get(null));
