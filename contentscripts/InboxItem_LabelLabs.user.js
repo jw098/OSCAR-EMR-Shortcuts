@@ -383,7 +383,8 @@ function renameLabResult(strOldName){
 		case 'Ultrasound':
 		case 'Interventional Radiology':
 		case 'X-Ray':
-			strNewName=getStringDiagnosticResult();
+		case 'Imaging Procedure':
+			strNewName=getStringDiagnosticResult(strOldName);
 			break;
 		case '':
 			strNewName='';
@@ -398,12 +399,17 @@ function renameLabResult(strOldName){
 /* 
 Note: for diagnostic results, search for the string 'Procedure'.
 */
-function getStringDiagnosticResult(){
-	const xpath = "//span[contains(text(), 'Procedure')]";
+function getStringDiagnosticResult(strOldName){
+	const xpath = "//span[contains(text(), 'Procedure:')]";
 	const matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 	const diagResultText = matchingElement.innerText.split('Procedure: ')[1];
 	console.log(diagResultText);
-	return diagResultText;
+	if (diagResultText === undefined){
+		return strOldName
+	}else {
+		return diagResultText;
+	}
+
 }
 
 function renameLabResultInexactMatch(strOldName){

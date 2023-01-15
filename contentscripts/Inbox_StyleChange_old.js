@@ -25,7 +25,7 @@ async function checkEnabled_InboxStyleChange(){
 		const inboxItem = inboxItemObj.inboxItem;
 		const inboxItem_styleChange = inboxItem.inboxItem_styleChange;
         if (inboxItem_styleChange){
-            // modifyStyles();
+            modifyStyles();
             
             // modifyStyles2("Inbox_StyleChange");
             // console.log(document);
