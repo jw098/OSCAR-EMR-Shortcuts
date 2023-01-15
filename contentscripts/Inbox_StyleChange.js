@@ -36,7 +36,7 @@ async function checkEnabled_InboxStyleChange(){
 
 function modifyStyles2(file){
     var link = document.createElement("link");
-    link.href = browser.extension.getURL('contentscripts/' + file + '.css'+ '?id=' + new Date().getTime());
+    link.href = browser.runtime.getURL('contentscripts/' + file + '.css'+ '?id=' + new Date().getTime());
     // + '?id=' + new Date().getTime()
     // link.href = browser.runtime.getURL("contentscripts/Inbox_StyleChange.css");
     console.log(link.href);
