@@ -22,7 +22,9 @@ async function checkEnabled_TicklerPrefixWriteEncounter(){
 	else {
 		const ticklerObj = await browser.storage.sync.get('tickler');
 		const tickler = ticklerObj.tickler;
-		doPageAction();
+		if(tickler.tickler_prefixWriteEncounter){
+			prefixWriteToEncounter();
+		}
 
 	}
 }
@@ -33,7 +35,7 @@ PURPOSE:
 - do the action corresponding with the current page.
 */
 
-function doPageAction(){
+function prefixWriteToEncounter(){
 	"*://*/*/casemgmt/forward.jsp?action=view&demographic*",
 	"*://*/*/tickler/ticklerAdd.jsp*",
 	"*://*/*/tickler/ForwardDemographicTickler*"
@@ -55,7 +57,11 @@ function doPageAction(){
 	}
 }
 
-
+/* 
+PURPOSE:
+- when clicking button 'Submit & Write to Encounter', save to local storage the tickler message text and the person the task was assigned to.
+- also, set writeEncounter to true.
+ */
  function prefixWriteToEncounter_Tickler(){
 	const  submitWriteEncounterButton = 
 		document.evaluate("//input[@value='Submit & Write to Encounter']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
@@ -92,6 +98,7 @@ PURPOSE:
 - prefix the tickler message with `Tickler message to ${taskAssignedTo}: `
 NOTES:
 - get writeEncounter from local storage to ensure that a tickler with write to encounter was just made. If not, stop this function
+- set writeEncounter to false to avoid posting tickler message text when not intended.
 */
 async function prefixWriteToEncounter_EChart(){
 	const writeEncounterObj = await browser.storage.local.get('writeEncounter');

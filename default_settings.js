@@ -596,6 +596,7 @@ var defaultSettings = {
 
   tickler:{
     tickler_setFocusTextArea: true,
+    tickler_prefixWriteEncounter: true,
 
     tickler_keyboardShortcuts: {
       tickler_shortcuts_enabled: true,
