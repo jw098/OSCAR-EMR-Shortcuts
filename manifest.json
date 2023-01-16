@@ -254,6 +254,18 @@
                 "contentscripts/utils.js",
                 "contentscripts/AppointmentAdd.js"
             ]
+        },
+        {
+            "matches": [
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*",
+                "*://*/*/tickler/ticklerAdd.jsp*",
+                "*://*/*/tickler/ForwardDemographicTickler*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
+                "contentscripts/Tickler_PrefixWriteEncounter.js"
+            ]
         }
       ]
 
