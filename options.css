@@ -237,5 +237,15 @@ select {
 #globalEnable{
   /* background-color: orange; */
   border: 2px solid black;
+
+}
+
+.shortcutGroup{
+  border-left: 2px dotted blue;
+  height: 100%;
+  /* position:absolute; */
+  /* left: 480px; */
+  
+  /* float: right; */
 }
 
