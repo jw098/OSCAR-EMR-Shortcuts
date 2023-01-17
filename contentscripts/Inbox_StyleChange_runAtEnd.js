@@ -11,8 +11,8 @@
 // ==/UserScript==
 
 
-// checkEnabled_InboxStyleChange();
-async function checkEnabled_InboxStyleChange(){
+checkEnabled_InboxStyleChange_runAtEnd();
+async function checkEnabled_InboxStyleChange_runAtEnd(){
 	const isEnabled = await browser.storage.sync.get('enabled');
 	console.log(await browser.storage.sync.get(null));
 	
@@ -25,31 +25,15 @@ async function checkEnabled_InboxStyleChange(){
 		const inboxItem = inboxItemObj.inboxItem;
 		const inboxItem_styleChange = inboxItem.inboxItem_styleChange;
         if (inboxItem_styleChange){
-            modifyStyles();
+            // modifyStyles_runAtEnd();
             
-            // modifyStyles2("Inbox_StyleChange");
-            // console.log(document);
         }
 
 	}
 }
 
-function modifyStyles2(file){
-    var link = document.createElement("link");
-    // link.href = chrome.extension.getURL('contentscript/' + file + '.css');
-    link.href = browser.runtime.getURL("contentscripts/Inbox_StyleChange.css");
-    // console.log(link.href);
-    // console.log(browser.runtime.getURL("emptyFID.html"));
-    // console.log(browser.runtime.getURL("emptyFID.css"));
-    // window.open(browser.runtime.getURL("contentscript/Inbox_StyleChange.css"));
-    link.id = file;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    console.log(link);
-    document.getElementsByTagName("html")[0].appendChild(link);
-}
 
-function modifyStyles(){
+function modifyStyles_runAtEnd(){
 
     $(".NarrativeRes, .NormalRes, .AbnormalRes, .HiLoRes, pre").css("font-family", "Helvetica, Arial, sans-serif");
     $(".NarrativeRes, .NormalRes, .AbnormalRes, .HiLoRes").css("font-size", "1.2em");

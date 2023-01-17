@@ -179,7 +179,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/Inbox_StyleChange_old.js"
+                "contentscripts/Inbox_StyleChange_runAtEnd.js"
             ],
             "run_at": "document_end"
         },
@@ -189,7 +189,7 @@
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
-                "contentscripts/Inbox_StyleChange.js"
+                "contentscripts/Inbox_StyleChange_runAtStart.js"
             ],
             "run_at": "document_start"
         },
