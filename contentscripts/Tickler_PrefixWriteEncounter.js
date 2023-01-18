@@ -65,32 +65,43 @@ PURPOSE:
  function prefixWriteToEncounter_Tickler(){
 	const  submitWriteEncounterButton = 
 		document.evaluate("//input[@value='Submit & Write to Encounter']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	const  submitExitButton = 
+		document.evaluate("//input[@value='Submit and EXIT']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+	submitExitButton.addEventListener("click",  async function(){
+		saveMessageToStorage("submitExit");
+	});
 
 	submitWriteEncounterButton.addEventListener("click", async function(){
-		const taskAssignedToDropdown = document.querySelector("select[name='task_assigned_to']");
-		const taskAssignedTo= taskAssignedToDropdown.options[taskAssignedToDropdown.selectedIndex].text;
-
-		const messageTextArea = 
-			document.evaluate("//textarea",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-		const messageText = messageTextArea.value;
-
-		// console.log(taskAssignedTo);
-		// console.log(messageText)
-		const ticklerMessage = {
-			messageText: messageText,
-			taskAssignedTo: taskAssignedTo
-		};
-
-		// const writeEncounter = {
-		// 	writeEncounter: true
-		// };
-
-		await browser.storage.local.set({
-			ticklerMessage,
-			writeEncounter: true
-		});
-	})
+		saveMessageToStorage("submitWriteEncounter");
+	});
 	
+}
+/* 
+NOTE:
+- writeEncounterType is either 0,1,2. 0 means no writeEncounter. 1 means Submit and EXIT. 2 means SUbmit and write to encounter.
+ */
+async function saveMessageToStorage(writeEncounterType){
+	const taskAssignedToDropdown = document.querySelector("select[name='task_assigned_to']");
+	const taskAssignedTo= taskAssignedToDropdown.options[taskAssignedToDropdown.selectedIndex].text;
+
+	const messageTextArea = 
+		document.evaluate("//textarea",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	const messageText = messageTextArea.value;
+
+	// console.log(taskAssignedTo);
+	// console.log(messageText)
+	const ticklerMessage = {
+		messageText: messageText,
+		taskAssignedTo: taskAssignedTo
+	};
+
+
+
+	await browser.storage.local.set({
+		ticklerMessage,
+		writeEncounter: writeEncounterType
+	});
 }
 
 /* 
@@ -100,30 +111,92 @@ NOTES:
 - get writeEncounter from local storage to ensure that a tickler with write to encounter was just made. If not, stop this function
 - set writeEncounter to false to avoid posting tickler message text when not intended.
 */
-async function prefixWriteToEncounter_EChart(){
+function prefixWriteToEncounter_EChart(){
+	prefixWriteToEncounter_EChart_submitWriteEncounter();
+	prefixWriteToEncounter_EChart_submitExit();
+}
+
+async function prefixWriteToEncounter_EChart_submitExit(){
+	window.addEventListener("focus", async function(event) { 
+		// const targetTextArea2 = document.querySelector("textarea[id^='caseNote']");
+		// const originalContent2 = targetTextArea2.value;
+		// console.log(originalContent2);
+
+		const writeEncounterObj = await browser.storage.local.get('writeEncounter');
+		const writeEncounter = writeEncounterObj.writeEncounter;
+		console.log(writeEncounter);
+
+		if(writeEncounter != "submitExit"){
+			return;
+		}
+		
+		browser.storage.local.set({ writeEncounter: "none" });
+
+		const ticklerMessageObj = await browser.storage.local.get('ticklerMessage');
+		const ticklerMessage = ticklerMessageObj.ticklerMessage;
+		console.log(ticklerMessage);
+		
+		const targetTextArea = document.querySelector("textarea[id^='caseNote']");
+		console.log(targetTextArea);
+		const originalContent = targetTextArea.value;
+		const messageText = ticklerMessage.messageText;
+		const taskAssignedTo = ticklerMessage.taskAssignedTo;
+
+		console.log(originalContent);
+		const newContent = 
+			originalContent + `\n[Tickler message to ${taskAssignedTo}]\n ` + messageText + "\n-------------------------------------------\n";
+		console.log(newContent);
+
+		targetTextArea.value = newContent;
+	});
+}
+
+async function prefixWriteToEncounter_EChart_submitWriteEncounter(){
+	// const targetTextArea2 = document.querySelector("textarea[id^='caseNote']");
+	// const originalContent2 = targetTextArea2.value;
+	// console.log(originalContent2);
+
 	const writeEncounterObj = await browser.storage.local.get('writeEncounter');
 	const writeEncounter = writeEncounterObj.writeEncounter;
 	console.log(writeEncounter);
 
-	if(!writeEncounter){
+	if(writeEncounter != "submitWriteEncounter"){
 		return;
 	}
-	browser.storage.local.set({ writeEncounter: false });
+	
+	browser.storage.local.set({ writeEncounter: "none" });
 
 	const ticklerMessageObj = await browser.storage.local.get('ticklerMessage');
 	const ticklerMessage = ticklerMessageObj.ticklerMessage;
 
 	console.log(ticklerMessage);
-	const targetTextArea = await getTargetTextArea(); 
-	const originalContent = targetTextArea.textContent;
+	
+	const targetTextArea =  await getTargetTextArea2();
+
+	console.log(targetTextArea);
+	const originalContent = targetTextArea.value;
 	const messageText = ticklerMessage.messageText;
 	const taskAssignedTo = ticklerMessage.taskAssignedTo;
-	const originalContentSliced = originalContent.split(messageText);
+	const originalContentWithoutMessage = 
+		getOriginalContentWithoutMessage(originalContent, messageText);
+	console.log(originalContent);
+	console.log(originalContentWithoutMessage);
 	const newContent = 
-		originalContentSliced[0] + `\n[Tickler message to ${taskAssignedTo}]\n ` + messageText + "\n-------------------------------------------" + originalContentSliced[1];
+		originalContentWithoutMessage + `\n[Tickler message to ${taskAssignedTo}]\n ` + messageText + "\n-------------------------------------------\n";
 	console.log(newContent);
 
 	targetTextArea.value = newContent;
+	
+}
+
+function getOriginalContentWithoutMessage(originalContent, messageText){
+	const lastIndexOfText = originalContent.lastIndexOf(messageText);
+	if (lastIndexOfText < 0) {
+		return originalContent;
+	}
+	else {
+		return originalContent.substring(0, lastIndexOfText);
+	}
 
 }
 
@@ -142,6 +215,18 @@ function getTargetTextArea(){
 		function setTargetFocus(event){
 			document.removeEventListener('focusin',setTargetFocus);
 			resolve(event.target);
+		}
+	});
+}
+
+function getTargetTextArea2(){
+	return new Promise(function(resolve, reject){
+
+		document.addEventListener("focusin", setTargetFocus);
+	
+		function setTargetFocus(event){
+			document.removeEventListener('focusin',setTargetFocus);
+			resolve(document.querySelector("textarea[id^='caseNote']"));
 		}
 	});
 }
