@@ -144,7 +144,7 @@ async function prefixWriteToEncounter_EChart_submitExit(){
 
 		console.log(originalContent);
 		const newContent = 
-			originalContent + `\n[Tickler message to ${taskAssignedTo}]\n ` + messageText + "\n-------------------------------------------\n";
+			originalContent + `\n\n[Tickler message to ${taskAssignedTo}]\n ` + messageText + "\n-------------------------------------------\n";
 		console.log(newContent);
 
 		targetTextArea.value = newContent;
