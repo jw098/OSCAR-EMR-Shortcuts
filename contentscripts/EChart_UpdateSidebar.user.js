@@ -697,6 +697,7 @@ NOTE:
 function findFormsPostedToday(postedItemNodeList){
     let postedItemObjectList = [];
 	let formTitlesInEChart = getFormTitlesInEChart();
+	let formTitlesSeenInFormListSoFar = new Set();
     for (let i=1; i < postedItemNodeList.length; i++){
         const currentTableRow = postedItemNodeList[i];
         const currentTableDataList = currentTableRow.children;
@@ -714,14 +715,27 @@ function findFormsPostedToday(postedItemNodeList){
 		const nodeDate = currentTableDataList[2].textContent;
 		const nodeFormTitle = currentTableDataList[0].children[0].textContent;
 		const nodeDateOnly = nodeDate.split(" ")[0];
-
+	
 		// console.log(nodeFormTitle);
+
+
 		/*
 		- if Form is already listed in eChart, move on to next item
 		*/
 		if (formTitlesInEChart.has(nodeFormTitle)){
 			continue;
 		}
+
+		/*
+		- if form title already seen, move on to next item
+		- we do not want to post duplicates of the same form.
+		*/
+		if(formTitlesSeenInFormListSoFar.has(nodeFormTitle)){
+			continue;
+		} else{
+			formTitlesSeenInFormListSoFar.add(nodeFormTitle);
+		}
+
 
 		// /*
 		// - if Form date doesn't match today's date, move on to next item
