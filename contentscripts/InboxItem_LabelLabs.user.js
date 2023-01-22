@@ -223,9 +223,9 @@ function extractKeyLabResults(allLabResults){
 	let keyLabResultList = "";	
 	let index = 0;
 	allLabResults.forEach(	
-		function(e){			
-			if (!isSubResult(e)){  // add all non sub-results. i.e. add all key results.
-				let labTitle = renameLabResult(e.textContent);  // join to convert array to string.
+		function(element){			
+			if (!isSubResult(element)){  // add all non sub-results. i.e. add all key results.
+				let labTitle = renameLabResult(element.textContent);  // join to convert array to string.
 				if(keyLabResultList != "" && labTitle != ""){
 					labTitle = "/" + labTitle;
 				}				
@@ -244,9 +244,19 @@ function extractKeyLabResults(allLabResults){
 // Purpose: checks if the Lab result is a sub-result. e.g. WBC, RBC are sub results to Hematology Panel (CBC).
 // Implementation: Sub-results in OSCAR are indented with three non-breaking spaces.
 // The whitespace is located just prior to the element of interest. So, we get the parentNode, and the first childNode contains the whitespace.
-function isSubResult(e){
+function isSubResult(element){
 	const threeNonBreakingSpaces = "\xA0" + " " + "\xA0"+ " " + "\xA0";
-	return e.parentNode.childNodes[0].nodeValue == threeNonBreakingSpaces;	
+	const nodeWhiteSpace = getWhiteSpaceBeforeElement(element);
+	return nodeWhiteSpace == threeNonBreakingSpaces;	
+}
+
+function getWhiteSpaceBeforeElement(element){
+	const nodeWhiteSpace = element.parentNode.childNodes[0].nodeValue;
+	let whiteSpaceWithoutLinebreak;
+	if(nodeWhiteSpace != null){
+		whiteSpaceWithoutLinebreak = nodeWhiteSpace.split("\n")[0];
+	}
+	return whiteSpaceWithoutLinebreak;
 }
 
 
