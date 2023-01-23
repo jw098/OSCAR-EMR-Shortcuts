@@ -245,9 +245,24 @@ function extractKeyLabResults(allLabResults){
 // Implementation: Sub-results in OSCAR are indented with three non-breaking spaces.
 // The whitespace is located just prior to the element of interest. So, we get the parentNode, and the first childNode contains the whitespace.
 function isSubResult(element){
-	const threeNonBreakingSpaces = "\xA0" + " " + "\xA0"+ " " + "\xA0";
-	const nodeWhiteSpace = getWhiteSpaceBeforeElement(element);
-	return nodeWhiteSpace == threeNonBreakingSpaces;	
+	// const threeNonBreakingSpaces = "\xA0" + " " + "\xA0"+ " " + "\xA0";
+	// console.log(element);
+	const nodeWhiteSpace = element.parentNode.childNodes[0].nodeValue; 
+	return hasThreeNonBreakingSpaces(nodeWhiteSpace);
+
+	// return nodeWhiteSpace == threeNonBreakingSpaces;	
+}
+
+function hasThreeNonBreakingSpaces(nodeWhiteSpace){
+	if(nodeWhiteSpace == null){
+		return false;
+	} 
+	else {
+		let countNBSP = nodeWhiteSpace.match(/\u00A0/g).length;
+		// console.log(countNBSP);
+		
+		return countNBSP == 3;
+	}
 }
 
 function getWhiteSpaceBeforeElement(element){
