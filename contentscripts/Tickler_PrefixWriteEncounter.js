@@ -81,7 +81,7 @@ PURPOSE:
 
 /* 
 NOTE:
-- writeEncounterType is either 0,1,2. 0 means no writeEncounter. 1 means Submit and EXIT. 2 means SUbmit and write to encounter.
+- writeEncounterType is either 'none', 'submitExit', 'submitWrite'. 'none' means no writeEncounter. 'submitExit' means Submit and EXIT. 'submitWrite' means SUbmit and write to encounter.
  */
 async function saveMessageToStorage(writeEncounterType){
 	const taskAssignedToDropdown = document.querySelector("select[name='task_assigned_to']");
@@ -98,12 +98,17 @@ async function saveMessageToStorage(writeEncounterType){
 		taskAssignedTo: taskAssignedTo
 	};
 
-
-
 	await browser.storage.local.set({
 		ticklerMessage,
 		writeEncounter: writeEncounterType
 	});
+
+	if(writeEncounterType == "submitExit"){
+		const encounterChannel = new BroadcastChannel("encounterChannel");
+		encounterChannel.postMessage({
+			ticklerMessage
+		});
+	}
 }
 
 
@@ -241,7 +246,7 @@ function prefixWriteToEncounter_submitExit_Tickler(){
 
 async function prefixWriteToEncounter_submitExit_EChart(){
 	prefixWriteToEncounter_submitExit_EChartLoad();
-	prefixWriteToEncounter_submitExit_EChartFocus();
+	// prefixWriteToEncounter_submitExit_EChartFocus();
 }
 /* 
 NOTE:
@@ -249,14 +254,22 @@ NOTE:
 - this is because if the eChart has loaded, we're likely in a different eChart than the submitExit writeEncounter was meant for.
 */
 async function prefixWriteToEncounter_submitExit_EChartLoad(){
-	const writeEncounterObj = await browser.storage.local.get('writeEncounter');
-	const writeEncounter = writeEncounterObj.writeEncounter;
-	console.log(writeEncounter);
+	const encounterChannel = new BroadcastChannel("encounterChannel");
+	encounterChannel.addEventListener("message", function(event){
+		const ticklerMessage = event.data.ticklerMessage;
+		console.log(ticklerMessage);
+		postTicklerMessage(ticklerMessage);
+	});
 
-	if(writeEncounter == "submitExit"){
-		console.log("page loaded, write encounter set to none.")
-		browser.storage.local.set({ writeEncounter: "none" });
-	}
+
+	// const writeEncounterObj = await browser.storage.local.get('writeEncounter');
+	// const writeEncounter = writeEncounterObj.writeEncounter;
+	// console.log(writeEncounter);
+
+	// if(writeEncounter == "submitExit"){
+	// 	console.log("page loaded, write encounter set to none.")
+	// 	browser.storage.local.set({ writeEncounter: "none" });
+	// }
 }
 
 
@@ -289,6 +302,22 @@ function prefixWriteToEncounter_submitExit_EChartFocus(){
 
 		targetTextArea.value = newContent;
 	});
+}
+
+
+function postTicklerMessage(ticklerMessage){
+	const targetTextArea = document.querySelector("textarea[id^='caseNote']");
+	console.log(targetTextArea);
+	const originalContent = targetTextArea.value;
+	const messageText = ticklerMessage.messageText;
+	const taskAssignedTo = ticklerMessage.taskAssignedTo;
+
+	console.log(originalContent);
+	const newContent = 
+		originalContent + `\n\n[Tickler message to ${taskAssignedTo}]\n ` + messageText + "\n-------------------------------------------\n";
+	console.log(newContent);
+
+	targetTextArea.value = newContent;
 }
 	
 
