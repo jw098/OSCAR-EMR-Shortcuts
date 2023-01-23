@@ -172,22 +172,7 @@ function getOriginalContentWithoutMessage(originalContent, messageText){
 /* 
 PURPOSE:
 - get the text in the current active text area.
- */
-function getTargetTextArea_old(){
-	return new Promise(function(resolve, reject){
-		// document.addEventListener("load", function (){
-		// 	theTarget = document.activeElement;
-		// });
-	
-		document.addEventListener("focusin", setTargetFocus);
-	
-		function setTargetFocus(event){
-			document.removeEventListener('focusin',setTargetFocus);
-			resolve(event.target);
-		}
-	});
-}
-
+*/
 function getTargetTextArea(){
 	return new Promise(function(resolve, reject){
 
@@ -246,7 +231,6 @@ function prefixWriteToEncounter_submitExit_Tickler(){
 
 async function prefixWriteToEncounter_submitExit_EChart(){
 	prefixWriteToEncounter_submitExit_EChartLoad();
-	// prefixWriteToEncounter_submitExit_EChartFocus();
 }
 /* 
 NOTE:
@@ -259,48 +243,6 @@ async function prefixWriteToEncounter_submitExit_EChartLoad(){
 		const ticklerMessage = event.data.ticklerMessage;
 		console.log(ticklerMessage);
 		postTicklerMessage(ticklerMessage);
-	});
-
-
-	// const writeEncounterObj = await browser.storage.local.get('writeEncounter');
-	// const writeEncounter = writeEncounterObj.writeEncounter;
-	// console.log(writeEncounter);
-
-	// if(writeEncounter == "submitExit"){
-	// 	console.log("page loaded, write encounter set to none.")
-	// 	browser.storage.local.set({ writeEncounter: "none" });
-	// }
-}
-
-
-function prefixWriteToEncounter_submitExit_EChartFocus(){
-	window.addEventListener("focus", async function(event) { 
-		const writeEncounterObj = await browser.storage.local.get('writeEncounter');
-		const writeEncounter = writeEncounterObj.writeEncounter;
-		console.log(writeEncounter);
-
-		if(writeEncounter != "submitExit"){
-			return;
-		}
-		
-		browser.storage.local.set({ writeEncounter: "none" });
-
-		const ticklerMessageObj = await browser.storage.local.get('ticklerMessage');
-		const ticklerMessage = ticklerMessageObj.ticklerMessage;
-		console.log(ticklerMessage);
-		
-		const targetTextArea = document.querySelector("textarea[id^='caseNote']");
-		console.log(targetTextArea);
-		const originalContent = targetTextArea.value;
-		const messageText = ticklerMessage.messageText;
-		const taskAssignedTo = ticklerMessage.taskAssignedTo;
-
-		console.log(originalContent);
-		const newContent = 
-			originalContent + `\n\n[Tickler message to ${taskAssignedTo}]\n ` + messageText + "\n-------------------------------------------\n";
-		console.log(newContent);
-
-		targetTextArea.value = newContent;
 	});
 }
 
