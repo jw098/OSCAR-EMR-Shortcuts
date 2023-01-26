@@ -582,12 +582,13 @@ function findTicklersPostedToday(postedItemNodeList){
 		
         const nodeCreateDate = nodeChildren[5].innerText.replace(/[\r\n\t]/g, "");
         const nodeMessage = nodeChildren[9].childNodes[0].textContent.replace(/[\r\n\t]/g, "");
-
+		const nodeServiceDate = nodeChildren[4].innerText.replace(/[\r\n\t]/g, "");
         if (isMatchingPostedTicklers(nodeMessage)){
         	continue;
         }
 
         const postedItemObject = {
+			serviceDate: nodeServiceDate,
 			createDate: nodeCreateDate,
 			message: nodeMessage
 		}
@@ -641,13 +642,13 @@ function ticklersObjectListToHTML(itemObjectList){
 		`<li style="overflow: hidden; clear:both; position:relative; display:block; white-space:nowrap; ">
 			<a border="0" style="text-decoration:none; width:7px; z-index: 100; background-color: white; position:relative; margin: 0px; padding-bottom: 0px;  vertical-align: bottom; display: inline; float: right; clear:both;"><img id="imgeformsZ`+ i + `" src="/oscar/images/clear.gif">&nbsp;&nbsp;</a>
 			<span style=" z-index: 1; position:absolute; margin-right:10px; width:90%; overflow:hidden;  height:1.5em; white-space:nowrap; float:left; text-align:left; ">
-				<a class="links" style="" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('` + urlAddedTicklers() + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + itemObject.message + itemObject.createDate + `">` + 
+				<a class="links" style="" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('` + urlAddedTicklers() + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + itemObject.message + itemObject.serviceDate + `">` + 
 				itemObject.message  + 
 				`</a>
 			</span>
 			<span style="z-index: 100; background-color: white; overflow:hidden;   position:relative; height:1.5em; white-space:nowrap; float:right; text-align:right;">
-			...<a class="links" style="margin-right: 2px;" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('`+ urlAddedTicklers() + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + itemObject.message + itemObject.createDate + `">` 
-			+ itemObject.createDate + `			
+			...<a class="links" style="margin-right: 2px;" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('`+ urlAddedTicklers() + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + itemObject.message + itemObject.serviceDate + `">` 
+			+ itemObject.serviceDate + `			
 			</a>
 			</span>
 		</li>`
