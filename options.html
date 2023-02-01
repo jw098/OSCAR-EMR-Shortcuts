@@ -51,13 +51,48 @@
       <section>
         <h3>BC Billing</h3>
         <h4>Billing Code Input</h4>
-        <div class="row">
-          <input id="billingButtons" type="checkbox" />
-          <label for="billingButtons">Buttons to input billing codes</label>
-        </div>
+
         <div class="row">
           <input id="billingCodeInput_PageEnd" type="checkbox" />
           <label for="billingCodeInput_PageEnd">Scroll to bottom of page on page load</label>
+        </div>
+        <div class="row">
+          <input id="billingButtons" type="checkbox" />
+          <label for="billingButtons">Buttons to input billing codes</label>
+          <div id="bcBillingButtonGroup1">
+            <!-- <div class="subRow1 bcBillingButtonRow1">
+              <input id="bcBillingButton1_enabled" class="bcBillingButton1_enabled" type="checkbox"/>
+              <input id="bcBillingButton1_name" class="bcBillingButton1_name" type="text" value="" placeholder="button name"/>
+              <input id="bcBillingButton1_serviceCode" class="bcBillingButton1_serviceCode" type="text" value="" placeholder="Service code"/>
+              <input id="bcBillingButton1_dxCode1" class="bcBillingButton1_dxCode1" type="text" value="" placeholder="Dx code 1"/>
+              <input id="bcBillingButton1_dxCode2" class="bcBillingButton1_dxCode2" type="text" value="" placeholder="Dx code 2"/>
+              <input id="bcBillingButton1_dxCode3" class="bcBillingButton1_dxCode3" type="text" value="" placeholder="Dx code 3"/>
+              <div class="subRow2">
+                <div class="buttonShortcut">
+                  <input id="bcBillingButton1_addon" class="bcBillingButton1_addon" type="checkbox"/>
+                  <label for="bcBillingButton1_addon" class="enableButton">Billing Addon</label>
+                </div>
+                <div class="shortcut buttonShortcut">
+                  <input id="bcBillingButton1_shortcuts_enabled" class="bcBillingButton1_shortcuts_enabled" type="checkbox" />
+                  <input
+                    id="bcBillingButton1_shortcuts_keybinding" 
+                    class="customKey bcBillingButton1_shortcuts_keybinding"
+                    data-shortcutgroup="billingCodeInput_shortcut"
+                    type="text"
+                    value=""
+                    placeholder="press a key"
+                  />
+                  <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                    WARNING: Shortcut conflicts with another shortcut on the same page. 
+                  </label>
+                </div>
+              </div>
+            </div> -->
+            <div class="subRow1">
+              <button id="add">Add New</button>
+            </div>
+            
+          </div>
         </div>
         
         <div class="row shortcutGroup">

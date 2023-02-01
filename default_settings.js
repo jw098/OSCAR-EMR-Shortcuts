@@ -3,8 +3,52 @@ var defaultSettings = {
   allergyQuickAdd: true,
 
   billingCodeInput:{
-    billingButtons: true,
+    
     billingCodeInput_PageEnd: true,
+    billingButtons: true,
+    bcBillingButtonGroup1:[
+      {
+        bcBillingButton1_enabled: true,
+        bcBillingButton1_name: "test",
+        bcBillingButton1_serviceCode: "00100",
+        bcBillingButton1_dxCode1: "401",
+        bcBillingButton1_dxCode2: "244",
+        bcBillingButton1_dxCode3: "462",
+
+        bcBillingButton1_addon: true,
+        bcBillingButton1_shortcuts:{
+          bcBillingButton1_shortcuts_enabled: true,
+          bcBillingButton1_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: true,
+            key: '1'
+          },
+        }
+      },
+      {
+        bcBillingButton1_enabled: true,
+        bcBillingButton1_name: "test22",
+        bcBillingButton1_serviceCode: "00150",
+        bcBillingButton1_dxCode1: "411",
+        bcBillingButton1_dxCode2: "250",
+        bcBillingButton1_dxCode3: "595",
+
+        bcBillingButton1_addon: false,
+        bcBillingButton1_shortcuts:{
+          bcBillingButton1_shortcuts_enabled: true,
+          bcBillingButton1_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: true,
+            key: 'z'
+          },
+        }
+      },
+    ],
+
+    
+
     billingCodeInput_keyboardShortcuts:{
       billingCodeInput_shortcuts_enabled: true,
 
@@ -681,3 +725,4 @@ async function checkStoredSettingsStructure(){
   await browser.storage.sync.set(rebuiltSettings);
   console.log(await browser.storage.sync.get(defaultSettings));
 }
+
