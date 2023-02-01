@@ -456,62 +456,6 @@ function add_BCBillingButtonBlank() {
   );
 }
 
-function add_BCBillingButtonFromSetting(settingsBCBillingButton) {
-  const bcBillingButton1_enabled = settingsBCBillingButton.bcBillingButton1_enabled;
-  const bcBillingButton1_name = settingsBCBillingButton.bcBillingButton1_name;
-  const bcBillingButton1_serviceCode = settingsBCBillingButton.bcBillingButton1_serviceCode;
-  const bcBillingButton1_dxCode1 = settingsBCBillingButton.bcBillingButton1_dxCode1;
-  const bcBillingButton1_dxCode2 = settingsBCBillingButton.bcBillingButton1_dxCode2;
-  const bcBillingButton1_dxCode3 = settingsBCBillingButton.bcBillingButton1_dxCode3;
-  const bcBillingButton1_addon = settingsBCBillingButton.bcBillingButton1_addon;
-  const bcBillingButton1_shortcuts = settingsBCBillingButton.bcBillingButton1_shortcuts;
-  const bcBillingButton1_shortcuts_enabled = 
-    bcBillingButton1_shortcuts. bcBillingButton1_shortcuts_enabled;
-  const bcBillingButton1_shortcuts_keybinding = 
-    bcBillingButton1_shortcuts. bcBillingButton1_shortcuts_keybinding;
-  const keybindingText = keybindingToText(bcBillingButton1_shortcuts_keybinding);
-  const keybindingJSONString = JSON.stringify(bcBillingButton1_shortcuts_keybinding);
-
-  const div = document.createElement("div");
-  div.setAttribute("class", "subRow1 bcBillingButtonRow1");
-  div.innerHTML = `
-  <input type="checkbox" class="bcBillingButton1_enabled" value=${bcBillingButton1_enabled}/>
-  <input id="bcBillingButton1_name" class="bcBillingButton1_name" type="text" value=${bcBillingButton1_name} placeholder="button name"/>
-  <input id="bcBillingButton1_serviceCode" class="bcBillingButton1_serviceCode" type="text" value=${bcBillingButton1_serviceCode} placeholder="Service code"/>
-  <input class="bcBillingButton1_dxCode1" type="text" value=${bcBillingButton1_dxCode1} placeholder="Dx code 1"/>
-  <input class="bcBillingButton1_dxCode2" type="text" value=${bcBillingButton1_dxCode2} placeholder="Dx code 2"/>
-  <input class="bcBillingButton1_dxCode3" type="text" value=${bcBillingButton1_dxCode3} placeholder="Dx code 3"/>
-  <button class="removeParent">X</button>
-  <div class="subRow2">
-    <div class="buttonShortcut">
-      <input id="bcBillingButton1_addon" class="bcBillingButton1_addon" type="checkbox" value=${bcBillingButton1_addon}/>
-      <label for="bcBillingButton1_addon" class="enableButton">Billing Addon</label>
-    </div>
-    <div class="shortcut buttonShortcut">
-      <input id="bcBillingButton1_shortcuts_enabled" class="bcBillingButton1_shortcuts_enabled" type="checkbox" value=${bcBillingButton1_shortcuts_enabled}/>
-      <input
-        id="bcBillingButton1_shortcuts_keybinding" 
-        class="customKey bcBillingButton1_shortcuts_keybinding"
-        data-shortcutgroup="billingCodeInput_shortcut"
-        data-keybinding=${keybindingJSONString}
-        type="text"
-        value=${keybindingText}
-        placeholder="press a key"
-      />
-      <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
-        WARNING: Shortcut conflicts with another shortcut on the same page. 
-      </label>
-    </div>
-  </div>
-  `;
-  console.log(div);
-  const buttonGroup = document.getElementById("bcBillingButtonGroup1");
-  buttonGroup.insertBefore(
-    div,
-    buttonGroup.children[buttonGroup.childElementCount - 1]
-  );
-}
-
 
 
 async function checkAllSettings(){
@@ -725,6 +669,81 @@ function restoreOptionsPageFromSettings_bcBillingButtons(settingsBCBillingButton
     add_BCBillingButtonFromSetting(settingsBCBillingButton);
   }
 }
+
+
+function add_BCBillingButtonFromSetting(settingsBCBillingButton) {
+  const bcBillingButton1_enabled = settingsBCBillingButton.bcBillingButton1_enabled;
+  const bcBillingButton1_name = settingsBCBillingButton.bcBillingButton1_name;
+  const bcBillingButton1_serviceCode = settingsBCBillingButton.bcBillingButton1_serviceCode;
+  const bcBillingButton1_dxCode1 = settingsBCBillingButton.bcBillingButton1_dxCode1;
+  const bcBillingButton1_dxCode2 = settingsBCBillingButton.bcBillingButton1_dxCode2;
+  const bcBillingButton1_dxCode3 = settingsBCBillingButton.bcBillingButton1_dxCode3;
+  const bcBillingButton1_addon = settingsBCBillingButton.bcBillingButton1_addon;
+  const bcBillingButton1_shortcuts = settingsBCBillingButton.bcBillingButton1_shortcuts;
+  const bcBillingButton1_shortcuts_enabled = 
+    bcBillingButton1_shortcuts. bcBillingButton1_shortcuts_enabled;
+  const bcBillingButton1_shortcuts_keybinding = 
+    bcBillingButton1_shortcuts. bcBillingButton1_shortcuts_keybinding;
+  const keybindingText = keybindingToText(bcBillingButton1_shortcuts_keybinding);
+  const keybindingJSONString = JSON.stringify(bcBillingButton1_shortcuts_keybinding);
+
+  let bcBillingButton1_checked = "";
+  if(bcBillingButton1_enabled){
+    bcBillingButton1_checked = "checked";
+  }
+
+  let bcBillingButton1_addon_checked = "";
+  if(bcBillingButton1_addon){
+    bcBillingButton1_addon_checked = "checked";
+  }
+
+  let bcBillingButton1_shortcuts_checked = "";
+  if (bcBillingButton1_shortcuts_enabled){
+    bcBillingButton1_shortcuts_checked = "checked";
+  }
+
+
+  const div = document.createElement("div");
+  div.setAttribute("class", "subRow1 bcBillingButtonRow1");
+  div.innerHTML = `
+  <input type="checkbox" class="bcBillingButton1_enabled" value=${bcBillingButton1_enabled}/ ${bcBillingButton1_checked}>
+  <input id="bcBillingButton1_name" class="bcBillingButton1_name" type="text" value=${bcBillingButton1_name} placeholder="button name"/>
+  <input id="bcBillingButton1_serviceCode" class="bcBillingButton1_serviceCode" type="text" value=${bcBillingButton1_serviceCode} placeholder="Service code"/>
+  <input class="bcBillingButton1_dxCode1" type="text" value=${bcBillingButton1_dxCode1} placeholder="Dx code 1"/>
+  <input class="bcBillingButton1_dxCode2" type="text" value=${bcBillingButton1_dxCode2} placeholder="Dx code 2"/>
+  <input class="bcBillingButton1_dxCode3" type="text" value=${bcBillingButton1_dxCode3} placeholder="Dx code 3"/>
+  <button class="removeParent">X</button>
+  <div class="subRow2">
+    <div class="buttonShortcut">
+      <input id="bcBillingButton1_addon" class="bcBillingButton1_addon" type="checkbox" value=${bcBillingButton1_addon} ${bcBillingButton1_addon_checked}/>
+      <label for="bcBillingButton1_addon" class="enableButton">Billing Addon</label>
+    </div>
+    <div class="shortcut buttonShortcut">
+      <input id="bcBillingButton1_shortcuts_enabled" class="bcBillingButton1_shortcuts_enabled" type="checkbox" value=${bcBillingButton1_shortcuts_enabled} ${bcBillingButton1_shortcuts_checked}/>
+      <input
+        id="bcBillingButton1_shortcuts_keybinding" 
+        class="customKey bcBillingButton1_shortcuts_keybinding"
+        data-shortcutgroup="billingCodeInput_shortcut"
+        data-keybinding=${keybindingJSONString}
+        type="text"
+        value=${keybindingText}
+        placeholder="press a key"
+      />
+      <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+        WARNING: Shortcut conflicts with another shortcut on the same page. 
+      </label>
+    </div>
+  </div>
+  `;
+  console.log(div);
+  const buttonGroup = document.getElementById("bcBillingButtonGroup1");
+  buttonGroup.insertBefore(
+    div,
+    buttonGroup.children[buttonGroup.childElementCount - 1]
+  );
+}
+
+
 
 function findAllShortcutConflicts(settingsObject){
   // console.log(settingsObject);
