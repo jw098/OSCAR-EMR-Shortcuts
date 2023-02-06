@@ -22,7 +22,7 @@ var defaultSettings = {
             ctrlKey: false,
             shiftKey: false,
             altKey: true,
-            key: '1'
+            key: 'x'
           },
         }
       },

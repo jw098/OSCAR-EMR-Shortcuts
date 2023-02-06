@@ -346,17 +346,16 @@ function checkShortcutConflictFromCustomKeyFocusOut(e){
   checkShortcutGroupConflict(shortcutGroup);
 }
 
+
 /* 
 PURPOSE
 - check conflicts in keyboard shortcuts on the same page/shortcut group, given removeParent.
  */
-function checkShortcutConflictFromRemoveParentClick(e){
-  const removeParent = e.target;
-  const parent = removeParent.parent;
-  console.log(parent);
+function checkShortcutConflictFromRemoveParentClick(event){
+  const removeParent = event.target;
+  const parent = removeParent.parentNode;
   const shortcutGroup = parent.querySelector(".customKey").getAttribute('data-shortcutgroup');
-  
-  console.log(shortcutGroup);
+  parent.remove();
   checkShortcutGroupConflict(shortcutGroup);
 }
 
@@ -434,7 +433,7 @@ function checkShortcutGroupConflict(shortcutGroup){
     }
   }
 
-  console.log(shortcutGroupsInConflict);
+  // console.log(shortcutGroupsInConflict);
   
 
   /* 
@@ -489,19 +488,7 @@ var customActionsNoValues = ["pause", "muted", "mark", "jump", "display"];
 
 
 
-function add_BCBillingButtonAgeBasedCodes() {
-  const div = document.createElement("div");
-  div.setAttribute("class", "subRow1");
-  div.innerHTML = `
-  
-  `;
-  
-  const buttonGroup = document.getElementById("bcBillingButtonGroup1");
-  buttonGroup.insertBefore(
-    div,
-    buttonGroup.children[buttonGroup.childElementCount - 1]
-  );
-}
+
 
 
 async function checkAllSettings(){
@@ -519,7 +506,7 @@ function adjustAllSettings(checkAllSettings, settingsObject){
     if (typeof value == "boolean"){
       const theTarget = document.getElementById(key);
       theTarget.checked = checkAllSettings;
-      highlightSaveButton(theTarget);
+      checkHighlightSaveButton(theTarget);
       setGreyout(theTarget);
 
       if(key == "enabled"){
@@ -588,14 +575,13 @@ function setSettingsFromOptionsPage(settingsStructure){
       // console.log(key);
       newSettings[key] = document.getElementById(key).value;
     } else if(key.includes("_keybinding")){
-      console.log(key);
-      console.log(value);
-      console.log(document.getElementById(key).dataset.keybinding);
+      // console.log(key);
+      // console.log(value);
+      // console.log(document.getElementById(key).dataset.keybinding);
       newSettings[key] = JSON.parse(document.getElementById(key).dataset.keybinding);
       // console.log(value);
       // console.log(newSettings[key]);
     } else if (key.includes("bcBillingButtonGroup")){
-      console.log('hihi');
       newSettings[key] = setSettingsFromOptionsPage_bcBillingButtons(key);
     }
     else{
@@ -613,26 +599,25 @@ function setSettingsFromOptionsPage(settingsStructure){
 function setSettingsFromOptionsPage_bcBillingButtons(bcBillingButtonGroup){
   const billingButtonGroup_Options = document.getElementById(bcBillingButtonGroup);
   const billingButtonList =  Array.from(billingButtonGroup_Options.querySelectorAll(".bcBillingButtonGroup"));
-  console.log(billingButtonList);
+  // console.log(billingButtonList);
   let billingButtonGroup_Settings = [];
   for (let i = 0; i < billingButtonList.length; i++){
-    console.log("test1234");
     const oneBillingButton_Option = billingButtonList[i];
-    console.log(oneBillingButton_Option);
+    // console.log(oneBillingButton_Option);
     const oneBillingButton_Settings = createBillingButtonSettingFromOption(oneBillingButton_Option);
     billingButtonGroup_Settings.push(oneBillingButton_Settings);
   }
 
-  console.log(billingButtonGroup_Settings);
+  // console.log(billingButtonGroup_Settings);
   return billingButtonGroup_Settings;
 }
 
 function createBillingButtonSettingFromOption(oneBillingButton_Option) {
   const groupNumButtonNum = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").id.split("bcBillingButton")[1].split("_enabled")[0];
-  console.log(groupNumButtonNum)
+  // console.log(groupNumButtonNum)
   const buttonEnabled = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").checked;
   const buttonName = oneBillingButton_Option.querySelector(".bcBillingButton_name").value;
-  console.log(buttonName);
+  // console.log(buttonName);
 
   const serviceCode = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode").value;
   const dxCode1 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode1").value;
@@ -708,7 +693,7 @@ function restoreOptionsPageFromSettings(settingsObject){
       // console.log(document.getElementById(key).value);
     } else if (key.includes("bcBillingButtonGroup")){
       const groupNum = key.split("bcBillingButtonGroup")[1];
-      console.log(groupNum);
+      // console.log(groupNum);
       restoreOptionsPageFromSettings_bcBillingButtons(value, groupNum);
     }
     else{
@@ -720,7 +705,7 @@ function restoreOptionsPageFromSettings(settingsObject){
 }
 
 function restoreOptionsPageFromSettings_bcBillingButtons(settingsBCBillingButtonList, groupNum){
-  console.log(settingsBCBillingButtonList);
+  // console.log(settingsBCBillingButtonList);
   
   for (let i = 0; i < settingsBCBillingButtonList.length; i++){
     const settingsBCBillingButton = settingsBCBillingButtonList[i];
@@ -729,8 +714,38 @@ function restoreOptionsPageFromSettings_bcBillingButtons(settingsBCBillingButton
   }
 }
 
-
 function add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, buttonNum) {
+  const bcBillingButton_serviceCode = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_serviceCode`];
+  const isAgeBasedCode = checkIsAgeBasedCode(bcBillingButton_serviceCode);
+
+  add_BCBillingButtonBlank(groupNum, isAgeBasedCode);
+  restoreOptionsPageFromSettings(settingsBCBillingButton);
+}
+
+function checkIsAgeBasedCode(serviceCode){
+  for (const [key, value] of Object.entries(ageBasedCodeList)){
+    console.log(serviceCode);
+    console.log(key);
+    if (serviceCode == key){
+      return true;
+    }
+  }
+  return false;
+}
+
+let ageBasedCodeList = {
+  officeVisit: "Office Visit",
+  counselling: "Counselling",
+  consultation: "Consultation",
+  completeExam: "Complete Exam",
+  teleVisit: "Telehealth Visit",
+  teleCounselling: "Telehealth Counselling",
+  teleConsultation: "Telehealth Consultation"
+}
+
+
+function add_BCBillingButtonFromSetting_old(settingsBCBillingButton, groupNum, buttonNum) {
   const bcBillingButton_enabled = 
     settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_enabled`];
   let bcBillingButton_name = 
@@ -747,15 +762,14 @@ function add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, butto
     settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_addon`];
   const bcBillingButton_shortcuts = 
     settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_shortcuts`];
-    console.log(bcBillingButton_shortcuts);
+    
+
 
   const bcBillingButton_shortcuts_enabled = 
     bcBillingButton_shortcuts[`bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled`];
   const bcBillingButton_shortcuts_keybinding = 
     bcBillingButton_shortcuts[`bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding`];
   
-  
-  console.log(bcBillingButton_shortcuts_keybinding);
   let keybindingText = keybindingToText(bcBillingButton_shortcuts_keybinding);
   const keybindingJSONString = JSON.stringify(bcBillingButton_shortcuts_keybinding);
 
@@ -831,7 +845,7 @@ function add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, butto
     </div>
   </div>
   `;
-  console.log(div);
+
   const buttonGroup = document.getElementById("bcBillingButtonGroup1");
   buttonGroup.insertBefore(
     div,
@@ -841,16 +855,26 @@ function add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, butto
 
 
 
-function add_BCBillingButtonBlank(groupNum) {
+function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   const buttonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
   const buttonNum = buttonGroup.children.length;
+  let serviceCodeInput = `<input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText" type="text" value="" placeholder="Service code"/>`
+  if(isAgeBasedCode){
+    const ageBasedCodeOptions = getAgeBasedCodeOptions();
+    console.log(ageBasedCodeOptions);
+    serviceCodeInput = `
+    <select id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText">
+      ${ageBasedCodeOptions}
+    </select>
+    `
+  }
 
   const div = document.createElement("div");
   div.setAttribute("class", "subRow1 bcBillingButtonGroup");
   div.innerHTML = `
   <input id="bcBillingButton${groupNum}_${buttonNum}_enabled" type="checkbox" class="bcBillingButton_enabled"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_name" class="bcBillingButton_name billingButtonCustomText" type="text" value="" placeholder="button name"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText" type="text" value="" placeholder="Service code"/>
+  ${serviceCodeInput}
   <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode1" class="bcBillingButton_dxCode1 billingButtonCustomText" type="text" value="" placeholder="Dx code 1"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode2" class="bcBillingButton_dxCode2 billingButtonCustomText" type="text" value="" placeholder="Dx code 2"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode3" class="bcBillingButton_dxCode3 billingButtonCustomText" type="text" value="" placeholder="Dx code 3"/>
@@ -885,8 +909,32 @@ function add_BCBillingButtonBlank(groupNum) {
   );
 }
 
+function getAgeBasedCodeOptions(){
+  let optionsList = "";
+  for (const [key, value] of Object.entries(ageBasedCodeList)){
+    const oneOption = `<option value="${key}">${value}</option>`
+    optionsList += oneOption;
+  }
+  return optionsList;
+}
+
 function add_BCBillingButtonGroup1Blank() {
-  add_BCBillingButtonBlank(1);
+  add_BCBillingButtonBlank(1, false);
+}
+
+function add_BCBillingButtonGroup1AgeBasedCodes() {
+  add_BCBillingButtonBlank(1, true);
+  // const div = document.createElement("div");
+  // div.setAttribute("class", "subRow1");
+  // div.innerHTML = `
+  
+  // `;
+  
+  // const buttonGroup = document.getElementById("bcBillingButtonGroup1");
+  // buttonGroup.insertBefore(
+  //   div,
+  //   buttonGroup.children[buttonGroup.childElementCount - 1]
+  // );
 }
 
 
@@ -1008,8 +1056,8 @@ function greyoutExtensionIcon(){
   const globalEnable = document.getElementById("enabled");
   const enabled = globalEnable.checked;
   const suffix = `${enabled ? "" : "_disabled"}.png`;
-  console.log(enabled);
-  console.log(suffix);
+  // console.log(enabled);
+  // console.log(suffix);
   chrome.browserAction.setIcon({
     path: {
       "16": "icons/OSCAR_16px" + suffix,
@@ -1025,7 +1073,7 @@ PURPOSE
 - check if targetValue in options matches the value settings. If not, add it to set of unsavedChanges
 - toggle optionsUnsaved in the save button classlist, depending on if unsavedChanges is empty.
 */
-async function highlightSaveButton(theTarget){
+async function checkHighlightSaveButton(theTarget){
   // console.log(theTarget);
   const isOptionsUnsaved = await checkOptionsUnsaved(theTarget);
 
@@ -1041,6 +1089,10 @@ async function highlightSaveButton(theTarget){
   // toggle optionsUnsaved in the save button classlist, depending on if unsavedChanges is empty.
   document.getElementById("saveHeader").classList.toggle("optionsUnsaved", unsavedChanges.size != 0);
   
+}
+
+function highlightSaveButton(event){
+  document.getElementById("saveHeader").classList.toggle("optionsUnsaved", true);
 }
 
 /* 
@@ -1145,7 +1197,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	}, true);
   
-  document.getElementById("addAgeBasedButton").addEventListener("click", add_BCBillingButtonAgeBasedCodes);
+  document.getElementById("addAgeBasedButton").addEventListener("click", add_BCBillingButtonGroup1AgeBasedCodes);
   document.getElementById("add").addEventListener("click", add_BCBillingButtonGroup1Blank);
   document
     .getElementById("restore")
@@ -1191,10 +1243,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       eventCaller(event, "customFID", convertURLToFID);
       eventCaller(event, "customKey", checkShortcutConflictFromCustomKeyFocusOut);
       
-      targetEventCaller(theTarget, "customKey", highlightSaveButton);
-      targetEventCaller(theTarget, "customFID", highlightSaveButton);
-      targetEventCaller(theTarget, "customButtonTitle", highlightSaveButton);
-      targetEventCaller(theTarget, "billingButtonCustomText", highlightSaveButton);
+      targetEventCaller(theTarget, "customKey", checkHighlightSaveButton);
+      targetEventCaller(theTarget, "customFID", checkHighlightSaveButton);
+      targetEventCaller(theTarget, "customButtonTitle", checkHighlightSaveButton);
+      targetEventCaller(theTarget, "billingButtonCustomText", checkHighlightSaveButton);
       
     });
 
@@ -1202,7 +1254,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let theTarget = event.target;
     if(theTarget.type == "checkbox"){//theTarget.tagName  == "INPUT" && 
       setGreyout(theTarget);
-      highlightSaveButton(theTarget);
+      checkHighlightSaveButton(theTarget);
     }
 
     if(theTarget.id == "enabled"){
@@ -1211,14 +1263,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   document.addEventListener("click", (event) => {
-    // eventCaller(event, "removeParent", checkShortcutConflictFromRemoveParentClick);
-    eventCaller(event, "removeParent", function () {
-      const removeParent = event.target;
-      const parent = removeParent.parentNode;
-      const shortcutGroup = parent.querySelector(".customKey").getAttribute('data-shortcutgroup');
-      parent.remove();
-      checkShortcutGroupConflict(shortcutGroup);
-    });
+    eventCaller(event, "removeParent", checkShortcutConflictFromRemoveParentClick);
+    eventCaller(event, "removeParent", highlightSaveButton);
   });
 
   document.addEventListener("change", (event) => {
