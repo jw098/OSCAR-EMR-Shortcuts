@@ -340,9 +340,23 @@ let shortcutGroupsInConflict = new Set();
 PURPOSE
 - check conflicts in keyboard shortcuts on the same page/shortcut group, given event.
  */
-function checkShortcutConflictFromEvent(e){
+function checkShortcutConflictFromCustomKeyFocusOut(e){
   const theTarget = e.target;
   const shortcutGroup = e.target.getAttribute('data-shortcutgroup');
+  checkShortcutGroupConflict(shortcutGroup);
+}
+
+/* 
+PURPOSE
+- check conflicts in keyboard shortcuts on the same page/shortcut group, given removeParent.
+ */
+function checkShortcutConflictFromRemoveParentClick(e){
+  const removeParent = e.target;
+  const parent = removeParent.parent;
+  console.log(parent);
+  const shortcutGroup = parent.querySelector(".customKey").getAttribute('data-shortcutgroup');
+  
+  console.log(shortcutGroup);
   checkShortcutGroupConflict(shortcutGroup);
 }
 
@@ -396,15 +410,18 @@ function checkShortcutGroupConflict(shortcutGroup){
     for (let j = 0; j < restOfInputList.length; j++){
       const anInputFromRestOfList = restOfInputList[j];
       let anInputFromRestOfList_keybinding = anInputFromRestOfList.dataset.keybinding;
+      if (anInputFromRestOfList_keybinding != ""){
+        anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList_keybinding);
+      }
+      // console.log(anInputFromRestOfList_keybinding);
+      
       if (isEmptyKeybinding(anInputFromRestOfList_keybinding)){
         continue;
       }
-      // console.log(anInputFromRestOfList_keybinding);
-      anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList_keybinding);
-      
-      // console.log(anInputFromRestOfList);
-      // console.log(anInput);
+
       if(isSameKeybinding(anInputKeybinding, anInputFromRestOfList_keybinding)){
+        console.log(anInputKeybinding);
+        console.log(anInputFromRestOfList_keybinding);
         shortcutGroupsInConflict.add(shortcutGroup);
         const h1Warning = document.querySelector("h1").querySelector(".warning");
         h1Warning.classList.toggle("hide", false);
@@ -416,6 +433,8 @@ function checkShortcutGroupConflict(shortcutGroup){
       }
     }
   }
+
+  console.log(shortcutGroupsInConflict);
   
 
   /* 
@@ -1170,7 +1189,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.addEventListener("focusout", (event) => {
       let theTarget = event.target;
       eventCaller(event, "customFID", convertURLToFID);
-      eventCaller(event, "customKey", checkShortcutConflictFromEvent);
+      eventCaller(event, "customKey", checkShortcutConflictFromCustomKeyFocusOut);
+      
       targetEventCaller(theTarget, "customKey", highlightSaveButton);
       targetEventCaller(theTarget, "customFID", highlightSaveButton);
       targetEventCaller(theTarget, "customButtonTitle", highlightSaveButton);
@@ -1191,8 +1211,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   document.addEventListener("click", (event) => {
+    // eventCaller(event, "removeParent", checkShortcutConflictFromRemoveParentClick);
     eventCaller(event, "removeParent", function () {
-      event.target.parentNode.remove();
+      const removeParent = event.target;
+      const parent = removeParent.parentNode;
+      const shortcutGroup = parent.querySelector(".customKey").getAttribute('data-shortcutgroup');
+      parent.remove();
+      checkShortcutGroupConflict(shortcutGroup);
     });
   });
 
