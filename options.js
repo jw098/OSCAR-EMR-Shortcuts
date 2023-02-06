@@ -709,7 +709,7 @@ function restoreOptionsPageFromSettings_bcBillingButtons(settingsBCBillingButton
   
   for (let i = 0; i < settingsBCBillingButtonList.length; i++){
     const settingsBCBillingButton = settingsBCBillingButtonList[i];
-    console.log(settingsBCBillingButton);
+    // console.log(settingsBCBillingButton);
     add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, i+1);
   }
 }
@@ -725,8 +725,8 @@ function add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, butto
 
 function checkIsAgeBasedCode(serviceCode){
   for (const [key, value] of Object.entries(ageBasedCodeList)){
-    console.log(serviceCode);
-    console.log(key);
+    // console.log(serviceCode);
+    // console.log(key);
     if (serviceCode == key){
       return true;
     }
@@ -745,123 +745,12 @@ let ageBasedCodeList = {
 }
 
 
-function add_BCBillingButtonFromSetting_old(settingsBCBillingButton, groupNum, buttonNum) {
-  const bcBillingButton_enabled = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_enabled`];
-  let bcBillingButton_name = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_name`];
-  let bcBillingButton_serviceCode = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_serviceCode`];
-  let bcBillingButton_dxCode1 = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_dxCode1`];
-  let bcBillingButton_dxCode2 = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_dxCode2`];
-  let bcBillingButton_dxCode3 = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_dxCode3`];
-  const bcBillingButton_addon = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_addon`];
-  const bcBillingButton_shortcuts = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_shortcuts`];
-    
-
-
-  const bcBillingButton_shortcuts_enabled = 
-    bcBillingButton_shortcuts[`bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled`];
-  const bcBillingButton_shortcuts_keybinding = 
-    bcBillingButton_shortcuts[`bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding`];
-  
-  let keybindingText = keybindingToText(bcBillingButton_shortcuts_keybinding);
-  const keybindingJSONString = JSON.stringify(bcBillingButton_shortcuts_keybinding);
-
-  if(bcBillingButton_name == ""){
-    bcBillingButton_name = "''";
-  }
-
-  if(bcBillingButton_serviceCode == ""){
-    bcBillingButton_serviceCode = "''";
-  }
-
-  if(bcBillingButton_dxCode1 == ""){
-    bcBillingButton_dxCode1 = "''";
-  }
-
-  if(bcBillingButton_dxCode2 == ""){
-    bcBillingButton_dxCode2 = "''";
-  }
-
-  if(bcBillingButton_dxCode3 == ""){
-    bcBillingButton_dxCode3 = "''";
-  }
-
-  if(keybindingText == ""){
-    keybindingText = "''";
-  }
-
-  let bcBillingButton_checked = "";
-  if(bcBillingButton_enabled){
-    bcBillingButton_checked = "checked";
-  }
-
-  let bcBillingButton_addon_checked = "";
-  if(bcBillingButton_addon){
-    bcBillingButton_addon_checked = "checked";
-  }
-
-  let bcBillingButton_shortcuts_checked = "";
-  if (bcBillingButton_shortcuts_enabled){
-    bcBillingButton_shortcuts_checked = "checked";
-  }
-
-
-  const div = document.createElement("div");
-  div.setAttribute("class", "subRow1 bcBillingButtonGroup");
-  div.innerHTML = `
-  <input id="bcBillingButton${groupNum}_${buttonNum}_enabled" type="checkbox" class="bcBillingButton_enabled"  ${bcBillingButton_checked}/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_name" class="bcBillingButton_name billingButtonCustomText" type="text" value=${bcBillingButton_name} placeholder="button name"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText" type="text" value=${bcBillingButton_serviceCode} placeholder="Service code"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode1" class="bcBillingButton_dxCode1 billingButtonCustomText" type="text" value=${bcBillingButton_dxCode1} placeholder="Dx code 1"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode2" class="bcBillingButton_dxCode2 billingButtonCustomText" type="text" value=${bcBillingButton_dxCode2} placeholder="Dx code 2"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode3" class="bcBillingButton_dxCode3 billingButtonCustomText" type="text" value=${bcBillingButton_dxCode3} placeholder="Dx code 3"/>
-  <button class="removeParent">X</button>
-  <div class="subRow2">
-    <div class="buttonShortcut">
-      <input id="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon" type="checkbox" ${bcBillingButton_addon_checked}/>
-      <label for="bcBillingButton${groupNum}_${buttonNum}_addon" class="enableButton">Billing Addon</label>
-    </div>
-    <div class="shortcut buttonShortcut">
-      <input id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled" class="bcBillingButton_shortcuts_enabled" type="checkbox" ${bcBillingButton_shortcuts_checked}/>
-      <input
-        id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding" 
-        class="customKey bcBillingButton_shortcuts_keybinding customKey"
-        data-shortcutgroup="billingCodeInput_shortcut"
-        data-keybinding=${keybindingJSONString}
-        type="text"
-        value=${keybindingText}
-        placeholder="press a key"
-      />
-      <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
-        WARNING: Shortcut conflicts with another shortcut on the same page. 
-      </label>
-    </div>
-  </div>
-  `;
-
-  const buttonGroup = document.getElementById("bcBillingButtonGroup1");
-  buttonGroup.insertBefore(
-    div,
-    buttonGroup.children[buttonGroup.childElementCount - 1]
-  );
-}
-
-
-
 function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   const buttonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
   const buttonNum = buttonGroup.children.length;
   let serviceCodeInput = `<input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText" type="text" value="" placeholder="Service code"/>`
   if(isAgeBasedCode){
     const ageBasedCodeOptions = getAgeBasedCodeOptions();
-    console.log(ageBasedCodeOptions);
     serviceCodeInput = `
     <select id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText">
       ${ageBasedCodeOptions}
