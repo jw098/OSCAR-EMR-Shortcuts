@@ -5,8 +5,49 @@ var testSettings = {
   allergyQuickAdd: true,
 
   billingCodeInput:{
-    billingButtons: true,
+    billingButtons22: true,
     billingCodeInput_PageEnd: true,
+    bcBillingButtonGroup1:[
+      {
+        bcBillingButton1_enabled: true,
+        bcBillingButton1_name: "test",
+        bcBillingButton1_serviceCode: "00100",
+        bcBillingButton1_dxCode1: "401",
+        bcBillingButton1_dxCode2: "244",
+        bcBillingButton1_dxCode3: "462",
+
+        bcBillingButton1_addon: true,
+        bcBillingButton1_shortcuts:{
+          bcBillingButton1_1_shortcuts_enabled: true,
+          bcBillingButton1_1_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: true,
+            key: '1'
+          },
+        }
+      },
+      {
+        bcBillingButton1_2_enabled: true,
+        bcBillingButton1_2_name: "test22",
+        bcBillingButton1_2_serviceCode: "00150",
+        bcBillingButton1_2_dxCode1: "411",
+        bcBillingButton1_2_dxCode2: "250",
+        bcBillingButton1_2_dxCode3: "595",
+
+        bcBillingButton1_2_addon: false,
+        bcBillingButton1_2_shortcuts:{
+          bcBillingButton1_2_shortcuts_enabled: true,
+          bcBillingButton1_2_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: true,
+            key: 'z'
+          },
+        }
+      },
+    ],
+
     billingCodeInput_keyboardShortcuts:{
       billingCodeInput_shortcuts_enabled: true,
 
@@ -238,6 +279,9 @@ function recordKeyPress(e) {
 }
 
 function keybindingToText(theKeybinding){
+  if(theKeybinding == ""){
+    return "";
+  }
   const theKey = theKeybinding.key;    
   const theAltKey = theKeybinding.altKey;
   const theCtrlKey = theKeybinding.ctrlKey;
@@ -337,19 +381,27 @@ function checkShortcutGroupConflict(shortcutGroup){
   */
   for (let i = 0; i < inputListInSameGroup.length; i++){
     const anInput = inputListInSameGroup[i];
-    // console.log(anInput);
-    // console.log(anInput.dataset.keybinding);
-    const anInputKeybinding = JSON.parse(anInput.dataset.keybinding);
-    const anInputWarning = anInput.parentNode.querySelector(".warning");
-
+    let anInputKeybinding = anInput.dataset.keybinding;
+    // console.log(anInputKeybinding);
     if (isEmptyKeybinding(anInputKeybinding)){
       continue;
     }
+    anInputKeybinding = JSON.parse(anInputKeybinding);
+    
+    const anInputWarning = anInput.parentNode.querySelector(".warning");
+
+
 
     const restOfInputList = inputListInSameGroup.slice(i+1);
     for (let j = 0; j < restOfInputList.length; j++){
       const anInputFromRestOfList = restOfInputList[j];
-      const anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList.dataset.keybinding);
+      let anInputFromRestOfList_keybinding = anInputFromRestOfList.dataset.keybinding;
+      if (isEmptyKeybinding(anInputFromRestOfList_keybinding)){
+        continue;
+      }
+      // console.log(anInputFromRestOfList_keybinding);
+      anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList_keybinding);
+      
       // console.log(anInputFromRestOfList);
       // console.log(anInput);
       if(isSameKeybinding(anInputKeybinding, anInputFromRestOfList_keybinding)){
@@ -385,10 +437,11 @@ function checkShortcutGroupConflict(shortcutGroup){
 
 // return true if the given keybinding is empty
 function isEmptyKeybinding(keybinding){
-  return keybinding.ctrlKey == false
-  && keybinding.altKey == false
-  && keybinding.shiftKey == false
-  && keybinding.key == "";
+  return keybinding == "" || 
+    (keybinding.ctrlKey == false
+    && keybinding.altKey == false
+    && keybinding.shiftKey == false
+    && keybinding.key == "");
 
 }
 
@@ -415,38 +468,13 @@ function updateCustomShortcutInputText(inputItem, keyCode) {
 // List of custom actions for which customValue should be disabled
 var customActionsNoValues = ["pause", "muted", "mark", "jump", "display"];
 
-function add_BCBillingButtonBlank() {
+
+
+function add_BCBillingButtonAgeBasedCodes() {
   const div = document.createElement("div");
   div.setAttribute("class", "subRow1");
   div.innerHTML = `
-  <input type="checkbox"/>
-  <input id="bcBillingButton1_name" class="" type="text" value="" placeholder="button name"/>
-  <input id="bcBillingButton1_serviceCode" class="" type="text" value="" placeholder="Service code"/>
-  <input class="" type="text" value="" placeholder="Dx code 1"/>
-  <input class="" type="text" value="" placeholder="Dx code 2"/>
-  <input class="" type="text" value="" placeholder="Dx code 3"/>
-  <button class="removeParent">X</button>
-  <div class="subRow2">
-    <div class="buttonShortcut">
-      <input id="bcBillingButton1_addon" type="checkbox"/>
-      <label for="bcBillingButton1_addon" class="enableButton">Billing Addon</label>
-    </div>
-    <div class="shortcut buttonShortcut">
-      <input id="bcBillingButton1_shortcuts_enabled" type="checkbox" />
-      <input
-        id="bcBillingButton1_shortcuts_keybinding" 
-        class="customKey"
-        data-shortcutgroup="billingCodeInput_shortcut"
-        data-keybinding="{\"ctrlKey\":false,\"shiftKey\":false,\"altKey\":false,\"key\":\"\"}"
-        type="text"
-        value=""
-        placeholder="press a key"
-      />
-      <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
-        WARNING: Shortcut conflicts with another shortcut on the same page. 
-      </label>
-    </div>
-  </div>
+  
   `;
   
   const buttonGroup = document.getElementById("bcBillingButtonGroup1");
@@ -455,7 +483,6 @@ function add_BCBillingButtonBlank() {
     buttonGroup.children[buttonGroup.childElementCount - 1]
   );
 }
-
 
 
 async function checkAllSettings(){
@@ -542,6 +569,9 @@ function setSettingsFromOptionsPage(settingsStructure){
       // console.log(key);
       newSettings[key] = document.getElementById(key).value;
     } else if(key.includes("_keybinding")){
+      console.log(key);
+      console.log(value);
+      console.log(document.getElementById(key).dataset.keybinding);
       newSettings[key] = JSON.parse(document.getElementById(key).dataset.keybinding);
       // console.log(value);
       // console.log(newSettings[key]);
@@ -563,7 +593,7 @@ function setSettingsFromOptionsPage(settingsStructure){
 
 function setSettingsFromOptionsPage_bcBillingButtons(bcBillingButtonGroup){
   const billingButtonGroup_Options = document.getElementById(bcBillingButtonGroup);
-  const billingButtonList =  Array.from(billingButtonGroup_Options.querySelectorAll(".bcBillingButtonRow1"));
+  const billingButtonList =  Array.from(billingButtonGroup_Options.querySelectorAll(".bcBillingButtonGroup"));
   console.log(billingButtonList);
   let billingButtonGroup_Settings = [];
   for (let i = 0; i < billingButtonList.length; i++){
@@ -579,31 +609,39 @@ function setSettingsFromOptionsPage_bcBillingButtons(bcBillingButtonGroup){
 }
 
 function createBillingButtonSettingFromOption(oneBillingButton_Option) {
-  const buttonEnabled = oneBillingButton_Option.querySelector(".bcBillingButton1_enabled").checked;
-  console.log(buttonEnabled);
-  const buttonName = oneBillingButton_Option.querySelector(".bcBillingButton1_name").value;
-  const serviceCode = oneBillingButton_Option.querySelector(".bcBillingButton1_serviceCode").value;
-  const dxCode1 = oneBillingButton_Option.querySelector(".bcBillingButton1_dxCode1").value;
-  const dxCode2 = oneBillingButton_Option.querySelector(".bcBillingButton1_dxCode2").value;
-  const dxCode3 = oneBillingButton_Option.querySelector(".bcBillingButton1_dxCode3").value;
-  const addon = oneBillingButton_Option.querySelector(".bcBillingButton1_addon").checked;
-  const shortcutEnabled = oneBillingButton_Option.querySelector(".bcBillingButton1_shortcuts_enabled").checked;
-  const keybinding = JSON.parse(oneBillingButton_Option.querySelector(".bcBillingButton1_shortcuts_keybinding").dataset.keybinding);
+  const groupNumButtonNum = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").id.split("bcBillingButton")[1].split("_enabled")[0];
+  console.log(groupNumButtonNum)
+  const buttonEnabled = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").checked;
+  const buttonName = oneBillingButton_Option.querySelector(".bcBillingButton_name").value;
+  console.log(buttonName);
+
+  const serviceCode = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode").value;
+  const dxCode1 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode1").value;
+  const dxCode2 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode2").value;
+  const dxCode3 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode3").value;
+  const addon = oneBillingButton_Option.querySelector(".bcBillingButton_addon").checked;
+  const shortcutEnabled = oneBillingButton_Option.querySelector(".bcBillingButton_shortcuts_enabled").checked;
+
+  let keybinding = oneBillingButton_Option.querySelector(".bcBillingButton_shortcuts_keybinding").dataset.keybinding;
+  if(keybinding != ""){
+    keybinding = JSON.parse(keybinding);
+  }
+  
 
   
 
   const oneBillingButton_Settings = {
-    bcBillingButton1_enabled: buttonEnabled,
-    bcBillingButton1_name: buttonName,
-    bcBillingButton1_serviceCode: serviceCode,
-    bcBillingButton1_dxCode1: dxCode1,
-    bcBillingButton1_dxCode2: dxCode2,
-    bcBillingButton1_dxCode3: dxCode3,
+    [`bcBillingButton${groupNumButtonNum}_enabled`]: buttonEnabled,
+    [`bcBillingButton${groupNumButtonNum}_name`]: buttonName,
+    [`bcBillingButton${groupNumButtonNum}_serviceCode`]: serviceCode,
+    [`bcBillingButton${groupNumButtonNum}_dxCode1`]: dxCode1,
+    [`bcBillingButton${groupNumButtonNum}_dxCode2`]: dxCode2,
+    [`bcBillingButton${groupNumButtonNum}_dxCode3`]: dxCode3,
 
-    bcBillingButton1_addon: addon,
-    bcBillingButton1_shortcuts:{
-      bcBillingButton1_shortcuts_enabled: shortcutEnabled,
-      bcBillingButton1_shortcuts_keybinding: keybinding
+    [`bcBillingButton${groupNumButtonNum}_addon`]: addon,
+    [`bcBillingButton${groupNumButtonNum}_shortcuts`]:{
+      [`bcBillingButton${groupNumButtonNum}_shortcuts_enabled`]: shortcutEnabled,
+      [`bcBillingButton${groupNumButtonNum}_shortcuts_keybinding`]: keybinding
     }
 
   };
@@ -650,7 +688,9 @@ function restoreOptionsPageFromSettings(settingsObject){
       // console.log(document.getElementById(key).keybinding);
       // console.log(document.getElementById(key).value);
     } else if (key.includes("bcBillingButtonGroup")){
-      restoreOptionsPageFromSettings_bcBillingButtons(value);
+      const groupNum = key.split("bcBillingButtonGroup")[1];
+      console.log(groupNum);
+      restoreOptionsPageFromSettings_bcBillingButtons(value, groupNum);
     }
     else{
       // console.log('hihi');
@@ -660,69 +700,106 @@ function restoreOptionsPageFromSettings(settingsObject){
   }
 }
 
-function restoreOptionsPageFromSettings_bcBillingButtons(settingsBCBillingButtonList){
+function restoreOptionsPageFromSettings_bcBillingButtons(settingsBCBillingButtonList, groupNum){
   console.log(settingsBCBillingButtonList);
   
-  for (let i in settingsBCBillingButtonList){
+  for (let i = 0; i < settingsBCBillingButtonList.length; i++){
     const settingsBCBillingButton = settingsBCBillingButtonList[i];
     console.log(settingsBCBillingButton);
-    add_BCBillingButtonFromSetting(settingsBCBillingButton);
+    add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, i+1);
   }
 }
 
 
-function add_BCBillingButtonFromSetting(settingsBCBillingButton) {
-  const bcBillingButton1_enabled = settingsBCBillingButton.bcBillingButton1_enabled;
-  const bcBillingButton1_name = settingsBCBillingButton.bcBillingButton1_name;
-  const bcBillingButton1_serviceCode = settingsBCBillingButton.bcBillingButton1_serviceCode;
-  const bcBillingButton1_dxCode1 = settingsBCBillingButton.bcBillingButton1_dxCode1;
-  const bcBillingButton1_dxCode2 = settingsBCBillingButton.bcBillingButton1_dxCode2;
-  const bcBillingButton1_dxCode3 = settingsBCBillingButton.bcBillingButton1_dxCode3;
-  const bcBillingButton1_addon = settingsBCBillingButton.bcBillingButton1_addon;
-  const bcBillingButton1_shortcuts = settingsBCBillingButton.bcBillingButton1_shortcuts;
-  const bcBillingButton1_shortcuts_enabled = 
-    bcBillingButton1_shortcuts. bcBillingButton1_shortcuts_enabled;
-  const bcBillingButton1_shortcuts_keybinding = 
-    bcBillingButton1_shortcuts. bcBillingButton1_shortcuts_keybinding;
-  const keybindingText = keybindingToText(bcBillingButton1_shortcuts_keybinding);
-  const keybindingJSONString = JSON.stringify(bcBillingButton1_shortcuts_keybinding);
+function add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, buttonNum) {
+  const bcBillingButton_enabled = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_enabled`];
+  let bcBillingButton_name = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_name`];
+  let bcBillingButton_serviceCode = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_serviceCode`];
+  let bcBillingButton_dxCode1 = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_dxCode1`];
+  let bcBillingButton_dxCode2 = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_dxCode2`];
+  let bcBillingButton_dxCode3 = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_dxCode3`];
+  const bcBillingButton_addon = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_addon`];
+  const bcBillingButton_shortcuts = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_shortcuts`];
+    console.log(bcBillingButton_shortcuts);
 
-  let bcBillingButton1_checked = "";
-  if(bcBillingButton1_enabled){
-    bcBillingButton1_checked = "checked";
+  const bcBillingButton_shortcuts_enabled = 
+    bcBillingButton_shortcuts[`bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled`];
+  const bcBillingButton_shortcuts_keybinding = 
+    bcBillingButton_shortcuts[`bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding`];
+  
+  
+  console.log(bcBillingButton_shortcuts_keybinding);
+  let keybindingText = keybindingToText(bcBillingButton_shortcuts_keybinding);
+  const keybindingJSONString = JSON.stringify(bcBillingButton_shortcuts_keybinding);
+
+  if(bcBillingButton_name == ""){
+    bcBillingButton_name = "''";
   }
 
-  let bcBillingButton1_addon_checked = "";
-  if(bcBillingButton1_addon){
-    bcBillingButton1_addon_checked = "checked";
+  if(bcBillingButton_serviceCode == ""){
+    bcBillingButton_serviceCode = "''";
   }
 
-  let bcBillingButton1_shortcuts_checked = "";
-  if (bcBillingButton1_shortcuts_enabled){
-    bcBillingButton1_shortcuts_checked = "checked";
+  if(bcBillingButton_dxCode1 == ""){
+    bcBillingButton_dxCode1 = "''";
+  }
+
+  if(bcBillingButton_dxCode2 == ""){
+    bcBillingButton_dxCode2 = "''";
+  }
+
+  if(bcBillingButton_dxCode3 == ""){
+    bcBillingButton_dxCode3 = "''";
+  }
+
+  if(keybindingText == ""){
+    keybindingText = "''";
+  }
+
+  let bcBillingButton_checked = "";
+  if(bcBillingButton_enabled){
+    bcBillingButton_checked = "checked";
+  }
+
+  let bcBillingButton_addon_checked = "";
+  if(bcBillingButton_addon){
+    bcBillingButton_addon_checked = "checked";
+  }
+
+  let bcBillingButton_shortcuts_checked = "";
+  if (bcBillingButton_shortcuts_enabled){
+    bcBillingButton_shortcuts_checked = "checked";
   }
 
 
   const div = document.createElement("div");
-  div.setAttribute("class", "subRow1 bcBillingButtonRow1");
+  div.setAttribute("class", "subRow1 bcBillingButtonGroup");
   div.innerHTML = `
-  <input type="checkbox" class="bcBillingButton1_enabled" value=${bcBillingButton1_enabled}/ ${bcBillingButton1_checked}>
-  <input id="bcBillingButton1_name" class="bcBillingButton1_name" type="text" value=${bcBillingButton1_name} placeholder="button name"/>
-  <input id="bcBillingButton1_serviceCode" class="bcBillingButton1_serviceCode" type="text" value=${bcBillingButton1_serviceCode} placeholder="Service code"/>
-  <input class="bcBillingButton1_dxCode1" type="text" value=${bcBillingButton1_dxCode1} placeholder="Dx code 1"/>
-  <input class="bcBillingButton1_dxCode2" type="text" value=${bcBillingButton1_dxCode2} placeholder="Dx code 2"/>
-  <input class="bcBillingButton1_dxCode3" type="text" value=${bcBillingButton1_dxCode3} placeholder="Dx code 3"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_enabled" type="checkbox" class="bcBillingButton_enabled"  ${bcBillingButton_checked}/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_name" class="bcBillingButton_name billingButtonCustomText" type="text" value=${bcBillingButton_name} placeholder="button name"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText" type="text" value=${bcBillingButton_serviceCode} placeholder="Service code"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode1" class="bcBillingButton_dxCode1 billingButtonCustomText" type="text" value=${bcBillingButton_dxCode1} placeholder="Dx code 1"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode2" class="bcBillingButton_dxCode2 billingButtonCustomText" type="text" value=${bcBillingButton_dxCode2} placeholder="Dx code 2"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode3" class="bcBillingButton_dxCode3 billingButtonCustomText" type="text" value=${bcBillingButton_dxCode3} placeholder="Dx code 3"/>
   <button class="removeParent">X</button>
   <div class="subRow2">
     <div class="buttonShortcut">
-      <input id="bcBillingButton1_addon" class="bcBillingButton1_addon" type="checkbox" value=${bcBillingButton1_addon} ${bcBillingButton1_addon_checked}/>
-      <label for="bcBillingButton1_addon" class="enableButton">Billing Addon</label>
+      <input id="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon" type="checkbox" ${bcBillingButton_addon_checked}/>
+      <label for="bcBillingButton${groupNum}_${buttonNum}_addon" class="enableButton">Billing Addon</label>
     </div>
     <div class="shortcut buttonShortcut">
-      <input id="bcBillingButton1_shortcuts_enabled" class="bcBillingButton1_shortcuts_enabled" type="checkbox" value=${bcBillingButton1_shortcuts_enabled} ${bcBillingButton1_shortcuts_checked}/>
+      <input id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled" class="bcBillingButton_shortcuts_enabled" type="checkbox" ${bcBillingButton_shortcuts_checked}/>
       <input
-        id="bcBillingButton1_shortcuts_keybinding" 
-        class="customKey bcBillingButton1_shortcuts_keybinding"
+        id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding" 
+        class="customKey bcBillingButton_shortcuts_keybinding customKey"
         data-shortcutgroup="billingCodeInput_shortcut"
         data-keybinding=${keybindingJSONString}
         type="text"
@@ -742,6 +819,57 @@ function add_BCBillingButtonFromSetting(settingsBCBillingButton) {
     buttonGroup.children[buttonGroup.childElementCount - 1]
   );
 }
+
+
+
+function add_BCBillingButtonBlank(groupNum) {
+  const buttonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
+  const buttonNum = buttonGroup.children.length;
+
+  const div = document.createElement("div");
+  div.setAttribute("class", "subRow1 bcBillingButtonGroup");
+  div.innerHTML = `
+  <input id="bcBillingButton${groupNum}_${buttonNum}_enabled" type="checkbox" class="bcBillingButton_enabled"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_name" class="bcBillingButton_name billingButtonCustomText" type="text" value="" placeholder="button name"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText" type="text" value="" placeholder="Service code"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode1" class="bcBillingButton_dxCode1 billingButtonCustomText" type="text" value="" placeholder="Dx code 1"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode2" class="bcBillingButton_dxCode2 billingButtonCustomText" type="text" value="" placeholder="Dx code 2"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode3" class="bcBillingButton_dxCode3 billingButtonCustomText" type="text" value="" placeholder="Dx code 3"/>
+  <button class="removeParent">X</button>
+  <div class="subRow2">
+    <div class="buttonShortcut">
+      <input id="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon" type="checkbox"/>
+      <label for="bcBillingButton${groupNum}_${buttonNum}_addon" class="enableButton">Billing Addon</label>
+    </div>
+    <div class="shortcut buttonShortcut">
+      <input id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled" class="bcBillingButton_shortcuts_enabled" type="checkbox" />
+      <input
+        id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding" 
+        class="customKey bcBillingButton_shortcuts_keybinding customKey"
+        data-shortcutgroup="billingCodeInput_shortcut"
+        data-keybinding=""
+        type="text"
+        value=""
+        placeholder="press a key"
+      />
+      <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+        WARNING: Shortcut conflicts with another shortcut on the same page. 
+      </label>
+    </div>
+  </div>
+  `;
+  
+  
+  buttonGroup.insertBefore(
+    div,
+    buttonGroup.children[buttonGroup.childElementCount - 1]
+  );
+}
+
+function add_BCBillingButtonGroup1Blank() {
+  add_BCBillingButtonBlank(1);
+}
+
 
 
 
@@ -879,6 +1007,7 @@ PURPOSE
 - toggle optionsUnsaved in the save button classlist, depending on if unsavedChanges is empty.
 */
 async function highlightSaveButton(theTarget){
+  // console.log(theTarget);
   const isOptionsUnsaved = await checkOptionsUnsaved(theTarget);
 
   // if the current target is not saved to settings, add it to the set of unsavedChanges.
@@ -904,7 +1033,7 @@ async function checkOptionsUnsaved(theTarget){
   const settingsObject = await browser.storage.sync.get(defaultSettings);
   // console.log(targetID);
   const targetValueInSettings = getTargetValueFromSettings(targetID, settingsObject);
-
+  
   /*
   - get targetValue from options page. compare to the targetValue from saved settings.
   - the targetValue from options will be different depending on the type of target.
@@ -916,7 +1045,10 @@ async function checkOptionsUnsaved(theTarget){
     isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
   }
   else if (theTarget.classList.contains("customKey")){
-    targetValueInOptions = JSON.parse(theTarget.dataset.keybinding);
+    targetValueInOptions = theTarget.dataset.keybinding;
+    if(!isEmptyKeybinding(targetValueInOptions)){
+      targetValueInOptions = JSON.parse(targetValueInOptions);
+    }
     isOptionsUnsaved = !keybindingMatches(targetValueInSettings, targetValueInOptions);
   }
   else if (theTarget.classList.contains("customFID")){
@@ -926,7 +1058,14 @@ async function checkOptionsUnsaved(theTarget){
   else if (theTarget.classList.contains("customButtonTitle")){
     targetValueInOptions = theTarget.value;
     isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
+  } else if (theTarget.classList.contains("billingButtonCustomText")){
+    targetValueInOptions = theTarget.value;
+    console.log(targetValueInSettings);
+    console.log(targetValueInOptions);
+    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
   }
+
+  console.log(isOptionsUnsaved);
 
   return isOptionsUnsaved;
 }
@@ -934,6 +1073,7 @@ async function checkOptionsUnsaved(theTarget){
 
 function getTargetValueFromSettings(targetID, settingsStructure){
   // console.log(targetID);
+  // console.log(settingsStructure);
   let targetValue = "not found";
   for (const [key, value] of Object.entries(settingsStructure)){
     // console.log(key);
@@ -951,7 +1091,7 @@ function getTargetValueFromSettings(targetID, settingsStructure){
       }
     }
   }
-
+  // console.log(targetValue);
   return targetValue;
 }
 
@@ -985,8 +1125,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 				break;	
 		}
 	}, true);
-
-  document.getElementById("add").addEventListener("click", add_BCBillingButtonBlank);
+  
+  document.getElementById("addAgeBasedButton").addEventListener("click", add_BCBillingButtonAgeBasedCodes);
+  document.getElementById("add").addEventListener("click", add_BCBillingButtonGroup1Blank);
   document
     .getElementById("restore")
     .addEventListener("click", restore_defaults);
@@ -1033,6 +1174,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       targetEventCaller(theTarget, "customKey", highlightSaveButton);
       targetEventCaller(theTarget, "customFID", highlightSaveButton);
       targetEventCaller(theTarget, "customButtonTitle", highlightSaveButton);
+      targetEventCaller(theTarget, "billingButtonCustomText", highlightSaveButton);
       
     });
 
