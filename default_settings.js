@@ -8,17 +8,17 @@ var defaultSettings = {
     billingButtons: true,
     bcBillingButtonGroup1:[
       {
-        bcBillingButton1_enabled: true,
-        bcBillingButton1_name: "test",
-        bcBillingButton1_serviceCode: "00100",
-        bcBillingButton1_dxCode1: "401",
-        bcBillingButton1_dxCode2: "244",
-        bcBillingButton1_dxCode3: "462",
+        bcBillingButton1_1_enabled: true,
+        bcBillingButton1_1_name: "test",
+        bcBillingButton1_1_serviceCode: "00100",
+        bcBillingButton1_1_dxCode1: "401",
+        bcBillingButton1_1_dxCode2: "244",
+        bcBillingButton1_1_dxCode3: "462",
 
-        bcBillingButton1_addon: true,
-        bcBillingButton1_shortcuts:{
-          bcBillingButton1_shortcuts_enabled: true,
-          bcBillingButton1_shortcuts_keybinding: {
+        bcBillingButton1_1_addon: true,
+        bcBillingButton1_1_shortcuts:{
+          bcBillingButton1_1_shortcuts_enabled: true,
+          bcBillingButton1_1_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
             altKey: true,
@@ -27,17 +27,17 @@ var defaultSettings = {
         }
       },
       {
-        bcBillingButton1_enabled: true,
-        bcBillingButton1_name: "test22",
-        bcBillingButton1_serviceCode: "00150",
-        bcBillingButton1_dxCode1: "411",
-        bcBillingButton1_dxCode2: "250",
-        bcBillingButton1_dxCode3: "595",
+        bcBillingButton1_2_enabled: true,
+        bcBillingButton1_2_name: "test22",
+        bcBillingButton1_2_serviceCode: "00150",
+        bcBillingButton1_2_dxCode1: "411",
+        bcBillingButton1_2_dxCode2: "250",
+        bcBillingButton1_2_dxCode3: "595",
 
-        bcBillingButton1_addon: false,
-        bcBillingButton1_shortcuts:{
-          bcBillingButton1_shortcuts_enabled: true,
-          bcBillingButton1_shortcuts_keybinding: {
+        bcBillingButton1_2_addon: false,
+        bcBillingButton1_2_shortcuts:{
+          bcBillingButton1_2_shortcuts_enabled: true,
+          bcBillingButton1_2_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
             altKey: true,
@@ -691,6 +691,8 @@ var defaultSettings = {
 /* 
 - rebuild the settings object according to the structure of settingsStructure (derived from defaultSettings), 
 - if structure is the same, retain the value of storedSettings. if different, take on the value of defaultSettings
+NOTE:
+- if the key doesn't exist in storedSettings, the storedValue will be null, and so the rebuiltSettings will default to the value in the default settings structure.
 
 */
 function rebuildSettingsStructure(settingsStructure, storedSettings){
@@ -698,16 +700,81 @@ function rebuildSettingsStructure(settingsStructure, storedSettings){
   for (const [key, value] of Object.entries(settingsStructure)){
     // console.log(storedSettings);
     const storedValue = storedSettings[key];
-    // console.log(value);
-    // console.log(storedValue);
+    console.log(key);
+    console.log(value);
+    console.log(storedValue);
     if (typeof value != typeof storedValue){
       rebuiltSettings[key] = value;
-    } else { // value types match
-      if (typeof value == "object" && typeof storedValue == "object"){
+      console.log("hi1");
+    } 
+    else { // value types match
+      if (key.includes("bcBillingButtonGroup")){
+        console.assert(Array.isArray(value));
+        
+        const groupNum = key.split("bcBillingButtonGroup")[1];
+        console.log(groupNum);
+        if (storedValue.length == 0){
+          rebuiltSettings[key] = value;
+        }
+        else {
+          rebuiltSettings[key] = rebuildSettingsStructure_Array(value[0], storedValue, groupNum);
+        }
+      }
+      else if (typeof value == "object" //&& typeof storedValue == "object" 
+          && !Array.isArray(value) 
+          && value !== null
+      ){
+        console.log("hi2");
         rebuiltSettings[key] = rebuildSettingsStructure(value, storedValue);
-      } else { // value types match and both aren't objects. i.e. they are primitives or functions.
+      } 
+      else { // value types match and both aren't objects. i.e. they are primitives or functions.
+        console.log("hi3");
         rebuiltSettings[key] = storedValue;
       }
+    }
+  }
+  return rebuiltSettings;
+}
+
+function rebuildSettingsStructure_Array(settingsStructure, storedSettingsArray, groupNum){
+  console.log(storedSettingsArray);
+  let rebuiltSettingsArray = [];
+  for (let i = 0; i < storedSettingsArray.length; i++){
+    const buttonNum = i+1;
+    const settingsStructureWithCorrectGroupButtonNum = 
+      settingsStructureWithGroupButtonNum(settingsStructure, groupNum, buttonNum);
+    console.log(settingsStructureWithCorrectGroupButtonNum);
+    storedSettingsOneItem = storedSettingsArray[i];
+
+    rebuiltSettingsArray.push(rebuildSettingsStructure(settingsStructureWithCorrectGroupButtonNum, storedSettingsOneItem));
+  }
+  console.log(rebuiltSettingsArray);
+  return rebuiltSettingsArray;
+}
+
+function settingsStructureWithGroupButtonNum(settingsStructure, groupNum, buttonNum){
+  let rebuiltSettings = {};
+  for (const [key, value] of Object.entries(settingsStructure)){
+    const keySplitWithoutGroupButtonNum = key.split(/\d\_\d\_/);
+    const keyWithCorrectGroupButtonNum = 
+      keySplitWithoutGroupButtonNum[0] + groupNum + "_" + buttonNum + "_" + keySplitWithoutGroupButtonNum[1];
+    if (typeof value == "boolean" || typeof value == "string"){
+      // console.log(key);
+      rebuiltSettings[keyWithCorrectGroupButtonNum] = value;
+      // console.log(document.getElementById(key).checked);
+    } 
+    else if (key.includes("_keybinding")){
+      rebuiltSettings[keyWithCorrectGroupButtonNum] = {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        key: ''
+      };
+    }
+    else{
+      console.assert(typeof value == "object");
+      rebuiltSettings[keyWithCorrectGroupButtonNum] =  
+        settingsStructureWithGroupButtonNum(value, groupNum, buttonNum);
     }
   }
   return rebuiltSettings;
@@ -721,7 +788,7 @@ NOTE
 async function checkStoredSettingsStructure(){
   const storedSettings = await browser.storage.sync.get(defaultSettings);
   const rebuiltSettings = rebuildSettingsStructure(defaultSettings, storedSettings);
-  // console.log(rebuiltSettings);
+  console.log(rebuiltSettings);
   await browser.storage.sync.set(rebuiltSettings);
   console.log(await browser.storage.sync.get(defaultSettings));
 }
