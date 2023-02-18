@@ -6,33 +6,35 @@ var defaultSettings = {
     
     billingCodeInput_PageEnd: true,
     billingButtons: true,
+
+    bcBillingButtonGroup1_enable: true,
     bcBillingButtonGroup1:[
       {
         bcBillingButton1_1_enabled: true,
-        bcBillingButton1_1_name: "test",
-        bcBillingButton1_1_serviceCode: "00100",
-        bcBillingButton1_1_dxCode1: "401",
-        bcBillingButton1_1_dxCode2: "244",
-        bcBillingButton1_1_dxCode3: "462",
+        bcBillingButton1_1_name: "Clinic visit",
+        bcBillingButton1_1_serviceCode: "98031",
+        bcBillingButton1_1_dxCode1: "",
+        bcBillingButton1_1_dxCode2: "",
+        bcBillingButton1_1_dxCode3: "",
 
-        bcBillingButton1_1_addon: true,
+        bcBillingButton1_1_addon: false,
         bcBillingButton1_1_shortcuts:{
           bcBillingButton1_1_shortcuts_enabled: true,
           bcBillingButton1_1_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
             altKey: true,
-            key: 'x'
+            key: 'q'
           },
         }
       },
       {
         bcBillingButton1_2_enabled: true,
-        bcBillingButton1_2_name: "test22",
-        bcBillingButton1_2_serviceCode: "00150",
-        bcBillingButton1_2_dxCode1: "411",
-        bcBillingButton1_2_dxCode2: "250",
-        bcBillingButton1_2_dxCode3: "595",
+        bcBillingButton1_2_name: "TH visit",
+        bcBillingButton1_2_serviceCode: "98032",
+        bcBillingButton1_2_dxCode1: "",
+        bcBillingButton1_2_dxCode2: "",
+        bcBillingButton1_2_dxCode3: "",
 
         bcBillingButton1_2_addon: false,
         bcBillingButton1_2_shortcuts:{
@@ -41,13 +43,157 @@ var defaultSettings = {
             ctrlKey: false,
             shiftKey: false,
             altKey: true,
-            key: 'z'
+            key: 'w'
           },
         }
       },
+      {
+        bcBillingButton1_3_enabled: true,
+        bcBillingButton1_3_name: "Stand Proced",
+        bcBillingButton1_3_serviceCode: "98021",
+        bcBillingButton1_3_dxCode1: "",
+        bcBillingButton1_3_dxCode2: "",
+        bcBillingButton1_3_dxCode3: "",
+
+        bcBillingButton1_3_addon: false,
+        bcBillingButton1_3_shortcuts:{
+          bcBillingButton1_3_shortcuts_enabled: false,
+          bcBillingButton1_3_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      {
+        bcBillingButton1_4_enabled: true,
+        bcBillingButton1_4_name: "Adv Proced",
+        bcBillingButton1_4_serviceCode: "98020",
+        bcBillingButton1_4_dxCode1: "",
+        bcBillingButton1_4_dxCode2: "",
+        bcBillingButton1_4_dxCode3: "",
+
+        bcBillingButton1_4_addon: false,
+        bcBillingButton1_4_shortcuts:{
+          bcBillingButton1_4_shortcuts_enabled: false,
+          bcBillingButton1_4_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      
     ],
 
-    
+    bcBillingButtonGroup2_enable: true,
+    bcBillingButtonGroup2:[
+      {
+        bcBillingButton2_1_enabled: true,
+        bcBillingButton2_1_name: "Min Proced, Dx test",
+        bcBillingButton2_1_serviceCode: "98022",
+        bcBillingButton2_1_dxCode1: "",
+        bcBillingButton2_1_dxCode2: "",
+        bcBillingButton2_1_dxCode3: "",
+
+        bcBillingButton2_1_addon: true,
+        bcBillingButton2_1_shortcuts:{
+          bcBillingButton2_1_shortcuts_enabled: false,
+          bcBillingButton2_1_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      }
+
+    ],
+
+    bcBillingButtonGroup3_enable: true,
+    bcBillingButtonGroup3:[
+      // IM inj, Allergy, Pap, UA, Preg Dip, Cryo
+      // 
+      {
+        bcBillingButton3_1_enabled: true,
+        bcBillingButton3_1_name: "FFS:Clinic visit",
+        bcBillingButton3_1_serviceCode: "officeVisit",
+        bcBillingButton3_1_dxCode1: "",
+        bcBillingButton3_1_dxCode2: "",
+        bcBillingButton3_1_dxCode3: "",
+
+        bcBillingButton3_1_addon: false,
+        bcBillingButton3_1_shortcuts:{
+          bcBillingButton3_1_shortcuts_enabled: true,
+          bcBillingButton3_1_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: true,
+            key: 'q'
+          },
+        }
+      },
+      {
+        bcBillingButton3_2_enabled: true,
+        bcBillingButton3_2_name: "FFS:TH visit",
+        bcBillingButton3_2_serviceCode: "teleVisit",
+        bcBillingButton3_2_dxCode1: "",
+        bcBillingButton3_2_dxCode2: "",
+        bcBillingButton3_2_dxCode3: "",
+
+        bcBillingButton3_2_addon: false,
+        bcBillingButton3_2_shortcuts:{
+          bcBillingButton3_2_shortcuts_enabled: true,
+          bcBillingButton3_2_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: true,
+            key: 'w'
+          },
+        }
+      },
+      {
+        bcBillingButton3_3_enabled: true,
+        bcBillingButton3_3_name: "FFS:Stand Proced",
+        bcBillingButton3_3_serviceCode: "98021",
+        bcBillingButton3_3_dxCode1: "",
+        bcBillingButton3_3_dxCode2: "",
+        bcBillingButton3_3_dxCode3: "",
+
+        bcBillingButton3_3_addon: false,
+        bcBillingButton3_3_shortcuts:{
+          bcBillingButton3_3_shortcuts_enabled: false,
+          bcBillingButton3_3_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      {
+        bcBillingButton3_4_enabled: true,
+        bcBillingButton3_4_name: "Adv Proced",
+        bcBillingButton3_4_serviceCode: "98020",
+        bcBillingButton3_4_dxCode1: "",
+        bcBillingButton3_4_dxCode2: "",
+        bcBillingButton3_4_dxCode3: "",
+
+        bcBillingButton3_4_addon: false,
+        bcBillingButton3_4_shortcuts:{
+          bcBillingButton3_4_shortcuts_enabled: false,
+          bcBillingButton3_4_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      
+    ],
 
     billingCodeInput_keyboardShortcuts:{
       billingCodeInput_shortcuts_enabled: true,
