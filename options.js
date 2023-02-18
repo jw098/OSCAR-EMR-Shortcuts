@@ -250,31 +250,35 @@ var keyCodeAliases = {
 
 function recordKeyPress(e) {
 
+  let keyVal;
   if(e.key == "Backspace"){
-    e.target.value = "";
+    keyVal = "";
   }
   else {
-    const theKeybinding = {
-      ctrlKey: e.ctrlKey,
-      shiftKey: e.shiftKey,
-      altKey: e.altKey,
-      key: e.key
-    }
-  
-    const keybindingText = keybindingToText(theKeybinding);
-    e.target.value = keybindingText;
-
-    // e.target.keybinding = theKeybinding;
-
-    e.target.dataset.keybinding = JSON.stringify(theKeybinding);
-
-    // console.log(e.target);
-    // console.log(e.target.keybinding);
-    // console.log(JSON.parse(e.target.dataset.keybinding));
-
-    e.preventDefault();
-    e.stopPropagation();
+    keyVal = e.key;
   }
+
+
+  const theKeybinding = {
+    ctrlKey: e.ctrlKey,
+    shiftKey: e.shiftKey,
+    altKey: e.altKey,
+    key: keyVal
+  }
+
+  const keybindingText = keybindingToText(theKeybinding);
+  e.target.value = keybindingText;
+
+  // e.target.keybinding = theKeybinding;
+
+  e.target.dataset.keybinding = JSON.stringify(theKeybinding);
+
+  // console.log(e.target);
+  // console.log(e.target.keybinding);
+  // console.log(JSON.parse(e.target.dataset.keybinding));
+
+  e.preventDefault();
+  e.stopPropagation();
 
 }
 
@@ -396,11 +400,12 @@ function checkShortcutGroupConflict(shortcutGroup){
     const anInput = inputListInSameGroup[i];
     let anInputKeybinding = anInput.dataset.keybinding;
     // console.log(anInputKeybinding);
+
+    anInputKeybinding = JSON.parse(anInputKeybinding);
     if (isEmptyKeybinding(anInputKeybinding)){
       continue;
     }
-    anInputKeybinding = JSON.parse(anInputKeybinding);
-    
+
     const anInputWarning = anInput.parentNode.querySelector(".warning");
 
 
@@ -409,14 +414,14 @@ function checkShortcutGroupConflict(shortcutGroup){
     for (let j = 0; j < restOfInputList.length; j++){
       const anInputFromRestOfList = restOfInputList[j];
       let anInputFromRestOfList_keybinding = anInputFromRestOfList.dataset.keybinding;
-      if (anInputFromRestOfList_keybinding != ""){
-        anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList_keybinding);
-      }
       // console.log(anInputFromRestOfList_keybinding);
-      
+      anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList_keybinding);
       if (isEmptyKeybinding(anInputFromRestOfList_keybinding)){
         continue;
       }
+      // console.log(anInputFromRestOfList_keybinding);
+      
+
 
       if(isSameKeybinding(anInputKeybinding, anInputFromRestOfList_keybinding)){
         console.log(anInputKeybinding);
@@ -453,15 +458,9 @@ function checkShortcutGroupConflict(shortcutGroup){
 //   }
 // }
 
-// return true if the given keybinding is empty
-function isEmptyKeybinding(keybinding){
-  return keybinding == "" || 
-    (keybinding.ctrlKey == false
-    && keybinding.altKey == false
-    && keybinding.shiftKey == false
-    && keybinding.key == "");
 
-}
+
+
 
 // return true if the given keybindings are the same
 function isSameKeybinding(keybinding1, keybinding2){
@@ -749,6 +748,7 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   const buttonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
   const buttonNum = buttonGroup.children.length;
   let serviceCodeInput = `<input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText" type="text" value="" placeholder="Service code"/>`
+  const emptyKeybinding = JSON.stringify(returnEmptyKeybinding());
   if(isAgeBasedCode){
     const ageBasedCodeOptions = getAgeBasedCodeOptions();
     serviceCodeInput = `
@@ -779,7 +779,7 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
         id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding" 
         class="customKey bcBillingButton_shortcuts_keybinding customKey"
         data-shortcutgroup="billingCodeInput_shortcut"
-        data-keybinding=""
+        data-keybinding=${emptyKeybinding}
         type="text"
         value=""
         placeholder="press a key"
@@ -806,27 +806,6 @@ function getAgeBasedCodeOptions(){
   }
   return optionsList;
 }
-
-function add_BCBillingButtonGroup1Blank() {
-  add_BCBillingButtonBlank(1, false);
-}
-
-function add_BCBillingButtonGroup1AgeBasedCodes() {
-  add_BCBillingButtonBlank(1, true);
-  // const div = document.createElement("div");
-  // div.setAttribute("class", "subRow1");
-  // div.innerHTML = `
-  
-  // `;
-  
-  // const buttonGroup = document.getElementById("bcBillingButtonGroup1");
-  // buttonGroup.insertBefore(
-  //   div,
-  //   buttonGroup.children[buttonGroup.childElementCount - 1]
-  // );
-}
-
-
 
 
 function findAllShortcutConflicts(settingsObject){
@@ -1006,9 +985,11 @@ async function checkOptionsUnsaved(theTarget){
   }
   else if (theTarget.classList.contains("customKey")){
     targetValueInOptions = theTarget.dataset.keybinding;
-    if(!isEmptyKeybinding(targetValueInOptions)){
-      targetValueInOptions = JSON.parse(targetValueInOptions);
-    }
+    // console.log(targetValueInOptions);
+    // if(!isEmptyKeybinding(targetValueInOptions)){
+    // }
+    targetValueInOptions = JSON.parse(targetValueInOptions);
+
     isOptionsUnsaved = !keybindingMatches(targetValueInSettings, targetValueInOptions);
   }
   else if (theTarget.classList.contains("customFID")){
@@ -1086,11 +1067,27 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	}, true);
   
-  document.getElementById("addAgeBasedButton").addEventListener("click", add_BCBillingButtonGroup1AgeBasedCodes);
-  document.getElementById("add").addEventListener("click", add_BCBillingButtonGroup1Blank);
-  document
-    .getElementById("restore")
-    .addEventListener("click", restore_defaults);
+  document.getElementById("addAgeBasedButton1").addEventListener("click", function() {
+    add_BCBillingButtonBlank(1, true);
+  });
+  document.getElementById("addAgeBasedButton2").addEventListener("click", function() {
+    add_BCBillingButtonBlank(2, true);
+  });
+  document.getElementById("addAgeBasedButton3").addEventListener("click", function() {
+    add_BCBillingButtonBlank(3, true);
+  });
+
+  document.getElementById("add1").addEventListener("click", function() {
+    add_BCBillingButtonBlank(1, false);
+  });
+  document.getElementById("add2").addEventListener("click", function() {
+    add_BCBillingButtonBlank(2, false);
+  });
+  document.getElementById("add3").addEventListener("click", function() {
+    add_BCBillingButtonBlank(3, false);
+  });
+
+  document.getElementById("restore").addEventListener("click", restore_defaults);
   // document
   //   .getElementById("experimental")
   //   .addEventListener("click", show_experimental);
