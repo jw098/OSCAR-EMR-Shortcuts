@@ -529,6 +529,8 @@ NOTE:
   - but the values will be from options, instead of from the default values of defaultSettings.
 */
 function save_options() {
+  reorderBillingButtonIDs();
+
   chrome.storage.sync.set(
     setSettingsFromOptionsPage(defaultSettings),
     function () {
@@ -652,6 +654,48 @@ function createBillingButtonSettingFromOption(oneBillingButton_Option) {
   return oneBillingButton_Settings;
 }
 
+/* 
+PURPOSE
+- renames the IDs of html elements for billing buttons.
+- this is because adding deleting buttons can disrupt the order. This function renames all billing button IDs to be in order.
+ */
+function reorderBillingButtonIDs(){
+  reorderBillingButtonIDs_buttonGroup(1);
+  reorderBillingButtonIDs_buttonGroup(2);
+  reorderBillingButtonIDs_buttonGroup(3);
+}
+
+function reorderBillingButtonIDs_buttonGroup(groupNum){
+  const billingButtonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
+  const billingButtonList =  Array.from(billingButtonGroup.querySelectorAll(".bcBillingButtonGroup"));
+  // console.log(billingButtonList);
+  for (let i = 0; i < billingButtonList.length; i++){
+    const oneBillingButton = billingButtonList[i];
+    reorderBillingButtonIDs_button(oneBillingButton, groupNum, i+1);
+  }
+}
+
+
+function reorderBillingButtonIDs_button(oneBillingButton, groupNum, buttonNum){
+  oneBillingButton.querySelector(".bcBillingButton_enabled").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_enabled`;
+  oneBillingButton.querySelector(".bcBillingButton_name").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_name`;
+  oneBillingButton.querySelector(".bcBillingButton_serviceCode").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_serviceCode`;
+  oneBillingButton.querySelector(".bcBillingButton_dxCode1").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_dxCode1`;
+  oneBillingButton.querySelector(".bcBillingButton_dxCode2").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_dxCode2`;
+  oneBillingButton.querySelector(".bcBillingButton_dxCode3").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_dxCode3`;
+  oneBillingButton.querySelector(".bcBillingButton_addon").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_addon`;
+  oneBillingButton.querySelector(".bcBillingButton_shortcuts_enabled").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled`;
+  oneBillingButton.querySelector(".bcBillingButton_shortcuts_keybinding").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding`;
+}
 
 /* 
 - Restores options from chrome.storage. 
