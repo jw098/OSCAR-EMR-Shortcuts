@@ -3,15 +3,15 @@
     "version": "2.2",
     "manifest_version": 2,
     "description": "Keyboard shortcuts, buttons, automated actions for OSCAR EMR.",
+    "permissions": [
+        "storage"
+    ],
     "background": {
         "scripts": [
             "default_settings.js",
             "background.js"
         ]
       },
-    "permissions": [
-        "storage"
-    ],
     "icons":{
         "48": "icons/OSCAR_48px.png",
         "96": "icons/OSCAR_96px.png"

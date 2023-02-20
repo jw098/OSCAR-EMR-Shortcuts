@@ -11,13 +11,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_BCBilling_DxCodeSearch();
 async function checkEnabled_BCBilling_DxCodeSearch(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const billingDxCodeSearchObj = await browser.storage.sync.get('billingDxCodeSearch');
+		const billingDxCodeSearchObj = await browser.storage.local.get('billingDxCodeSearch');
 		const billingDxCodeSearch = billingDxCodeSearchObj.billingDxCodeSearch;
 		const billingDxCodeSearch_keyboardShortcuts = 
 			billingDxCodeSearch.billingDxCodeSearch_keyboardShortcuts

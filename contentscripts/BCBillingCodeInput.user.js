@@ -21,9 +21,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_BCBillingCodeInput();
 async function checkEnabled_BCBillingCodeInput(){
-	const all = await browser.storage.sync.get(null);
-	console.log(all);
-	const isEnabled = await browser.storage.sync.get('enabled');
+	// const all = await browser.storage.local.get(null);
+	// console.log(all);
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	const isBillingCodeInputPage = !!document.getElementById("billingFormTable");
 	console.log(isBillingCodeInputPage);
@@ -31,18 +31,29 @@ async function checkEnabled_BCBillingCodeInput(){
 		return;
 	}
 	else {
-		const billingCodeInput = await browser.storage.sync.get('billingCodeInput');
-		console.log(billingCodeInput.billingCodeInput);
+
+		const billingCodeInputObj = await browser.storage.local.get('billingCodeInput');
+		const billingCodeInput = billingCodeInputObj.billingCodeInput;
+
+
+
+		console.log(billingCodeInputObj.billingCodeInput);
 		// Buttons
-		if (billingCodeInput.billingCodeInput.billingButtons){
+		if (billingCodeInputObj.billingCodeInput.billingButtons){
 			addAllBillingButtons();
 		}
+
+		// Button Group 1
+		if (billingCodeInput.bcBillingButtonGroup1_enable){
+			addBillingButtonRow(billingCodeInput.bcBillingButtonGroup1, 1);
+		}
+
 		
 		// Keyboard shortcuts
-		if (billingCodeInput.billingCodeInput.billingCodeInput_PageEnd){
+		if (billingCodeInputObj.billingCodeInput.billingCodeInput_PageEnd){
 			scrollToPageEnd_BCBillingConfirm();
 		}
-		const billingCodeInput_keyboardShortcuts = billingCodeInput.billingCodeInput.billingCodeInput_keyboardShortcuts;
+		const billingCodeInput_keyboardShortcuts = billingCodeInputObj.billingCodeInput.billingCodeInput_keyboardShortcuts;
 		if (billingCodeInput_keyboardShortcuts.billingCodeInput_shortcuts_enabled){
 			billingCodeInputPage_KeydownListeners(billingCodeInput_keyboardShortcuts);
 		}

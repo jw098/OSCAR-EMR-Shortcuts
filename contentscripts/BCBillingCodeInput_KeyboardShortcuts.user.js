@@ -15,7 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////////////////
 // checkEnabled_BCBilling_CodeInput();
 // async function checkEnabled_BCBilling_CodeInput(){
-// 	const isEnabled = await browser.storage.sync.get('enabled');
+// 	const isEnabled = await browser.storage.local.get('enabled');
 // 	console.log("Global enabled? " + isEnabled.enabled);
 // 	if(!isEnabled.enabled){
 // 		return;

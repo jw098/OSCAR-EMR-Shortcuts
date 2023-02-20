@@ -14,13 +14,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_InboxItem();
 async function checkEnabled_InboxItem(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const inboxItemObj = await browser.storage.sync.get('inboxItem');
+		const inboxItemObj = await browser.storage.local.get('inboxItem');
 		const inboxItem = inboxItemObj.inboxItem;
 		// Label Labs
 		if(inboxItem.inboxItem_labelLabs){

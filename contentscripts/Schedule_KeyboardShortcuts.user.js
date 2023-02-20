@@ -13,15 +13,15 @@
 
 checkEnabled_Schedule();
 async function checkEnabled_Schedule(){
-	const isEnabled = await browser.storage.sync.get('enabled');
-	console.log(await browser.storage.sync.get(null));
+	const isEnabled = await browser.storage.local.get('enabled');
+	console.log(await browser.storage.local.get(null));
 	
 	console.log("Schedule_KeyboardShortcuts enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const scheduleObj = await browser.storage.sync.get('schedule');
+		const scheduleObj = await browser.storage.local.get('schedule');
 		const schedule = scheduleObj.schedule;
 		const schedule_keyboardShortcuts = schedule.schedule_keyboardShortcuts;
 		if (schedule_keyboardShortcuts.schedule_shortcuts_enabled){

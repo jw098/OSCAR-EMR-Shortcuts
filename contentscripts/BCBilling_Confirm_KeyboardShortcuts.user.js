@@ -11,13 +11,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_BCBilling_Confirm();
 async function checkEnabled_BCBilling_Confirm(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const billingConfirmObj = await browser.storage.sync.get('billingConfirm');
+		const billingConfirmObj = await browser.storage.local.get('billingConfirm');
 		const billingConfirm = billingConfirmObj.billingConfirm;
 		const billingConfirm_keyboardShortcuts = billingConfirm.billingConfirm_keyboardShortcuts;
 		if (billingConfirm_keyboardShortcuts.billingConfirm_shortcuts_enabled){

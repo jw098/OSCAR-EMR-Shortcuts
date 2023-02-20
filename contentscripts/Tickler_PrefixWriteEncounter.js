@@ -14,13 +14,13 @@
 
 checkEnabled_TicklerPrefixWriteEncounter();
 async function checkEnabled_TicklerPrefixWriteEncounter(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Tickler_KeyboardShortcuts enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const ticklerObj = await browser.storage.sync.get('tickler');
+		const ticklerObj = await browser.storage.local.get('tickler');
 		const tickler = ticklerObj.tickler;
 		const prefixSubmitWrite = tickler.tickler_prefixWriteEncounter_submitWrite;
 		const prefixSubmitExit = tickler.tickler_prefixWriteEncounter_submitExit;

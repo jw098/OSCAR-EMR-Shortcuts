@@ -12,14 +12,14 @@
 
 checkEnabled_apptAdd();
 async function checkEnabled_apptAdd(){
-	const isEnabled = await browser.storage.sync.get('enabled');
-	console.log(await browser.storage.sync.get(null));
+	const isEnabled = await browser.storage.local.get('enabled');
+	console.log(await browser.storage.local.get(null));
 	
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const apptAddObj = await browser.storage.sync.get('apptAdd');
+		const apptAddObj = await browser.storage.local.get('apptAdd');
 		const apptAdd = apptAddObj.apptAdd;
 		const apptAdd_keyboardShortcuts = apptAdd.apptAdd_keyboardShortcuts;
 		if (apptAdd_keyboardShortcuts.apptAdd_shortcuts_enabled){

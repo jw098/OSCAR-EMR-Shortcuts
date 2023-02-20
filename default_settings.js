@@ -1,4 +1,15 @@
-var defaultSettings = {
+const testSettings3 = {
+  enabled: true, // default enabled
+  allergyQuickAdd: true,
+
+  billingCodeInput:{
+    billingCodeInput_PageEnd: true,
+    billingButtons: true,
+  }
+}
+
+
+const defaultSettings = {
   enabled: true, // default enabled
   allergyQuickAdd: true,
 
@@ -12,7 +23,9 @@ var defaultSettings = {
       {
         bcBillingButton1_1_enabled: true,
         bcBillingButton1_1_name: "Clinic visit",
-        bcBillingButton1_1_serviceCode: "98031",
+        bcBillingButton1_1_serviceCode1: "98031",
+        bcBillingButton1_1_serviceCode2: "",
+        bcBillingButton1_1_serviceCode3: "",
         bcBillingButton1_1_dxCode1: "",
         bcBillingButton1_1_dxCode2: "",
         bcBillingButton1_1_dxCode3: "",
@@ -31,7 +44,9 @@ var defaultSettings = {
       {
         bcBillingButton1_2_enabled: true,
         bcBillingButton1_2_name: "TH visit",
-        bcBillingButton1_2_serviceCode: "98032",
+        bcBillingButton1_2_serviceCode1: "98032",
+        bcBillingButton1_2_serviceCode2: "",
+        bcBillingButton1_2_serviceCode3: "",
         bcBillingButton1_2_dxCode1: "",
         bcBillingButton1_2_dxCode2: "",
         bcBillingButton1_2_dxCode3: "",
@@ -50,7 +65,9 @@ var defaultSettings = {
       {
         bcBillingButton1_3_enabled: true,
         bcBillingButton1_3_name: "Stand Proced",
-        bcBillingButton1_3_serviceCode: "98021",
+        bcBillingButton1_3_serviceCode1: "98021",
+        bcBillingButton1_3_serviceCode2: "",
+        bcBillingButton1_3_serviceCode3: "",
         bcBillingButton1_3_dxCode1: "",
         bcBillingButton1_3_dxCode2: "",
         bcBillingButton1_3_dxCode3: "",
@@ -69,7 +86,9 @@ var defaultSettings = {
       {
         bcBillingButton1_4_enabled: true,
         bcBillingButton1_4_name: "Adv Proced",
-        bcBillingButton1_4_serviceCode: "98020",
+        bcBillingButton1_4_serviceCode1: "98020",
+        bcBillingButton1_4_serviceCode2: "",
+        bcBillingButton1_4_serviceCode3: "",
         bcBillingButton1_4_dxCode1: "",
         bcBillingButton1_4_dxCode2: "",
         bcBillingButton1_4_dxCode3: "",
@@ -93,7 +112,9 @@ var defaultSettings = {
       {
         bcBillingButton2_1_enabled: true,
         bcBillingButton2_1_name: "Min Proced, Dx test",
-        bcBillingButton2_1_serviceCode: "98022",
+        bcBillingButton2_1_serviceCode1: "98022",
+        bcBillingButton2_1_serviceCode2: "",
+        bcBillingButton2_1_serviceCode3: "",
         bcBillingButton2_1_dxCode1: "",
         bcBillingButton2_1_dxCode2: "",
         bcBillingButton2_1_dxCode3: "",
@@ -108,18 +129,80 @@ var defaultSettings = {
             key: ''
           },
         }
-      }
+      },
+      {
+        bcBillingButton2_2_enabled: true,
+        bcBillingButton2_2_name: "Direct time",
+        bcBillingButton2_2_serviceCode1: "98010",
+        bcBillingButton2_2_serviceCode2: "",
+        bcBillingButton2_2_serviceCode3: "",
+        bcBillingButton2_2_dxCode1: "L23",
+        bcBillingButton2_2_dxCode2: "",
+        bcBillingButton2_2_dxCode3: "",
 
+        bcBillingButton2_2_addon: false,
+        bcBillingButton2_2_shortcuts:{
+          bcBillingButton2_2_shortcuts_enabled: false,
+          bcBillingButton2_2_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      {
+        bcBillingButton2_3_enabled: true,
+        bcBillingButton2_3_name: "Indirect time",
+        bcBillingButton2_3_serviceCode1: "98011",
+        bcBillingButton2_3_serviceCode2: "",
+        bcBillingButton2_3_serviceCode3: "",
+        bcBillingButton2_3_dxCode1: "L23",
+        bcBillingButton2_3_dxCode2: "",
+        bcBillingButton2_3_dxCode3: "",
+
+        bcBillingButton2_3_addon: false,
+        bcBillingButton2_3_shortcuts:{
+          bcBillingButton2_3_shortcuts_enabled: false,
+          bcBillingButton2_3_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      {
+        bcBillingButton2_4_enabled: true,
+        bcBillingButton2_4_name: "Clinical Admin time",
+        bcBillingButton2_4_serviceCode1: "98012",
+        bcBillingButton2_4_serviceCode2: "",
+        bcBillingButton2_4_serviceCode3: "",
+        bcBillingButton2_4_dxCode1: "L23",
+        bcBillingButton2_4_dxCode2: "",
+        bcBillingButton2_4_dxCode3: "",
+
+        bcBillingButton2_4_addon: false,
+        bcBillingButton2_4_shortcuts:{
+          bcBillingButton2_4_shortcuts_enabled: false,
+          bcBillingButton2_4_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
     ],
 
     bcBillingButtonGroup3_enable: true,
     bcBillingButtonGroup3:[
-      // IM inj, Allergy, Pap, UA, Preg Dip, Cryo
-      // 
       {
         bcBillingButton3_1_enabled: true,
         bcBillingButton3_1_name: "FFS:Clinic visit",
-        bcBillingButton3_1_serviceCode: "officeVisit",
+        bcBillingButton3_1_serviceCode1: "officeVisit",
+        bcBillingButton3_1_serviceCode2: "",
+        bcBillingButton3_1_serviceCode3: "",
         bcBillingButton3_1_dxCode1: "",
         bcBillingButton3_1_dxCode2: "",
         bcBillingButton3_1_dxCode3: "",
@@ -138,7 +221,9 @@ var defaultSettings = {
       {
         bcBillingButton3_2_enabled: true,
         bcBillingButton3_2_name: "FFS:TH visit",
-        bcBillingButton3_2_serviceCode: "teleVisit",
+        bcBillingButton3_2_serviceCode1: "teleVisit",
+        bcBillingButton3_2_serviceCode2: "",
+        bcBillingButton3_2_serviceCode3: "",
         bcBillingButton3_2_dxCode1: "",
         bcBillingButton3_2_dxCode2: "",
         bcBillingButton3_2_dxCode3: "",
@@ -156,8 +241,10 @@ var defaultSettings = {
       },
       {
         bcBillingButton3_3_enabled: true,
-        bcBillingButton3_3_name: "FFS:Stand Proced",
-        bcBillingButton3_3_serviceCode: "98021",
+        bcBillingButton3_3_name: "IM inj",
+        bcBillingButton3_3_serviceCode1: "00010",
+        bcBillingButton3_3_serviceCode2: "",
+        bcBillingButton3_3_serviceCode3: "",
         bcBillingButton3_3_dxCode1: "",
         bcBillingButton3_3_dxCode2: "",
         bcBillingButton3_3_dxCode3: "",
@@ -175,9 +262,11 @@ var defaultSettings = {
       },
       {
         bcBillingButton3_4_enabled: true,
-        bcBillingButton3_4_name: "Adv Proced",
-        bcBillingButton3_4_serviceCode: "98020",
-        bcBillingButton3_4_dxCode1: "",
+        bcBillingButton3_4_name: "Allergy",
+        bcBillingButton3_4_serviceCode1: "00034",
+        bcBillingButton3_4_serviceCode2: "",
+        bcBillingButton3_4_serviceCode3: "",
+        bcBillingButton3_4_dxCode1: "32A",
         bcBillingButton3_4_dxCode2: "",
         bcBillingButton3_4_dxCode3: "",
 
@@ -185,6 +274,90 @@ var defaultSettings = {
         bcBillingButton3_4_shortcuts:{
           bcBillingButton3_4_shortcuts_enabled: false,
           bcBillingButton3_4_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      {
+        bcBillingButton3_5_enabled: true,
+        bcBillingButton3_5_name: "Pap",
+        bcBillingButton3_5_serviceCode1: "14560",
+        bcBillingButton3_5_serviceCode2: "00044",
+        bcBillingButton3_5_serviceCode3: "",
+        bcBillingButton3_5_dxCode1: "V723",
+        bcBillingButton3_5_dxCode2: "",
+        bcBillingButton3_5_dxCode3: "",
+
+        bcBillingButton3_5_addon: false,
+        bcBillingButton3_5_shortcuts:{
+          bcBillingButton3_5_shortcuts_enabled: false,
+          bcBillingButton3_5_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      {
+        bcBillingButton3_6_enabled: true,
+        bcBillingButton3_6_name: "UA",
+        bcBillingButton3_6_serviceCode1: "15130",
+        bcBillingButton3_6_serviceCode2: "",
+        bcBillingButton3_6_serviceCode3: "",
+        bcBillingButton3_6_dxCode1: "",
+        bcBillingButton3_6_dxCode2: "",
+        bcBillingButton3_6_dxCode3: "",
+
+        bcBillingButton3_6_addon: true,
+        bcBillingButton3_6_shortcuts:{
+          bcBillingButton3_6_shortcuts_enabled: false,
+          bcBillingButton3_6_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      {
+        bcBillingButton3_7_enabled: true,
+        bcBillingButton3_7_name: "Preg Dip",
+        bcBillingButton3_7_serviceCode1: "15120",
+        bcBillingButton3_7_serviceCode2: "",
+        bcBillingButton3_7_serviceCode3: "",
+        bcBillingButton3_7_dxCode1: "",
+        bcBillingButton3_7_dxCode2: "",
+        bcBillingButton3_7_dxCode3: "",
+
+        bcBillingButton3_7_addon: true,
+        bcBillingButton3_7_shortcuts:{
+          bcBillingButton3_7_shortcuts_enabled: false,
+          bcBillingButton3_7_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            key: ''
+          },
+        }
+      },
+      {
+        bcBillingButton3_8_enabled: true,
+        bcBillingButton3_8_name: "Cryo",
+        bcBillingButton3_8_serviceCode1: "00190",
+        bcBillingButton3_8_serviceCode2: "",
+        bcBillingButton3_8_serviceCode3: "",
+        bcBillingButton3_8_dxCode1: "00044",
+        bcBillingButton3_8_dxCode2: "",
+        bcBillingButton3_8_dxCode3: "",
+
+        bcBillingButton3_8_addon: false,
+        bcBillingButton3_8_shortcuts:{
+          bcBillingButton3_8_shortcuts_enabled: false,
+          bcBillingButton3_8_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
             altKey: false,
@@ -843,8 +1016,9 @@ NOTE:
 */
 function rebuildSettingsStructure(settingsStructure, storedSettings){
   let rebuiltSettings = {};
+  console.log(storedSettings);
   for (const [key, value] of Object.entries(settingsStructure)){
-    // console.log(storedSettings);
+    
     const storedValue = storedSettings[key];
     console.log(key);
     console.log(value);
@@ -854,12 +1028,17 @@ function rebuildSettingsStructure(settingsStructure, storedSettings){
       console.log("hi1");
     } 
     else { // value types match
-      if (key.includes("bcBillingButtonGroup")){
+      if (typeof value == "boolean" || typeof value == "string" || typeof value == "number"){
+        rebuiltSettings[key] = storedValue;
+      }
+      else if (key.includes("bcBillingButtonGroup")){
         console.assert(Array.isArray(value));
         
         const groupNum = key.split("bcBillingButtonGroup")[1];
+        console.log(key);
         console.log(groupNum);
         if (storedValue.length == 0){
+          console.log("restore default value")
           rebuiltSettings[key] = value;
         }
         else {
@@ -873,8 +1052,8 @@ function rebuildSettingsStructure(settingsStructure, storedSettings){
         console.log("hi2");
         rebuiltSettings[key] = rebuildSettingsStructure(value, storedValue);
       } 
-      else { // value types match and both aren't objects. i.e. they are primitives or functions.
-        console.log("hi3");
+      else { // value types match, is not boolean, string, number, or object. may be bigint, undefined, symbol, null
+        console.log("hi3" + key + value);
         rebuiltSettings[key] = storedValue;
       }
     }
@@ -932,10 +1111,14 @@ NOTE
 - this rebuilds the settings according to the structure of settingsStructure and stores it in storage.
  */
 async function checkStoredSettingsStructure(){
-  const storedSettings = await browser.storage.sync.get(defaultSettings);
+  const storedSettings = await browser.storage.local.get(defaultSettings);
   const rebuiltSettings = rebuildSettingsStructure(defaultSettings, storedSettings);
   console.log(rebuiltSettings);
-  await browser.storage.sync.set(rebuiltSettings);
-  console.log(await browser.storage.sync.get(defaultSettings));
+  console.log(storedSettings);
+  // console.log(await browser.storage.local.getBytesInUse("billingCodeInput"));
+  await browser.storage.local.set(rebuiltSettings);
+  console.log(await browser.storage.local.get());
+  console.log('hihi12');
 }
+
 

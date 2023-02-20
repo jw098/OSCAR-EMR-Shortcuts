@@ -12,14 +12,14 @@
 
 checkEnabled_ApptEdit();
 async function checkEnabled_ApptEdit(){
-	const isEnabled = await browser.storage.sync.get('enabled');
-	console.log(await browser.storage.sync.get(null));
+	const isEnabled = await browser.storage.local.get('enabled');
+	console.log(await browser.storage.local.get(null));
 	
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const apptEditObj = await browser.storage.sync.get('apptEdit');
+		const apptEditObj = await browser.storage.local.get('apptEdit');
 		const apptEdit = apptEditObj.apptEdit;
 		const apptEdit_keyboardShortcuts = apptEdit.apptEdit_keyboardShortcuts;
 		if (apptEdit_keyboardShortcuts.apptEdit_shortcuts_enabled){

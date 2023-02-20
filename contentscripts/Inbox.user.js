@@ -11,13 +11,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_Inbox();
 async function checkEnabled_Inbox(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const inboxObj = await browser.storage.sync.get('inbox');
+		const inboxObj = await browser.storage.local.get('inbox');
 		const inbox = inboxObj.inbox;
 
 		// Buttons

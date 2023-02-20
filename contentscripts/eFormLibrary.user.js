@@ -15,13 +15,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_eFormLibrary();
 async function checkEnabled_eFormLibrary(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("eForm library enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const eFormObj = await browser.storage.sync.get('eFormLibrary');
+		const eFormObj = await browser.storage.local.get('eFormLibrary');
 		const eFormLibrary = eFormObj.eFormLibrary;
 		const eFormLibrary_keyboardShortcuts = eFormLibrary.eFormLibrary_keyboardShortcuts;
 		if (eFormLibrary_keyboardShortcuts.eFormLibrary_shortcuts_enabled){

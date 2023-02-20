@@ -16,7 +16,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_Allergy();
 async function checkEnabled_Allergy(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 
 	console.log("Allergy_QuickAdd enabled? " + isEnabled.enabled);
 	console.log(isEnabled);
@@ -26,7 +26,7 @@ async function checkEnabled_Allergy(){
 		return;
 	}
 	else {
-		const allergyQuickAddObj = await browser.storage.sync.get('allergyQuickAdd');
+		const allergyQuickAddObj = await browser.storage.local.get('allergyQuickAdd');
 		const allergyQuickAdd = allergyQuickAddObj.allergyQuickAdd;
 		if (allergyQuickAdd){
 			doPageAction();

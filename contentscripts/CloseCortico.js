@@ -12,13 +12,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_CloseCortico();
 async function checkEnabled_CloseCortico(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	// console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const corticoObj = await browser.storage.sync.get('cortico');
+		const corticoObj = await browser.storage.local.get('cortico');
 		const cortico = corticoObj.cortico;
 		const cortico_keyboardShortcuts = cortico.cortico_keyboardShortcuts;
 		if (cortico_keyboardShortcuts.cortico_shortcuts_enabled){

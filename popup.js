@@ -27,12 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleEnabled(false, settingsSavedReloadMessage);
   });
 
-  chrome.storage.sync.get({ enabled: true }, function (storage) {
+  chrome.storage.local.get({ enabled: true }, function (storage) {
     toggleEnabledUI(storage.enabled);
   });
 
   function toggleEnabled(enabled, callback) {
-    chrome.storage.sync.set(
+    chrome.storage.local.set(
       {
         enabled: enabled
       },

@@ -13,13 +13,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_EChart();
 async function checkEnabled_EChart(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const eChartObj = await browser.storage.sync.get('eChart');
+		const eChartObj = await browser.storage.local.get('eChart');
 		const eChart = eChartObj.eChart;
 		const updateSidebar = eChart.updateSidebar;
 		const eformSearchBar_enabled = eChart.eformSearchBar_enabled;

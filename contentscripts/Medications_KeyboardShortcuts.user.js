@@ -14,14 +14,14 @@ let lightWindowKeyboardShortcuts;
 let mainWindowKeyboardShortcuts
 checkEnabled_Medications();
 async function checkEnabled_Medications(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Medications enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
 
-		const medsObj = await browser.storage.sync.get('medications');
+		const medsObj = await browser.storage.local.get('medications');
 		const medications = medsObj.medications;
 
 		// key event listener main window

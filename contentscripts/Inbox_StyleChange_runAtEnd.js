@@ -13,15 +13,15 @@
 
 checkEnabled_InboxStyleChange_runAtEnd();
 async function checkEnabled_InboxStyleChange_runAtEnd(){
-	const isEnabled = await browser.storage.sync.get('enabled');
-	console.log(await browser.storage.sync.get(null));
+	const isEnabled = await browser.storage.local.get('enabled');
+	console.log(await browser.storage.local.get(null));
 	
 	console.log("enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const inboxItemObj = await browser.storage.sync.get('inboxItem');
+		const inboxItemObj = await browser.storage.local.get('inboxItem');
 		const inboxItem = inboxItemObj.inboxItem;
 		const inboxItem_styleChange = inboxItem.inboxItem_styleChange;
         if (inboxItem_styleChange){

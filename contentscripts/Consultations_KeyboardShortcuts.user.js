@@ -14,13 +14,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_Consultations();
 async function checkEnabled_Consultations(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
-		const consultationsObj = await browser.storage.sync.get('consultations');
+		const consultationsObj = await browser.storage.local.get('consultations');
 		const consultations = consultationsObj.consultations;
 		const consultations_keyboardShortcuts = consultations.consultations_keyboardShortcuts;
 		if (consultations_keyboardShortcuts.consultations_shortcuts_enabled){

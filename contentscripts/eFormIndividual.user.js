@@ -15,14 +15,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_eFormIndividual();
 async function checkEnabled_eFormIndividual(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("eForm enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
 
-		const eFormObj = await browser.storage.sync.get('eFormIndividual');
+		const eFormObj = await browser.storage.local.get('eFormIndividual');
 		const eFormIndividual = eFormObj.eFormIndividual;
 		const eFormIndividual_keyboardShortcuts = eFormIndividual.eFormIndividual_keyboardShortcuts;
 		if (eFormIndividual_keyboardShortcuts.eFormIndividual_shortcuts_enabled){

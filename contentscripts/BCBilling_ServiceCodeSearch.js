@@ -11,14 +11,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 checkEnabled_BCBilling_ServiceCodeSearch();
 async function checkEnabled_BCBilling_ServiceCodeSearch(){
-	const isEnabled = await browser.storage.sync.get('enabled');
+	const isEnabled = await browser.storage.local.get('enabled');
 	console.log("Global enabled? " + isEnabled.enabled);
 	if(!isEnabled.enabled){
 		return;
 	}
 	else {
 		const billingServiceCodeSearchObj = 
-			await browser.storage.sync.get('billingServiceCodeSearch');
+			await browser.storage.local.get('billingServiceCodeSearch');
 		const billingServiceCodeSearch = billingServiceCodeSearchObj.billingServiceCodeSearch;
 		const billingServiceCodeSearch_keyboardShortcuts = 
 			billingServiceCodeSearch.billingServiceCodeSearch_keyboardShortcuts;
