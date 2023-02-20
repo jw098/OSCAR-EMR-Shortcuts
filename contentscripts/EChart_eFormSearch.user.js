@@ -69,8 +69,8 @@ function getEFormLibraryURL(){
     // console.log(params.demographicNo);
     
     var elements = (window.location.pathname.split('/', 2))
-    firstElement = (elements.slice(1))
-    vPath = ('https://' + location.host + '/' + firstElement + '/')
+    const firstElement = (elements.slice(1))
+    const vPath = ('https://' + location.host + '/' + firstElement + '/')
     var newURL = vPath + "/eform/efmformslistadd.jsp?group_view=&demographic_no=" + params.demographicNo + "&parentAjaxId=eforms";
 
     return newURL;
@@ -100,12 +100,13 @@ function addSearchBar(){
     //         alert(this.text)
     });
 
+    const vPath = "../"
     // https://stackoverflow.com/a/64392933
     document.getElementById("referral_name").addEventListener("input", function(event){
         if(event.inputType == "insertReplacementText" || event.inputType == null) {
-        window.open(vPath + "eform/" + $(this).val())
-        $(this).val("")
-        this.focus()
+            window.open(vPath + "eform/" + $(this).val())
+            $(this).val("")
+            this.focus()
         }
     })
 

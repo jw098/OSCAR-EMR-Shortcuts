@@ -283,8 +283,8 @@ function openVitalsButton_KeyDownListener(){
  
 function openVitalsLink(){
 	var elements = (window.location.pathname.split('/', 2));
-	firstElement = (elements.slice(1));
-	vPath = ("https://" + location.host + "/"  + firstElement + "/");
+	const firstElement = (elements.slice(1));
+	const vPath = ("https://" + location.host + "/"  + firstElement + "/");
   	
 	var vitalsPath = vPath + "oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Vitals";
 	window.open(vitalsPath)
@@ -301,8 +301,8 @@ function openLink(fid){
 		return;
 	}
 	var elements = (window.location.pathname.split('/', 2));
-	firstElement = (elements.slice(1));
-	vPath = ("https://" + location.host + "/"  + firstElement + "/");
+	const firstElement = (elements.slice(1));
+	const vPath = ("https://" + location.host + "/"  + firstElement + "/");
   	
 	var formPath = vPath + "eform/efmformadd_data.jsp?fid=" + fid + "&demographic_no=" + findDemogNum();
 	window.open(formPath)
