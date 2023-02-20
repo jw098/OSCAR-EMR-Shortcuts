@@ -71,6 +71,7 @@ PURPOSE:
 	const  submitWriteEncounterButton = 
 		document.evaluate("//input[@value='Submit & Write to Encounter']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 
+
 	submitWriteEncounterButton.addEventListener("click", async function(){
 		saveMessageToStorage("submitWriteEncounter");
 	});
@@ -85,7 +86,7 @@ NOTE:
  */
 async function saveMessageToStorage(writeEncounterType){
 	const taskAssignedToDropdown = document.querySelector("select[name='task_assigned_to']");
-	const taskAssignedTo= taskAssignedToDropdown.options[taskAssignedToDropdown.selectedIndex].text;
+	const taskAssignedTo = taskAssignedToDropdown.options[taskAssignedToDropdown.selectedIndex].text;
 
 	const messageTextArea = 
 		document.evaluate("//textarea",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
@@ -93,9 +94,13 @@ async function saveMessageToStorage(writeEncounterType){
 
 	// console.log(taskAssignedTo);
 	// console.log(messageText)
+
+	const patientName = document.querySelector("input[name='keyword']").value.replace(/[\s]/g, "");
+
 	const ticklerMessage = {
 		messageText: messageText,
-		taskAssignedTo: taskAssignedTo
+		taskAssignedTo: taskAssignedTo,
+		messagePatientName: patientName
 	};
 
 	await browser.storage.local.set({
@@ -121,28 +126,43 @@ NOTES:
 - set writeEncounter to false to avoid posting tickler message text when not intended.
 */
 async function prefixWriteToEncounter_submitWrite_EChart(){
-	// const targetTextArea2 = document.querySelector("textarea[id^='caseNote']");
-	// const originalContent2 = targetTextArea2.value;
-	// console.log(originalContent2);
 
+
+	/* 
+	ensure correct writeEncounter, then set writeEncounter to none 
+	*/
 	const writeEncounterObj = await browser.storage.local.get('writeEncounter');
 	const writeEncounter = writeEncounterObj.writeEncounter;
 	console.log(writeEncounter);
-
 	if(writeEncounter != "submitWriteEncounter"){
 		return;
 	}
-	
 	browser.storage.local.set({ writeEncounter: "none" });
 
+	/* 
+	get the ticklerMessage 
+	*/
 	const ticklerMessageObj = await browser.storage.local.get('ticklerMessage');
 	const ticklerMessage = ticklerMessageObj.ticklerMessage;
-
 	console.log(ticklerMessage);
-	
-	const targetTextArea =  await getTargetTextArea();
 
+	/* 
+	- ensure it is the correct patient before proceeding.
+	 */
+	if(!patientNameMatchesMessage(ticklerMessage)){
+		console.error("this shouldn't happen.")
+		return;
+	}
+	
+	/* 
+	get the target text area 
+	*/
+	const targetTextArea =  await getTargetTextArea();
 	console.log(targetTextArea);
+
+	/* 
+	post tickler message to target text area, after the original content. 
+	*/
 	const originalContent = targetTextArea.value;
 	const messageText = ticklerMessage.messageText;
 	const taskAssignedTo = ticklerMessage.taskAssignedTo;
@@ -158,6 +178,11 @@ async function prefixWriteToEncounter_submitWrite_EChart(){
 	
 }
 
+/* 
+NOTE:
+- Tickler Write to Encounter will automatically post the message to the Encounter. This function removes that text so we only get the original content, without the message.
+- sometimes, the tickler message isn't automatically posted though.
+ */
 function getOriginalContentWithoutMessage(originalContent, messageText){
 	const lastIndexOfText = originalContent.lastIndexOf(messageText);
 	if (lastIndexOfText < 0) {
@@ -172,10 +197,13 @@ function getOriginalContentWithoutMessage(originalContent, messageText){
 /* 
 PURPOSE:
 - get the text in the current active text area.
+NOTE
+- can't just use queryselector("textarea[id^='caseNote']") because it doesn't load right away. id="notCPP" loads right away, but the case notes do not.
+- so, we wait for the page to fully load, and set focus to the case note, by which time it has loaded.
 */
 function getTargetTextArea(){
 	return new Promise(function(resolve, reject){
-
+		
 		document.addEventListener("focusin", setTargetFocus);
 	
 		function setTargetFocus(event){
@@ -242,10 +270,21 @@ async function prefixWriteToEncounter_submitExit_EChartLoad(){
 	encounterChannel.addEventListener("message", function(event){
 		const ticklerMessage = event.data.ticklerMessage;
 		console.log(ticklerMessage);
-		postTicklerMessage(ticklerMessage);
+		if(patientNameMatchesMessage(ticklerMessage)){
+			postTicklerMessage(ticklerMessage);
+		}
 	});
 }
 
+function patientNameMatchesMessage(ticklerMessage){
+	const currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
+	const messagePatientName = ticklerMessage.messagePatientName;
+	console.log(currentPatientName);
+	console.log(messagePatientName);
+
+	return currentPatientName == messagePatientName;
+
+}
 
 function postTicklerMessage(ticklerMessage){
 	const targetTextArea = document.querySelector("textarea[id^='caseNote']");
@@ -262,4 +301,5 @@ function postTicklerMessage(ticklerMessage){
 	targetTextArea.value = newContent;
 }
 	
+
 
