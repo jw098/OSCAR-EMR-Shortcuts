@@ -45,6 +45,8 @@ async function checkEnabled_EChart(){
 			keydownEventListener_openEForm(eChartButtons);
 		}
 
+
+
 		// KeyboardShortcuts
 		if (eChart_mainWindow_keyboardShortcuts.eChart_mainWindow_shortcuts_enabled){
 			if(eChart_mainWindow_keyboardShortcuts.eformSearchBar_shortcuts_enabled){
@@ -58,6 +60,9 @@ async function checkEnabled_EChart(){
 			keydownEventListener_CPPWindow(eChart_CPPWindow_keyboardShortcuts);
 		}
 
+
+		// Demographic info
+		loadDemographicInfo();
 
 	}
 }
