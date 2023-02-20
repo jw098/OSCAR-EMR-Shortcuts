@@ -21,7 +21,7 @@
 // ///////////////////////////////////////////////////////////////////////////////////////////
 // checkEnabled_BCBilling_Buttons();
 // async function checkEnabled_BCBilling_Buttons(){
-// 	const isEnabled = await browser.storage.sync.get('enabled');
+// 	const isEnabled = await browser.storage.local.get('enabled');
 // 	console.log("Global enabled? " + isEnabled.enabled);
 // 	if(!isEnabled.enabled){
 // 		return;
@@ -35,6 +35,85 @@
 //////////////////////////////////////////////////////////////////
 // Add Buttons
 //////////////////////////////////////////////////////////////////
+
+function addBillingButtonRow(bcBillingButtonGroup, groupNum){
+	console.log(bcBillingButtonGroup);
+	for (let i = 0; i < bcBillingButtonGroup.length; i++){
+		const oneBCBillingButton = bcBillingButtonGroup[i];
+		addBillingOneButton(oneBCBillingButton, groupNum);
+	}
+
+}
+
+function addBillingOneButton(oneBCBillingButton, groupNum){
+	// const test = Object.keys(oneBCBillingButton)[0];
+	// console.log(test);
+
+	const groupNumButtonNum = Object.keys(oneBCBillingButton)[0].split("bcBillingButton")[1].split("_enabled")[0];
+	// console.log(groupNumButtonNum);
+
+	const addon = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_addon`];
+	const dxCode1 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_dxCode1`];
+	const dxCode2 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_dxCode2`];
+	const dxCode3 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_dxCode3`];
+	const enabled = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_enabled`];
+	const name = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_name`];
+	const serviceCode = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_serviceCode`];
+	const shortcuts = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_shortcuts`];
+	const shortcuts_enabled = shortcuts[`bcBillingButton${groupNumButtonNum}_shortcuts_enabled`];
+	const shortcuts_keybinding = shortcuts[`bcBillingButton${groupNumButtonNum}_shortcuts_keybinding`];
+
+	// console.log(shortcuts_enabled);
+	// console.log(shortcuts_keybinding);
+	// console.log(name);
+
+
+
+	let clickAction;
+	if(serviceCode == "officeVisit"){
+		clickAction = inPersonVisit;
+	}
+	else if(serviceCode == "teleVisit"){
+		clickAction = virtualVisit;
+	}
+	else if(serviceCode == "counselling"){
+		clickAction = counsellingVisit;
+	}
+	else if(serviceCode == "consultation"){
+		clickAction = consultationVisit;
+	}
+	else if(serviceCode == "completeExam"){
+		clickAction = completeExamVisit;
+	}
+	else if(serviceCode == "teleCounselling"){
+		clickAction = teleCounsellingVisit;
+	}
+	else if(serviceCode == "teleConsultation"){
+		clickAction = teleConsultationVisit;
+	}
+	else {
+		clickAction = function(){
+			//svcCode1, dxCode1, svcCode2, dxCode2, svcCode3, dxCode3
+			addServiceCodeRigid(serviceCode, dxCode1, "", dxCode2, "", dxCode3);
+			$("input[name=billing_1_fee_dx1]").focus();
+		}
+	}
+
+	let fontColor;
+	if(groupNum == 1){
+		fontColor = "9999FF";
+	}
+	else if(groupNum == 2){
+		fontColor = "8FF";
+	}
+	else { // groupNum == 3
+		fontColor = "9999FF";
+	}
+
+	addBillingButton(name, clickAction, "", fontColor, groupNum);
+}
+
+
 function addAllBillingButtons(){
 	/*
 	tr = $('.serviceCodesTable').children();
@@ -80,16 +159,18 @@ function addAllBillingButtons(){
 	$("#extravvrow1").append(document.createElement('br'));
 }
 
-function addBillingButton(theValue, clickAction, theTitle, fontColor, rowNum){
-	removeAlreadyExistingElement_BCBilling(document.getElementById(theValue));
+
+
+function addBillingButton(buttonValue, clickAction, titleText, fontColor, rowNum){
+	removeAlreadyExistingElement_BCBilling(document.getElementById(buttonValue));
 
 	var input = document.createElement('input');
 	input.type = 'button';
-	input.value = theValue;
-	input.id = theValue;
+	input.value = buttonValue;
+	input.id = buttonValue;
 	input.onclick = clickAction;
 	input.setAttribute('style', `font-size:12px; font-weight: bold; background: #${fontColor};`);
-	input.setAttribute('title', theTitle);
+	input.setAttribute('title', titleText);
 	
 	$(`#extravvrow${rowNum}`).append(input);
 }
@@ -110,64 +191,189 @@ function removeAlreadyExistingElement_BCBilling(element){
 
 //alert($('.serviceCodesTable').children().html());
 
-
+const age = $("#patientIdRow").children().children().next().next().next().html();
 
 function inPersonVisit(){
-    age = $("#patientIdRow").children().children().next().next().next().html();
-    if(age < 2)
+    if(age < 2){
       code="12100";
-    else if(age >= 2 && age < 50)
+	}
+    else if(age >= 2 && age < 50){
       code="00100";
-    else if(age >= 50 && age < 60)
+    }
+	else if(age >= 50 && age < 60){
       code="15300";
-    else if(age >= 60 && age < 70)
+    }
+	else if(age >= 60 && age < 70){
       code="16100";
-    else if(age >= 70 && age < 80)
+    }
+	else if(age >= 70 && age < 80){
       code="17100";
-    else 
+    }
+	else {
       code="18100";
+	}
     // $("input[name=billing_1_fee]").val(code);
     addServiceCodeRigid(code, "", "", "", "", "");
 	$("input[name=billing_1_fee_dx1]").focus();
-    
   }
   
-  function virtualVisit(){
-    age = $("#patientIdRow").children().children().next().next().next().html();
-    if(age < 2)
+function virtualVisit(){
+    if(age < 2){
       code="13237";
-    else if(age >= 2 && age < 50)
+	}else if(age >= 2 && age < 50){
       code="13437";
-    else if(age >= 50 && age < 60)
+    }else if(age >= 50 && age < 60){
       code="13537";
-    else if(age >= 60 && age < 70)
+    }else if(age >= 60 && age < 70){
       code="13637";
-    else if(age >= 70 && age < 80)
+    }else if(age >= 70 && age < 80){
       code="13737";
-    else 
+    }else {
       code="13837";
+	}
     // $("input[name=billing_1_fee]").val(code);
     addServiceCodeRigid(code, "", "", "", "", "");
     $("input[name=billing_1_fee_dx1]").focus();
-  }
+}
+
+function teleCounsellingVisit(){
+    if(age < 2){
+      code="13238";
+	}else if(age >= 2 && age < 50){
+      code="13438";
+    }else if(age >= 50 && age < 60){
+      code="13538";
+    }else if(age >= 60 && age < 70){
+      code="13638";
+    }else if(age >= 70 && age < 80){
+      code="13738";
+    }else {
+      code="13838";
+	}
+    // $("input[name=billing_1_fee]").val(code);
+    addServiceCodeRigid(code, "", "", "", "", "");
+    $("input[name=billing_1_fee_dx1]").focus();
+}  
+  
+
+function teleConsultationVisit(){
+    if(age < 2){
+      code="13236";
+	}else if(age >= 2 && age < 50){
+      code="13436";
+    }else if(age >= 50 && age < 60){
+      code="13536";
+    }else if(age >= 60 && age < 70){
+      code="13636";
+    }else if(age >= 70 && age < 80){
+      code="13736";
+    }else {
+      code="13836";
+	}
+    // $("input[name=billing_1_fee]").val(code);
+    addServiceCodeRigid(code, "", "", "", "", "");
+    $("input[name=billing_1_fee_dx1]").focus();
+}  
+
+function completeExamVisit(){
+    if(age < 2){
+      code="12101";
+	}else if(age >= 2 && age < 50){
+      code="00101";
+    }else if(age >= 50 && age < 60){
+      code="15301";
+    }else if(age >= 60 && age < 70){
+      code="16101";
+    }else if(age >= 70 && age < 80){
+      code="17101";
+    }else {
+      code="18101";
+	}
+    // $("input[name=billing_1_fee]").val(code);
+    addServiceCodeRigid(code, "", "", "", "", "");
+    $("input[name=billing_1_fee_dx1]").focus();
+}  
+
+
+function consultationVisit(){
+    if(age < 2){
+      code="12110";
+	}else if(age >= 2 && age < 50){
+      code="00110";
+    }else if(age >= 50 && age < 60){
+      code="15310";
+    }else if(age >= 60 && age < 70){
+      code="16110";
+    }else if(age >= 70 && age < 80){
+      code="17110";
+    }else {
+      code="18110";
+	}
+    // $("input[name=billing_1_fee]").val(code);
+    addServiceCodeRigid(code, "", "", "", "", "");
+    $("input[name=billing_1_fee_dx1]").focus();
+}
+
+function counsellingVisit(){
+    if(age < 2){
+      code="12120";
+	}else if(age >= 2 && age < 50){
+      code="00120";
+    }else if(age >= 50 && age < 60){
+      code="15320";
+    }else if(age >= 60 && age < 70){
+      code="16120";
+    }else if(age >= 70 && age < 80){
+      code="17120";
+    }else {
+      code="18120";
+	}
+    // $("input[name=billing_1_fee]").val(code);
+    addServiceCodeRigid(code, "", "", "", "", "");
+    $("input[name=billing_1_fee_dx1]").focus();
+}
 
   function addServiceCodeRigid(svcCode1, dxCode1, svcCode2, dxCode2, svcCode3, dxCode3) {
     inputtedBillingCode1 = jQuery("#billing_1_fee").val();
     if(inputtedBillingCode1 == svcCode1){			// if same service code already entered, clear all fields.
-      $("input[name=billing_1_fee]").val("");
-      $("input[name=billing_1_fee_dx1]").val("");
-      $("input[name=billing_2_fee]").val("");
-      $("input[name=billing_2_fee_dx1]").val("");
-      $("input[name=billing_3_fee]").val("");
-      $("input[name=billing_3_fee_dx1]").val("");
+		if(svcCode1 == $("input[name=billing_1_fee]").val()){
+			$("input[name=billing_1_fee]").val("");
+		}
+		if(dxCode1 == $("input[name=billing_1_fee_dx1]").val()){
+			$("input[name=billing_1_fee_dx1]").val("");
+		}
+		if(svcCode2 == $("input[name=billing_2_fee]").val()){
+			$("input[name=billing_2_fee]").val("");
+		}
+		if(dxCode2 == $("input[name=billing_2_fee_dx1]").val()){
+			$("input[name=billing_2_fee_dx1]").val("");
+		}
+		if(svcCode3 == $("input[name=billing_3_fee]").val()){ 
+			$("input[name=billing_3_fee]").val("");
+		}
+		if(dxCode3 == $("input[name=billing_3_fee_dx1]").val()){
+			$("input[name=billing_3_fee_dx1]").val("");
+		}
     }
     else{
-      $("input[name=billing_1_fee]").val(svcCode1);
-      $("input[name=billing_1_fee_dx1]").val(dxCode1);
-      $("input[name=billing_2_fee]").val(svcCode2);
-      $("input[name=billing_2_fee_dx1]").val(dxCode2);
-      $("input[name=billing_3_fee]").val(svcCode3);
-      $("input[name=billing_3_fee_dx1]").val(dxCode3);
+		if(svcCode1 != ""){
+			$("input[name=billing_1_fee]").val(svcCode1);
+		}
+		if(dxCode1 != ""){
+			$("input[name=billing_1_fee_dx1]").val(dxCode1);
+		}
+		if(svcCode2 != ""){
+			$("input[name=billing_2_fee]").val(svcCode2);
+		}
+		if(dxCode2 != ""){
+			$("input[name=billing_2_fee_dx1]").val(dxCode2);
+		}
+		if(svcCode3 != ""){ 
+			$("input[name=billing_3_fee]").val(svcCode3);
+		}
+		if(dxCode3 != ""){
+			$("input[name=billing_3_fee_dx1]").val(dxCode3);
+		}
     }
   
   }
@@ -201,7 +407,6 @@ function AlliedPhone() {
 }
 
 function fluVaxAlone(){
-	age = $("#patientIdRow").children().children().next().next().next().html();
 	let code;
 	if(age < 19){
 		code="10015";
@@ -256,7 +461,7 @@ function Urinalysis() {
 	svcCode="15130";
 	// $("input[name=billing_1_fee]").val(code);
 	// $("input[name=billing_1_fee_dx1]").val("");
-	addServiceCode(svcCode,"")
+	addServiceCode_addon(svcCode,"")
 	$("input[name=billing_1_fee_dx1]").focus();
 }
 
@@ -264,7 +469,7 @@ function UrinePreg() {
 	svcCode="15120";
 	// $("input[name=billing_1_fee]").val(code);
 	// $("input[name=billing_1_fee_dx1]").val("V22");
-	addServiceCode(svcCode,"")
+	addServiceCode_addon(svcCode,"")
 	$("input[name=billing_1_fee_dx1]").focus();
 }
 
@@ -312,7 +517,7 @@ function AlliedConf(){
 }
 
 
-function addServiceCode(svcCode, dxCode) {
+function addServiceCode_addon(svcCode, dxCode) {
 	var billingRowCount = 3;
 	for (var i = 1; i <= billingRowCount; i++) {
 		inputtedBillingCode = jQuery("#billing_" + i + "_fee").val();
