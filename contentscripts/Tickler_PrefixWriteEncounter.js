@@ -56,7 +56,7 @@ function prefixWriteToEncounter_submitWrite(){
 	
 		// Add Allergy page
 		case eChartPage.test(currentURL):  
-			return prefixWriteToEncounter_submitWrite_EChart();
+			return prefixWriteToEncounter_EChart_writeFromStorageOnLoad("submitWriteEncounter");
 	}
 }
 
@@ -65,7 +65,7 @@ function prefixWriteToEncounter_submitWrite(){
 /* 
 PURPOSE:
 - when clicking button 'Submit & Write to Encounter', save to local storage the tickler message text and the person the task was assigned to.
-- also, set writeEncounter to true.
+- also, set writeEncounter to submitWriteEncounter.
  */
  function prefixWriteToEncounter_submitWrite_Tickler(){
 	const  submitWriteEncounterButton = 
@@ -73,7 +73,7 @@ PURPOSE:
 
 
 	submitWriteEncounterButton.addEventListener("click", async function(){
-		saveMessageToStorage("submitWriteEncounter");
+		saveMessageToStorageAndBroadcast("submitWriteEncounter");
 	});
 	
 }
@@ -82,9 +82,12 @@ PURPOSE:
 
 /* 
 NOTE:
-- writeEncounterType is either 'none', 'submitExit', 'submitWrite'. 'none' means no writeEncounter. 'submitExit' means Submit and EXIT. 'submitWrite' means SUbmit and write to encounter.
- */
-async function saveMessageToStorage(writeEncounterType){
+- writeEncounterType is either 'none', 'submitExit', 'submitWrite'. 
+  - 'none' means no writeEncounter. 
+  - 'submitExit' means Submit and EXIT. 
+  - 'submitWrite' means Submit and write to encounter.
+*/
+async function saveMessageToStorageAndBroadcast(writeEncounterType){
 	const taskAssignedToDropdown = document.querySelector("select[name='task_assigned_to']");
 	const taskAssignedTo = taskAssignedToDropdown.options[taskAssignedToDropdown.selectedIndex].text;
 
@@ -122,19 +125,20 @@ async function saveMessageToStorage(writeEncounterType){
 PURPOSE:
 - prefix the tickler message with `Tickler message to ${taskAssignedTo}: `
 NOTES:
-- get writeEncounter from local storage to ensure that a tickler with write to encounter was just made. If not, stop this function
-- set writeEncounter to false to avoid posting tickler message text when not intended.
+- get writeEncounter from local storage. proceed only if storedWriteEncounter matches given writeEncounterType. writeEncounterType tells us whether the 'Submit and Exit' or 'Submit and Write to Encounter' buttons were just pressed.
+- set writeEncounter to 'none' to avoid posting tickler message text when not intended.
 */
-async function prefixWriteToEncounter_submitWrite_EChart(){
+async function prefixWriteToEncounter_EChart_writeFromStorageOnLoad(writeEncounterType){
 
 
 	/* 
-	ensure correct writeEncounter, then set writeEncounter to none 
+	- proceed only if storedWriteEncounter matches given writeEncounterType
+	- then set writeEncounter to none, so that the message isn't posted again.
 	*/
-	const writeEncounterObj = await browser.storage.local.get('writeEncounter');
-	const writeEncounter = writeEncounterObj.writeEncounter;
-	console.log(writeEncounter);
-	if(writeEncounter != "submitWriteEncounter"){
+	const storedWriteEncounterObj = await browser.storage.local.get('writeEncounter');
+	const storedWriteEncounter = storedWriteEncounterObj.writeEncounter;
+	console.log(storedWriteEncounter);
+	if(storedWriteEncounter != writeEncounterType){
 		return;
 	}
 	browser.storage.local.set({ writeEncounter: "none" });
@@ -150,7 +154,7 @@ async function prefixWriteToEncounter_submitWrite_EChart(){
 	- ensure it is the correct patient before proceeding.
 	 */
 	if(!patientNameMatchesMessage(ticklerMessage)){
-		console.error("this shouldn't happen.")
+		// console.error("this shouldn't happen.")
 		return;
 	}
 	
@@ -158,7 +162,7 @@ async function prefixWriteToEncounter_submitWrite_EChart(){
 	get the target text area 
 	*/
 	const targetTextArea =  await getTargetTextArea();
-	console.log(targetTextArea);
+	// console.log(targetTextArea);
 
 	/* 
 	post tickler message to target text area, after the original content. 
@@ -244,36 +248,48 @@ function prefixWriteToEncounter_submitExit(){
 
 /* 
 PURPOSE:
-- when clicking button 'Submit & Write to Encounter', save to local storage the tickler message text and the person the task was assigned to.
-- also, set writeEncounter to true.
+- when clicking button 'Submit and Exit', save to local storage the tickler message text and the person the task was assigned to.
+- also, set writeEncounter to submitExit.
+- also, send the message via BroadcastChannel
  */
 function prefixWriteToEncounter_submitExit_Tickler(){
 	const  submitExitButton = 
 		document.evaluate("//input[@value='Submit and EXIT']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 
 	submitExitButton.addEventListener("click",  async function(){
-		saveMessageToStorage("submitExit");
+		saveMessageToStorageAndBroadcast("submitExit");
 	});
 
 }
 
-async function prefixWriteToEncounter_submitExit_EChart(){
-	prefixWriteToEncounter_submitExit_EChartLoad();
-}
 /* 
 NOTE:
-- if the writeEncounter is submitExit when the eChart loads, the writeEncounter is set to none.
-- this is because if the eChart has loaded, we're likely in a different eChart than the submitExit writeEncounter was meant for.
+- writeTicklerWhenMessageEvent: writes the tickler message if the eChart is already open when the Tickler is made.
+- writeFromStorageOnLoad: writes the tickler message if the eChart was closed at the time of Tickler creation. This writes the tickler message when the eChart opens, as long as the patient name matches.
+ */
+function prefixWriteToEncounter_submitExit_EChart(){
+	prefixWriteToEncounter_submitExit_writeTicklerWhenMessageEvent();
+	prefixWriteToEncounter_EChart_writeFromStorageOnLoad("submitExit");
+}
+/* 
+PURPOSE
+- Adds event listener for the message event.
+- when message received, posts the tickler message, if the patient name matches the message.
+NOTE:
+- this only works if the E-chart is already open when the Tickler was sent. Otherwise, the message won't be received.
+- for the tickler message to be posted on eChart loading, see writeFromStorageOnLoad.
 */
-async function prefixWriteToEncounter_submitExit_EChartLoad(){
+function prefixWriteToEncounter_submitExit_writeTicklerWhenMessageEvent(){
 	const encounterChannel = new BroadcastChannel("encounterChannel");
 	encounterChannel.addEventListener("message", function(event){
 		const ticklerMessage = event.data.ticklerMessage;
 		console.log(ticklerMessage);
 		if(patientNameMatchesMessage(ticklerMessage)){
+			browser.storage.local.set({ writeEncounter: "none" });
 			postTicklerMessage(ticklerMessage);
 		}
 	});
+
 }
 
 function patientNameMatchesMessage(ticklerMessage){
@@ -288,7 +304,7 @@ function patientNameMatchesMessage(ticklerMessage){
 
 function postTicklerMessage(ticklerMessage){
 	const targetTextArea = document.querySelector("textarea[id^='caseNote']");
-	console.log(targetTextArea);
+	// console.log(targetTextArea);
 	const originalContent = targetTextArea.value;
 	const messageText = ticklerMessage.messageText;
 	const taskAssignedTo = ticklerMessage.taskAssignedTo;
