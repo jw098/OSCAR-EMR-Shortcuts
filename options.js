@@ -424,8 +424,8 @@ function checkShortcutGroupConflict(shortcutGroup){
 
 
       if(isSameKeybinding(anInputKeybinding, anInputFromRestOfList_keybinding)){
-        console.log(anInputKeybinding);
-        console.log(anInputFromRestOfList_keybinding);
+        // console.log(anInputKeybinding);
+        // console.log(anInputFromRestOfList_keybinding);
         shortcutGroupsInConflict.add(shortcutGroup);
         const h1Warning = document.querySelector("h1").querySelector(".warning");
         h1Warning.classList.toggle("hide", false);
@@ -491,12 +491,12 @@ var customActionsNoValues = ["pause", "muted", "mark", "jump", "display"];
 
 
 async function checkAllSettings(){
-  const settingsObject = await browser.storage.sync.get(defaultSettings);
+  const settingsObject = await browser.storage.local.get(defaultSettings);
   adjustAllSettings(true, settingsObject);
 }
 
 async function uncheckAllSettings(){
-  const settingsObject = await browser.storage.sync.get(defaultSettings);
+  const settingsObject = await browser.storage.local.get(defaultSettings);
   adjustAllSettings(false, settingsObject);
 }
 
@@ -531,7 +531,7 @@ NOTE:
 function save_options() {
   reorderBillingButtonIDs();
 
-  chrome.storage.sync.set(
+  chrome.storage.local.set(
     setSettingsFromOptionsPage(defaultSettings),
     function () {
       // Update status to let user know options were saved.
@@ -554,8 +554,8 @@ function save_options() {
   );
 
   (async function() {
-    console.log(await browser.storage.sync.get(defaultSettings));
-    // console.log(await browser.storage.sync.get("tcDefaults"));
+    console.log(await browser.storage.local.get(defaultSettings));
+    // console.log(await browser.storage.local.get("tcDefaults"));
   })();
 
 }
@@ -620,7 +620,9 @@ function createBillingButtonSettingFromOption(oneBillingButton_Option) {
   const buttonName = oneBillingButton_Option.querySelector(".bcBillingButton_name").value;
   // console.log(buttonName);
 
-  const serviceCode = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode").value;
+  const serviceCode1 = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode1").value;
+  const serviceCode2 = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode2").value;
+  const serviceCode3 = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode3").value;
   const dxCode1 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode1").value;
   const dxCode2 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode2").value;
   const dxCode3 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode3").value;
@@ -638,7 +640,9 @@ function createBillingButtonSettingFromOption(oneBillingButton_Option) {
   const oneBillingButton_Settings = {
     [`bcBillingButton${groupNumButtonNum}_enabled`]: buttonEnabled,
     [`bcBillingButton${groupNumButtonNum}_name`]: buttonName,
-    [`bcBillingButton${groupNumButtonNum}_serviceCode`]: serviceCode,
+    [`bcBillingButton${groupNumButtonNum}_serviceCode1`]: serviceCode1,
+    [`bcBillingButton${groupNumButtonNum}_serviceCode2`]: serviceCode2,
+    [`bcBillingButton${groupNumButtonNum}_serviceCode3`]: serviceCode3,
     [`bcBillingButton${groupNumButtonNum}_dxCode1`]: dxCode1,
     [`bcBillingButton${groupNumButtonNum}_dxCode2`]: dxCode2,
     [`bcBillingButton${groupNumButtonNum}_dxCode3`]: dxCode3,
@@ -681,8 +685,12 @@ function reorderBillingButtonIDs_button(oneBillingButton, groupNum, buttonNum){
   `bcBillingButton${groupNum}_${buttonNum}_enabled`;
   oneBillingButton.querySelector(".bcBillingButton_name").id = 
   `bcBillingButton${groupNum}_${buttonNum}_name`;
-  oneBillingButton.querySelector(".bcBillingButton_serviceCode").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_serviceCode`;
+  oneBillingButton.querySelector(".bcBillingButton_serviceCode1").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_serviceCode1`;
+  oneBillingButton.querySelector(".bcBillingButton_serviceCode2").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_serviceCode2`;
+  oneBillingButton.querySelector(".bcBillingButton_serviceCode3").id = 
+  `bcBillingButton${groupNum}_${buttonNum}_serviceCode3`;
   oneBillingButton.querySelector(".bcBillingButton_dxCode1").id = 
   `bcBillingButton${groupNum}_${buttonNum}_dxCode1`;
   oneBillingButton.querySelector(".bcBillingButton_dxCode2").id = 
@@ -702,8 +710,8 @@ function reorderBillingButtonIDs_button(oneBillingButton, groupNum, buttonNum){
 - if a given setting wasn't present in storage, it takes the default value from defaultSettings. 
 */
 function restore_options() {
-  chrome.storage.sync.get(defaultSettings, function (storage) {
-    // console.log(storage);
+  chrome.storage.local.get(defaultSettings, function (storage) {
+    console.log(storage);
     restoreOptionsPageFromSettings(storage);
     findAllShortcutConflicts(storage);
     greyoutExtensionIcon();
@@ -758,9 +766,9 @@ function restoreOptionsPageFromSettings_bcBillingButtons(settingsBCBillingButton
 }
 
 function add_BCBillingButtonFromSetting(settingsBCBillingButton, groupNum, buttonNum) {
-  const bcBillingButton_serviceCode = 
-    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_serviceCode`];
-  const isAgeBasedCode = checkIsAgeBasedCode(bcBillingButton_serviceCode);
+  const bcBillingButton_serviceCode1 = 
+    settingsBCBillingButton[`bcBillingButton${groupNum}_${buttonNum}_serviceCode1`];
+  const isAgeBasedCode = checkIsAgeBasedCode(bcBillingButton_serviceCode1);
 
   add_BCBillingButtonBlank(groupNum, isAgeBasedCode);
   restoreOptionsPageFromSettings(settingsBCBillingButton);
@@ -782,21 +790,21 @@ let ageBasedCodeList = {
   counselling: "Counselling",
   consultation: "Consultation",
   completeExam: "Complete Exam",
-  teleVisit: "Telehealth Visit",
-  teleCounselling: "Telehealth Counselling",
-  teleConsultation: "Telehealth Consultation"
+  teleVisit: "Tele Visit",
+  teleCounselling: "Tele Counselling",
+  teleConsultation: "Tele Consultation"
 }
 
 
 function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   const buttonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
   const buttonNum = buttonGroup.children.length;
-  let serviceCodeInput = `<input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText" type="text" value="" placeholder="Service code"/>`
+  let serviceCodeInput1 = `<input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode1" class="bcBillingButton_serviceCode1 billingButtonCustomText" type="text" value="" placeholder="Service code"/>`
   const emptyKeybinding = JSON.stringify(returnEmptyKeybinding());
   if(isAgeBasedCode){
     const ageBasedCodeOptions = getAgeBasedCodeOptions();
-    serviceCodeInput = `
-    <select id="bcBillingButton${groupNum}_${buttonNum}_serviceCode" class="bcBillingButton_serviceCode billingButtonCustomText">
+    serviceCodeInput1 = `
+    <select id="bcBillingButton${groupNum}_${buttonNum}_serviceCode1" class="bcBillingButton_serviceCode1 billingButtonCustomText ageBasedServiceCode">
       ${ageBasedCodeOptions}
     </select>
     `
@@ -807,9 +815,11 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   div.innerHTML = `
   <input id="bcBillingButton${groupNum}_${buttonNum}_enabled" type="checkbox" class="bcBillingButton_enabled"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_name" class="bcBillingButton_name billingButtonCustomText" type="text" value="" placeholder="button name"/>
-  ${serviceCodeInput}
+  ${serviceCodeInput1}
   <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode1" class="bcBillingButton_dxCode1 billingButtonCustomText" type="text" value="" placeholder="Dx code 1"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode2" class="bcBillingButton_serviceCode2 billingButtonCustomText" type="text" value="" placeholder="Service code 2"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode2" class="bcBillingButton_dxCode2 billingButtonCustomText" type="text" value="" placeholder="Dx code 2"/>
+  <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode3" class="bcBillingButton_serviceCode3 billingButtonCustomText" type="text" value="" placeholder="Service code 2"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode3" class="bcBillingButton_dxCode3 billingButtonCustomText" type="text" value="" placeholder="Dx code 3"/>
   <button class="removeParent">X</button>
   <div class="subRow2">
@@ -883,7 +893,7 @@ function findAllShortcutGroups(settingsObject, shortcutGroupsSeenSoFar){
 - stores the default settings to storage.
  */
 function restore_defaults() {
-  chrome.storage.sync.set(defaultSettings, function () {
+  chrome.storage.local.set(defaultSettings, function () {
     restore_options();
     document
       .querySelectorAll(".removeParent")
@@ -906,7 +916,7 @@ function show_experimental() {
 
 // just for testing
 async function setTestSettings(){
-  browser.storage.sync.set(testSettings);
+  browser.storage.local.set(testSettings);
 }
 
 /* 
@@ -1013,7 +1023,7 @@ PURPOSE
  */
 async function checkOptionsUnsaved(theTarget){
   const targetID = theTarget.id;
-  const settingsObject = await browser.storage.sync.get(defaultSettings);
+  const settingsObject = await browser.storage.local.get(defaultSettings);
   // console.log(targetID);
   const targetValueInSettings = getTargetValueFromSettings(targetID, settingsObject);
   
@@ -1085,12 +1095,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // await setTestSettings();
   // console.log(defaultSettings);
-  // console.log(await browser.storage.sync.get(defaultSettings));
+  // console.log(await browser.storage.local.get(defaultSettings));
 
   // await checkStoredSettingsStructure();
   restore_options();
 
-  const settingsStructure = await browser.storage.sync.get(defaultSettings)
+  const settingsStructure = await browser.storage.local.get(defaultSettings)
   // console.log(settingsStructure);
 
   document.getElementById("save").addEventListener("click", save_options);
@@ -1208,6 +1218,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
 });
+
 
 
 
