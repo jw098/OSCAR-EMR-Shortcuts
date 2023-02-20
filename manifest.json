@@ -8,6 +8,7 @@
     ],
     "background": {
         "scripts": [
+            "contentscripts/utils.js",
             "default_settings.js",
             "background.js"
         ]

@@ -1006,7 +1006,7 @@ async function checkHighlightSaveButton(theTarget){
   else {
     unsavedChanges.delete(theTarget);
   }
-  // console.log(unsavedChanges);
+  console.log(unsavedChanges);
 
   // toggle optionsUnsaved in the save button classlist, depending on if unsavedChanges is empty.
   document.getElementById("saveHeader").classList.toggle("optionsUnsaved", unsavedChanges.size != 0);
@@ -1060,7 +1060,7 @@ async function checkOptionsUnsaved(theTarget){
     isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
   }
 
-  console.log(isOptionsUnsaved);
+  // console.log(isOptionsUnsaved);
 
   return isOptionsUnsaved;
 }

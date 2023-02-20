@@ -1,13 +1,3 @@
-const testSettings3 = {
-  enabled: true, // default enabled
-  allergyQuickAdd: true,
-
-  billingCodeInput:{
-    billingCodeInput_PageEnd: true,
-    billingButtons: true,
-  }
-}
-
 
 const defaultSettings = {
   enabled: true, // default enabled
@@ -245,7 +235,7 @@ const defaultSettings = {
         bcBillingButton3_3_serviceCode1: "00010",
         bcBillingButton3_3_serviceCode2: "",
         bcBillingButton3_3_serviceCode3: "",
-        bcBillingButton3_3_dxCode1: "",
+        bcBillingButton3_3_dxCode1: "33a",
         bcBillingButton3_3_dxCode2: "",
         bcBillingButton3_3_dxCode3: "",
 
@@ -348,9 +338,9 @@ const defaultSettings = {
         bcBillingButton3_8_enabled: true,
         bcBillingButton3_8_name: "Cryo",
         bcBillingButton3_8_serviceCode1: "00190",
-        bcBillingButton3_8_serviceCode2: "",
+        bcBillingButton3_8_serviceCode2: "00044",
         bcBillingButton3_8_serviceCode3: "",
-        bcBillingButton3_8_dxCode1: "00044",
+        bcBillingButton3_8_dxCode1: "",
         bcBillingButton3_8_dxCode2: "",
         bcBillingButton3_8_dxCode3: "",
 
@@ -378,20 +368,20 @@ const defaultSettings = {
         altKey: true,
         key: '1'
       },
-      billingCodeInput_shortcut_officeVisitInputCode_enabled: true,
-      billingCodeInput_shortcut_officeVisitInputCode_keybinding:{
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: true,
-        key: 'q'
-      },
-      billingCodeInput_shortcut_teleVisitInputCode_enabled: true,
-      billingCodeInput_shortcut_teleVisitInputCode_keybinding:{
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: true,
-        key: 'w'
-      },
+      // billingCodeInput_shortcut_officeVisitInputCode_enabled: true,
+      // billingCodeInput_shortcut_officeVisitInputCode_keybinding:{
+      //   ctrlKey: false,
+      //   shiftKey: false,
+      //   altKey: true,
+      //   key: 'q'
+      // },
+      // billingCodeInput_shortcut_teleVisitInputCode_enabled: true,
+      // billingCodeInput_shortcut_teleVisitInputCode_keybinding:{
+      //   ctrlKey: false,
+      //   shiftKey: false,
+      //   altKey: true,
+      //   key: 'w'
+      // },
       billingCodeInput_shortcut_setFocusDxCode_enabled: true,
       billingCodeInput_shortcut_setFocusDxCode_keybinding:{
         ctrlKey: false,
@@ -1083,18 +1073,19 @@ function settingsStructureWithGroupButtonNum(settingsStructure, groupNum, button
     const keySplitWithoutGroupButtonNum = key.split(/\d\_\d\_/);
     const keyWithCorrectGroupButtonNum = 
       keySplitWithoutGroupButtonNum[0] + groupNum + "_" + buttonNum + "_" + keySplitWithoutGroupButtonNum[1];
-    if (typeof value == "boolean" || typeof value == "string"){
-      // console.log(key);
+    if (typeof value == "boolean" || typeof value == "string" || typeof value == "number"){
+      console.log(key);
       rebuiltSettings[keyWithCorrectGroupButtonNum] = value;
       // console.log(document.getElementById(key).checked);
     } 
     else if (key.includes("_keybinding")){
-      rebuiltSettings[keyWithCorrectGroupButtonNum] = {
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: false,
-        key: ''
-      };
+      rebuiltSettings[keyWithCorrectGroupButtonNum] = returnEmptyKeybinding();
+      // {
+      //   ctrlKey: false,
+      //   shiftKey: false,
+      //   altKey: false,
+      //   key: ''
+      // };
     }
     else{
       console.assert(typeof value == "object");

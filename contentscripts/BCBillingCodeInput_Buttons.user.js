@@ -52,69 +52,96 @@ function addBillingOneButton(oneBCBillingButton, groupNum){
 	const groupNumButtonNum = Object.keys(oneBCBillingButton)[0].split("bcBillingButton")[1].split("_enabled")[0];
 	// console.log(groupNumButtonNum);
 
+	// if not enabled, stop this function
+	const enabled = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_enabled`];
+	if (!enabled){
+		return;
+	}
 	const addon = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_addon`];
 	const dxCode1 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_dxCode1`];
 	const dxCode2 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_dxCode2`];
 	const dxCode3 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_dxCode3`];
-	const enabled = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_enabled`];
 	const name = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_name`];
-	const serviceCode = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_serviceCode`];
+	const serviceCode1 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_serviceCode1`];
+	const serviceCode2 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_serviceCode2`];
+	const serviceCode3 = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_serviceCode3`];
 	const shortcuts = oneBCBillingButton[`bcBillingButton${groupNumButtonNum}_shortcuts`];
 	const shortcuts_enabled = shortcuts[`bcBillingButton${groupNumButtonNum}_shortcuts_enabled`];
 	const shortcuts_keybinding = shortcuts[`bcBillingButton${groupNumButtonNum}_shortcuts_keybinding`];
+
+
 
 	// console.log(shortcuts_enabled);
 	// console.log(shortcuts_keybinding);
 	// console.log(name);
 
 
-
+	// set the action when button is clicked.
 	let clickAction;
-	if(serviceCode == "officeVisit"){
+	if(serviceCode1 == "officeVisit"){
 		clickAction = inPersonVisit;
 	}
-	else if(serviceCode == "teleVisit"){
+	else if(serviceCode1 == "teleVisit"){
 		clickAction = virtualVisit;
 	}
-	else if(serviceCode == "counselling"){
+	else if(serviceCode1 == "counselling"){
 		clickAction = counsellingVisit;
 	}
-	else if(serviceCode == "consultation"){
+	else if(serviceCode1 == "consultation"){
 		clickAction = consultationVisit;
 	}
-	else if(serviceCode == "completeExam"){
+	else if(serviceCode1 == "completeExam"){
 		clickAction = completeExamVisit;
 	}
-	else if(serviceCode == "teleCounselling"){
+	else if(serviceCode1 == "teleCounselling"){
 		clickAction = teleCounsellingVisit;
 	}
-	else if(serviceCode == "teleConsultation"){
+	else if(serviceCode1 == "teleConsultation"){
 		clickAction = teleConsultationVisit;
 	}
 	else {
-		clickAction = function(){
-			//svcCode1, dxCode1, svcCode2, dxCode2, svcCode3, dxCode3
-			addServiceCodeRigid(serviceCode, dxCode1, "", dxCode2, "", dxCode3);
-			$("input[name=billing_1_fee_dx1]").focus();
+		if (addon){
+			clickAction = function(){
+				addServiceCode_addon(serviceCode1, dxCode1);
+			}
 		}
+		else {
+			clickAction = function(){
+				//svcCode1, dxCode1, svcCode2, dxCode2, svcCode3, dxCode3
+				addServiceCodeRigid(serviceCode1, dxCode1, serviceCode2, dxCode2, serviceCode3, dxCode3);
+				$("input[name=billing_1_fee_dx1]").focus();
+			}
+		}
+		
 	}
 
+	// add listener for keyboard shortcut
+	if(shortcuts_enabled){
+		window.addEventListener('keydown', function(theEvent) {
+			if(keybindingMatches(shortcuts_keybinding, theEvent)){
+				clickAction();
+			}
+		});
+	}
+
+	// set font color for the button
 	let fontColor;
 	if(groupNum == 1){
 		fontColor = "9999FF";
 	}
 	else if(groupNum == 2){
-		fontColor = "8FF";
-	}
-	else { // groupNum == 3
 		fontColor = "9999FF";
 	}
+	else { // groupNum == 3
+		fontColor = "8FF";
+	}
 
+	// add the button to the DOM
 	addBillingButton(name, clickAction, "", fontColor, groupNum);
 }
 
 
-function addAllBillingButtons(){
+function addSpaceForBillingButtons(){
 	/*
 	tr = $('.serviceCodesTable').children();
 	tr.prepend("<tr><td colspan=3 id='extravvrow'></td></tr>");
@@ -132,31 +159,31 @@ function addAllBillingButtons(){
 	tr = $('input[name=billing_1_fee]').parent().parent().parent().parent().parent().parent();
 	tr.prepend("<tr><td colspan=3 id='extravvrow1'></td></tr>");
 
-	// Row 1 buttons
-	addBillingButton('Office', inPersonVisit, "", "9999FF", 1);
-	addBillingButton('TH Visit', virtualVisit, "", "9999FF", 1);
-	addBillingButton('TH Counsel', virtualVisitCounselling, "", "9999FF", 1);
-	addBillingButton('AlliedPhone', AlliedPhone, "", "9999FF", 1);
-	addBillingButton('AlliedConf', AlliedConf, "", "9999FF", 1);
+	// // Row 1 buttons
+	// addBillingButton('Office', inPersonVisit, "", "9999FF", 1);
+	// addBillingButton('TH Visit', virtualVisit, "", "9999FF", 1);
+	// addBillingButton('TH Counsel', virtualVisitCounselling, "", "9999FF", 1);
+	// addBillingButton('AlliedPhone', AlliedPhone, "", "9999FF", 1);
+	// addBillingButton('AlliedConf', AlliedConf, "", "9999FF", 1);
 
-	// Row 2 buttons
-	addBillingButton('INR', INR, "INR", "8FF", 2);
-	addBillingButton('IM inj', Injection, "B12, etc; not allergy shot", "8FF", 2);
-	addBillingButton('Allergy', Allergy, "Allergy shot", "8FF", 2);
-	addBillingButton('Pap', Pap, "Pap", "8FF", 2);
-	addBillingButton('UA', Urinalysis, "Labs - UA, UDS, etc", "8FF", 2);
-	addBillingButton('Preg dip', UrinePreg, "Urine Pregnancy test ", "8FF", 2);
-	addBillingButton('Cryo', Cryo, "Cryo", "8FF", 2);
+	// // Row 2 buttons
+	// addBillingButton('INR', INR, "INR", "8FF", 2);
+	// addBillingButton('IM inj', Injection, "B12, etc; not allergy shot", "8FF", 2);
+	// addBillingButton('Allergy', Allergy, "Allergy shot", "8FF", 2);
+	// addBillingButton('Pap', Pap, "Pap", "8FF", 2);
+	// addBillingButton('UA', Urinalysis, "Labs - UA, UDS, etc", "8FF", 2);
+	// addBillingButton('Preg dip', UrinePreg, "Urine Pregnancy test ", "8FF", 2);
+	// addBillingButton('Cryo', Cryo, "Cryo", "8FF", 2);
 
-	// Row 3 buttons
-	addBillingButton('Flu Vax Only', fluVaxAlone, "Flu Vax Only", "8FF", 3);
-	addBillingButton('Adult Flu Vax With Visit', adultFluVaxWithVisit, "Adult Flu Vax With Visit", "8FF", 3);
-	addBillingButton('NH visit', LTCI_visit, "Nursing Home visit", "8FF", 3);
-	addBillingButton('NH bonus', LTCI_visit1, "Nursing Home first visit bonus", "8FF", 3);
-	addBillingButton('PneumoniaVax', pneumoniaAlone, "PPV or Prevnar adult vaccine only", "8FF", 3);
-	addBillingButton('CV19', CV19_visit, "COVID 19 counselling", "8FF", 3);
+	// // Row 3 buttons
+	// addBillingButton('Flu Vax Only', fluVaxAlone, "Flu Vax Only", "8FF", 3);
+	// addBillingButton('Adult Flu Vax With Visit', adultFluVaxWithVisit, "Adult Flu Vax With Visit", "8FF", 3);
+	// addBillingButton('NH visit', LTCI_visit, "Nursing Home visit", "8FF", 3);
+	// addBillingButton('NH bonus', LTCI_visit1, "Nursing Home first visit bonus", "8FF", 3);
+	// addBillingButton('PneumoniaVax', pneumoniaAlone, "PPV or Prevnar adult vaccine only", "8FF", 3);
+	// addBillingButton('CV19', CV19_visit, "COVID 19 counselling", "8FF", 3);
 
-	$("#extravvrow1").append(document.createElement('br'));
+	// $("#extravvrow1").append(document.createElement('br'));
 }
 
 
