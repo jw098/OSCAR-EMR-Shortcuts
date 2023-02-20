@@ -91,6 +91,26 @@ input[type="text"] {
   color: rgb(48, 57, 66);
 }
 
+input[type="text"].bcBillingButton_serviceCode1,
+.bcBillingButton_serviceCode2,
+.bcBillingButton_serviceCode3
+{
+  width: 80px;
+}
+
+.bcBillingButton_dxCode1,
+.bcBillingButton_dxCode2,
+.bcBillingButton_dxCode3
+{
+  width: 60px;
+}
+
+.ageBasedServiceCode{
+  /* width: 100px; */
+}
+
+
+
 .row {
   margin: 5px 0px;
 }
@@ -210,9 +230,6 @@ div[class*="subRow1"]>label[class*="shortcutLabel"]{
   margin-top: 2em;
 }
 
-select {
-  width: 170px;
-}
 
 .customForce {
   display: none;
