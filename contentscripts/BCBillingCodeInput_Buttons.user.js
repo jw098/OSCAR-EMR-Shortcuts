@@ -100,12 +100,13 @@ function addBillingOneButton(oneBCBillingButton, groupNum){
 		clickAction = teleConsultationVisit;
 	}
 	else {
-		if (addon){
+		if (addon  ==  "addonBilling"){
 			clickAction = function(){
 				addServiceCode_addon(serviceCode1, dxCode1);
 			}
 		}
 		else {
+			console.assert(addon  ==  "standardBilling");
 			clickAction = function(){
 				//svcCode1, dxCode1, svcCode2, dxCode2, svcCode3, dxCode3
 				addServiceCodeRigid(serviceCode1, dxCode1, serviceCode2, dxCode2, serviceCode3, dxCode3);
