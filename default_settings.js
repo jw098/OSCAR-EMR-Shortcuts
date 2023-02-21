@@ -20,7 +20,7 @@ const defaultSettings = {
         bcBillingButton1_1_dxCode2: "",
         bcBillingButton1_1_dxCode3: "",
 
-        bcBillingButton1_1_addon: false,
+        bcBillingButton1_1_addon: "standardBilling",
         bcBillingButton1_1_shortcuts:{
           bcBillingButton1_1_shortcuts_enabled: true,
           bcBillingButton1_1_shortcuts_keybinding: {
@@ -41,7 +41,7 @@ const defaultSettings = {
         bcBillingButton1_2_dxCode2: "",
         bcBillingButton1_2_dxCode3: "",
 
-        bcBillingButton1_2_addon: false,
+        bcBillingButton1_2_addon: "standardBilling",
         bcBillingButton1_2_shortcuts:{
           bcBillingButton1_2_shortcuts_enabled: true,
           bcBillingButton1_2_shortcuts_keybinding: {
@@ -62,7 +62,7 @@ const defaultSettings = {
         bcBillingButton1_3_dxCode2: "",
         bcBillingButton1_3_dxCode3: "",
 
-        bcBillingButton1_3_addon: false,
+        bcBillingButton1_3_addon: "standardBilling",
         bcBillingButton1_3_shortcuts:{
           bcBillingButton1_3_shortcuts_enabled: false,
           bcBillingButton1_3_shortcuts_keybinding: {
@@ -83,7 +83,7 @@ const defaultSettings = {
         bcBillingButton1_4_dxCode2: "",
         bcBillingButton1_4_dxCode3: "",
 
-        bcBillingButton1_4_addon: false,
+        bcBillingButton1_4_addon: "standardBilling",
         bcBillingButton1_4_shortcuts:{
           bcBillingButton1_4_shortcuts_enabled: false,
           bcBillingButton1_4_shortcuts_keybinding: {
@@ -109,7 +109,7 @@ const defaultSettings = {
         bcBillingButton2_1_dxCode2: "",
         bcBillingButton2_1_dxCode3: "",
 
-        bcBillingButton2_1_addon: true,
+        bcBillingButton2_1_addon: "addonBilling",
         bcBillingButton2_1_shortcuts:{
           bcBillingButton2_1_shortcuts_enabled: false,
           bcBillingButton2_1_shortcuts_keybinding: {
@@ -130,7 +130,7 @@ const defaultSettings = {
         bcBillingButton2_2_dxCode2: "",
         bcBillingButton2_2_dxCode3: "",
 
-        bcBillingButton2_2_addon: false,
+        bcBillingButton2_2_addon: "standardBilling",
         bcBillingButton2_2_shortcuts:{
           bcBillingButton2_2_shortcuts_enabled: false,
           bcBillingButton2_2_shortcuts_keybinding: {
@@ -151,7 +151,7 @@ const defaultSettings = {
         bcBillingButton2_3_dxCode2: "",
         bcBillingButton2_3_dxCode3: "",
 
-        bcBillingButton2_3_addon: false,
+        bcBillingButton2_3_addon: "standardBilling",
         bcBillingButton2_3_shortcuts:{
           bcBillingButton2_3_shortcuts_enabled: false,
           bcBillingButton2_3_shortcuts_keybinding: {
@@ -172,7 +172,7 @@ const defaultSettings = {
         bcBillingButton2_4_dxCode2: "",
         bcBillingButton2_4_dxCode3: "",
 
-        bcBillingButton2_4_addon: false,
+        bcBillingButton2_4_addon: "standardBilling",
         bcBillingButton2_4_shortcuts:{
           bcBillingButton2_4_shortcuts_enabled: false,
           bcBillingButton2_4_shortcuts_keybinding: {
@@ -197,7 +197,7 @@ const defaultSettings = {
         bcBillingButton3_1_dxCode2: "",
         bcBillingButton3_1_dxCode3: "",
 
-        bcBillingButton3_1_addon: false,
+        bcBillingButton3_1_addon: "standardBilling",
         bcBillingButton3_1_shortcuts:{
           bcBillingButton3_1_shortcuts_enabled: true,
           bcBillingButton3_1_shortcuts_keybinding: {
@@ -218,7 +218,7 @@ const defaultSettings = {
         bcBillingButton3_2_dxCode2: "",
         bcBillingButton3_2_dxCode3: "",
 
-        bcBillingButton3_2_addon: false,
+        bcBillingButton3_2_addon: "standardBilling",
         bcBillingButton3_2_shortcuts:{
           bcBillingButton3_2_shortcuts_enabled: true,
           bcBillingButton3_2_shortcuts_keybinding: {
@@ -239,7 +239,7 @@ const defaultSettings = {
         bcBillingButton3_3_dxCode2: "",
         bcBillingButton3_3_dxCode3: "",
 
-        bcBillingButton3_3_addon: false,
+        bcBillingButton3_3_addon: "standardBilling",
         bcBillingButton3_3_shortcuts:{
           bcBillingButton3_3_shortcuts_enabled: false,
           bcBillingButton3_3_shortcuts_keybinding: {
@@ -260,7 +260,7 @@ const defaultSettings = {
         bcBillingButton3_4_dxCode2: "",
         bcBillingButton3_4_dxCode3: "",
 
-        bcBillingButton3_4_addon: false,
+        bcBillingButton3_4_addon: "standardBilling",
         bcBillingButton3_4_shortcuts:{
           bcBillingButton3_4_shortcuts_enabled: false,
           bcBillingButton3_4_shortcuts_keybinding: {
@@ -281,7 +281,7 @@ const defaultSettings = {
         bcBillingButton3_5_dxCode2: "",
         bcBillingButton3_5_dxCode3: "",
 
-        bcBillingButton3_5_addon: false,
+        bcBillingButton3_5_addon: "standardBilling",
         bcBillingButton3_5_shortcuts:{
           bcBillingButton3_5_shortcuts_enabled: false,
           bcBillingButton3_5_shortcuts_keybinding: {
@@ -302,7 +302,7 @@ const defaultSettings = {
         bcBillingButton3_6_dxCode2: "",
         bcBillingButton3_6_dxCode3: "",
 
-        bcBillingButton3_6_addon: true,
+        bcBillingButton3_6_addon: "addonBilling",
         bcBillingButton3_6_shortcuts:{
           bcBillingButton3_6_shortcuts_enabled: false,
           bcBillingButton3_6_shortcuts_keybinding: {
@@ -323,7 +323,7 @@ const defaultSettings = {
         bcBillingButton3_7_dxCode2: "",
         bcBillingButton3_7_dxCode3: "",
 
-        bcBillingButton3_7_addon: true,
+        bcBillingButton3_7_addon: "addonBilling",
         bcBillingButton3_7_shortcuts:{
           bcBillingButton3_7_shortcuts_enabled: false,
           bcBillingButton3_7_shortcuts_keybinding: {
@@ -344,7 +344,7 @@ const defaultSettings = {
         bcBillingButton3_8_dxCode2: "",
         bcBillingButton3_8_dxCode3: "",
 
-        bcBillingButton3_8_addon: false,
+        bcBillingButton3_8_addon: "standardBilling",
         bcBillingButton3_8_shortcuts:{
           bcBillingButton3_8_shortcuts_enabled: false,
           bcBillingButton3_8_shortcuts_keybinding: {

@@ -98,6 +98,11 @@ input[type="text"].bcBillingButton_serviceCode1,
   width: 80px;
 }
 
+.bcBillingButton_addon_label,
+.bcBillingButton_shortcuts_enabled{
+  margin-left: 25px;
+}
+
 .bcBillingButton_dxCode1,
 .bcBillingButton_dxCode2,
 .bcBillingButton_dxCode3

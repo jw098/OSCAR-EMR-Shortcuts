@@ -568,6 +568,7 @@ function save_options() {
 function setSettingsFromOptionsPage(settingsStructure){
   let newSettings = {};
   for (const [key, value] of Object.entries(settingsStructure)){
+    // console.log(`${key}: ${value}`);
     if (typeof value == "boolean"){
       // console.log(key);
       newSettings[key] = document.getElementById(key).checked;
@@ -626,7 +627,7 @@ function createBillingButtonSettingFromOption(oneBillingButton_Option) {
   const dxCode1 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode1").value;
   const dxCode2 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode2").value;
   const dxCode3 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode3").value;
-  const addon = oneBillingButton_Option.querySelector(".bcBillingButton_addon").checked;
+  const addon = oneBillingButton_Option.querySelector(".bcBillingButton_addon").value;
   const shortcutEnabled = oneBillingButton_Option.querySelector(".bcBillingButton_shortcuts_enabled").checked;
 
   let keybinding = oneBillingButton_Option.querySelector(".bcBillingButton_shortcuts_keybinding").dataset.keybinding;
@@ -809,6 +810,8 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
     </select>
     `
   }
+      // <input id="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon" type="checkbox"/>
+      // <label for="bcBillingButton${groupNum}_${buttonNum}_addon" class="enableButton">Billing Addon</label>
 
   const div = document.createElement("div");
   div.setAttribute("class", "subRow1 bcBillingButtonGroup");
@@ -824,8 +827,11 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   <button class="removeParent">X</button>
   <div class="subRow2">
     <div class="buttonShortcut">
-      <input id="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon" type="checkbox"/>
-      <label for="bcBillingButton${groupNum}_${buttonNum}_addon" class="enableButton">Billing Addon</label>
+      <label for="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon_label">Billing code type: </label>
+      <select id="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon">
+        <option value="standardBilling">Standard billing code</option>
+        <option value="addonBilling">Billing addon</option>
+      </select>
     </div>
     <div class="shortcut buttonShortcut">
       <input id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled" class="bcBillingButton_shortcuts_enabled" type="checkbox" />
