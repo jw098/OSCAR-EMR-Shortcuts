@@ -11,18 +11,16 @@
 // ==/UserScript== 
 
 
-
-
 async function loadDemographicInfo(){
-	// if(window.location.href.indexOf("careconnect") != -1){
-	// 	// in CareConnect
-	// 	loadPHNToCareConnect();
-	// }
 
 	//Reserve line in header
 	var header = document.getElementById('encounterHeader');
 	var headerReserve = header.innerHTML;
-	header.innerHTML += '<br>'
+	header.innerHTML += '<br><br>'
+
+	// $("#encounterHeader").append('<br>');
+	// $("#encounterHeader").append($("<div id='headerDemographic1'>"));
+
 
 	const demographicArray = [
 		'Cell Phone',
@@ -43,7 +41,7 @@ async function loadDemographicInfo(){
 	const HCN = demoArrayVal[7].replace(/\s/g,'');
 	browser.storage.local.set({PHN: HCN});
 	// console.log(await browser.storage.local.get({PHN: HCN}))
-	console.log(HCN)
+	// console.log(HCN)
 	
 	const HCN_First4Digits = HCN.slice(0, 4)
 	const HCN_Next3Digits = HCN.slice(4, 7)
@@ -63,7 +61,7 @@ async function loadDemographicInfo(){
 
 	header.innerHTML += (headerHomePhone  +  headerCellPhone  + headerWorkPhone  + headerAddress  + headerPHN + headerHCType + 
 		'<br>' +
-		' eMail: '.bold() + "<span class='copyable'>" + demoArrayVal[1] + "</span>" +
+		'<b>eMail: </b>' + "<span class='copyable'>" + demoArrayVal[1] + "</span>" +
 		'&nbsp;' + 
 		'<a href="mailto:' + demoArrayVal[1] + '<' + demoArrayVal[1] + '>' + '?Subject=Confidential medical information" target="_blank">Send eMail</a>' +
 		'&nbsp;&nbsp;' + 
@@ -98,7 +96,8 @@ async function loadDemographicInfo(){
 		textArea.value = this.innerHTML;
 		document.body.appendChild(textArea);
 		textArea.select();
-		document.execCommand('copy');
+		// document.execCommand('copy');
+		navigator.clipboard.writeText(textArea.value);
 		$(this).css('background-color', '#c1a7f1');
 		textArea.setAttribute('style', 'position:absolute; top:32px; left:660px; width:150px; height:20px; font-size:13px; resize:none;');
 		textArea.setAttribute('title', 'Clipboard');
@@ -150,32 +149,6 @@ async function getDemographicInfo(demographicArray, URL){
 		const measureHTMLVal = measureHTMLKey.nextElementSibling;
 		const measureVal = measureHTMLVal.innerText;
 		demoArrayValues.push(measureVal);
-
-		// console.log(measureVal);
-
-		// switch (measureKey) {
-		// 	case "Phone(H)":
-		// 		var myReString = '<span class="label">[\n\r\t]*\s*' + 'Phone' + '[(][' + 'H' + '][)]' + '(.|[\n])*'
-		// 		break;
-		// 	case "Phone(W)":
-		// 		var myReString = '<span class="label">[\n\r\t]*\s*' + 'Phone' + '[(][' + 'W' + '][)]' + '(.|[\n])*'
-		// 		break;
-		// 	default:
-		// 		var myReString = '<span class="label">[\n\r\t]*\s*' + measureKey + '(.|[\n])*'
-		// }
-	
-		// var myRe = new RegExp(myReString, 'g');
-		// var myArray
-		// while ((myArray = myRe.exec(str)) !== null) {
-		// 	const y = myArray.toString()
-		// 	var z = y.indexOf('info')
-		// 	var mycode = y.substring(z + 6)
-		// 	var mycode2 = mycode.indexOf('</span>')
-		// 	var mycode3 = mycode.substring(mycode + 9, mycode2) //alert(j+measure + ' is ' + mycode3)
-		// 	console.log(mycode3);
-		// 	demoArrayValues.push(mycode3);
-		// }
-		
 	}
 	
 	return demoArrayValues;

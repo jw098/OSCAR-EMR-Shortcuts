@@ -27,6 +27,10 @@ async function checkEnabled_EChart(){
 		const eChart_mainWindow_keyboardShortcuts = eChart.eChart_mainWindow_keyboardShortcuts;
 		const eChart_CPPWindow_keyboardShortcuts = eChart.eChart_CPPWindow_keyboardShortcuts;
 
+
+		// Demographic info
+		loadDemographicInfo();
+
 		// UpdateSidebar
 		if(updateSidebar){
 			updateAllSidebarOnFocusChange();
@@ -61,8 +65,6 @@ async function checkEnabled_EChart(){
 		}
 
 
-		// Demographic info
-		loadDemographicInfo();
 
 	}
 }
