@@ -145,6 +145,16 @@
         },
         {
             "matches": [
+                "*://health.careconnect.ca/*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
+                "contentscripts/CareConnect.js"
+            ]
+        },
+        {
+            "matches": [
                 "*://*/*/eform/efmformadd_data.jsp*",
                 "*://*/*/eform/efmshowform_data.jsp*"
             ],

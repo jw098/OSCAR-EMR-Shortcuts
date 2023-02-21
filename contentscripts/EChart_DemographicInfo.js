@@ -40,25 +40,23 @@ async function loadDemographicInfo(){
 	const theURL = getMasterDemographicURL();
 	const demoArrayVal = await getDemographicInfo(demographicArray, theURL);
 
-	var passPHN = demoArrayVal[7].substr(0, 10);
-	// localStorage.setItem("LinkPHN", passPHN); //STORE PHN
-	// GM.setValue("LinkPHN", passPHN);
-	// console.log(`Saved PHN to GM global values: ${passPHN}`);
-
-	const HCType = demoArrayVal[9];
-	console.log(HCType)
-	var HCN = demoArrayVal[7].trim();
+	const HCN = demoArrayVal[7].replace(/\s/g,'');
+	browser.storage.local.set({PHN: HCN});
+	// console.log(await browser.storage.local.get({PHN: HCN}))
 	console.log(HCN)
-	res = HCN.slice(0, 4)
-	res = res + ' ' + HCN.slice(4, 7)
-	res = res + ' ' + HCN.slice(7)
-	HCN = res
+	
+	const HCN_First4Digits = HCN.slice(0, 4)
+	const HCN_Next3Digits = HCN.slice(4, 7)
+	const HCN_Last3Digits = HCN.slice(7)
+	const HCNWithSpaces = HCN_First4Digits + " " + HCN_Next3Digits + " " + HCN_Last3Digits;
+	const HCType = demoArrayVal[9];
+
 	header.innerHTML = headerReserve
 	var headerHomePhone = '<b>Home: </b>' + telLink(demoArrayVal[2]);
 	var headerCellPhone = '<b>Cell: </b>' + telLink(demoArrayVal[0]);
 	var headerWorkPhone = '<b>Work: </b>' + telLink(demoArrayVal[8]);
 	var headerAddress = '<b>Address: </b>' + demoArrayVal[3] + ', ' + demoArrayVal[4] + ', ' + demoArrayVal[5] + " &nbsp; ";
-	var headerPHN = '<b>PHN: </b>' + "<span class='copyable'>" + HCN + "</span>" + " &nbsp; ";
+	var headerPHN = '<b>PHN: </b>' + "<span class='copyable'>" + HCNWithSpaces + "</span>" + " &nbsp; ";
 	const headerHCType = highlightHealthCardType(HCType);
 	var headerExtra2 = 'Age: '
 	var headerExtra3 = 'File#: '
@@ -85,7 +83,8 @@ async function loadDemographicInfo(){
 	document.getElementById("button13").setAttribute('style', 'color:green;'); //font-size:10px; 
 	function openCareConnect() {
 		// window.open("https://health.careconnect.ca?" + passPHN, "newWindow", target = "_blank")
-		window.open("https://health.careconnect.ca", "newWindow", target = "_blank")
+		// window.open("https://health.careconnect.ca", "newWindow", target = "_blank");
+		window.open("https://health.careconnect.ca");
 	}
 
 	var Clipboard=document.createElement("input");
@@ -135,17 +134,6 @@ function getMasterDemographicURL(){
 	console.log(newURL);
 	return newURL;
 }
-
-function loadPHNToCareConnect(){
-	(async () => {
-		var phn = await GM.getValue("LinkPHN");
-		if (phn != undefined) {
-		  console.log("Filled PHN from GM global value");
-		  $('#search').val(phn);
-	  }
-	  })();
-}
-
 
 
 
