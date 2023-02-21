@@ -1019,8 +1019,49 @@ async function checkHighlightSaveButton(theTarget){
   
 }
 
-function highlightSaveButton(event){
-  document.getElementById("saveHeader").classList.toggle("optionsUnsaved", true);
+
+function targetEventCaller(theTarget, className, funcName) {
+  if (!theTarget.classList || !theTarget.classList.contains(className)) {
+    return;
+  }
+  funcName(theTarget);
+}
+
+
+/* 
+- get one of the sibling elements of the remove button.
+- check if it exists in stored settings. 
+  - if exists, add it to the set of unsavedChanges, since we just removed the stored element. 
+  - if "not found", then it never existed to begin with, so no change was made. also, iterate over unsavedChanges. removing all elements from the unsavedChanges set that are children of this parent.
+- finally, toggle highlighting of the save button depending on whether unsavedChanges are present.
+*/
+async function highlightSaveButtonOnRemove(event){
+  const removeButton = event.target;
+  const theParent = removeButton.parentNode;
+  const childCheckbox = theParent.querySelector("[class*='_enabled']");
+  const childCheckboxID = childCheckbox.id;
+
+  const settingsObject = await browser.storage.local.get(defaultSettings);
+  const targetValueInSettings = getTargetValueFromSettings(childCheckboxID, settingsObject);
+  console.log(targetValueInSettings)
+  if(targetValueInSettings == "not found"){
+    /* 
+    - iterate over unsavedChanges. removing all elements from the unsavedChanges set that are children of this parent.
+    */
+    for (let unsavedElement of unsavedChanges){
+      if(unsavedElement.parentNode == theParent){
+        unsavedChanges.delete(unsavedElement);
+      }
+    }
+  }
+  else {
+    unsavedChanges.add(childCheckbox);
+    // document.getElementById("saveHeader").classList.toggle("optionsUnsaved", true);
+  }
+  console.log(unsavedChanges);
+  // toggle optionsUnsaved in the save button classlist, depending on if unsavedChanges is empty.
+  document.getElementById("saveHeader").classList.toggle("optionsUnsaved", unsavedChanges.size != 0);
+    
 }
 
 /* 
@@ -1032,7 +1073,9 @@ async function checkOptionsUnsaved(theTarget){
   const settingsObject = await browser.storage.local.get(defaultSettings);
   // console.log(targetID);
   const targetValueInSettings = getTargetValueFromSettings(targetID, settingsObject);
-  
+  console.log(targetValueInSettings)
+
+
   /*
   - get targetValue from options page. compare to the targetValue from saved settings.
   - the targetValue from options will be different depending on the type of target.
@@ -1052,22 +1095,17 @@ async function checkOptionsUnsaved(theTarget){
 
     isOptionsUnsaved = !keybindingMatches(targetValueInSettings, targetValueInOptions);
   }
-  else if (theTarget.classList.contains("customFID")){
+  else if (theTarget.classList.contains("customFID") 
+  || theTarget.classList.contains("customButtonTitle") 
+  || theTarget.classList.contains("billingButtonCustomText")
+  || theTarget.classList.contains("bcBillingButton_addon")){
+
     targetValueInOptions = theTarget.value;
-    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
-  }
-  else if (theTarget.classList.contains("customButtonTitle")){
-    targetValueInOptions = theTarget.value;
-    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
-  } else if (theTarget.classList.contains("billingButtonCustomText")){
-    targetValueInOptions = theTarget.value;
-    console.log(targetValueInSettings);
-    console.log(targetValueInOptions);
     isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
   }
 
   // console.log(isOptionsUnsaved);
-
+  
   return isOptionsUnsaved;
 }
 
@@ -1161,12 +1199,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     funcName(event);
   }
 
-  function targetEventCaller(theTarget, className, funcName) {
-    if (!theTarget.classList || !theTarget.classList.contains(className)) {
-      return;
-    }
-    funcName(theTarget);
-  }
+
 
   // document.getElementById("schedule_shortcut_openInbox_keybinding").value = "hihi100"; 
   document.addEventListener("keypress", (event) => {
@@ -1193,7 +1226,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       targetEventCaller(theTarget, "customFID", checkHighlightSaveButton);
       targetEventCaller(theTarget, "customButtonTitle", checkHighlightSaveButton);
       targetEventCaller(theTarget, "billingButtonCustomText", checkHighlightSaveButton);
-      
+      targetEventCaller(theTarget, "bcBillingButton_addon", checkHighlightSaveButton);
     });
 
   document.addEventListener("click", (event) => {
@@ -1210,7 +1243,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   document.addEventListener("click", (event) => {
     eventCaller(event, "removeParent", checkShortcutConflictFromRemoveParentClick);
-    eventCaller(event, "removeParent", highlightSaveButton);
+    eventCaller(event, "removeParent", highlightSaveButtonOnRemove);
   });
 
   document.addEventListener("change", (event) => {
