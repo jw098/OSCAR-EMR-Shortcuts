@@ -427,10 +427,21 @@ async function updateMedicationsSidebar() {
 
 	const otherPageXMLText = await getXMLHTTP(urlPrintedMedications());
 	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
-	const currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
-	const printPagePatientName = otherPageHTML.querySelectorAll("#AutoNumber1 > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(1)")[0].innerHTML.split('-->')[1].split('<')[0].replace(/[\n\s]/g, "");
 
 	console.log("----meds---");
+
+	/* 
+	Check current patient name matches. 
+	*/
+	const currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
+
+	const printPagePatientNameHTML = otherPageHTML.querySelectorAll("#AutoNumber1 > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(1)")[0];
+	if(printPagePatientNameHTML == undefined){
+		console.log("Print page patient name undefined. Likely because Medications hasn't been visited yet.");
+		return;
+	}
+	const printPagePatientName = printPagePatientNameHTML.innerHTML.split('-->')[1].split('<')[0].replace(/[\n\s]/g, "");
+
 	console.log(currentPatientName);
 	console.log(printPagePatientName);
 	if(currentPatientName.split("(")[0] != printPagePatientName.split("(")[0]){
@@ -438,6 +449,9 @@ async function updateMedicationsSidebar() {
 		return;
 	}
 
+	/* 
+	Get posted items list.
+	 */
 	const postedItemsNodeList = otherPageHTML.querySelectorAll("tr[rxdate='"+ todayDateYYYYMMDD() + "']"); 
 	// console.log(postedItemsNodeList);
 	const postedItemsTodayList = findMedsPostedToday(postedItemsNodeList);
