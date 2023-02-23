@@ -110,7 +110,7 @@ async function loadDemographicInfo(){
 }
 
 function highlightHealthCardType(HCType){
-	if (HCType == "OT" || HCType == "US"){
+	if (HCType == "OT" || HCType == "Other" || HCType == "US"){
 		return `<span id='hcType' style='background-color: #da4d4d'><b>HC Type: ${HCType}</b></span>` ;
 	}
 	else {
