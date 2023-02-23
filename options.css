@@ -91,6 +91,12 @@ input[type="text"] {
   color: rgb(48, 57, 66);
 }
 
+.bcBillingButtonGroup:not(:last-child),
+.eChartButtonSingle:not(:last-child){
+  margin-bottom: 5px;
+  border: 1px solid grey;
+}
+
 input[type="text"].bcBillingButton_serviceCode1,
 .bcBillingButton_serviceCode2,
 .bcBillingButton_serviceCode3
