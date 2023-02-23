@@ -293,8 +293,10 @@ function prefixWriteToEncounter_submitExit_writeTicklerWhenMessageEvent(){
 }
 
 function patientNameMatchesMessage(ticklerMessage){
-	const currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
-	const messagePatientName = ticklerMessage.messagePatientName;
+	let currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
+	let messagePatientName = ticklerMessage.messagePatientName;
+	currentPatientName = currentPatientName.split("(")[0];
+	messagePatientName = messagePatientName.split("(")[0];
 	console.log(currentPatientName);
 	console.log(messagePatientName);
 
