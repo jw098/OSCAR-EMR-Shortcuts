@@ -315,16 +315,3 @@ function findDemogNum(){
 	var demo_no = myParam.substring(0,res);
 	return demo_no;
 }
-
-
-// below function doesn't work.
-// window.addEventListener("load", function() {
-// 	var theTarget = document.getElementById("leftNavBar");
-// 	var theLink = document.createElement("a");
-// 	/*Replace 101 with the Lab Req eForm's fid from your Oscar server*/
-// 	var theLabReqForm ="../eform/efmformadd_data.jsp?fid=101";
-// 	theLabReqForm+="&demographic_no="+demographicNo;
-// 	theLink.href="javascript:void(open('"+theLabReqForm+"'));"
-// 	theLink.innerHTML="LAB REQ";
-// 	theTarget.appendChild(theLink);
-// }, false);
