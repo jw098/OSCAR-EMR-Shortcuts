@@ -727,7 +727,7 @@ function restore_options() {
 function restoreOptionsPageFromSettings(settingsObject){
   // console.log(settingsObject);
   for (const [key, value] of Object.entries(settingsObject)){
-    // console.log(`${key}: ${value}`);
+    console.log(`${key}: ${value}`);
     // console.log(typeof value == "boolean");
     // console.log(key.includes("_keybinding"));
     if (typeof value == "boolean"){
@@ -800,11 +800,11 @@ let ageBasedCodeList = {
 function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   const buttonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
   const buttonNum = buttonGroup.children.length;
-  let serviceCodeInput1 = `<input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode1" class="bcBillingButton_serviceCode1 billingButtonCustomText" type="text" value="" placeholder="Service code"/>`
+  let serviceCodeInput1HTML = `<input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode1" class="bcBillingButton_serviceCode1 billingButtonCustomText" type="text" value="" placeholder="Service code"/>`
   const emptyKeybinding = JSON.stringify(returnEmptyKeybinding());
   if(isAgeBasedCode){
     const ageBasedCodeOptions = getAgeBasedCodeOptions();
-    serviceCodeInput1 = `
+    serviceCodeInput1HTML = `
     <select id="bcBillingButton${groupNum}_${buttonNum}_serviceCode1" class="bcBillingButton_serviceCode1 billingButtonCustomText ageBasedServiceCode">
       ${ageBasedCodeOptions}
     </select>
@@ -815,10 +815,11 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
 
   const div = document.createElement("div");
   div.setAttribute("class", "subRow1 bcBillingButtonGroup");
-  div.innerHTML = `
+  // div.innerHTML 
+  const htmlString = `
   <input id="bcBillingButton${groupNum}_${buttonNum}_enabled" type="checkbox" class="bcBillingButton_enabled"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_name" class="bcBillingButton_name billingButtonCustomText" type="text" value="" placeholder="button name"/>
-  ${serviceCodeInput1}
+  ${serviceCodeInput1HTML}
   <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode1" class="bcBillingButton_dxCode1 billingButtonCustomText" type="text" value="" placeholder="Dx code 1"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode2" class="bcBillingButton_serviceCode2 billingButtonCustomText" type="text" value="" placeholder="Service code 2"/>
   <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode2" class="bcBillingButton_dxCode2 billingButtonCustomText" type="text" value="" placeholder="Dx code 2"/>
@@ -850,8 +851,125 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
     </div>
   </div>
   `;
+
+  let enabled = document.createElement('input');
+  enabled.id = `bcBillingButton${groupNum}_${buttonNum}_enabled`;
+  enabled.type = "checkbox";
+  enabled.className = "bcBillingButton_enabled";
+  div.appendChild(enabled);
+
+  let name = document.createElement('input');
+  name.id = `bcBillingButton${groupNum}_${buttonNum}_name`;
+  name.type = "text";
+  name.className = "bcBillingButton_name billingButtonCustomText";
+  name.placeholder = "button name";
+  div.appendChild(name);
+
+  let serviceCodeInput1;
+  if(isAgeBasedCode){
+    serviceCodeInput1 = document.createElement('select');
+    serviceCodeInput1.id = `bcBillingButton${groupNum}_${buttonNum}_serviceCode1`;
+    serviceCodeInput1.className = "bcBillingButton_serviceCode1 billingButtonCustomText ageBasedServiceCode";
+    serviceCodeInput1.placeholder = "Service code";
+    addAgeBasedCodeOptions(serviceCodeInput1);
+  }
+  else{
+    serviceCodeInput1 = document.createElement('input');
+    serviceCodeInput1.id = `bcBillingButton${groupNum}_${buttonNum}_serviceCode1`;
+    serviceCodeInput1.className = "bcBillingButton_serviceCode1 billingButtonCustomText";
+    serviceCodeInput1.type = "text";
+    serviceCodeInput1.placeholder = "Service code";
+  }
+  div.appendChild(serviceCodeInput1);
+
+  let serviceCodeInput2 = document.createElement('input');
+  serviceCodeInput2.id = `bcBillingButton${groupNum}_${buttonNum}_serviceCode2`;
+  serviceCodeInput2.className = "bcBillingButton_serviceCode2 billingButtonCustomText";
+  serviceCodeInput2.type = "text";
+  serviceCodeInput2.placeholder = "Service code";
+  div.appendChild(serviceCodeInput2);
+
+  let serviceCodeInput3 = document.createElement('input');
+  serviceCodeInput3.id = `bcBillingButton${groupNum}_${buttonNum}_serviceCode3`;
+  serviceCodeInput3.className = "bcBillingButton_serviceCode3 billingButtonCustomText";
+  serviceCodeInput3.type = "text";
+  serviceCodeInput3.placeholder = "Service code";
+  div.appendChild(serviceCodeInput3);
+
+  let dxCode1 = document.createElement('input');
+  dxCode1.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode1`;
+  dxCode1.type = "text";
+  dxCode1.className = "bcBillingButton_dxCode1 billingButtonCustomText";
+  dxCode1.placeholder = "Dx code 1";
+  div.appendChild(dxCode1);
+
+  let dxCode2 = document.createElement('input');
+  dxCode2.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode2`;
+  dxCode2.type = "text";
+  dxCode2.className = "bcBillingButton_dxCode2 billingButtonCustomText";
+  dxCode2.placeholder = "Dx code 2";
+  div.appendChild(dxCode2);
+
+  let dxCode3 = document.createElement('input');
+  dxCode3.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode3`;
+  dxCode3.type = "text";
+  dxCode3.className = "bcBillingButton_dxCode3 billingButtonCustomText";
+  dxCode3.placeholder = "Dx code 3";
+  div.appendChild(dxCode3);
+
+  let removeParent = document.createElement('button');
+  removeParent.className = "removeParent";
+  removeParent.innerText = "X";
+  div.appendChild(removeParent);
+
+  const divSubRow2 = document.createElement("div");
+  divSubRow2.setAttribute("class", "subRow2");
+
+    const divAddon = document.createElement("div");
+    divAddon.setAttribute("class", "buttonShortcut");
+
+      let addonLabel = document.createElement('label');
+      addonLabel.for = `bcBillingButton${groupNum}_${buttonNum}_addon`;
+      addonLabel.className = "bcBillingButton_addon_label";
+      addonLabel.innerText = "Billing code type: ";
+      divAddon.appendChild(addonLabel);
+
+      let addon = document.createElement('select');
+      addon.id = `bcBillingButton${groupNum}_${buttonNum}_addon`;
+      addon.className = "bcBillingButton_addon";
+      addon.innerHTML = `<option value="standardBilling">Standard billing code</option>
+                        <option value="addonBilling">Billing addon</option>`;
+      divAddon.appendChild(addon);
+
+    const divShortcut = document.createElement("div");
+    divShortcut.setAttribute("class", "shortcut buttonShortcut");
+
+      let shortcutEnable = document.createElement('input');
+      shortcutEnable.id = `bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled`;
+      shortcutEnable.className = "bcBillingButton_shortcuts_enabled";
+      shortcutEnable.type = "checkbox"
+      divShortcut.appendChild(shortcutEnable);
+
+      let shortcut = document.createElement('input');
+      shortcut.id = `bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding`;
+      shortcut.className = "customKey bcBillingButton_shortcuts_keybinding";
+      shortcut.dataset.shortcutGroup = "billingCodeInput_shortcut";
+      shortcut.dataset.keybinding = emptyKeybinding;
+      shortcut.type = "text";
+      shortcut.placeholder = "press a key";
+      divShortcut.appendChild(shortcut);
+
+      let warning = document.createElement('label');
+      warning.className = "warning hide";
+      warning.title = "Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed.";
+      warning.innerText = "WARNING: Shortcut conflicts with another shortcut on the same page.";
+      divShortcut.appendChild(warning);
   
-  
+  divSubRow2.appendChild(divAddon);
+  divSubRow2.appendChild(divShortcut);
+
+  div.appendChild(divSubRow2);
+
   buttonGroup.insertBefore(
     div,
     buttonGroup.children[buttonGroup.childElementCount - 1]
@@ -865,6 +983,15 @@ function getAgeBasedCodeOptions(){
     optionsList += oneOption;
   }
   return optionsList;
+}
+
+function addAgeBasedCodeOptions(serviceCodeInput1){
+  for (const [key, value] of Object.entries(ageBasedCodeList)){
+    let oneOption = document.createElement('option'); //`<option value="${key}">${value}</option>`
+    oneOption.value = key;
+    oneOption.innerText = value;
+    serviceCodeInput1.appendChild(oneOption);
+  }
 }
 
 

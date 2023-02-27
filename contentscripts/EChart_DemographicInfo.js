@@ -16,7 +16,7 @@ async function loadDemographicInfo(){
 	//Reserve line in header
 	var header = document.getElementById('encounterHeader');
 	var headerReserve = header.innerHTML;
-	header.innerHTML += '<br><br>'
+	header.innerHTML += '<br><br>';
 
 	// $("#encounterHeader").append('<br>');
 	// $("#encounterHeader").append($("<div id='headerDemographic1'>"));
