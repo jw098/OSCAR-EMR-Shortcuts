@@ -103,6 +103,7 @@ function addBillingOneButton(oneBCBillingButton, groupNum){
 		if (addon  ==  "addonBilling"){
 			clickAction = function(){
 				addServiceCode_addon(serviceCode1, dxCode1);
+				$("input[name=billing_1_fee_dx1]").focus();
 			}
 		}
 		else {
