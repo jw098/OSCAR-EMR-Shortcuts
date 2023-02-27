@@ -800,57 +800,10 @@ let ageBasedCodeList = {
 function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   const buttonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
   const buttonNum = buttonGroup.children.length;
-  let serviceCodeInput1HTML = `<input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode1" class="bcBillingButton_serviceCode1 billingButtonCustomText" type="text" value="" placeholder="Service code"/>`
   const emptyKeybinding = JSON.stringify(returnEmptyKeybinding());
-  if(isAgeBasedCode){
-    const ageBasedCodeOptions = getAgeBasedCodeOptions();
-    serviceCodeInput1HTML = `
-    <select id="bcBillingButton${groupNum}_${buttonNum}_serviceCode1" class="bcBillingButton_serviceCode1 billingButtonCustomText ageBasedServiceCode">
-      ${ageBasedCodeOptions}
-    </select>
-    `
-  }
-      // <input id="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon" type="checkbox"/>
-      // <label for="bcBillingButton${groupNum}_${buttonNum}_addon" class="enableButton">Billing Addon</label>
 
   const div = document.createElement("div");
   div.setAttribute("class", "subRow1 bcBillingButtonGroup");
-  // div.innerHTML 
-  const htmlString = `
-  <input id="bcBillingButton${groupNum}_${buttonNum}_enabled" type="checkbox" class="bcBillingButton_enabled"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_name" class="bcBillingButton_name billingButtonCustomText" type="text" value="" placeholder="button name"/>
-  ${serviceCodeInput1HTML}
-  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode1" class="bcBillingButton_dxCode1 billingButtonCustomText" type="text" value="" placeholder="Dx code 1"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode2" class="bcBillingButton_serviceCode2 billingButtonCustomText" type="text" value="" placeholder="Service code 2"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode2" class="bcBillingButton_dxCode2 billingButtonCustomText" type="text" value="" placeholder="Dx code 2"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_serviceCode3" class="bcBillingButton_serviceCode3 billingButtonCustomText" type="text" value="" placeholder="Service code 2"/>
-  <input id="bcBillingButton${groupNum}_${buttonNum}_dxCode3" class="bcBillingButton_dxCode3 billingButtonCustomText" type="text" value="" placeholder="Dx code 3"/>
-  <button class="removeParent">X</button>
-  <div class="subRow2">
-    <div class="buttonShortcut">
-      <label for="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon_label">Billing code type: </label>
-      <select id="bcBillingButton${groupNum}_${buttonNum}_addon" class="bcBillingButton_addon">
-        <option value="standardBilling">Standard billing code</option>
-        <option value="addonBilling">Billing addon</option>
-      </select>
-    </div>
-    <div class="shortcut buttonShortcut">
-      <input id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled" class="bcBillingButton_shortcuts_enabled" type="checkbox" />
-      <input
-        id="bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding" 
-        class="customKey bcBillingButton_shortcuts_keybinding customKey"
-        data-shortcutgroup="billingCodeInput_shortcut"
-        data-keybinding=${emptyKeybinding}
-        type="text"
-        value=""
-        placeholder="press a key"
-      />
-      <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
-        WARNING: Shortcut conflicts with another shortcut on the same page. 
-      </label>
-    </div>
-  </div>
-  `;
 
   let enabled = document.createElement('input');
   enabled.id = `bcBillingButton${groupNum}_${buttonNum}_enabled`;
