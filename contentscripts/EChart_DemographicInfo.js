@@ -14,9 +14,15 @@
 async function loadDemographicInfo(){
 
 	//Reserve line in header
-	var header = document.getElementById('encounterHeader');
-	var headerReserve = header.innerHTML;
-	header.innerHTML += '<br><br>';
+	const header = document.getElementById('encounterHeader');
+	// let headerReserve = header.innerHTML;
+	// header.innerHTML += '<br><br>';
+
+	let headerLineBreakReserve = document.createElement("div");
+	headerLineBreakReserve.id = "headerLineBreakReserve";
+	headerLineBreakReserve.appendChild(document.createElement("br"));
+	headerLineBreakReserve.appendChild(document.createElement("br"));
+	header.appendChild(headerLineBreakReserve);
 
 	// $("#encounterHeader").append('<br>');
 	// $("#encounterHeader").append($("<div id='headerDemographic1'>"));
@@ -49,7 +55,7 @@ async function loadDemographicInfo(){
 	const HCNWithSpaces = HCN_First4Digits + " " + HCN_Next3Digits + " " + HCN_Last3Digits;
 	const HCType = demoArrayVal[9];
 
-	header.innerHTML = headerReserve
+/* 	header.innerHTML = headerReserve
 	var headerHomePhone = '<b>Home: </b>' + telLink(demoArrayVal[2]);
 	var headerCellPhone = '<b>Cell: </b>' + telLink(demoArrayVal[0]);
 	var headerWorkPhone = '<b>Work: </b>' + telLink(demoArrayVal[8]);
@@ -74,7 +80,92 @@ async function loadDemographicInfo(){
 	//	'<button type="button" id="button12">Quick Links</button>' +
 	//	'&nbsp;' + 
 		'<button type="button" id="button13"">Care Connect</button>'
-	);
+	); */
+
+	document.getElementById("headerLineBreakReserve").remove();
+
+	let homePhone = document.createElement("span");
+		let boldHomePhone = document.createElement("strong");
+		boldHomePhone.innerText = "Home: ";
+	homePhone.appendChild(boldHomePhone);
+		telLink2(demoArrayVal[2], homePhone);
+	header.appendChild(homePhone);
+
+	let cellPhone = document.createElement("span");
+		let boldCellPhone = document.createElement("strong");
+		boldCellPhone.innerText = "Cell: ";
+	cellPhone.appendChild(boldCellPhone);
+		telLink2(demoArrayVal[0], cellPhone);
+	header.appendChild(cellPhone);
+
+	let workPhone = document.createElement("span");
+		let boldWorkPhone = document.createElement("strong");
+		boldWorkPhone.innerText = "Work: ";
+	workPhone.appendChild(boldWorkPhone);
+		telLink2(demoArrayVal[0], workPhone);
+	header.appendChild(workPhone);
+
+	let address = document.createElement("span");
+		let boldAddress = document.createElement("strong");
+		boldAddress.innerText = "Address: ";
+	address.appendChild(boldAddress);
+		let addressText = document.createTextNode(demoArrayVal[3] + ', ' + demoArrayVal[4] + ', ' + demoArrayVal[5] + "\u0020\u00A0\u0020");
+	address.appendChild(addressText);
+	header.appendChild(address);
+
+	let nbsp = document.createTextNode("\u0020\u00A0\u0020");
+	let hcNum = document.createElement("span");
+		let boldHCN = document.createElement("strong");
+		boldHCN.innerText = "PHN: ";
+	hcNum.appendChild(boldHCN);
+		let hcnCopyable = document.createElement("span");
+		hcnCopyable.className = "copyable";
+		hcnCopyable.innerText = HCNWithSpaces;
+		
+	hcNum.appendChild(hcnCopyable);
+	hcNum.appendChild(document.createTextNode("\u00A0\u00A0"));
+	header.appendChild(hcNum);
+
+	let hcTypeNode = document.createElement("span");
+	hcTypeNode.id = "hcType";
+	if (HCType == "OT" || HCType == "Other" || HCType == "US"){
+		hcTypeNode.style.backgroundColor = "#da4d4d";
+		 let boldHCType = document.createElement("strong");
+		 boldHCType.innerText = `HC Type: ${HCType}`;
+		hcTypeNode.appendChild(boldHCType);
+	}
+	else {
+		let boldHCType = document.createElement("strong");
+		boldHCType.innerText = `HC Type: `;
+		let hcTypeText = document.createTextNode(HCType);
+		hcTypeNode.appendChild(boldHCType);
+		hcTypeNode.appendChild(hcTypeText);
+	}
+	header.appendChild(hcTypeNode);
+
+	header.appendChild(document.createElement("br"));
+
+	let email = document.createElement("span");
+		let boldEmail = document.createElement("strong");
+		boldEmail.innerText = "eMail: ";
+	email.appendChild(boldEmail);
+		let emailCopyable = document.createElement("span");
+		emailCopyable.className = "copyable";
+		emailCopyable.innerText = demoArrayVal[1];
+	email.appendChild(emailCopyable);
+		let emailLink = document.createElement("a");
+		emailLink.href = "mailto:" + demoArrayVal[1] + '<' + demoArrayVal[1] + '>' + '?Subject=Confidential medical information';
+		emailLink.target = "_blank";
+		emailLink.innerText = "Send eMail";
+	email.appendChild(nbsp);
+	email.appendChild(emailLink);
+	email.appendChild(document.createTextNode("\u00A0\u00A0"));
+	header.appendChild(email);
+
+	let careConnect = document.createElement("button");
+	careConnect.id = "button13";
+	careConnect.innerText = "Care Connect";
+	header.appendChild(careConnect);
 
 
 	document.getElementById("button13").onclick = openCareConnect;
@@ -88,19 +179,25 @@ async function loadDemographicInfo(){
 	var Clipboard=document.createElement("input");
 	Clipboard.type="button";
 	Clipboard.value="Clipboard:";
-	Clipboard.setAttribute("style", "position:absolute; top:32px; left:580px; width:75px; font-size:12px; text-align:center; background-color:pink;");
-	document.body.appendChild(Clipboard); 
+	// Clipboard.setAttribute("style", "position:absolute; top:32px; left:580px; width:75px; font-size:12px; text-align:center; background-color:pink;");
+	Clipboard.setAttribute("style", "width:75px; font-size:12px; text-align:center; background-color:pink;");
+	Clipboard.style.marginLeft = "255px";
+	header.appendChild(Clipboard); 
 
 	$(".copyable").click(function() {
 		var textArea = document.createElement("textarea");
 		textArea.value = this.innerHTML;
+		$(this).css('background-color', '#c1a7f1');
+		textArea.setAttribute('style', 'position:absolute; top:32px; left:660px; width:150px; height:20px; font-size:13px; resize:none;');
+		// textArea.setAttribute('style', 'width:150px; height:17px; resize:none;');
+		textArea.setAttribute('title', 'Clipboard');
+		// textArea.style.marginLeft = "10px";
+		// header.appendChild(textArea);
 		document.body.appendChild(textArea);
 		textArea.select();
 		// document.execCommand('copy');
 		navigator.clipboard.writeText(textArea.value);
-		$(this).css('background-color', '#c1a7f1');
-		textArea.setAttribute('style', 'position:absolute; top:32px; left:660px; width:150px; height:20px; font-size:13px; resize:none;');
-		textArea.setAttribute('title', 'Clipboard');
+
 	//	textArea.remove();  // to hide text area
 	})
 
@@ -166,4 +263,28 @@ function telLink(number){
 	}
 
 }
+
+function telLink2(phoneNumber, phoneSpan){
+	console.log(phoneNumber.trim());
+	console.log(phoneSpan);
+	if(phoneNumber.trim() == ""){
+		const nbsp20 = document.createTextNode("\u00A0".repeat(20));
+		phoneSpan.appendChild(nbsp20);
+	}
+	else {
+		const phoneNumberNoDashes = phoneNumber.replace(/\D/g,'');
+		let telephoneLink = document.createElement("a");
+		telephoneLink.href = "tel:" + phoneNumberNoDashes;
+			let copyable = document.createElement("span");
+			copyable.className = "copyable";
+			copyable.innerText = phoneNumber;
+			telephoneLink.appendChild(copyable);
+		phoneSpan.appendChild(telephoneLink);
+		const nbsp = document.createTextNode("\u0020\u00A0\u0020");
+		phoneSpan.appendChild(nbsp);
+
+	}
+
+}
+
 
