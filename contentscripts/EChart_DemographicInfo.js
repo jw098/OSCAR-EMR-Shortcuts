@@ -44,6 +44,7 @@ async function loadDemographicInfo(){
 	const theURL = getMasterDemographicURL();
 	const demoArrayVal = await getDemographicInfo(demographicArray, theURL);
 
+	console.log(demoArrayVal);
 	const HCN = demoArrayVal[7].replace(/\s/g,'');
 	browser.storage.local.set({PHN: HCN});
 	// console.log(await browser.storage.local.get({PHN: HCN}))
@@ -102,7 +103,7 @@ async function loadDemographicInfo(){
 		let boldWorkPhone = document.createElement("strong");
 		boldWorkPhone.innerText = "Work: ";
 	workPhone.appendChild(boldWorkPhone);
-		telLink2(demoArrayVal[0], workPhone);
+		telLink2(demoArrayVal[8], workPhone);
 	header.appendChild(workPhone);
 
 	let address = document.createElement("span");
