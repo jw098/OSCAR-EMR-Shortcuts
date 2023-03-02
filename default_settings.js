@@ -1027,13 +1027,14 @@ function rebuildSettingsStructure(settingsStructure, storedSettings){
         const groupNum = key.split("bcBillingButtonGroup")[1];
         console.log(key);
         console.log(groupNum);
-        if (storedValue.length == 0){
-          console.log("restore default value")
-          rebuiltSettings[key] = value;
-        }
-        else {
-          rebuiltSettings[key] = rebuildSettingsStructure_Array(value[0], storedValue, groupNum);
-        }
+        // if (storedValue.length == 0){
+        //   console.log("restore default value")
+        //   rebuiltSettings[key] = value;
+        // }
+        // else {
+          
+        // }
+        rebuiltSettings[key] = rebuildSettingsStructure_Array(value[0], storedValue, groupNum);
       }
       else if (typeof value == "object" //&& typeof storedValue == "object" 
           && !Array.isArray(value) 
