@@ -111,12 +111,12 @@ const defaultSettings = {
 
         bcBillingButton2_1_addon: "addonBilling",
         bcBillingButton2_1_shortcuts:{
-          bcBillingButton2_1_shortcuts_enabled: false,
+          bcBillingButton2_1_shortcuts_enabled: true,
           bcBillingButton2_1_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
-            altKey: false,
-            key: ''
+            altKey: true,
+            key: 'a'
           },
         }
       },
@@ -132,12 +132,12 @@ const defaultSettings = {
 
         bcBillingButton2_2_addon: "standardBilling",
         bcBillingButton2_2_shortcuts:{
-          bcBillingButton2_2_shortcuts_enabled: false,
+          bcBillingButton2_2_shortcuts_enabled: true,
           bcBillingButton2_2_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
-            altKey: false,
-            key: ''
+            altKey: true,
+            key: 'z'
           },
         }
       },
@@ -153,12 +153,12 @@ const defaultSettings = {
 
         bcBillingButton2_3_addon: "standardBilling",
         bcBillingButton2_3_shortcuts:{
-          bcBillingButton2_3_shortcuts_enabled: false,
+          bcBillingButton2_3_shortcuts_enabled: true,
           bcBillingButton2_3_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
-            altKey: false,
-            key: ''
+            altKey: true,
+            key: 'x'
           },
         }
       },
@@ -199,12 +199,12 @@ const defaultSettings = {
 
         bcBillingButton3_1_addon: "standardBilling",
         bcBillingButton3_1_shortcuts:{
-          bcBillingButton3_1_shortcuts_enabled: true,
+          bcBillingButton3_1_shortcuts_enabled: false,
           bcBillingButton3_1_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
-            altKey: true,
-            key: 'q'
+            altKey: false,
+            key: ''
           },
         }
       },
@@ -220,12 +220,12 @@ const defaultSettings = {
 
         bcBillingButton3_2_addon: "standardBilling",
         bcBillingButton3_2_shortcuts:{
-          bcBillingButton3_2_shortcuts_enabled: true,
+          bcBillingButton3_2_shortcuts_enabled: false,
           bcBillingButton3_2_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
-            altKey: true,
-            key: 'w'
+            altKey: false,
+            key: ''
           },
         }
       },
@@ -382,12 +382,12 @@ const defaultSettings = {
       //   altKey: true,
       //   key: 'w'
       // },
-      billingCodeInput_shortcut_setFocusDxCode_enabled: true,
+      billingCodeInput_shortcut_setFocusDxCode_enabled: false,
       billingCodeInput_shortcut_setFocusDxCode_keybinding:{
         ctrlKey: false,
         shiftKey: false,
-        altKey: true,
-        key: 'a'
+        altKey: false,
+        key: ''
       }
 
     }

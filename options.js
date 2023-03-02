@@ -769,6 +769,8 @@ function restore_options() {
 
 
 
+
+
 /* 
 - with given settings object, set the values on the options page.
  */
@@ -1039,6 +1041,20 @@ function restore_defaults() {
       status.textContent = "";
     }, 1000);
   });
+}
+
+function restore_defaults2() {
+  restore_defaults();
+
+  setTimeout(() => {
+    console.log('restored2')
+    document.getElementById("eChartButton1_fid").value = "510";
+    document.getElementById("eChartButton2_fid").value = "359";
+    document.getElementById("eChartButton3_fid").value = "293";
+    document.getElementById("eChartButton4_fid").value = "291";
+    document.getElementById("inboxItem_styleChange").click();
+  }, 1000);
+  
 }
 
 function show_experimental() {
@@ -1314,6 +1330,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   document.getElementById("restore").addEventListener("click", restore_defaults);
+  document.getElementById("restore2").addEventListener("click", restore_defaults2);
   // document
   //   .getElementById("experimental")
   //   .addEventListener("click", show_experimental);
