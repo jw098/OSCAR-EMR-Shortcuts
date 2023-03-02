@@ -584,7 +584,7 @@ function setSettingsFromOptionsPage(settingsStructure){
       // console.log(value);
       // console.log(newSettings[key]);
     } else if (key.includes("bcBillingButtonGroup")){
-      newSettings[key] = setSettingsFromOptionsPage_bcBillingButtons(key);
+      newSettings[key] = setSettingsFromOptionsPage_bcBillingButtons(key, value);
     }
     else{
       console.assert(typeof value == "object");
@@ -598,15 +598,21 @@ function setSettingsFromOptionsPage(settingsStructure){
 }
 
 
-function setSettingsFromOptionsPage_bcBillingButtons(bcBillingButtonGroup){
-  const billingButtonGroup_Options = document.getElementById(bcBillingButtonGroup);
+function setSettingsFromOptionsPage_bcBillingButtons(bcBillingButtonGroup_ID, settingsStructureArray){
+  console.assert(settingsStructureArray.length > 0);
+  const billingButtonGroup_Options = document.getElementById(bcBillingButtonGroup_ID);
   const billingButtonList =  Array.from(billingButtonGroup_Options.querySelectorAll(".bcBillingButtonGroup"));
+  const settingsStructure = settingsStructureArray[0];
   // console.log(billingButtonList);
+  const groupNum = bcBillingButtonGroup_ID.split("bcBillingButtonGroup")[1].substring(0,1);
   let billingButtonGroup_Settings = [];
   for (let i = 0; i < billingButtonList.length; i++){
     const oneBillingButton_Option = billingButtonList[i];
     // console.log(oneBillingButton_Option);
-    const oneBillingButton_Settings = createBillingButtonSettingFromOption(oneBillingButton_Option);
+    const oneBillingButton_Settings = 
+      createBillingButtonSettingFromOption(oneBillingButton_Option);
+
+    createBillingButtonSettingFromOption2(groupNum, i+1, settingsStructure);
     billingButtonGroup_Settings.push(oneBillingButton_Settings);
   }
 
@@ -615,7 +621,11 @@ function setSettingsFromOptionsPage_bcBillingButtons(bcBillingButtonGroup){
 }
 
 function createBillingButtonSettingFromOption(oneBillingButton_Option) {
+
+
   const groupNumButtonNum = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").id.split("bcBillingButton")[1].split("_enabled")[0];
+
+
   // console.log(groupNumButtonNum)
   const buttonEnabled = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").checked;
   const buttonName = oneBillingButton_Option.querySelector(".bcBillingButton_name").value;
@@ -657,6 +667,44 @@ function createBillingButtonSettingFromOption(oneBillingButton_Option) {
   };
 
   return oneBillingButton_Settings;
+}
+
+function createBillingButtonSettingFromOption2(groupNum, buttonNum, settingsStructure) {
+
+  const oldGroupNumButtonNum = groupNum + "_1_";
+  const newGroupNumButtonNum = groupNum + "_" + buttonNum + "_";
+  console.log(oldGroupNumButtonNum);
+  console.log(newGroupNumButtonNum);
+  const renamedSettingsStructure = getRenamedSettingsStructure(settingsStructure, oldGroupNumButtonNum, newGroupNumButtonNum);
+
+  const newSettings = setSettingsFromOptionsPage(renamedSettingsStructure);
+  console.log(newSettings);
+
+}
+
+/* 
+- return new settingsStructure, with oldNum in each key replaced with newNum
+ */
+function getRenamedSettingsStructure(settingsStructure, oldNum, newNum){
+  let newSettings = {};
+  for (let [key, value] of Object.entries(settingsStructure)){
+    // console.log(`${key}: ${value}`);
+    const keySplit = key.split(oldNum);
+    console.assert(keySplit.length == 2);
+    key = keySplit[0] + newNum + keySplit[1];
+
+    if (typeof value == "boolean" || typeof value == "string" || typeof value == "number" || key.includes("_keybinding")){
+      // console.log(key);
+      newSettings[key] = value
+    } 
+    else{
+      console.assert(typeof value == "object");
+      newSettings[key] =  getRenamedSettingsStructure(value, oldNum, newNum);
+    }
+  }
+  // console.log(newSettings);
+
+  return newSettings;
 }
 
 /* 
@@ -727,7 +775,7 @@ function restore_options() {
 function restoreOptionsPageFromSettings(settingsObject){
   // console.log(settingsObject);
   for (const [key, value] of Object.entries(settingsObject)){
-    console.log(`${key}: ${value}`);
+    // console.log(`${key}: ${value}`);
     // console.log(typeof value == "boolean");
     // console.log(key.includes("_keybinding"));
     if (typeof value == "boolean"){
