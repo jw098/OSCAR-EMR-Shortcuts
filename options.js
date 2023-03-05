@@ -573,7 +573,7 @@ function setSettingsFromOptionsPage(settingsStructure){
       // console.log(key);
       newSettings[key] = document.getElementById(key).checked;
       // console.log(document.getElementById(key).checked);
-    } else if(typeof value == "string"){
+    } else if(typeof value == "string" || typeof value == "number"){
       // console.log(key);
       newSettings[key] = document.getElementById(key).value;
     } else if(key.includes("_keybinding")){
@@ -610,17 +610,17 @@ function setSettingsFromOptionsPage_bcBillingButtons(bcBillingButtonGroup_ID, se
     const oneBillingButton_Option = billingButtonList[i];
     // console.log(oneBillingButton_Option);
     const oneBillingButton_Settings = 
-      createBillingButtonSettingFromOption(oneBillingButton_Option);
+      createBillingButtonSettingFromOption(groupNum, i+1, settingsStructure);
+      // createBillingButtonSettingFromOption_old(oneBillingButton_Option);
 
-    createBillingButtonSettingFromOption2(groupNum, i+1, settingsStructure);
     billingButtonGroup_Settings.push(oneBillingButton_Settings);
   }
 
   // console.log(billingButtonGroup_Settings);
   return billingButtonGroup_Settings;
 }
-
-function createBillingButtonSettingFromOption(oneBillingButton_Option) {
+/* 
+function createBillingButtonSettingFromOption_old(oneBillingButton_Option) {
 
 
   const groupNumButtonNum = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").id.split("bcBillingButton")[1].split("_enabled")[0];
@@ -667,18 +667,23 @@ function createBillingButtonSettingFromOption(oneBillingButton_Option) {
   };
 
   return oneBillingButton_Settings;
-}
+} */
 
-function createBillingButtonSettingFromOption2(groupNum, buttonNum, settingsStructure) {
+/* 
+- given settingsStructure has keys with number groupNum_1. Convert it to groupNum_buttonNum.
+ */
+function createBillingButtonSettingFromOption(groupNum, buttonNum, settingsStructure) {
 
+  
   const oldGroupNumButtonNum = groupNum + "_1_";
   const newGroupNumButtonNum = groupNum + "_" + buttonNum + "_";
-  console.log(oldGroupNumButtonNum);
-  console.log(newGroupNumButtonNum);
+  // console.log(oldGroupNumButtonNum);
+  // console.log(newGroupNumButtonNum);
   const renamedSettingsStructure = getRenamedSettingsStructure(settingsStructure, oldGroupNumButtonNum, newGroupNumButtonNum);
 
   const newSettings = setSettingsFromOptionsPage(renamedSettingsStructure);
-  console.log(newSettings);
+
+  return newSettings;
 
 }
 
@@ -784,7 +789,7 @@ function restoreOptionsPageFromSettings(settingsObject){
       document.getElementById(key).checked = value;
       setGreyout(document.getElementById(key));
       // console.log(document.getElementById(key).checked);
-    } else if(typeof value == "string"){
+    } else if(typeof value == "string" || typeof value == "number"){
       document.getElementById(key).value = value;
     } else if(key.includes("_keybinding")){
       document.getElementById(key).dataset.keybinding = JSON.stringify(value);
@@ -873,7 +878,7 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
     serviceCodeInput1 = document.createElement('select');
     serviceCodeInput1.id = `bcBillingButton${groupNum}_${buttonNum}_serviceCode1`;
     serviceCodeInput1.className = "bcBillingButton_serviceCode1 billingButtonCustomText ageBasedServiceCode";
-    serviceCodeInput1.placeholder = "Service code";
+    serviceCodeInput1.placeholder = "Service code 1";
     addAgeBasedCodeOptions(serviceCodeInput1);
   }
   else{
@@ -881,7 +886,7 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
     serviceCodeInput1.id = `bcBillingButton${groupNum}_${buttonNum}_serviceCode1`;
     serviceCodeInput1.className = "bcBillingButton_serviceCode1 billingButtonCustomText";
     serviceCodeInput1.type = "text";
-    serviceCodeInput1.placeholder = "Service code";
+    serviceCodeInput1.placeholder = "Service code 1";
   }
   div.appendChild(serviceCodeInput1);
 
@@ -889,14 +894,14 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   serviceCodeInput2.id = `bcBillingButton${groupNum}_${buttonNum}_serviceCode2`;
   serviceCodeInput2.className = "bcBillingButton_serviceCode2 billingButtonCustomText";
   serviceCodeInput2.type = "text";
-  serviceCodeInput2.placeholder = "Service code";
+  serviceCodeInput2.placeholder = "Service code 2";
   div.appendChild(serviceCodeInput2);
 
   let serviceCodeInput3 = document.createElement('input');
   serviceCodeInput3.id = `bcBillingButton${groupNum}_${buttonNum}_serviceCode3`;
   serviceCodeInput3.className = "bcBillingButton_serviceCode3 billingButtonCustomText";
   serviceCodeInput3.type = "text";
-  serviceCodeInput3.placeholder = "Service code";
+  serviceCodeInput3.placeholder = "Service code 3";
   div.appendChild(serviceCodeInput3);
 
   let dxCode1 = document.createElement('input');
