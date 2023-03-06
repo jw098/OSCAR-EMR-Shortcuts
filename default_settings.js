@@ -1068,10 +1068,14 @@ function rebuildSettingsStructure_Array(settingsStructure, storedSettingsArray, 
   return rebuiltSettingsArray;
 }
 
+/* 
+- assumes the settingsStructure is the first element in its respective array.
+- therefore, its groupButtonNum will be X_1_, where X = [1, 2, 3]
+*/
 function settingsStructureWithGroupButtonNum(settingsStructure, groupNum, buttonNum){
   let rebuiltSettings = {};
   for (const [key, value] of Object.entries(settingsStructure)){
-    const keySplitWithoutGroupButtonNum = key.split(/\d\_\d\_/);
+    const keySplitWithoutGroupButtonNum = key.split(/\d*\_\d*\_/);
     const keyWithCorrectGroupButtonNum = 
       keySplitWithoutGroupButtonNum[0] + groupNum + "_" + buttonNum + "_" + keySplitWithoutGroupButtonNum[1];
     if (typeof value == "boolean" || typeof value == "string" || typeof value == "number"){

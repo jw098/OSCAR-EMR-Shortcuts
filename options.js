@@ -409,8 +409,6 @@ function checkShortcutGroupConflict(shortcutGroup){
 
     const anInputWarning = anInput.parentNode.querySelector(".warning");
 
-
-
     const restOfInputList = inputListInSameGroup.slice(i+1);
     for (let j = 0; j < restOfInputList.length; j++){
       const anInputFromRestOfList = restOfInputList[j];
@@ -604,7 +602,7 @@ function setSettingsFromOptionsPage_array(optionWithChildArray_type, optionWithC
 
   const optionWithChildArray_htmlNode = document.getElementById(optionWithChildArray_ID);
   const array_htmlNode =  
-    Array.from(optionWithChildArray_htmlNode.querySelectorAll(`.${optionWithChildArray_type}`));
+    optionWithChildArray_htmlNode.querySelectorAll(`.${optionWithChildArray_type}`);
   const settingsStructure = settingsStructureArray[0];
   // console.log(billingButtonList);
   
@@ -680,16 +678,19 @@ function reorderBillingButtonIDs(){
 
 function reorderBillingButtonIDs_buttonGroup(groupNum){
   const billingButtonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
-  const billingButtonList =  Array.from(billingButtonGroup.querySelectorAll(".bcBillingButtonGroup"));
+  const billingButtonArray = billingButtonGroup.querySelectorAll(".bcBillingButtonGroup");
   // console.log(billingButtonList);
-  for (let i = 0; i < billingButtonList.length; i++){
-    const oneBillingButton = billingButtonList[i];
+
+  for (let i = 0; i < billingButtonArray.length; i++){
+    const oneBillingButton = billingButtonArray[i];
     reorderBillingButtonIDs_button(oneBillingButton, groupNum, i+1);
+    // reorderBillingButtonIDs_button_old(oneBillingButton, groupNum, i+1);
+    
   }
 }
 
 
-function reorderBillingButtonIDs_button(oneBillingButton, groupNum, buttonNum){
+/* function reorderBillingButtonIDs_button_old(oneBillingButton, groupNum, buttonNum){
   oneBillingButton.querySelector(".bcBillingButton_enabled").id = 
   `bcBillingButton${groupNum}_${buttonNum}_enabled`;
   oneBillingButton.querySelector(".bcBillingButton_name").id = 
@@ -712,6 +713,21 @@ function reorderBillingButtonIDs_button(oneBillingButton, groupNum, buttonNum){
   `bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled`;
   oneBillingButton.querySelector(".bcBillingButton_shortcuts_keybinding").id = 
   `bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding`;
+} */
+
+
+function reorderBillingButtonIDs_button(oneBillingButton, groupNum, buttonNum){
+  const buttonElementsArray = oneBillingButton.querySelectorAll('[id^=bcBillingButton]');
+  console.log(buttonElementsArray);
+  for (let i = 0; i < buttonElementsArray.length; i++){
+    const oneButtonID = buttonElementsArray[i].id;
+    const idSplitWithoutGroupButtonNum = oneButtonID.split(/\d*\_\d*\_/);
+    const idWithCorrectGroupButtonNum = 
+      idSplitWithoutGroupButtonNum[0] + groupNum + "_" + buttonNum + "_" + idSplitWithoutGroupButtonNum[1];
+
+    buttonElementsArray[i].id = idWithCorrectGroupButtonNum;
+  }
+
 }
 
 /* 
@@ -1217,14 +1233,16 @@ async function checkOptionsUnsaved(theTarget){
   return isOptionsUnsaved;
 }
 
-
-function getTargetValueFromSettings(targetID, settingsStructure){
+/* 
+- from the given settingsStructure, return the target in settings whose key matches targetKey.
+ */
+function getTargetValueFromSettings(targetKey, settingsStructure){
   // console.log(targetID);
   // console.log(settingsStructure);
   let targetValue = "not found";
   for (const [key, value] of Object.entries(settingsStructure)){
     // console.log(key);
-    if(key == targetID){
+    if(key == targetKey){
       targetValue = value;
       break;
     } 
@@ -1232,7 +1250,7 @@ function getTargetValueFromSettings(targetID, settingsStructure){
       continue;
     }
     else if(typeof value == "object"){
-      targetValue = getTargetValueFromSettings(targetID, value);
+      targetValue = getTargetValueFromSettings(targetKey, value);
       if (targetValue != "not found"){
         break;
       }
