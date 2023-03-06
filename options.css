@@ -113,7 +113,11 @@ input[type="text"].bcBillingButton_serviceCode1,
 .bcBillingButton_dxCode2,
 .bcBillingButton_dxCode3
 {
-  width: 60px;
+  width: 80px;
+}
+
+.bcBillingButton_dxCode1{
+  margin-left: 135px;
 }
 
 .ageBasedServiceCode{

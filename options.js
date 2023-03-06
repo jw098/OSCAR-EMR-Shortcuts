@@ -347,6 +347,7 @@ PURPOSE
 function checkShortcutConflictFromCustomKeyFocusOut(e){
   const theTarget = e.target;
   const shortcutGroup = e.target.getAttribute('data-shortcutgroup');
+  // console.log(theTarget);
   checkShortcutGroupConflict(shortcutGroup);
 }
 
@@ -858,31 +859,35 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   serviceCodeInput3.placeholder = "Service code 3";
   div.appendChild(serviceCodeInput3);
 
-  let dxCode1 = document.createElement('input');
-  dxCode1.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode1`;
-  dxCode1.type = "text";
-  dxCode1.className = "bcBillingButton_dxCode1 billingButtonCustomText";
-  dxCode1.placeholder = "Dx code 1";
-  div.appendChild(dxCode1);
-
-  let dxCode2 = document.createElement('input');
-  dxCode2.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode2`;
-  dxCode2.type = "text";
-  dxCode2.className = "bcBillingButton_dxCode2 billingButtonCustomText";
-  dxCode2.placeholder = "Dx code 2";
-  div.appendChild(dxCode2);
-
-  let dxCode3 = document.createElement('input');
-  dxCode3.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode3`;
-  dxCode3.type = "text";
-  dxCode3.className = "bcBillingButton_dxCode3 billingButtonCustomText";
-  dxCode3.placeholder = "Dx code 3";
-  div.appendChild(dxCode3);
-
   let removeParent = document.createElement('button');
   removeParent.className = "removeParent";
   removeParent.innerText = "X";
   div.appendChild(removeParent);
+
+  const divDxCodes_SubRow2 = document.createElement("div");
+  divDxCodes_SubRow2.setAttribute("class", "subRow2");
+
+    let dxCode1 = document.createElement('input');
+    dxCode1.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode1`;
+    dxCode1.type = "text";
+    dxCode1.className = "bcBillingButton_dxCode1 billingButtonCustomText";
+    dxCode1.placeholder = "Dx code 1";
+    divDxCodes_SubRow2.appendChild(dxCode1);
+
+    let dxCode2 = document.createElement('input');
+    dxCode2.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode2`;
+    dxCode2.type = "text";
+    dxCode2.className = "bcBillingButton_dxCode2 billingButtonCustomText";
+    dxCode2.placeholder = "Dx code 2";
+    divDxCodes_SubRow2.appendChild(dxCode2);
+
+    let dxCode3 = document.createElement('input');
+    dxCode3.id = `bcBillingButton${groupNum}_${buttonNum}_dxCode3`;
+    dxCode3.type = "text";
+    dxCode3.className = "bcBillingButton_dxCode3 billingButtonCustomText";
+    dxCode3.placeholder = "Dx code 3";
+    divDxCodes_SubRow2.appendChild(dxCode3);
+  div.appendChild(divDxCodes_SubRow2);
 
   const divSubRow2 = document.createElement("div");
   divSubRow2.setAttribute("class", "subRow2");
@@ -915,7 +920,7 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
       let shortcut = document.createElement('input');
       shortcut.id = `bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding`;
       shortcut.className = "customKey bcBillingButton_shortcuts_keybinding";
-      shortcut.dataset.shortcutGroup = "billingCodeInput_shortcut";
+      shortcut.dataset.shortcutgroup = "billingCodeInput_shortcut";
       shortcut.dataset.keybinding = emptyKeybinding;
       shortcut.type = "text";
       shortcut.placeholder = "press a key";
