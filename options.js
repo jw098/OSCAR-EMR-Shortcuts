@@ -584,7 +584,7 @@ function setSettingsFromOptionsPage(settingsStructure){
       // console.log(value);
       // console.log(newSettings[key]);
     } else if (key.includes("bcBillingButtonGroup")){
-      newSettings[key] = setSettingsFromOptionsPage_bcBillingButtons(key, value);
+      newSettings[key] = setSettingsFromOptionsPage_array("bcBillingButtonGroup", key, value);
     }
     else{
       console.assert(typeof value == "object");
@@ -598,93 +598,47 @@ function setSettingsFromOptionsPage(settingsStructure){
 }
 
 
-function setSettingsFromOptionsPage_bcBillingButtons(bcBillingButtonGroup_ID, settingsStructureArray){
+function setSettingsFromOptionsPage_array(optionWithChildArray_type, optionWithChildArray_ID, settingsStructureArray){
   console.assert(settingsStructureArray.length > 0);
-  const billingButtonGroup_Options = document.getElementById(bcBillingButtonGroup_ID);
-  const billingButtonList =  Array.from(billingButtonGroup_Options.querySelectorAll(".bcBillingButtonGroup"));
+
+  const optionWithChildArray_htmlNode = document.getElementById(optionWithChildArray_ID);
+  const array_htmlNode =  
+    Array.from(optionWithChildArray_htmlNode.querySelectorAll(`.${optionWithChildArray_type}`));
   const settingsStructure = settingsStructureArray[0];
   // console.log(billingButtonList);
-  const groupNum = bcBillingButtonGroup_ID.split("bcBillingButtonGroup")[1].substring(0,1);
-  let billingButtonGroup_Settings = [];
-  for (let i = 0; i < billingButtonList.length; i++){
-    const oneBillingButton_Option = billingButtonList[i];
-    // console.log(oneBillingButton_Option);
-    const oneBillingButton_Settings = 
-      createBillingButtonSettingFromOption(groupNum, i+1, settingsStructure);
-      // createBillingButtonSettingFromOption_old(oneBillingButton_Option);
+  
+  let array_newSettings = [];
+  for (let i = 0; i < array_htmlNode.length; i++){
 
-    billingButtonGroup_Settings.push(oneBillingButton_Settings);
+    let oldUniqueNum;  // the uniqueNum of the first element in settingsStructure
+    let currentUniqueNum;  // the uniqueNum of current element
+    if(optionWithChildArray_type == "bcBillingButtonGroup"){
+      const groupNum = optionWithChildArray_ID.split("bcBillingButtonGroup")[1].substring(0,1);
+      oldUniqueNum = groupNum + "_1_";
+      currentUniqueNum = groupNum + "_" + (i+1) + "_";
+    }
+
+    const oneItemInArray_newSettings = 
+      createSettingFromOption_oneItemInArray(settingsStructure, oldUniqueNum, currentUniqueNum);
+
+    array_newSettings.push(oneItemInArray_newSettings);
   }
 
   // console.log(billingButtonGroup_Settings);
-  return billingButtonGroup_Settings;
+  return array_newSettings;
 }
-/* 
-function createBillingButtonSettingFromOption_old(oneBillingButton_Option) {
 
-
-  const groupNumButtonNum = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").id.split("bcBillingButton")[1].split("_enabled")[0];
-
-
-  // console.log(groupNumButtonNum)
-  const buttonEnabled = oneBillingButton_Option.querySelector(".bcBillingButton_enabled").checked;
-  const buttonName = oneBillingButton_Option.querySelector(".bcBillingButton_name").value;
-  // console.log(buttonName);
-
-  const serviceCode1 = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode1").value;
-  const serviceCode2 = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode2").value;
-  const serviceCode3 = oneBillingButton_Option.querySelector(".bcBillingButton_serviceCode3").value;
-  const dxCode1 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode1").value;
-  const dxCode2 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode2").value;
-  const dxCode3 = oneBillingButton_Option.querySelector(".bcBillingButton_dxCode3").value;
-  const addon = oneBillingButton_Option.querySelector(".bcBillingButton_addon").value;
-  const shortcutEnabled = oneBillingButton_Option.querySelector(".bcBillingButton_shortcuts_enabled").checked;
-
-  let keybinding = oneBillingButton_Option.querySelector(".bcBillingButton_shortcuts_keybinding").dataset.keybinding;
-  if(keybinding != ""){
-    keybinding = JSON.parse(keybinding);
-  }
-  
-
-  
-
-  const oneBillingButton_Settings = {
-    [`bcBillingButton${groupNumButtonNum}_enabled`]: buttonEnabled,
-    [`bcBillingButton${groupNumButtonNum}_name`]: buttonName,
-    [`bcBillingButton${groupNumButtonNum}_serviceCode1`]: serviceCode1,
-    [`bcBillingButton${groupNumButtonNum}_serviceCode2`]: serviceCode2,
-    [`bcBillingButton${groupNumButtonNum}_serviceCode3`]: serviceCode3,
-    [`bcBillingButton${groupNumButtonNum}_dxCode1`]: dxCode1,
-    [`bcBillingButton${groupNumButtonNum}_dxCode2`]: dxCode2,
-    [`bcBillingButton${groupNumButtonNum}_dxCode3`]: dxCode3,
-
-    [`bcBillingButton${groupNumButtonNum}_addon`]: addon,
-    [`bcBillingButton${groupNumButtonNum}_shortcuts`]:{
-      [`bcBillingButton${groupNumButtonNum}_shortcuts_enabled`]: shortcutEnabled,
-      [`bcBillingButton${groupNumButtonNum}_shortcuts_keybinding`]: keybinding
-    }
-
-  };
-
-  return oneBillingButton_Settings;
-} */
 
 /* 
-- given settingsStructure has keys with number groupNum_1. Convert it to groupNum_buttonNum.
- */
-function createBillingButtonSettingFromOption(groupNum, buttonNum, settingsStructure) {
-
-  
-  const oldGroupNumButtonNum = groupNum + "_1_";
-  const newGroupNumButtonNum = groupNum + "_" + buttonNum + "_";
-  // console.log(oldGroupNumButtonNum);
-  // console.log(newGroupNumButtonNum);
-  const renamedSettingsStructure = getRenamedSettingsStructure(settingsStructure, oldGroupNumButtonNum, newGroupNumButtonNum);
-
+- given settingsStructure has keys with uniqueNum == oldUniqueNum. Convert the keys to currentUniqueNum.
+- then generate new settings using setSettingsFromOptionsPage.
+*/
+function createSettingFromOption_oneItemInArray(settingsStructure, oldUniqueNum, currentUniqueNum) {
+  const renamedSettingsStructure = 
+    getRenamedSettingsStructure(settingsStructure, oldUniqueNum, currentUniqueNum);
   const newSettings = setSettingsFromOptionsPage(renamedSettingsStructure);
 
   return newSettings;
-
 }
 
 /* 
