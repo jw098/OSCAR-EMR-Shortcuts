@@ -690,32 +690,6 @@ function reorderBillingButtonIDs_buttonGroup(groupNum){
 }
 
 
-/* function reorderBillingButtonIDs_button_old(oneBillingButton, groupNum, buttonNum){
-  oneBillingButton.querySelector(".bcBillingButton_enabled").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_enabled`;
-  oneBillingButton.querySelector(".bcBillingButton_name").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_name`;
-  oneBillingButton.querySelector(".bcBillingButton_serviceCode1").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_serviceCode1`;
-  oneBillingButton.querySelector(".bcBillingButton_serviceCode2").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_serviceCode2`;
-  oneBillingButton.querySelector(".bcBillingButton_serviceCode3").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_serviceCode3`;
-  oneBillingButton.querySelector(".bcBillingButton_dxCode1").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_dxCode1`;
-  oneBillingButton.querySelector(".bcBillingButton_dxCode2").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_dxCode2`;
-  oneBillingButton.querySelector(".bcBillingButton_dxCode3").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_dxCode3`;
-  oneBillingButton.querySelector(".bcBillingButton_addon").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_addon`;
-  oneBillingButton.querySelector(".bcBillingButton_shortcuts_enabled").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_shortcuts_enabled`;
-  oneBillingButton.querySelector(".bcBillingButton_shortcuts_keybinding").id = 
-  `bcBillingButton${groupNum}_${buttonNum}_shortcuts_keybinding`;
-} */
-
-
 function reorderBillingButtonIDs_button(oneBillingButton, groupNum, buttonNum){
   const buttonElementsArray = oneBillingButton.querySelectorAll('[id^=bcBillingButton]');
   console.log(buttonElementsArray);
