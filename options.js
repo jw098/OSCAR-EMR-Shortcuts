@@ -360,7 +360,6 @@ function checkShortcutConflictFromRemoveParentClick(event){
   const removeParentButton = event.target;
   const parent = removeParentButton.parentNode;
   const shortcutGroup = parent.querySelector(".customKey").getAttribute('data-shortcutgroup');
-  // parent.remove();
   checkShortcutGroupConflict(shortcutGroup);
 }
 
@@ -369,13 +368,9 @@ function removeParentNode(event){
   const removeParentButton = event.target;
   const parent = removeParentButton.parentNode;
 
-
-  // for some reason, remove() sometimes causes the page to scroll down.
-  const initialScrollY = window.scrollY;
-  // console.log(window.scrollY);
   parent.remove();
-  window.scrollTo(0, initialScrollY);
 }
+
 
 // // const scrollY = window.scrollY;
 // window.onscroll = function(){
@@ -783,7 +778,6 @@ function reorderButtonIDs_SingleButton(oneBillingButton, nodeIDConstant, uniqueN
 }
 
 
-
 /* 
 - Restores options from chrome.storage. 
 - if a given setting wasn't present in storage, it takes the default value from defaultSettings. 
@@ -794,10 +788,15 @@ function restore_options() {
     restoreOptionsPageFromSettings(storage);
     findAllShortcutConflicts(storage);
     greyoutExtensionIcon();
+
+    /* 
+    - for some reason, remove() or insertBefore() sometimes causes the page to scroll down.
+    - my guess is that when restore options restores the array of buttons, it gets confused and saves the wrong Y scroll position . And so when the user manually clicks the Add New or Remove buttons, it scrolls to the wrong Y scroll position.
+    - somehow, manually setting the scroll position after restoring the options page fixes this.
+    */
+    window.scrollTo(0, window.scrollY);
   });
 }
-
-
 
 
 
@@ -975,13 +974,10 @@ function add_measurementButtonBlank() {
     subRow2.appendChild(shortcutDiv);
   div.appendChild(subRow2);
 
-  // for some reason, insertBefore() sometimes causes the page to scroll down.
-  const initialScrollY = window.scrollY;
   buttonList.insertBefore(
     div,
     buttonList.children[buttonList.childElementCount - 1]
   );
-  window.scrollTo(0, initialScrollY);
 
 }
 
@@ -1066,13 +1062,10 @@ function add_EFormButtonBlank() {
     subRow2.appendChild(shortcutDiv);
   div.appendChild(subRow2);
 
-  // for some reason, insertBefore() sometimes causes the page to scroll down.
-  const initialScrollY = window.scrollY;
   buttonList.insertBefore(
     div,
     buttonList.children[buttonList.childElementCount - 1]
   );
-  window.scrollTo(0, initialScrollY);
 
 }
 
@@ -1207,13 +1200,10 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
 
   div.appendChild(divSubRow2);
 
-  // for some reason, insertBefore() sometimes causes the page to scroll down.
-  const initialScrollY = window.scrollY;
   buttonGroup.insertBefore(
     div,
     buttonGroup.children[buttonGroup.childElementCount - 1]
   );
-  window.scrollTo(0, initialScrollY);
 
 }
 
