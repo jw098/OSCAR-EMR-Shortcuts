@@ -498,6 +498,77 @@ const defaultSettings = {
     updateSidebar: true,
     eformSearchBar_enabled: true,
 
+    eFormButtons_enabled: true,
+    eFormButtons:[
+      {
+        eFormButton1_enabled: true,
+        eFormButton1_name: "Lab Req",
+        eFormButton1_fid: "",
+
+        eFormButton1_button_enabled: true,
+        eFormButton1_shortcuts:{
+          eFormButton1_shortcuts_enabled: true,
+          eFormButton1_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: true,
+            altKey: true,
+            key: 'Q'
+          }
+        }
+      },
+      {
+        eFormButton2_enabled: true,
+        eFormButton2_name: "X-ray",
+        eFormButton2_fid: "",
+
+        eFormButton2_button_enabled: true,
+        eFormButton2_shortcuts:{
+          eFormButton2_shortcuts_enabled: true,
+          eFormButton2_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: true,
+            altKey: true,
+            key: 'W'
+          }
+        }
+        
+      },
+      {
+        eFormButton3_enabled: true,
+        eFormButton3_name: "U/S",
+        eFormButton3_fid: "",
+
+        eFormButton3_button_enabled: true,
+        eFormButton3_shortcuts:{
+          eFormButton3_shortcuts_enabled: true,
+          eFormButton3_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: true,
+            altKey: true,
+            key: 'Z'
+          }
+        }
+        
+      },
+      {
+        eFormButton4_enabled: true,
+        eFormButton4_name: "Doctors Note",
+        eFormButton4_fid: "",
+
+        eFormButton4_button_enabled: true,
+        eFormButton4_shortcuts:{
+          eFormButton4_shortcuts_enabled: true,
+          eFormButton4_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: true,
+            altKey: true,
+            key: 'X'
+          }
+        }
+        
+      },
+    ],
+
     eChartButtons:{
       eChartButtons_enabled: true,
 
@@ -1075,7 +1146,7 @@ function rebuildSettingsStructure_Array(settingsStructure, storedSettingsArray, 
 function settingsStructureWithGroupButtonNum(settingsStructure, groupNum, buttonNum){
   let rebuiltSettings = {};
   for (const [key, value] of Object.entries(settingsStructure)){
-    const keySplitWithoutGroupButtonNum = key.split(/\d*\_\d*\_/);
+    const keySplitWithoutGroupButtonNum = key.split(/\d+\_\d+\_/);
     const keyWithCorrectGroupButtonNum = 
       keySplitWithoutGroupButtonNum[0] + groupNum + "_" + buttonNum + "_" + keySplitWithoutGroupButtonNum[1];
     if (typeof value == "boolean" || typeof value == "string" || typeof value == "number"){

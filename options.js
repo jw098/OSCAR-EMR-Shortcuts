@@ -528,7 +528,7 @@ NOTE:
   - but the values will be from options, instead of from the default values of defaultSettings.
 */
 function save_options() {
-  reorderBillingButtonIDs();
+  reorderButtonIDs();
 
   chrome.storage.local.set(
     setSettingsFromOptionsPage(defaultSettings),
@@ -583,9 +583,10 @@ function setSettingsFromOptionsPage(settingsStructure){
       // console.log(value);
       // console.log(newSettings[key]);
     } else if (key.includes("bcBillingButtonGroup")){
-      newSettings[key] = setSettingsFromOptionsPage_array("bcBillingButtonGroup", key, value);
-    }
-    else{
+      newSettings[key] = getSettingsFromOptionsPage_array("bcBillingButtonGroup", key, value);
+    } else if (key.includes("eFormButtons")){
+      newSettings[key] = getSettingsFromOptionsPage_array("eFormButtons", key, value);
+    } else{
       console.assert(typeof value == "object");
       newSettings[key] =  setSettingsFromOptionsPage(value);
     }
@@ -597,33 +598,80 @@ function setSettingsFromOptionsPage(settingsStructure){
 }
 
 
-function setSettingsFromOptionsPage_array(optionWithChildArray_type, optionWithChildArray_ID, settingsStructureArray){
+function getSettingsFromOptionsPage_array(optionWithChildArray_type, optionWithChildArray_ID, settingsStructureArray){
   console.assert(settingsStructureArray.length > 0);
 
   const optionWithChildArray_htmlNode = document.getElementById(optionWithChildArray_ID);
   const array_htmlNode =  
     optionWithChildArray_htmlNode.querySelectorAll(`.${optionWithChildArray_type}`);
   const settingsStructure = settingsStructureArray[0];
-  // console.log(billingButtonList);
   
+  // console.log(array_htmlNode);
+  
+  // let array_newSettings = [];
+  // for (let i = 0; i < array_htmlNode.length; i++){
+
+  //   let oldUniqueNum;  // the uniqueNum of the first element in settingsStructure
+  //   let currentUniqueNum;  // the uniqueNum of current element
+  //   if(optionWithChildArray_type == "bcBillingButtonGroup"){
+  //     const groupNum = optionWithChildArray_ID.split("bcBillingButtonGroup")[1].substring(0,1);
+  //     oldUniqueNum = groupNum + "_1_";
+  //     currentUniqueNum = groupNum + "_" + (i+1) + "_";
+  //   }
+
+  //   const oneItemInArray_newSettings = 
+  //     createSettingFromOption_oneItemInArray(settingsStructure, oldUniqueNum, currentUniqueNum);
+
+  //   array_newSettings.push(oneItemInArray_newSettings);
+  // }
+
+  
+  let array_newSettings;
+  if(optionWithChildArray_type == "bcBillingButtonGroup"){
+    array_newSettings = 
+      getSettingsFromOptionsPage_BCBillingButtonArray(optionWithChildArray_ID, array_htmlNode, settingsStructure);
+  } else if (optionWithChildArray_type == "eFormButtons"){
+    array_newSettings = 
+      getSettingsFromOptionsPage_eChartButtonArray(array_htmlNode, settingsStructure)
+  }
+
+  // console.log(billingButtonGroup_Settings);
+  return array_newSettings;
+}
+
+function getSettingsFromOptionsPage_BCBillingButtonArray(optionWithChildArray_ID, array_htmlNode, settingsStructure){
+
   let array_newSettings = [];
+  let oldUniqueNum;  // the uniqueNum of the first element in settingsStructure
+  let currentUniqueNum;  // the uniqueNum of current element
+
+  const groupNum = optionWithChildArray_ID.split("bcBillingButtonGroup")[1].substring(0,1);
+  oldUniqueNum = groupNum + "_1_";
+  
   for (let i = 0; i < array_htmlNode.length; i++){
-
-    let oldUniqueNum;  // the uniqueNum of the first element in settingsStructure
-    let currentUniqueNum;  // the uniqueNum of current element
-    if(optionWithChildArray_type == "bcBillingButtonGroup"){
-      const groupNum = optionWithChildArray_ID.split("bcBillingButtonGroup")[1].substring(0,1);
-      oldUniqueNum = groupNum + "_1_";
-      currentUniqueNum = groupNum + "_" + (i+1) + "_";
-    }
-
+    currentUniqueNum = groupNum + "_" + (i+1) + "_";
     const oneItemInArray_newSettings = 
       createSettingFromOption_oneItemInArray(settingsStructure, oldUniqueNum, currentUniqueNum);
 
     array_newSettings.push(oneItemInArray_newSettings);
   }
+  return array_newSettings;
+}
 
-  // console.log(billingButtonGroup_Settings);
+function getSettingsFromOptionsPage_eChartButtonArray(array_htmlNode, settingsStructure){
+
+  let array_newSettings = [];
+  let oldUniqueNum;  // the uniqueNum of the first element in settingsStructure
+  let currentUniqueNum;  // the uniqueNum of current element
+  oldUniqueNum = "1_";
+
+  for (let i = 0; i < array_htmlNode.length; i++){
+    currentUniqueNum = (i+1) + "_";
+    const oneItemInArray_newSettings = 
+      createSettingFromOption_oneItemInArray(settingsStructure, oldUniqueNum, currentUniqueNum);
+
+    array_newSettings.push(oneItemInArray_newSettings);
+  }
   return array_newSettings;
 }
 
@@ -670,32 +718,64 @@ PURPOSE
 - renames the IDs of html elements for billing buttons.
 - this is because adding deleting buttons can disrupt the order. This function renames all billing button IDs to be in order.
  */
-function reorderBillingButtonIDs(){
-  reorderBillingButtonIDs_buttonGroup(1);
-  reorderBillingButtonIDs_buttonGroup(2);
-  reorderBillingButtonIDs_buttonGroup(3);
+function reorderButtonIDs(){
+  reorderButtonIDs_BCBillingButtonGroup(1);
+  reorderButtonIDs_BCBillingButtonGroup(2);
+  reorderButtonIDs_BCBillingButtonGroup(3);
+
+  reorderButtonIDs_eChartButtonGroup("eFormButtons");
 }
 
-function reorderBillingButtonIDs_buttonGroup(groupNum){
+
+function reorderButtonIDs_eChartButtonGroup(buttonType){
+  const optionWithChildArray_htmlNode = document.getElementById(buttonType);
+  const array_htmlNode = optionWithChildArray_htmlNode.querySelectorAll(`.${buttonType}`);
+  // console.log(billingButtonList);
+
+  let nodeIDConstant;  // the constant portion of the ID names.
+  if(buttonType == "eFormButtons"){
+    nodeIDConstant = "eFormButton";
+  }
+
+  for (let i = 0; i < array_htmlNode.length; i++){
+    const oneBillingButton = array_htmlNode[i];
+    reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, i+1);
+    // reorderBillingButtonIDs_button_old(oneBillingButton, groupNum, i+1);
+  }
+}
+
+function reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, buttonNum){
+  const buttonElementsArray = oneBillingButton.querySelectorAll(`[id^=${nodeIDConstant}]`);
+  for (let i = 0; i < buttonElementsArray.length; i++){
+    const oneButtonID = buttonElementsArray[i].id;
+    const idSplitWithoutButtonNum = oneButtonID.split(/\d+\_/);
+    console.assert(idSplitWithoutButtonNum.length == 2);
+    const idWithCorrectButtonNum = 
+      idSplitWithoutButtonNum[0] + buttonNum + "_" + idSplitWithoutButtonNum[1];
+
+    buttonElementsArray[i].id = idWithCorrectButtonNum;
+  }
+
+}
+
+function reorderButtonIDs_BCBillingButtonGroup(groupNum){
   const billingButtonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
   const billingButtonArray = billingButtonGroup.querySelectorAll(".bcBillingButtonGroup");
   // console.log(billingButtonList);
 
   for (let i = 0; i < billingButtonArray.length; i++){
     const oneBillingButton = billingButtonArray[i];
-    reorderBillingButtonIDs_button(oneBillingButton, groupNum, i+1);
+    reorderButtonIDs_BCBillingSingleButton(oneBillingButton, groupNum, i+1);
     // reorderBillingButtonIDs_button_old(oneBillingButton, groupNum, i+1);
     
   }
 }
 
-
-function reorderBillingButtonIDs_button(oneBillingButton, groupNum, buttonNum){
+function reorderButtonIDs_BCBillingSingleButton(oneBillingButton, groupNum, buttonNum){
   const buttonElementsArray = oneBillingButton.querySelectorAll('[id^=bcBillingButton]');
-  console.log(buttonElementsArray);
   for (let i = 0; i < buttonElementsArray.length; i++){
     const oneButtonID = buttonElementsArray[i].id;
-    const idSplitWithoutGroupButtonNum = oneButtonID.split(/\d*\_\d*\_/);
+    const idSplitWithoutGroupButtonNum = oneButtonID.split(/\d+\_\d+\_/);
     const idWithCorrectGroupButtonNum = 
       idSplitWithoutGroupButtonNum[0] + groupNum + "_" + buttonNum + "_" + idSplitWithoutGroupButtonNum[1];
 
@@ -747,6 +827,9 @@ function restoreOptionsPageFromSettings(settingsObject){
       const groupNum = key.split("bcBillingButtonGroup")[1];
       // console.log(groupNum);
       restoreOptionsPageFromSettings_bcBillingButtons(value, groupNum);
+    } else if (key.includes("eFormButtons")){
+
+      restoreOptionsPageFromSettings_eChartButtons(value, "eFormButtons");
     }
     else{
       // console.log('hihi');
@@ -755,6 +838,27 @@ function restoreOptionsPageFromSettings(settingsObject){
     }
   }
 }
+
+/* 
+- buttonType: either eForm or Measurement buttons
+ */
+function restoreOptionsPageFromSettings_eChartButtons(eChartButtonList_settings, buttonType){
+  
+  for (let i = 0; i < eChartButtonList_settings.length; i++){
+    const oneEChartButton_settings = eChartButtonList_settings[i];
+    // console.log(settingsBCBillingButton);
+    add_EChartButtonFromSetting(oneEChartButton_settings, buttonType, i+1);
+  }
+}
+
+function add_EChartButtonFromSetting(settingsBCBillingButton, buttonType, buttonNum) {
+  // const bcBillingButton_serviceCode1 = 
+  //   settingsBCBillingButton[`bcBillingButton${buttonNum}_serviceCode1`];
+
+  add_EFormButtonBlank();
+  restoreOptionsPageFromSettings(settingsBCBillingButton);
+}
+
 
 function restoreOptionsPageFromSettings_bcBillingButtons(settingsBCBillingButtonList, groupNum){
   // console.log(settingsBCBillingButtonList);
@@ -794,6 +898,95 @@ let ageBasedCodeList = {
   teleVisit: "Tele Visit",
   teleCounselling: "Tele Counselling",
   teleConsultation: "Tele Consultation"
+}
+
+function add_EFormButtonBlank() {
+  const buttonList = document.getElementById("eFormButtons");
+  const buttonNum = buttonList.children.length;
+  const emptyKeybinding = JSON.stringify(returnEmptyKeybinding());
+
+  const div = document.createElement("div");
+  div.setAttribute("class", "shortcut subRow1 eChartButtonSingle eFormButtons");
+
+  let enabled = document.createElement('input');
+  enabled.id = `eFormButton${buttonNum}_enabled`;
+  enabled.type = "checkbox";
+  div.appendChild(enabled);
+
+  let name = document.createElement('input');
+  name.id = `eFormButton${buttonNum}_name`;
+  name.type = "text";
+  name.className = "customButtonTitle";
+  name.placeholder = "button name";
+  div.appendChild(name);
+
+  let fidLabel = document.createElement('label');
+  fidLabel.for = `eFormButton${buttonNum}_fid`;
+  fidLabel.innerText = "eForm ID:";
+  div.appendChild(fidLabel);
+
+  let fid = document.createElement('input');
+  fid.id = `eFormButton${buttonNum}_fid`;
+  fid.type = "text";
+  fid.className = "customFID";
+  fid.placeholder = "eForm FID or URL";
+  div.appendChild(fid);
+
+  let removeParent = document.createElement('button');
+  removeParent.className = "removeParent";
+  removeParent.innerText = "X";
+  div.appendChild(removeParent);
+
+  let subRow2 = document.createElement('div');
+  subRow2.className = "subRow2";
+    let buttonEnableDiv = document.createElement('div');
+    buttonEnableDiv.className = "buttonShortcut";
+      let buttonEnabled = document.createElement('input');
+      buttonEnabled.id = `eFormButton${buttonNum}_button_enabled`;
+      buttonEnabled.type = "checkbox";
+      buttonEnableDiv.appendChild(buttonEnabled);
+
+      let buttonEnabledLabel = document.createElement('label');
+      buttonEnabledLabel.className = "enableButton";
+      buttonEnabledLabel.for = `eFormButton${buttonNum}_button_enabled`;
+      buttonEnabledLabel.innerText = "Enable button";
+      buttonEnableDiv.appendChild(buttonEnabledLabel);
+    subRow2.appendChild(buttonEnableDiv);
+
+    let shortcutDiv = document.createElement('div');
+    shortcutDiv.className = "shortcut buttonShortcut";
+      let shortcutEnabled = document.createElement('input');
+      shortcutEnabled.id = `eFormButton${buttonNum}_shortcuts_enabled`;
+      shortcutEnabled.type = "checkbox";
+      shortcutDiv.appendChild(shortcutEnabled);
+
+      let shortcutLabel = document.createElement('label');
+      shortcutLabel.innerText = "Shortcut keys:";
+      shortcutDiv.appendChild(shortcutLabel);
+
+      let shortcutKeybinding = document.createElement('input');
+      shortcutKeybinding.id = `eFormButton${buttonNum}_shortcuts_keybinding`;
+      shortcutKeybinding.className = "customKey";
+      shortcutKeybinding.dataset.shortcutgroup = "eChart_shortcut";
+      shortcutKeybinding.dataset.keybinding = emptyKeybinding;
+      shortcutKeybinding.type = "text";
+      shortcutKeybinding.placeholder = "shortcut keys";
+      shortcutDiv.appendChild(shortcutKeybinding);
+
+      let warning = document.createElement('label');
+      warning.className = "warning hide";
+      warning.title = "Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed.";
+      warning.innerText = "WARNING: Shortcut conflicts with another shortcut on the same page.";
+      shortcutDiv.appendChild(warning);
+    subRow2.appendChild(shortcutDiv);
+  div.appendChild(subRow2);
+
+
+  buttonList.insertBefore(
+    div,
+    buttonList.children[buttonList.childElementCount - 1]
+  );
+
 }
 
 
@@ -1136,7 +1329,9 @@ function targetEventCaller(theTarget, className, funcName) {
 async function highlightSaveButtonOnRemove(event){
   const removeButton = event.target;
   const theParent = removeButton.parentNode;
-  const childCheckbox = theParent.querySelector("[class*='_enabled']");
+  const childCheckbox = theParent.querySelector("[id*='_enabled']");
+  console.log(theParent);
+  console.log(childCheckbox);
   const childCheckboxID = childCheckbox.id;
 
   const settingsObject = await browser.storage.local.get(defaultSettings);
@@ -1275,14 +1470,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     add_BCBillingButtonBlank(3, true);
   });
 
-  document.getElementById("add1").addEventListener("click", function() {
+  document.getElementById("addBilling1").addEventListener("click", function() {
     add_BCBillingButtonBlank(1, false);
   });
-  document.getElementById("add2").addEventListener("click", function() {
+  document.getElementById("addBilling2").addEventListener("click", function() {
     add_BCBillingButtonBlank(2, false);
   });
-  document.getElementById("add3").addEventListener("click", function() {
+  document.getElementById("addBilling3").addEventListener("click", function() {
     add_BCBillingButtonBlank(3, false);
+  });
+
+  document.getElementById("addEForm").addEventListener("click", function() {
+    add_EFormButtonBlank();
   });
 
   document.getElementById("restore").addEventListener("click", restore_defaults);
