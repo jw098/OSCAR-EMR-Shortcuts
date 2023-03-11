@@ -608,23 +608,6 @@ function getSettingsFromOptionsPage_array(optionWithChildArray_type, optionWithC
   
   // console.log(array_htmlNode);
   
-  // let array_newSettings = [];
-  // for (let i = 0; i < array_htmlNode.length; i++){
-
-  //   let oldUniqueNum;  // the uniqueNum of the first element in settingsStructure
-  //   let currentUniqueNum;  // the uniqueNum of current element
-  //   if(optionWithChildArray_type == "bcBillingButtonGroup"){
-  //     const groupNum = optionWithChildArray_ID.split("bcBillingButtonGroup")[1].substring(0,1);
-  //     oldUniqueNum = groupNum + "_1_";
-  //     currentUniqueNum = groupNum + "_" + (i+1) + "_";
-  //   }
-
-  //   const oneItemInArray_newSettings = 
-  //     createSettingFromOption_oneItemInArray(settingsStructure, oldUniqueNum, currentUniqueNum);
-
-  //   array_newSettings.push(oneItemInArray_newSettings);
-  // }
-
   
   let array_newSettings;
   if(optionWithChildArray_type == "bcBillingButtonGroup"){
@@ -635,7 +618,6 @@ function getSettingsFromOptionsPage_array(optionWithChildArray_type, optionWithC
       getSettingsFromOptionsPage_eChartButtonArray(array_htmlNode, settingsStructure)
   }
 
-  // console.log(billingButtonGroup_Settings);
   return array_newSettings;
 }
 
@@ -740,7 +722,6 @@ function reorderButtonIDs_eChartButtonGroup(buttonType){
   
   for (let i = 0; i < array_htmlNode.length; i++){
     const oneBillingButton = array_htmlNode[i];
-    // reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, i+1);
     const currentUniqueNum = (i+1) + "_";
     
     reorderButtonIDs_SingleButton(oneBillingButton, nodeIDConstant, currentUniqueNum, oldUniqueNumRegex);
@@ -756,7 +737,6 @@ function reorderButtonIDs_BCBillingButtonGroup(groupNum){
   for (let i = 0; i < billingButtonArray.length; i++){
     const oneBillingButton = billingButtonArray[i];
     const currentUniqueNum = groupNum + "_" + (i+1) + "_";
-    // reorderButtonIDs_BCBillingSingleButton(oneBillingButton, groupNum, i+1);
     reorderButtonIDs_SingleButton(oneBillingButton, "bcBillingButton", currentUniqueNum, oldUniqueNumRegex);
     
   }
@@ -776,36 +756,6 @@ function reorderButtonIDs_SingleButton(oneBillingButton, nodeIDConstant, uniqueN
   }
 
 }
-
-
-/* function reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, buttonNum){
-  const buttonElementsArray = oneBillingButton.querySelectorAll(`[id^=${nodeIDConstant}]`);
-  for (let i = 0; i < buttonElementsArray.length; i++){
-    const oneButtonID = buttonElementsArray[i].id;
-    const idSplitWithoutButtonNum = oneButtonID.split(/\d+\_/);
-    console.assert(idSplitWithoutButtonNum.length == 2);
-    const idWithCorrectButtonNum = 
-      idSplitWithoutButtonNum[0] + buttonNum + "_" + idSplitWithoutButtonNum[1];
-
-    buttonElementsArray[i].id = idWithCorrectButtonNum;
-  }
-
-}
-
-function reorderButtonIDs_BCBillingSingleButton(oneBillingButton, groupNum, buttonNum){
-  const buttonElementsArray = oneBillingButton.querySelectorAll('[id^=bcBillingButton]');
-  for (let i = 0; i < buttonElementsArray.length; i++){
-    const oneButtonID = buttonElementsArray[i].id;
-    const idSplitWithoutGroupButtonNum = oneButtonID.split(/\d+\_\d+\_/);
-    const idWithCorrectGroupButtonNum = 
-      idSplitWithoutGroupButtonNum[0] + groupNum + "_" + buttonNum + "_" + idSplitWithoutGroupButtonNum[1];
-
-    buttonElementsArray[i].id = idWithCorrectGroupButtonNum;
-  }
-
-}
- */
-
 
 
 
