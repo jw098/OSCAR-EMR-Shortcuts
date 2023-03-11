@@ -733,18 +733,52 @@ function reorderButtonIDs_eChartButtonGroup(buttonType){
   // console.log(billingButtonList);
 
   let nodeIDConstant;  // the constant portion of the ID names.
+  const oldUniqueNumRegex = /\d+\_/;
   if(buttonType == "eFormButtons"){
     nodeIDConstant = "eFormButton";
   }
-
+  
   for (let i = 0; i < array_htmlNode.length; i++){
     const oneBillingButton = array_htmlNode[i];
-    reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, i+1);
-    // reorderBillingButtonIDs_button_old(oneBillingButton, groupNum, i+1);
+    // reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, i+1);
+    const currentUniqueNum = (i+1) + "_";
+    
+    reorderButtonIDs_SingleButton(oneBillingButton, nodeIDConstant, currentUniqueNum, oldUniqueNumRegex);
   }
 }
 
-function reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, buttonNum){
+function reorderButtonIDs_BCBillingButtonGroup(groupNum){
+  const billingButtonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
+  const billingButtonArray = billingButtonGroup.querySelectorAll(".bcBillingButtonGroup");
+  // console.log(billingButtonList);
+
+  const oldUniqueNumRegex = /\d+\_\d+\_/;
+  for (let i = 0; i < billingButtonArray.length; i++){
+    const oneBillingButton = billingButtonArray[i];
+    const currentUniqueNum = groupNum + "_" + (i+1) + "_";
+    // reorderButtonIDs_BCBillingSingleButton(oneBillingButton, groupNum, i+1);
+    reorderButtonIDs_SingleButton(oneBillingButton, "bcBillingButton", currentUniqueNum, oldUniqueNumRegex);
+    
+  }
+}
+
+
+function reorderButtonIDs_SingleButton(oneBillingButton, nodeIDConstant, uniqueNum, oldUniqueNumRegex){
+  const buttonElementsArray = oneBillingButton.querySelectorAll(`[id^=${nodeIDConstant}]`);
+  for (let i = 0; i < buttonElementsArray.length; i++){
+    const oneButtonID = buttonElementsArray[i].id;
+    const idSplitWithoutButtonNum = oneButtonID.split(oldUniqueNumRegex);
+    console.assert(idSplitWithoutButtonNum.length == 2);
+    const idWithCorrectButtonNum = 
+      idSplitWithoutButtonNum[0] + uniqueNum + idSplitWithoutButtonNum[1];
+
+    buttonElementsArray[i].id = idWithCorrectButtonNum;
+  }
+
+}
+
+
+/* function reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, buttonNum){
   const buttonElementsArray = oneBillingButton.querySelectorAll(`[id^=${nodeIDConstant}]`);
   for (let i = 0; i < buttonElementsArray.length; i++){
     const oneButtonID = buttonElementsArray[i].id;
@@ -756,19 +790,6 @@ function reorderButtonIDs_eChartSingleButton(oneBillingButton, nodeIDConstant, b
     buttonElementsArray[i].id = idWithCorrectButtonNum;
   }
 
-}
-
-function reorderButtonIDs_BCBillingButtonGroup(groupNum){
-  const billingButtonGroup = document.getElementById("bcBillingButtonGroup" + groupNum);
-  const billingButtonArray = billingButtonGroup.querySelectorAll(".bcBillingButtonGroup");
-  // console.log(billingButtonList);
-
-  for (let i = 0; i < billingButtonArray.length; i++){
-    const oneBillingButton = billingButtonArray[i];
-    reorderButtonIDs_BCBillingSingleButton(oneBillingButton, groupNum, i+1);
-    // reorderBillingButtonIDs_button_old(oneBillingButton, groupNum, i+1);
-    
-  }
 }
 
 function reorderButtonIDs_BCBillingSingleButton(oneBillingButton, groupNum, buttonNum){
@@ -783,6 +804,10 @@ function reorderButtonIDs_BCBillingSingleButton(oneBillingButton, groupNum, butt
   }
 
 }
+ */
+
+
+
 
 /* 
 - Restores options from chrome.storage. 
