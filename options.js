@@ -357,12 +357,32 @@ PURPOSE
 - check conflicts in keyboard shortcuts on the same page/shortcut group, given removeParent.
  */
 function checkShortcutConflictFromRemoveParentClick(event){
-  const removeParent = event.target;
-  const parent = removeParent.parentNode;
+  const removeParentButton = event.target;
+  const parent = removeParentButton.parentNode;
   const shortcutGroup = parent.querySelector(".customKey").getAttribute('data-shortcutgroup');
-  parent.remove();
+  // parent.remove();
   checkShortcutGroupConflict(shortcutGroup);
 }
+
+
+function removeParentNode(event){
+  const removeParentButton = event.target;
+  const parent = removeParentButton.parentNode;
+
+
+  // for some reason, remove() sometimes causes the page to scroll down.
+  const initialScrollY = window.scrollY;
+  // console.log(window.scrollY);
+  parent.remove();
+  window.scrollTo(0, initialScrollY);
+}
+
+// // const scrollY = window.scrollY;
+// window.onscroll = function(){
+//   // window.scrollTo(0, scrollY);
+//   // window.onscroll = null;
+//   console.log(window.scrollY);
+// };
 
 
 /* 
@@ -569,7 +589,7 @@ function setSettingsFromOptionsPage(settingsStructure){
   for (const [key, value] of Object.entries(settingsStructure)){
     // console.log(`${key}: ${value}`);
     if (typeof value == "boolean"){
-      // console.log(key);
+      console.log(key);
       newSettings[key] = document.getElementById(key).checked;
       // console.log(document.getElementById(key).checked);
     } else if(typeof value == "string" || typeof value == "number"){
@@ -584,9 +604,11 @@ function setSettingsFromOptionsPage(settingsStructure){
       // console.log(newSettings[key]);
     } else if (key.includes("bcBillingButtonGroup")){
       newSettings[key] = getSettingsFromOptionsPage_array("bcBillingButtonGroup", key, value);
+    } else if (key.includes("measurementButtons")){
+      newSettings[key] = getSettingsFromOptionsPage_array("measurementButtons", key, value);
     } else if (key.includes("eFormButtons")){
       newSettings[key] = getSettingsFromOptionsPage_array("eFormButtons", key, value);
-    } else{
+    } else {
       console.assert(typeof value == "object");
       newSettings[key] =  setSettingsFromOptionsPage(value);
     }
@@ -613,7 +635,7 @@ function getSettingsFromOptionsPage_array(optionWithChildArray_type, optionWithC
   if(optionWithChildArray_type == "bcBillingButtonGroup"){
     array_newSettings = 
       getSettingsFromOptionsPage_BCBillingButtonArray(optionWithChildArray_ID, array_htmlNode, settingsStructure);
-  } else if (optionWithChildArray_type == "eFormButtons"){
+  } else if (optionWithChildArray_type == "eFormButtons" || optionWithChildArray_type == "measurementButtons"){
     array_newSettings = 
       getSettingsFromOptionsPage_eChartButtonArray(array_htmlNode, settingsStructure)
   }
@@ -706,6 +728,7 @@ function reorderButtonIDs(){
   reorderButtonIDs_BCBillingButtonGroup(3);
 
   reorderButtonIDs_eChartButtonGroup("eFormButtons");
+  reorderButtonIDs_eChartButtonGroup("measurementButtons");
 }
 
 
@@ -718,6 +741,8 @@ function reorderButtonIDs_eChartButtonGroup(buttonType){
   const oldUniqueNumRegex = /\d+\_/;
   if(buttonType == "eFormButtons"){
     nodeIDConstant = "eFormButton";
+  } else if(buttonType == "measurementButtons"){
+    nodeIDConstant = "measurementButton";
   }
   
   for (let i = 0; i < array_htmlNode.length; i++){
@@ -802,11 +827,13 @@ function restoreOptionsPageFromSettings(settingsObject){
       const groupNum = key.split("bcBillingButtonGroup")[1];
       // console.log(groupNum);
       restoreOptionsPageFromSettings_bcBillingButtons(value, groupNum);
+    } else if (key.includes("measurementButtons")){
+
+      restoreOptionsPageFromSettings_eChartButtons(value, "measurementButtons");
     } else if (key.includes("eFormButtons")){
 
       restoreOptionsPageFromSettings_eChartButtons(value, "eFormButtons");
-    }
-    else{
+    } else{
       // console.log('hihi');
       console.assert(typeof value == "object");
       restoreOptionsPageFromSettings(value);
@@ -827,10 +854,13 @@ function restoreOptionsPageFromSettings_eChartButtons(eChartButtonList_settings,
 }
 
 function add_EChartButtonFromSetting(settingsBCBillingButton, buttonType, buttonNum) {
-  // const bcBillingButton_serviceCode1 = 
-  //   settingsBCBillingButton[`bcBillingButton${buttonNum}_serviceCode1`];
 
-  add_EFormButtonBlank();
+  if(buttonType == "measurementButtons"){
+    add_measurementButtonBlank();
+  } else if (buttonType == "eFormButtons"){
+    add_EFormButtonBlank();
+  }
+
   restoreOptionsPageFromSettings(settingsBCBillingButton);
 }
 
@@ -873,6 +903,86 @@ let ageBasedCodeList = {
   teleVisit: "Tele Visit",
   teleCounselling: "Tele Counselling",
   teleConsultation: "Tele Consultation"
+}
+
+function add_measurementButtonBlank() {
+  const buttonList = document.getElementById("measurementButtons");
+  const buttonNum = buttonList.children.length;
+  const emptyKeybinding = JSON.stringify(returnEmptyKeybinding());
+
+  const div = document.createElement("div");
+  div.setAttribute("class", "shortcut subRow1 eChartButtonSingle measurementButtons");
+
+  let enabled = document.createElement('input');
+  enabled.id = `measurementButton${buttonNum}_enabled`;
+  enabled.type = "checkbox";
+  div.appendChild(enabled);
+
+  let name = document.createElement('input');
+  name.id = `measurementButton${buttonNum}_name`;
+  name.type = "text";
+  name.className = "customButtonTitle";
+  name.placeholder = "button name";
+  div.appendChild(name);
+
+
+  let removeParent = document.createElement('button');
+  removeParent.className = "removeParent";
+  removeParent.innerText = "X";
+  div.appendChild(removeParent);
+
+  let subRow2 = document.createElement('div');
+  subRow2.className = "subRow2";
+    let buttonEnableDiv = document.createElement('div');
+    buttonEnableDiv.className = "buttonShortcut";
+      let buttonEnabled = document.createElement('input');
+      buttonEnabled.id = `measurementButton${buttonNum}_button_enabled`;
+      buttonEnabled.type = "checkbox";
+      buttonEnableDiv.appendChild(buttonEnabled);
+
+      let buttonEnabledLabel = document.createElement('label');
+      buttonEnabledLabel.className = "enableButton";
+      buttonEnabledLabel.for = `measurementButton${buttonNum}_button_enabled`;
+      buttonEnabledLabel.innerText = "Enable button";
+      buttonEnableDiv.appendChild(buttonEnabledLabel);
+    subRow2.appendChild(buttonEnableDiv);
+
+    let shortcutDiv = document.createElement('div');
+    shortcutDiv.className = "shortcut buttonShortcut";
+      let shortcutEnabled = document.createElement('input');
+      shortcutEnabled.id = `measurementButton${buttonNum}_shortcuts_enabled`;
+      shortcutEnabled.type = "checkbox";
+      shortcutDiv.appendChild(shortcutEnabled);
+
+      let shortcutLabel = document.createElement('label');
+      shortcutLabel.innerText = "Shortcut keys:";
+      shortcutDiv.appendChild(shortcutLabel);
+
+      let shortcutKeybinding = document.createElement('input');
+      shortcutKeybinding.id = `measurementButton${buttonNum}_shortcuts_keybinding`;
+      shortcutKeybinding.className = "customKey";
+      shortcutKeybinding.dataset.shortcutgroup = "eChart_shortcut";
+      shortcutKeybinding.dataset.keybinding = emptyKeybinding;
+      shortcutKeybinding.type = "text";
+      shortcutKeybinding.placeholder = "shortcut keys";
+      shortcutDiv.appendChild(shortcutKeybinding);
+
+      let warning = document.createElement('label');
+      warning.className = "warning hide";
+      warning.title = "Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed.";
+      warning.innerText = "WARNING: Shortcut conflicts with another shortcut on the same page.";
+      shortcutDiv.appendChild(warning);
+    subRow2.appendChild(shortcutDiv);
+  div.appendChild(subRow2);
+
+  // for some reason, insertBefore() sometimes causes the page to scroll down.
+  const initialScrollY = window.scrollY;
+  buttonList.insertBefore(
+    div,
+    buttonList.children[buttonList.childElementCount - 1]
+  );
+  window.scrollTo(0, initialScrollY);
+
 }
 
 function add_EFormButtonBlank() {
@@ -956,11 +1066,13 @@ function add_EFormButtonBlank() {
     subRow2.appendChild(shortcutDiv);
   div.appendChild(subRow2);
 
-
+  // for some reason, insertBefore() sometimes causes the page to scroll down.
+  const initialScrollY = window.scrollY;
   buttonList.insertBefore(
     div,
     buttonList.children[buttonList.childElementCount - 1]
   );
+  window.scrollTo(0, initialScrollY);
 
 }
 
@@ -1095,10 +1207,14 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
 
   div.appendChild(divSubRow2);
 
+  // for some reason, insertBefore() sometimes causes the page to scroll down.
+  const initialScrollY = window.scrollY;
   buttonGroup.insertBefore(
     div,
     buttonGroup.children[buttonGroup.childElementCount - 1]
   );
+  window.scrollTo(0, initialScrollY);
+
 }
 
 function getAgeBasedCodeOptions(){
@@ -1455,9 +1571,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     add_BCBillingButtonBlank(3, false);
   });
 
+  document.getElementById("addMeasurement").addEventListener("click", function() {
+    add_measurementButtonBlank();
+  });
+
   document.getElementById("addEForm").addEventListener("click", function() {
     add_EFormButtonBlank();
   });
+
+  
 
   document.getElementById("restore").addEventListener("click", restore_defaults);
   document.getElementById("restore2").addEventListener("click", restore_defaults2);
@@ -1516,8 +1638,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
+
+
   document.addEventListener("click", (event) => {
-    eventCaller(event, "removeParent", checkShortcutConflictFromRemoveParentClick);
+    eventCaller(event, "removeParent", function (){
+      removeParentNode(event);
+      checkShortcutConflictFromRemoveParentClick(event);
+    });
     eventCaller(event, "removeParent", highlightSaveButtonOnRemove);
   });
 

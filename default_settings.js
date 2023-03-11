@@ -498,6 +498,26 @@ const defaultSettings = {
     updateSidebar: true,
     eformSearchBar_enabled: true,
 
+    measurementButtons_enabled: true,
+    measurementButtons:[
+      {
+        measurementButton1_enabled: true,
+        measurementButton1_name: "Vitals",
+
+        measurementButton1_button_enabled: true,
+        measurementButton1_shortcuts:{
+          measurementButton1_shortcuts_enabled: true,
+          measurementButton1_shortcuts_keybinding: {
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: true,
+            key: 'x'
+          },
+        }
+      },
+
+    ],
+
     eFormButtons_enabled: true,
     eFormButtons:[
       {
