@@ -503,6 +503,7 @@ const defaultSettings = {
       {
         measurementButton1_enabled: true,
         measurementButton1_name: "Vitals",
+        measurementButton1_groupName: "Vitals",
 
         measurementButton1_button_enabled: true,
         measurementButton1_shortcuts:{
@@ -590,7 +591,7 @@ const defaultSettings = {
     ],
 
     eChartButtons:{
-      eChartButtons_enabled: true,
+      eChartButtons_enabled: false,
 
       eChartButtonVitals:{
         eChartButtonVitals_enabled: true,
@@ -601,8 +602,8 @@ const defaultSettings = {
           eChartButtonVitals_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
-            altKey: true,
-            key: 'x'
+            altKey: false,
+            key: ''
           },
         }
       },
@@ -616,9 +617,9 @@ const defaultSettings = {
           eChartButton1_shortcuts_enabled: true,
           eChartButton1_shortcuts_keybinding: {
             ctrlKey: false,
-            shiftKey: true,
-            altKey: true,
-            key: 'Q'
+            shiftKey: false,
+            altKey: false,
+            key: ''
           }
         }
       },
@@ -632,9 +633,9 @@ const defaultSettings = {
           eChartButton2_shortcuts_enabled: true,
           eChartButton2_shortcuts_keybinding: {
             ctrlKey: false,
-            shiftKey: true,
-            altKey: true,
-            key: 'W'
+            shiftKey: false,
+            altKey: false,
+            key: ''
           }
         }
         
@@ -649,9 +650,9 @@ const defaultSettings = {
           eChartButton3_shortcuts_enabled: true,
           eChartButton3_shortcuts_keybinding: {
             ctrlKey: false,
-            shiftKey: true,
-            altKey: true,
-            key: 'Z'
+            shiftKey: false,
+            altKey: false,
+            key: ''
           }
         }
         
@@ -666,9 +667,9 @@ const defaultSettings = {
           eChartButton4_shortcuts_enabled: true,
           eChartButton4_shortcuts_keybinding: {
             ctrlKey: false,
-            shiftKey: true,
-            altKey: true,
-            key: 'X'
+            shiftKey: false,
+            altKey: false,
+            key: ''
           }
         }
         

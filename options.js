@@ -924,6 +924,18 @@ function add_measurementButtonBlank() {
   name.placeholder = "button name";
   div.appendChild(name);
 
+  let groupNameLabel = document.createElement('label');
+  groupNameLabel.for = `measurementButton${buttonNum}_groupName`;
+  groupNameLabel.innerText = "Measurement group name:";
+  div.appendChild(groupNameLabel);
+
+  let groupName = document.createElement('input');
+  groupName.id = `measurementButton${buttonNum}_groupName`;
+  groupName.type = "text";
+  groupName.className = "customButtonTitle";
+  groupName.placeholder = "measurement name";
+  div.appendChild(groupName);
+
 
   let removeParent = document.createElement('button');
   removeParent.className = "removeParent";
@@ -1276,10 +1288,10 @@ function restore_defaults2() {
 
   setTimeout(() => {
     console.log('restored2')
-    document.getElementById("eChartButton1_fid").value = "510";
-    document.getElementById("eChartButton2_fid").value = "359";
-    document.getElementById("eChartButton3_fid").value = "293";
-    document.getElementById("eChartButton4_fid").value = "291";
+    document.getElementById("eFormButton1_fid").value = "510";
+    document.getElementById("eFormButton2_fid").value = "359";
+    document.getElementById("eFormButton3_fid").value = "293";
+    document.getElementById("eFormButton4_fid").value = "291";
     document.getElementById("inboxItem_styleChange").click();
   }, 1000);
   

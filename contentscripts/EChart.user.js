@@ -24,6 +24,13 @@ async function checkEnabled_EChart(){
 		const updateSidebar = eChart.updateSidebar;
 		const eformSearchBar_enabled = eChart.eformSearchBar_enabled;
 		const eChartButtons = eChart.eChartButtons;
+
+		const measurementButtons_enabled = eChart.measurementButtons_enabled;
+		const measurementButtons = eChart.measurementButtons;
+
+		const eFormButtons_enabled = eChart.eFormButtons_enabled;
+		const eFormButtons = eChart.eFormButtons;
+
 		const eChart_mainWindow_keyboardShortcuts = eChart.eChart_mainWindow_keyboardShortcuts;
 		const eChart_CPPWindow_keyboardShortcuts = eChart.eChart_CPPWindow_keyboardShortcuts;
 
@@ -47,6 +54,16 @@ async function checkEnabled_EChart(){
 		if(eChartButtons.eChartButtons_enabled){
 			loadAllEFormButtons(eChartButtons);
 			keydownEventListener_openEForm(eChartButtons);
+		}
+
+		// measurement Buttons
+		if(measurementButtons_enabled){
+			loadMeasurementButtonShortcuts(measurementButtons);
+		}
+
+		// eForm Buttons
+		if(eFormButtons_enabled){
+			loadEFormButtonShortcuts(eFormButtons);
 		}
 
 
