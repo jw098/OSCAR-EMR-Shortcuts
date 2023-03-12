@@ -187,18 +187,11 @@ async function loadDemographicInfo(demographicInfoSettings){
 
 
 	if (clipboard_enabled){
-		// var Clipboard=document.createElement("input");
-		// Clipboard.type="button";
-		// Clipboard.value="Clipboard:";
-		// // Clipboard.setAttribute("style", "position:absolute; top:32px; left:580px; width:75px; font-size:12px; text-align:center; background-color:pink;");
-		// Clipboard.setAttribute("style", "width:75px; font-size:12px; text-align:center; background-color:pink;");
-		// Clipboard.style.marginLeft = "255px";
-		// header.appendChild(Clipboard); 
-	
 		$(".copyable").click(function() {
 			let copyableTextArea = document.getElementById("copyableTextArea");
+
 			/* 
-			- create the textarea element, if not already created.
+			- create the copyableTextarea element, if not already created.
 			 */
 			if(copyableTextArea == null){
 				copyableTextArea = document.createElement("textarea");
@@ -217,11 +210,6 @@ async function loadDemographicInfo(demographicInfoSettings){
 			copyableTextArea.value = this.innerHTML;
 			$(this).css('background-color', '#c1a7f1');
 
-			/* 
-			- fixed position copyable text area
-			 */
-			// copyableTextArea.setAttribute('style', 'position:absolute; top:32px; left:660px; width:150px; height:20px; font-size:13px; resize:none;');
-			// document.body.appendChild(copyableTextArea);
 			
 			/* 
 			- copy to clipboard
