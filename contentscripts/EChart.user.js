@@ -24,6 +24,7 @@ async function checkEnabled_EChart(){
 		
 		const updateSidebar = eChart.updateSidebar;
 		const eformSearchBar_enabled = eChart.eformSearchBar_enabled;
+		const demographicInfo = eChart.demographicInfo;
 
 		const measurementButtons_enabled = eChart.measurementButtons_enabled;
 		const measurementButtons = eChart.measurementButtons;
@@ -36,7 +37,9 @@ async function checkEnabled_EChart(){
 
 
 		// Demographic info
-		loadDemographicInfo();
+		if(demographicInfo.demographicInfo_enabled){
+			loadDemographicInfo(demographicInfo);
+		}
 
 		// UpdateSidebar
 		if(updateSidebar){

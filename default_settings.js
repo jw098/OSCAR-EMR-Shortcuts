@@ -497,6 +497,16 @@ const defaultSettings = {
     updateSidebar: true,
     eformSearchBar_enabled: true,
 
+    demographicInfo:{
+      demographicInfo_enabled: true,
+      demographicInfo_phone_enabled: true,
+      demographicInfo_address_enabled: true,
+      demographicInfo_HIN_enabled: true,
+      demographicInfo_email_enabled: true,
+      demographicInfo_CareConnect_enabled: true,
+      demographicInfo_clipboard_enabled: true,
+    },
+
     measurementButtons_enabled: true,
     measurementButtons:[
       {
