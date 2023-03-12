@@ -88,7 +88,7 @@ PURPOSE
 function prevVersionURL(){
 	const allVersionElementOnly = document.querySelectorAll('a[href^="labDisplay.jsp?segmentID"]');
 	if (allVersionElementOnly.length == 0){
-		throw new Error("Previous version URL not Found");
+		throw new Error("Previous version URL not found.");
 	}
 	const allVersions = allVersionElementOnly[0].parentNode.childNodes;
 
@@ -102,7 +102,7 @@ function prevVersionURL(){
 	}
 
 	if (prevNode == ""){
-		throw new Error("Previous version URL not Found");
+		throw new Error("Previous version URL not found.");
 	} else {
 		// console.log(prevNode.href);
 		return prevNode.href;
@@ -130,7 +130,8 @@ async function addPrevVersionLabel() {
 		// assumes that the extra <i> element has already been appended previously.
 		$("[id^='labelspan'] > i:nth-child(3)").html("Prev:" + "&nbsp;" + "&nbsp;" + oldLabelResultOnly);
 	} catch(err){
-		console.error(err);
+		// console.error(err);
+		console.log("Previous version URL not found.");
 	}
 	
 }
@@ -146,7 +147,12 @@ function addNewLabsLabel(){
 	const currentLabResultsList = currentLabsResultsText.split("/");
 
 	const nbsp = String.fromCharCode(160);
-	const oldLabelResultText = $("[id^='labelspan'] > i:nth-child(3)")[0].innerText.split("Prev:" + nbsp + nbsp)[1].split(labelLabsTrailingMarker)[0];
+	const oldLabelInnerText = $("[id^='labelspan'] > i:nth-child(3)")[0].innerText;
+	if (oldLabelInnerText == ""){
+		console.log("No previous version found.");
+		return;
+	}
+	const oldLabelResultText = oldLabelInnerText.split("Prev:" + nbsp + nbsp)[1].split(labelLabsTrailingMarker)[0];
 	const oldLabelResultsList = oldLabelResultText.split("/");
 
 	console.log(currentLabsResultsText);
@@ -425,16 +431,61 @@ function renameLabResult(strOldName){
 Note: for diagnostic results, search for the string 'Procedure'.
 */
 function getStringDiagnosticResult(strOldName){
-	const xpath = "//span[contains(text(), 'Procedure:')]";
-	const matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-	const diagResultText = matchingElement.innerText.split('Procedure: ')[1];
-	console.log(diagResultText);
-	if (diagResultText === undefined){
-		return strOldName
-	}else {
+
+
+	let diagResultText;
+	diagResultText = getStringDiagnosticResult_fromProcedure();
+	if (diagResultText != null){
 		return diagResultText;
 	}
 
+	diagResultText = getStringDiagnosticResult_fromExamType();
+	if (diagResultText != null){
+		return diagResultText;
+	}
+
+	return strOldName;
+}
+
+function getStringDiagnosticResult_fromProcedure(){
+	try {
+		let diagResultText = null;
+		const xpath = "//span[contains(text(), 'Procedure:')]";
+		const matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	
+		diagResultText = matchingElement.innerText.split('Procedure: ')[1];
+		console.log(diagResultText);
+		if (diagResultText === undefined){
+			diagResultText = null;
+		}
+		return diagResultText;
+	} catch(err){
+		// console.error(err);
+		console.log("'Procedure:' not found.");
+		return null;
+	}
+}
+
+function getStringDiagnosticResult_fromExamType(){
+	try {
+		let diagResultText = null;
+		const xpath_examType = "//span[contains(text(), 'EXAM TYPE:')]";
+		const matchingElement_examType = document.evaluate(xpath_examType, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	
+		const matchingElement_examType_grandparent = matchingElement_examType.parentElement.parentElement;
+		const matchingElement_examTypeResult_grandparent = matchingElement_examType_grandparent.nextSibling;
+		const matchingElement_examTypeResult = 	matchingElement_examTypeResult_grandparent.children[1].children[0];
+
+		diagResultText = matchingElement_examTypeResult.innerText;
+	
+		console.log(diagResultText);
+		return diagResultText;
+	} catch(err) {
+		// console.error(err);
+		console.log("'EXAM TYPE:' not found.");
+		return null;
+	}
+	
 }
 
 function renameLabResultInexactMatch(strOldName){
