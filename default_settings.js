@@ -771,6 +771,20 @@ const defaultSettings = {
 
   },
 
+  demographicEdit:{
+    demographicEdit_keyboardShortcuts: {
+      demographicEdit_shortcuts_enabled: true,
+
+      demographicEdit_shortcut_updateRecord_enabled: true,
+      demographicEdit_shortcut_updateRecord_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
+      },
+    }
+  },
+
 
   eFormIndividual:{
     eFormIndividual_keyboardShortcuts: {

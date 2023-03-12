@@ -738,6 +738,30 @@
       </section>
 
       <section>
+        <h3>Edit Master Record</h3>
+        <div class="row shortcutGroup">
+          <input id="demographicEdit_shortcuts_enabled" type="checkbox" />
+          <label for="demographicEdit_shortcuts_enabled">Enable keyboard shortcuts</label>
+
+          <div class="shortcut subRow1">
+            <input id="demographicEdit_shortcut_updateRecord_enabled" type="checkbox" />
+            <label class="shortcutLabel">Update Record</label>
+            <input
+              id="demographicEdit_shortcut_updateRecord_keybinding"
+              class="customKey"
+              data-shortcutgroup="demographicEdit_shortcut"
+              type="text"
+              value=""
+              placeholder="press a key"
+            />
+            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+              WARNING: Shortcut conflicts with another shortcut on the same page. 
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <h3>eForm: Individual</h3>
         <div class="row shortcutGroup">
           <input id="eFormIndividual_shortcuts_enabled" type="checkbox" />
@@ -745,7 +769,7 @@
 
           <div class="shortcut subRow1">
             <input id="eFormIndividual_shortcut_submit_enabled" type="checkbox" />
-            <label class="shortcutLabel">Submit eForm</label>
+            <label for="eFormIndividual_shortcut_submit_enabled" class="shortcutLabel">Submit eForm</label>
             <input
               id="eFormIndividual_shortcut_submit_keybinding"
               class="customKey"

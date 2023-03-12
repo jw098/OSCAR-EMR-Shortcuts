@@ -269,6 +269,15 @@
         },
         {
             "matches": [
+                "*://*/*/demographic/demographiccontrol.jsp*"
+            ],
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/DemographicEdit.js"
+            ]
+        },
+        {
+            "matches": [
                 "*://*/*/casemgmt/forward.jsp?action=view&demographic*",
                 "*://*/*/tickler/ticklerAdd.jsp*",
                 "*://*/*/tickler/ForwardDemographicTickler*"
