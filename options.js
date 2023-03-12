@@ -327,16 +327,31 @@ function inputBlur(e) {
 
 /* 
 PURPOSE
-- if e.target.value is a URL, it will convert it to an FID.
+- if e.target.value contains "fid=", it will return the FID.
 */
 function convertURLToFID(e){
   const theTargetValue = e.target.value;
   if(theTargetValue.includes("fid=")){
-    theFID = theTargetValue.split("fid=")[1].split("&")[0];
+    const theFID = theTargetValue.split("fid=")[1].split("&")[0];
     console.log(theFID);
     e.target.value = theFID;
   }
 }
+
+
+/* 
+PURPOSE
+- if e.target.value contains "groupName=", it will return the groupName.
+*/
+function convertURLToMeasureGroupName(e){
+  const theTargetValue = e.target.value;
+  if(theTargetValue.includes("groupName=")){
+    const theGroupName = theTargetValue.split("groupName=")[1];
+    console.log(theGroupName);
+    e.target.value = theGroupName;
+  }
+}
+
 
 let shortcutGroupsInConflict = new Set();
 
@@ -932,8 +947,8 @@ function add_measurementButtonBlank() {
   let groupName = document.createElement('input');
   groupName.id = `measurementButton${buttonNum}_groupName`;
   groupName.type = "text";
-  groupName.className = "customButtonTitle";
-  groupName.placeholder = "measurement name";
+  groupName.className = "customButtonTitle customMeasureGroupName";
+  groupName.placeholder = "measure name or URL";
   div.appendChild(groupName);
 
 
@@ -1618,7 +1633,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // use focusout instead of blur, because focusout bubbles
     document.addEventListener("focusout", (event) => {
       let theTarget = event.target;
+      
       eventCaller(event, "customFID", convertURLToFID);
+      eventCaller(event, "customMeasureGroupName", convertURLToMeasureGroupName);
       eventCaller(event, "customKey", checkShortcutConflictFromCustomKeyFocusOut);
       
       targetEventCaller(theTarget, "customKey", checkHighlightSaveButton);
