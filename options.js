@@ -194,59 +194,10 @@ var testSettings = {
 
 };
 
-var keyBindings = [];
 
-var keyCodeAliases = {
-  0: "null",
-  null: "null",
-  undefined: "null",
-  32: "Space",
-  37: "Left",
-  38: "Up",
-  39: "Right",
-  40: "Down",
-  96: "Num 0",
-  97: "Num 1",
-  98: "Num 2",
-  99: "Num 3",
-  100: "Num 4",
-  101: "Num 5",
-  102: "Num 6",
-  103: "Num 7",
-  104: "Num 8",
-  105: "Num 9",
-  106: "Num *",
-  107: "Num +",
-  109: "Num -",
-  110: "Num .",
-  111: "Num /",
-  112: "F1",
-  113: "F2",
-  114: "F3",
-  115: "F4",
-  116: "F5",
-  117: "F6",
-  118: "F7",
-  119: "F8",
-  120: "F9",
-  121: "F10",
-  122: "F11",
-  123: "F12",
-  186: ";",
-  188: "<",
-  189: "-",
-  187: "+",
-  190: ">",
-  191: "/",
-  192: "~",
-  219: "[",
-  220: "\\",
-  221: "]",
-  222: "'",
-  59:  ";",
-  61:  "+",
-  173: "-",
-};
+///////////////////////////////////////////////////////////
+// Key press, Keybinding
+///////////////////////////////////////////////////////////
 
 function recordKeyPress(e) {
 
@@ -307,23 +258,19 @@ function keybindingToText(theKeybinding){
   return keybindingText;
 }
 
-function inputFilterNumbersOnly(e) {
-  var char = String.fromCharCode(e.keyCode);
-  if (!/[\d\.]$/.test(char) || !/^\d+(\.\d*)?$/.test(e.target.value + char)) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
+// return true if the given keybindings are the same
+function isSameKeybinding(keybinding1, keybinding2){
+  return keybinding1.ctrlKey == keybinding2.ctrlKey 
+  && keybinding1.altKey == keybinding2.altKey
+  && keybinding1.shiftKey == keybinding2.shiftKey
+  && keybinding1.key == keybinding2.key;
+
 }
 
-function inputFocus(e) {
-  // e.target.value = "";
-}
 
-function inputBlur(e) {
-  const theTarget = e.target;
-  // theTarget.value =
-  //   keyCodeAliases[e.target.keyCode] || String.fromCharCode(e.target.keyCode);
-}
+///////////////////////////////////////////////////////////
+// Convert URL
+///////////////////////////////////////////////////////////
 
 /* 
 PURPOSE
@@ -338,7 +285,6 @@ function convertURLToFID(e){
   }
 }
 
-
 /* 
 PURPOSE
 - if e.target.value contains "groupName=", it will return the groupName.
@@ -352,32 +298,9 @@ function convertURLToMeasureGroupName(e){
   }
 }
 
-
-let shortcutGroupsInConflict = new Set();
-
-/* 
-PURPOSE
-- check conflicts in keyboard shortcuts on the same page/shortcut group, given event.
- */
-function checkShortcutConflictFromCustomKeyFocusOut(e){
-  const theTarget = e.target;
-  const shortcutGroup = e.target.getAttribute('data-shortcutgroup');
-  // console.log(theTarget);
-  checkShortcutGroupConflict(shortcutGroup);
-}
-
-
-/* 
-PURPOSE
-- check conflicts in keyboard shortcuts on the same page/shortcut group, given removeParent.
- */
-function checkShortcutConflictFromRemoveParentClick(event){
-  const removeParentButton = event.target;
-  const parent = removeParentButton.parentNode;
-  const shortcutGroup = parent.querySelector(".customKey").getAttribute('data-shortcutgroup');
-  checkShortcutGroupConflict(shortcutGroup);
-}
-
+///////////////////////////////////////////////////////////
+// Remove Node
+///////////////////////////////////////////////////////////
 
 function removeParentNode(event){
   const removeParentButton = event.target;
@@ -386,137 +309,9 @@ function removeParentNode(event){
   parent.remove();
 }
 
-
-// // const scrollY = window.scrollY;
-// window.onscroll = function(){
-//   // window.scrollTo(0, scrollY);
-//   // window.onscroll = null;
-//   console.log(window.scrollY);
-// };
-
-
-/* 
-PURPOSE
-- check conflicts in keyboard shortcuts on the same page/shortcut group.
-NOTES:
-- first the clean slate
-  - hides all warning labels in the group 
-  - removes this group from the list of shortcutGroupsInConlict.
-- then loops through all items, checking for conflicts
-  - if conflict found, turns on the warning label for the two items found to be in conflict. and adds this shortcut group to shortcutGroupsInConflict.
-- then check the size of shortcutGroupsInConflict. if empty, hides the warning label.
-*/
-function checkShortcutGroupConflict(shortcutGroup){
-  // console.log(shortcutGroup);
-  const inputListInSameGroup = Array.from(document.querySelectorAll(`input[data-shortcutgroup=${shortcutGroup}]`));
-
-  // console.log(inputListInSameGroup);
-  /* 
-  - first the clean slate
-    - hides all warning labels in the group 
-    - removes this group from the list of shortcutGroupsInConlict.
-  */
-  for (let i = 0; i < inputListInSameGroup.length; i++){
-    const anInput = inputListInSameGroup[i];
-    const anInputWarning = anInput.parentNode.querySelector(".warning");
-    anInputWarning.classList.toggle("hide", true);
-  }
-  shortcutGroupsInConflict.delete(shortcutGroup);
- 
-  /* 
-  - then loops through all items, checking for conflicts
-    - if conflict found, turns on the warning label for the two items found to be in conflict. and adds this shortcut group to shortcutGroupsInConflict.
-  */
-  for (let i = 0; i < inputListInSameGroup.length; i++){
-    const anInput = inputListInSameGroup[i];
-    let anInputKeybinding = anInput.dataset.keybinding;
-    // console.log(anInputKeybinding);
-
-    anInputKeybinding = JSON.parse(anInputKeybinding);
-    if (isEmptyKeybinding(anInputKeybinding)){
-      continue;
-    }
-
-    const anInputWarning = anInput.parentNode.querySelector(".warning");
-
-    const restOfInputList = inputListInSameGroup.slice(i+1);
-    for (let j = 0; j < restOfInputList.length; j++){
-      const anInputFromRestOfList = restOfInputList[j];
-      let anInputFromRestOfList_keybinding = anInputFromRestOfList.dataset.keybinding;
-      // console.log(anInputFromRestOfList_keybinding);
-      anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList_keybinding);
-      if (isEmptyKeybinding(anInputFromRestOfList_keybinding)){
-        continue;
-      }
-      // console.log(anInputFromRestOfList_keybinding);
-      
-
-
-      if(isSameKeybinding(anInputKeybinding, anInputFromRestOfList_keybinding)){
-        // console.log(anInputKeybinding);
-        // console.log(anInputFromRestOfList_keybinding);
-        shortcutGroupsInConflict.add(shortcutGroup);
-        const h1Warning = document.querySelector("h1").querySelector(".warning");
-        h1Warning.classList.toggle("hide", false);
-
-        anInputWarning.classList.toggle("hide", false);
-        
-        const anInputFromRestOfList_warning = anInputFromRestOfList.parentNode.querySelector(".warning");
-        anInputFromRestOfList_warning.classList.toggle("hide", false);
-      }
-    }
-  }
-
-  // console.log(shortcutGroupsInConflict);
-  
-
-  /* 
-  - then check the size of shortcutGroupsInConflict. if empty, hides the warning label.
-  */
-  if(shortcutGroupsInConflict.size == 0){
-    const h1Warning = document.querySelector("h1").querySelector(".warning");
-    h1Warning.classList.toggle("hide", true);
-  }
-
-}
-
-// function removeFromArray(array, item){
-//   var index = array.indexOf(item);
-//   if (index !== -1) {
-//     array.splice(index, 1);
-//   }
-// }
-
-
-
-
-
-// return true if the given keybindings are the same
-function isSameKeybinding(keybinding1, keybinding2){
-  return keybinding1.ctrlKey == keybinding2.ctrlKey 
-  && keybinding1.altKey == keybinding2.altKey
-  && keybinding1.shiftKey == keybinding2.shiftKey
-  && keybinding1.key == keybinding2.key;
-
-}
-
-function updateShortcutInputText(inputId, keyCode) {
-  document.getElementById(inputId).value =
-    keyCodeAliases[keyCode] || String.fromCharCode(keyCode);
-  document.getElementById(inputId).keyCode = keyCode;
-}
-
-function updateCustomShortcutInputText(inputItem, keyCode) {
-  inputItem.value = keyCodeAliases[keyCode] || String.fromCharCode(keyCode);
-  inputItem.keyCode = keyCode;
-}
-
-// List of custom actions for which customValue should be disabled
-var customActionsNoValues = ["pause", "muted", "mark", "jump", "display"];
-
-
-
-
+///////////////////////////////////////////////////////////
+// Check/Uncheck All settings
+///////////////////////////////////////////////////////////
 
 
 async function checkAllSettings(){
@@ -549,6 +344,9 @@ function adjustAllSettings(checkAllSettings, settingsObject){
   }
 }
 
+///////////////////////////////////////////////////////////
+// Save Options
+///////////////////////////////////////////////////////////
 
 /* 
 - Saves options to chrome.storage. 
@@ -727,6 +525,10 @@ function getRenamedSettingsStructure(settingsStructure, oldNum, newNum){
   return newSettings;
 }
 
+///////////////////////////////////////////////////////////
+// Reorder Button IDs
+///////////////////////////////////////////////////////////
+
 /* 
 PURPOSE
 - renames the IDs of html elements for billing buttons.
@@ -791,6 +593,10 @@ function reorderButtonIDs_SingleButton(oneBillingButton, nodeIDConstant, uniqueN
   }
 
 }
+
+///////////////////////////////////////////////////////////
+// Restore Options
+///////////////////////////////////////////////////////////
 
 
 /* 
@@ -918,6 +724,12 @@ let ageBasedCodeList = {
   teleCounselling: "Tele Counselling",
   teleConsultation: "Tele Consultation"
 }
+
+
+///////////////////////////////////////////////////////////
+// Add Blank Button
+///////////////////////////////////////////////////////////
+
 
 function add_measurementButtonBlank() {
   const buttonList = document.getElementById("measurementButtons");
@@ -1253,6 +1065,120 @@ function addAgeBasedCodeOptions(serviceCodeInput1){
 }
 
 
+///////////////////////////////////////////////////////////
+// Shortcut Conflicts
+///////////////////////////////////////////////////////////
+
+let shortcutGroupsInConflict = new Set();
+
+
+/* 
+PURPOSE
+- check conflicts in keyboard shortcuts on the same page/shortcut group.
+NOTES:
+- first the clean slate
+  - hides all warning labels in the group 
+  - removes this group from the list of shortcutGroupsInConlict.
+- then loops through all items, checking for conflicts
+  - if conflict found, turns on the warning label for the two items found to be in conflict. and adds this shortcut group to shortcutGroupsInConflict.
+- then check the size of shortcutGroupsInConflict. if empty, hides the warning label.
+*/
+function checkShortcutGroupConflict(shortcutGroup){
+  // console.log(shortcutGroup);
+  const inputListInSameGroup = Array.from(document.querySelectorAll(`input[data-shortcutgroup=${shortcutGroup}]`));
+
+  // console.log(inputListInSameGroup);
+  /* 
+  - first the clean slate
+    - hides all warning labels in the group 
+    - removes this group from the list of shortcutGroupsInConlict.
+  */
+  for (let i = 0; i < inputListInSameGroup.length; i++){
+    const anInput = inputListInSameGroup[i];
+    const anInputWarning = anInput.parentNode.querySelector(".warning");
+    anInputWarning.classList.toggle("hide", true);
+  }
+  shortcutGroupsInConflict.delete(shortcutGroup);
+ 
+  /* 
+  - then loops through all items, checking for conflicts
+    - if conflict found, turns on the warning label for the two items found to be in conflict. and adds this shortcut group to shortcutGroupsInConflict.
+  */
+  for (let i = 0; i < inputListInSameGroup.length; i++){
+    const anInput = inputListInSameGroup[i];
+    let anInputKeybinding = anInput.dataset.keybinding;
+    // console.log(anInputKeybinding);
+
+    anInputKeybinding = JSON.parse(anInputKeybinding);
+    if (isEmptyKeybinding(anInputKeybinding)){
+      continue;
+    }
+
+    const anInputWarning = anInput.parentNode.querySelector(".warning");
+
+    const restOfInputList = inputListInSameGroup.slice(i+1);
+    for (let j = 0; j < restOfInputList.length; j++){
+      const anInputFromRestOfList = restOfInputList[j];
+      let anInputFromRestOfList_keybinding = anInputFromRestOfList.dataset.keybinding;
+      // console.log(anInputFromRestOfList_keybinding);
+      anInputFromRestOfList_keybinding = JSON.parse(anInputFromRestOfList_keybinding);
+      if (isEmptyKeybinding(anInputFromRestOfList_keybinding)){
+        continue;
+      }
+      // console.log(anInputFromRestOfList_keybinding);
+
+      if(isSameKeybinding(anInputKeybinding, anInputFromRestOfList_keybinding)){
+        // console.log(anInputKeybinding);
+        // console.log(anInputFromRestOfList_keybinding);
+        shortcutGroupsInConflict.add(shortcutGroup);
+        const h1Warning = document.querySelector("h1").querySelector(".warning");
+        h1Warning.classList.toggle("hide", false);
+
+        anInputWarning.classList.toggle("hide", false);
+        
+        const anInputFromRestOfList_warning = anInputFromRestOfList.parentNode.querySelector(".warning");
+        anInputFromRestOfList_warning.classList.toggle("hide", false);
+      }
+    }
+  }
+
+  // console.log(shortcutGroupsInConflict);
+  
+
+  /* 
+  - then check the size of shortcutGroupsInConflict. if empty, hides the warning label.
+  */
+  if(shortcutGroupsInConflict.size == 0){
+    const h1Warning = document.querySelector("h1").querySelector(".warning");
+    h1Warning.classList.toggle("hide", true);
+  }
+
+}
+
+/* 
+PURPOSE
+- check conflicts in keyboard shortcuts on the same page/shortcut group, given event.
+ */
+function checkShortcutConflictFromCustomKeyFocusOut(e){
+  const theTarget = e.target;
+  const shortcutGroup = e.target.getAttribute('data-shortcutgroup');
+  // console.log(theTarget);
+  checkShortcutGroupConflict(shortcutGroup);
+}
+
+
+/* 
+PURPOSE
+- check conflicts in keyboard shortcuts on the same page/shortcut group, given removeParent.
+ */
+function checkShortcutConflictFromRemoveParentClick(event){
+  const removeParentButton = event.target;
+  const parent = removeParentButton.parentNode;
+  const shortcutGroup = parent.querySelector(".customKey").getAttribute('data-shortcutgroup');
+  checkShortcutGroupConflict(shortcutGroup);
+}
+
+
 function findAllShortcutConflicts(settingsObject){
   // console.log(settingsObject);
   
@@ -1278,6 +1204,10 @@ function findAllShortcutGroups(settingsObject, shortcutGroupsSeenSoFar){
   // console.log(shortcutGroupsSeenSoFar);
   return shortcutGroupsSeenSoFar;
 }
+
+///////////////////////////////////////////////////////////
+// Restore Default
+///////////////////////////////////////////////////////////
 
 
 /* 
@@ -1323,6 +1253,10 @@ function show_experimental() {
 async function setTestSettings(){
   browser.storage.local.set(testSettings);
 }
+
+///////////////////////////////////////////////////////////
+// Set Greyout
+///////////////////////////////////////////////////////////
 
 /* 
 PURPOSE: 
@@ -1393,6 +1327,10 @@ function greyoutExtensionIcon(){
   });
 }
 
+///////////////////////////////////////////////////////////
+// Highlight Save Button with Unsaved Changes
+///////////////////////////////////////////////////////////
+
 let unsavedChanges = new Set();
 
 /* 
@@ -1419,12 +1357,50 @@ async function checkHighlightSaveButton(theTarget){
 }
 
 
-function targetEventCaller(theTarget, className, funcName) {
-  if (!theTarget.classList || !theTarget.classList.contains(className)) {
-    return;
+/* 
+PURPOSE
+- return true if the targetValue in options is different than the value in settings.
+ */
+async function checkOptionsUnsaved(theTarget){
+  const targetID = theTarget.id;
+  const settingsObject = await browser.storage.local.get(defaultSettings);
+  // console.log(targetID);
+  const targetValueInSettings = getTargetValueFromSettings(targetID, settingsObject);
+  console.log(targetValueInSettings)
+
+  /*
+  - get targetValue from options page. compare to the targetValue from saved settings.
+  - the targetValue from options will be different depending on the type of target.
+   */
+  let isOptionsUnsaved;
+  let targetValueInOptions;
+  if (theTarget.type == "checkbox"){
+    targetValueInOptions = theTarget.checked;
+    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
   }
-  funcName(theTarget);
+  else if (theTarget.classList.contains("customKey")){
+    targetValueInOptions = theTarget.dataset.keybinding;
+    // console.log(targetValueInOptions);
+    // if(!isEmptyKeybinding(targetValueInOptions)){
+    // }
+    targetValueInOptions = JSON.parse(targetValueInOptions);
+
+    isOptionsUnsaved = !keybindingMatches(targetValueInSettings, targetValueInOptions);
+  }
+  else if (theTarget.classList.contains("customFID") 
+  || theTarget.classList.contains("customButtonTitle") 
+  || theTarget.classList.contains("billingButtonCustomText")
+  || theTarget.classList.contains("bcBillingButton_addon")){
+
+    targetValueInOptions = theTarget.value;
+    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
+  }
+
+  // console.log(isOptionsUnsaved);
+  
+  return isOptionsUnsaved;
 }
+
 
 
 /* 
@@ -1466,51 +1442,6 @@ async function highlightSaveButtonOnRemove(event){
 }
 
 /* 
-PURPOSE
-- return true if the targetValue in options is different than the value in settings.
- */
-async function checkOptionsUnsaved(theTarget){
-  const targetID = theTarget.id;
-  const settingsObject = await browser.storage.local.get(defaultSettings);
-  // console.log(targetID);
-  const targetValueInSettings = getTargetValueFromSettings(targetID, settingsObject);
-  console.log(targetValueInSettings)
-
-
-  /*
-  - get targetValue from options page. compare to the targetValue from saved settings.
-  - the targetValue from options will be different depending on the type of target.
-   */
-  let isOptionsUnsaved;
-  let targetValueInOptions;
-  if (theTarget.type == "checkbox"){
-    targetValueInOptions = theTarget.checked;
-    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
-  }
-  else if (theTarget.classList.contains("customKey")){
-    targetValueInOptions = theTarget.dataset.keybinding;
-    // console.log(targetValueInOptions);
-    // if(!isEmptyKeybinding(targetValueInOptions)){
-    // }
-    targetValueInOptions = JSON.parse(targetValueInOptions);
-
-    isOptionsUnsaved = !keybindingMatches(targetValueInSettings, targetValueInOptions);
-  }
-  else if (theTarget.classList.contains("customFID") 
-  || theTarget.classList.contains("customButtonTitle") 
-  || theTarget.classList.contains("billingButtonCustomText")
-  || theTarget.classList.contains("bcBillingButton_addon")){
-
-    targetValueInOptions = theTarget.value;
-    isOptionsUnsaved = targetValueInSettings != targetValueInOptions;
-  }
-
-  // console.log(isOptionsUnsaved);
-  
-  return isOptionsUnsaved;
-}
-
-/* 
 - from the given settingsStructure, return the target in settings whose key matches targetKey.
  */
 function getTargetValueFromSettings(targetKey, settingsStructure){
@@ -1535,6 +1466,17 @@ function getTargetValueFromSettings(targetKey, settingsStructure){
   }
   // console.log(targetValue);
   return targetValue;
+}
+
+///////////////////////////////////////////////////////////
+// Event Listeners
+///////////////////////////////////////////////////////////
+
+function targetEventCaller(theTarget, className, funcName) {
+  if (!theTarget.classList || !theTarget.classList.contains(className)) {
+    return;
+  }
+  funcName(theTarget);
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -1615,16 +1557,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
 
-  // document.getElementById("schedule_shortcut_openInbox_keybinding").value = "hihi100"; 
-  document.addEventListener("keypress", (event) => {
-    eventCaller(event, "customValue", inputFilterNumbersOnly);
-  });
-
-  // use focusin instead of focus, because focusin bubbles
-  document.addEventListener("focusin", (event) => {
-    eventCaller(event, "customKey", inputFocus);
-  });
-
   document.addEventListener("keydown", (event) => {
     eventCaller(event, "customKey", recordKeyPress);
     // console.log(event);
@@ -1667,16 +1599,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     eventCaller(event, "removeParent", highlightSaveButtonOnRemove);
   });
 
-  document.addEventListener("change", (event) => {
-    eventCaller(event, "customDo", function () {
-      if (customActionsNoValues.includes(event.target.value)) {
-        event.target.nextElementSibling.nextElementSibling.disabled = true;
-        event.target.nextElementSibling.nextElementSibling.value = 0;
-      } else {
-        event.target.nextElementSibling.nextElementSibling.disabled = false;
-      }
-    });
-  });
+  
 });
 
 
