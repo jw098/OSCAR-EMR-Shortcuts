@@ -6,7 +6,6 @@ const defaultSettings = {
   billingCodeInput:{
     
     billingCodeInput_PageEnd: true,
-    billingButtons: true,
 
     bcBillingButtonGroup1_enable: true,
     bcBillingButtonGroup1:[

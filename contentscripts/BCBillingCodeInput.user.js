@@ -36,24 +36,22 @@ async function checkEnabled_BCBillingCodeInput(){
 		const billingCodeInput = billingCodeInputObj.billingCodeInput;
 
 		console.log(billingCodeInputObj.billingCodeInput);
-		// Buttons
-		if (billingCodeInputObj.billingCodeInput.billingButtons){
-			addSpaceForBillingButtons();
+
+		// Button Group 3
+		if (billingCodeInput.bcBillingButtonGroup3_enable){
+			addSpaceForBillingButtons(3);
+			addBillingButtonRow(billingCodeInput.bcBillingButtonGroup3, 3);
+		}
+		// Button Group 2
+		if (billingCodeInput.bcBillingButtonGroup2_enable){
+			addSpaceForBillingButtons(2);
+			addBillingButtonRow(billingCodeInput.bcBillingButtonGroup2, 2);
 		}
 
 		// Button Group 1
 		if (billingCodeInput.bcBillingButtonGroup1_enable){
+			addSpaceForBillingButtons(1);
 			addBillingButtonRow(billingCodeInput.bcBillingButtonGroup1, 1);
-		}
-
-		// Button Group 2
-		if (billingCodeInput.bcBillingButtonGroup2_enable){
-			addBillingButtonRow(billingCodeInput.bcBillingButtonGroup2, 2);
-		}
-
-		// Button Group 3
-		if (billingCodeInput.bcBillingButtonGroup3_enable){
-			addBillingButtonRow(billingCodeInput.bcBillingButtonGroup3, 3);
 		}
 
 		
