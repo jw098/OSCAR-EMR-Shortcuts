@@ -21,9 +21,9 @@ async function checkEnabled_EChart(){
 	else {
 		const eChartObj = await browser.storage.local.get('eChart');
 		const eChart = eChartObj.eChart;
+		
 		const updateSidebar = eChart.updateSidebar;
 		const eformSearchBar_enabled = eChart.eformSearchBar_enabled;
-		const eChartButtons = eChart.eChartButtons;
 
 		const measurementButtons_enabled = eChart.measurementButtons_enabled;
 		const measurementButtons = eChart.measurementButtons;
@@ -49,12 +49,6 @@ async function checkEnabled_EChart(){
 			addSearchBar();		
 		}
 
-
-		// Buttons
-		if(eChartButtons.eChartButtons_enabled){
-			loadAllEFormButtons(eChartButtons);
-			keydownEventListener_openEForm(eChartButtons);
-		}
 
 		// measurement Buttons
 		if(measurementButtons_enabled){
