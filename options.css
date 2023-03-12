@@ -154,6 +154,15 @@ input[type="text"].bcBillingButton_serviceCode1,
   /* text-shadow: 0 0 0 #000000; */
 }
 
+.leadingDigits {
+  width: 50px;
+  text-align: center;
+}
+
+.customMeasureGroupName{
+  text-align: center;
+}
+
 
 /* input:checked{
   background-color: darkgrey;

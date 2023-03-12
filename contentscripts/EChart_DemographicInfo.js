@@ -44,8 +44,19 @@ async function loadDemographicInfo(demographicInfoSettings){
 	const theURL = getMasterDemographicURL();
 	const demoArrayVal = await getDemographicInfo(demographicArray, theURL);
 
+	const cellPhoneNum = demoArrayVal[0];
+	const emailValue = demoArrayVal[1];
+	const homePhoneNum = demoArrayVal[2];
+	const addressValue = demoArrayVal[3];
+	const cityValue = demoArrayVal[4];
+	const postalCodeValue = demoArrayVal[5];
+	const ageValue = demoArrayVal[6];
+	const hinValue = demoArrayVal[7];
+	const workPhoneNum = demoArrayVal[8];
+	const HCType = demoArrayVal[9];
+
 	console.log(demoArrayVal);
-	const HCN = demoArrayVal[7].replace(/\s/g,'');
+	const HCN = hinValue.replace(/\s/g,'');
 	browser.storage.local.set({PHN: HCN});
 	// console.log(await browser.storage.local.get({PHN: HCN}))
 	// console.log(HCN)
@@ -54,37 +65,40 @@ async function loadDemographicInfo(demographicInfoSettings){
 	const HCN_Next3Digits = HCN.slice(4, 7)
 	const HCN_Last3Digits = HCN.slice(7)
 	const HCNWithSpaces = HCN_First4Digits + " " + HCN_Next3Digits + " " + HCN_Last3Digits;
-	const HCType = demoArrayVal[9];
 
 	document.getElementById("headerLineBreakReserve").remove();
 
 	const phone_enabled = demographicInfoSettings.demographicInfo_phone_enabled;
+	const leadingDigits = demographicInfoSettings.demographicInfo_leadingDigits;
 	const address_enabled = demographicInfoSettings.demographicInfo_address_enabled;
 	const HIN_enabled = demographicInfoSettings.demographicInfo_HIN_enabled;
 	const email_enabled = demographicInfoSettings.demographicInfo_email_enabled;
 	const CareConnect_enabled = demographicInfoSettings.demographicInfo_CareConnect_enabled;
 	const clipboard_enabled = demographicInfoSettings.demographicInfo_clipboard_enabled;
 
+
+
 	if(phone_enabled){
 		let homePhone = document.createElement("span");
-		let boldHomePhone = document.createElement("strong");
-		boldHomePhone.innerText = "Home: ";
+			let boldHomePhone = document.createElement("strong");
+			boldHomePhone.innerText = "Home: ";
 		homePhone.appendChild(boldHomePhone);
-			telLink2(demoArrayVal[2], homePhone);
+			telLink3(homePhoneNum, homePhone, leadingDigits);
+			
 		header.appendChild(homePhone);
 
-	let cellPhone = document.createElement("span");
-		let boldCellPhone = document.createElement("strong");
-		boldCellPhone.innerText = "Cell: ";
+		let cellPhone = document.createElement("span");
+			let boldCellPhone = document.createElement("strong");
+			boldCellPhone.innerText = "Cell: ";
 		cellPhone.appendChild(boldCellPhone);
-			telLink2(demoArrayVal[0], cellPhone);
+			telLink3(cellPhoneNum, cellPhone, leadingDigits);
 		header.appendChild(cellPhone);
 
-	let workPhone = document.createElement("span");
-		let boldWorkPhone = document.createElement("strong");
-		boldWorkPhone.innerText = "Work: ";
+		let workPhone = document.createElement("span");
+			let boldWorkPhone = document.createElement("strong");
+			boldWorkPhone.innerText = "Work: ";
 		workPhone.appendChild(boldWorkPhone);
-			telLink2(demoArrayVal[8], workPhone);
+			telLink3(workPhoneNum, workPhone, leadingDigits);
 		header.appendChild(workPhone);
 	}
 	
@@ -94,7 +108,7 @@ async function loadDemographicInfo(demographicInfoSettings){
 			let boldAddress = document.createElement("strong");
 			boldAddress.innerText = "Address: ";
 		address.appendChild(boldAddress);
-			let addressText = document.createTextNode(demoArrayVal[3] + ', ' + demoArrayVal[4] + ', ' + demoArrayVal[5] + "\u0020\u00A0\u0020");
+			let addressText = document.createTextNode(addressValue + ', ' + cityValue + ', ' + postalCodeValue + "\u0020\u00A0\u0020");
 		address.appendChild(addressText);
 		header.appendChild(address);
 	}
@@ -144,10 +158,10 @@ async function loadDemographicInfo(demographicInfoSettings){
 		email.appendChild(boldEmail);
 			let emailCopyable = document.createElement("span");
 			emailCopyable.className = "copyable";
-			emailCopyable.innerText = demoArrayVal[1];
+			emailCopyable.innerText = emailValue;
 		email.appendChild(emailCopyable);
 			let emailLink = document.createElement("a");
-			emailLink.href = "mailto:" + demoArrayVal[1] + '<' + demoArrayVal[1] + '>' + '?Subject=Confidential medical information';
+			emailLink.href = "mailto:" + emailValue + '<' + emailValue + '>' + '?Subject=Confidential medical information';
 			emailLink.target = "_blank";
 			emailLink.innerText = "Send eMail";
 		email.appendChild(nbsp);
@@ -248,20 +262,43 @@ async function getDemographicInfo(demographicArray, URL){
 	return demoArrayValues;
 }
 
-function telLink(number){
-	console.log(number.trim());
-	if(number.trim() == ""){
-		return "&nbsp;".repeat(20);
-	}
-	else {
-		const numberl = number.replace(/\D/g,'');
-		const l = "<a href='tel:9"+numberl+"'><span class='copyable'>"+number+"</span></a> &nbsp; ";
-		return l;
-	}
+// function telLink(number){
+// 	console.log(number.trim());
+// 	if(number.trim() == ""){
+// 		return "&nbsp;".repeat(20);
+// 	}
+// 	else {
+// 		const numberl = number.replace(/\D/g,'');
+// 		const l = "<a href='tel:9"+numberl+"'><span class='copyable'>"+number+"</span></a> &nbsp; ";
+// 		return l;
+// 	}
 
-}
+// }
 
-function telLink2(phoneNumber, phoneSpan){
+// function telLink2(phoneNumber, phoneSpan){
+// 	console.log(phoneNumber.trim());
+// 	console.log(phoneSpan);
+// 	if(phoneNumber.trim() == ""){
+// 		const nbsp20 = document.createTextNode("\u00A0".repeat(20));
+// 		phoneSpan.appendChild(nbsp20);
+// 	}
+// 	else {
+// 		const phoneNumberNoDashes = phoneNumber.replace(/\D/g,'');
+// 		let telephoneLink = document.createElement("a");
+// 		telephoneLink.href = "tel:" + phoneNumberNoDashes;
+// 			let copyable = document.createElement("span");
+// 			copyable.className = "copyable";
+// 			copyable.innerText = phoneNumber;
+// 			telephoneLink.appendChild(copyable);
+// 		phoneSpan.appendChild(telephoneLink);
+// 		const nbsp = document.createTextNode("\u0020\u00A0\u0020");
+// 		phoneSpan.appendChild(nbsp);
+
+// 	}
+
+// }
+
+function telLink3(phoneNumber, phoneSpan, leadingDigits){
 	console.log(phoneNumber.trim());
 	console.log(phoneSpan);
 	if(phoneNumber.trim() == ""){
@@ -269,19 +306,34 @@ function telLink2(phoneNumber, phoneSpan){
 		phoneSpan.appendChild(nbsp20);
 	}
 	else {
-		const phoneNumberNoDashes = phoneNumber.replace(/\D/g,'');
+
+		// Copyable Phone number
+		const phoneCopyable = document.createElement("span");
+		phoneCopyable.className = "copyable";
+		phoneCopyable.innerText = phoneNumber;
+		phoneSpan.appendChild(phoneCopyable);
+
+		// Phone link
+		const leadingDigits_enabled = leadingDigits.demographicInfo_phone_leadingDigits_enabled;
+		const leadingDigits_digits = leadingDigits.demographicInfo_phone_leadingDigits_digits;
+
+		console.log(leadingDigits_digits);
+		let phoneNumberNoDashes = phoneNumber.replace(/\D/g,'');
+		if(leadingDigits_enabled){
+			phoneNumberNoDashes = leadingDigits_digits + phoneNumberNoDashes;
+		}
 		let telephoneLink = document.createElement("a");
-		telephoneLink.href = "tel:" + phoneNumberNoDashes;
-			let copyable = document.createElement("span");
-			copyable.className = "copyable";
-			copyable.innerText = phoneNumber;
-			telephoneLink.appendChild(copyable);
+			telephoneLink.href = "tel:" + phoneNumberNoDashes;
+			telephoneLink.innerText = " \uD83E\uDC85"; //UTF-16: WIDE-HEADED NORTH EAST VERY HEAVY BARB ARROW
 		phoneSpan.appendChild(telephoneLink);
+
+		// Non-breaking space
 		const nbsp = document.createTextNode("\u0020\u00A0\u0020");
 		phoneSpan.appendChild(nbsp);
 
 	}
 
 }
+
 
 

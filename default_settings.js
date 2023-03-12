@@ -499,7 +499,13 @@ const defaultSettings = {
 
     demographicInfo:{
       demographicInfo_enabled: true,
+
       demographicInfo_phone_enabled: true,
+      demographicInfo_leadingDigits:{
+        demographicInfo_phone_leadingDigits_enabled: false,
+        demographicInfo_phone_leadingDigits_digits: "",
+      },
+      
       demographicInfo_address_enabled: true,
       demographicInfo_HIN_enabled: true,
       demographicInfo_email_enabled: true,
