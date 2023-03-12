@@ -187,29 +187,51 @@ async function loadDemographicInfo(demographicInfoSettings){
 
 
 	if (clipboard_enabled){
-		var Clipboard=document.createElement("input");
-		Clipboard.type="button";
-		Clipboard.value="Clipboard:";
-		// Clipboard.setAttribute("style", "position:absolute; top:32px; left:580px; width:75px; font-size:12px; text-align:center; background-color:pink;");
-		Clipboard.setAttribute("style", "width:75px; font-size:12px; text-align:center; background-color:pink;");
-		Clipboard.style.marginLeft = "255px";
-		header.appendChild(Clipboard); 
+		// var Clipboard=document.createElement("input");
+		// Clipboard.type="button";
+		// Clipboard.value="Clipboard:";
+		// // Clipboard.setAttribute("style", "position:absolute; top:32px; left:580px; width:75px; font-size:12px; text-align:center; background-color:pink;");
+		// Clipboard.setAttribute("style", "width:75px; font-size:12px; text-align:center; background-color:pink;");
+		// Clipboard.style.marginLeft = "255px";
+		// header.appendChild(Clipboard); 
 	
 		$(".copyable").click(function() {
-			var textArea = document.createElement("textarea");
-			textArea.value = this.innerHTML;
+			let copyableTextArea = document.getElementById("copyableTextArea");
+			/* 
+			- create the textarea element, if not already created.
+			 */
+			if(copyableTextArea == null){
+				copyableTextArea = document.createElement("textarea");
+				copyableTextArea.id = "copyableTextArea";
+				copyableTextArea.setAttribute('style', 'width:150px; height:20px; font-size:14px;  resize:none;');
+				copyableTextArea.setAttribute('title', 'Clipboard');
+				copyableTextArea.style.marginLeft = "200px";
+
+				header.appendChild(copyableTextArea);
+			}
+
+			/* 
+			- set copyableTextArea value to the element just clicked.
+			- set the background color to the element just clicked.
+			 */
+			copyableTextArea.value = this.innerHTML;
 			$(this).css('background-color', '#c1a7f1');
-			textArea.setAttribute('style', 'position:absolute; top:32px; left:660px; width:150px; height:20px; font-size:13px; resize:none;');
-			// textArea.setAttribute('style', 'width:150px; height:17px; resize:none;');
-			textArea.setAttribute('title', 'Clipboard');
-			// textArea.style.marginLeft = "10px";
-			// header.appendChild(textArea);
-			document.body.appendChild(textArea);
-			textArea.select();
-			// document.execCommand('copy');
-			navigator.clipboard.writeText(textArea.value);
+
+			/* 
+			- fixed position copyable text area
+			 */
+			// copyableTextArea.setAttribute('style', 'position:absolute; top:32px; left:660px; width:150px; height:20px; font-size:13px; resize:none;');
+			// document.body.appendChild(copyableTextArea);
+			
+			/* 
+			- copy to clipboard
+			 */
+			copyableTextArea.select();
+			navigator.clipboard.writeText(copyableTextArea.value);
+			// document.execCommand('copy'); // deprecated
+
 	
-		//	textArea.remove();  // to hide text area
+			//	textArea.remove();  // to hide text area
 		})
 	}
 
@@ -262,41 +284,7 @@ async function getDemographicInfo(demographicArray, URL){
 	return demoArrayValues;
 }
 
-// function telLink(number){
-// 	console.log(number.trim());
-// 	if(number.trim() == ""){
-// 		return "&nbsp;".repeat(20);
-// 	}
-// 	else {
-// 		const numberl = number.replace(/\D/g,'');
-// 		const l = "<a href='tel:9"+numberl+"'><span class='copyable'>"+number+"</span></a> &nbsp; ";
-// 		return l;
-// 	}
 
-// }
-
-// function telLink2(phoneNumber, phoneSpan){
-// 	console.log(phoneNumber.trim());
-// 	console.log(phoneSpan);
-// 	if(phoneNumber.trim() == ""){
-// 		const nbsp20 = document.createTextNode("\u00A0".repeat(20));
-// 		phoneSpan.appendChild(nbsp20);
-// 	}
-// 	else {
-// 		const phoneNumberNoDashes = phoneNumber.replace(/\D/g,'');
-// 		let telephoneLink = document.createElement("a");
-// 		telephoneLink.href = "tel:" + phoneNumberNoDashes;
-// 			let copyable = document.createElement("span");
-// 			copyable.className = "copyable";
-// 			copyable.innerText = phoneNumber;
-// 			telephoneLink.appendChild(copyable);
-// 		phoneSpan.appendChild(telephoneLink);
-// 		const nbsp = document.createTextNode("\u0020\u00A0\u0020");
-// 		phoneSpan.appendChild(nbsp);
-
-// 	}
-
-// }
 
 function telLink3(phoneNumber, phoneSpan, leadingDigits){
 	console.log(phoneNumber.trim());
