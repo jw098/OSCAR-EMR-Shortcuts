@@ -759,7 +759,7 @@ function add_measurementButtonBlank() {
   let groupName = document.createElement('input');
   groupName.id = `measurementButton${buttonNum}_groupName`;
   groupName.type = "text";
-  groupName.className = "customButtonTitle customMeasureGroupName";
+  groupName.className = "customMeasureGroupName";
   groupName.placeholder = "measure name or URL";
   div.appendChild(groupName);
 
