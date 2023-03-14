@@ -121,7 +121,8 @@
         },
         {
             "matches": [
-                "*://*/*/oscarConsultationRequest/ConsultationFormRequest.jsp*"
+                "*://*/*/oscarConsultationRequest/ConsultationFormRequest.jsp*",
+                "*://*/*/oscarEncounter/ViewRequest.do*"
             ],
             "js": [
                 "contentscripts/utils.js",

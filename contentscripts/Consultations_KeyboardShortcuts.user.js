@@ -61,8 +61,16 @@ function keydownEventListener_Consultations(consultations_keyboardShortcuts){
 				window.close();
 				break;
 			case submit_enabled && keybindingMatches(submit_keybinding, theEvent):
-				var theTarget = document.evaluate("//input[@value='Submit Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-				theTarget.click();
+				var theTarget1 = document.evaluate("//input[@value='Submit Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+				if (theTarget1 != null){
+					theTarget1.click();
+				}
+
+				const theTarget2 = document.evaluate("//input[@value='Update Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+				if (theTarget2 != null){
+					theTarget2.click();
+				}
 				break;					
 		}	
 	 
