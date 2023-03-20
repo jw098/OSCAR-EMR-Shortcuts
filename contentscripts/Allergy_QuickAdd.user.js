@@ -71,7 +71,8 @@ PURPOSE:
 */
 
 function doPageAction(){
-	let addReactionPage = /oscarRx\/addReaction2\.do/;
+	let addReactionPage2 = /oscarRx\/addReaction2\.do/;
+	let addReactionPage1 = /oscarRx\/addReaction\.do/;
 
 	let addAllergyPage1 = /oscarRx\/ShowAllergies2\.jsp/;
 	let addAllergyPage2 = /oscarRx\/deleteAllergy\.do/;
@@ -82,6 +83,7 @@ function doPageAction(){
 	
 	let currentURL = window.location.href;
 
+	console.log(addReactionPage1.test(currentURL));
 	switch(true){
 		// Medications page
 		case medicationPage1.test(currentURL) || medicationPage2.test(currentURL):  
@@ -92,9 +94,19 @@ function doPageAction(){
 			return addAllergyPage_Actions();
 	
 		// Add Reaction page
-		case addReactionPage.test(currentURL):  
+		case addReactionPage2.test(currentURL) || addReactionPage1.test(currentURL):  
 			return addReactionPage_Actions();
 	}
+}
+
+function isAddAllergyPage(){
+	let addAllergyPage1 = /oscarRx\/ShowAllergies2\.jsp/;
+	let addAllergyPage2 = /oscarRx\/deleteAllergy\.do/;
+	let addAllergyPage3 = /oscarRx\/showAllergy\.do/;
+	let currentURL = window.location.href;
+
+	return addAllergyPage1.test(currentURL) || addAllergyPage2.test(currentURL) || addAllergyPage3.test(currentURL);
+
 }
 
 
@@ -119,23 +131,24 @@ async function addAllergyPage_Actions(){
 	switch (nextPage){
 		case 'toAddNKDAThenAddReactionThenAddAllergyThenMedsThenStop':  // from Med. going to Add Reaction
 			NKDAFromAddAllergyToAddReaction();  // clicks the default NKDA button, which adds NKDA and goes to Add Reaction.
-			await browser.storage.local.set({ nextPageValue:"toAddAllergyThenMedsThenStop"})
+			await browser.storage.local.set({ nextPageValue:"toAddAllergyThenMedsThenStop"});
+
 			break;
 		case 'toMedsThenStop': // from Add Reaction. going to Med.
 			fromAddAllergyToMedications();
-			await browser.storage.local.set({ nextPageValue:"stop"})
+			await browser.storage.local.set({ nextPageValue:"stop"});
 			break;
 		case 'PENtoAddReaction': 
 			penFromAddAllergyToAddReaction();
-			await browser.storage.local.set({ nextPageValue:"stop"})
+			await browser.storage.local.set({ nextPageValue:"stop"});
 			break;					
 		case 'SULFAtoAddReaction': 
 			sulfaFromAddAllergyToAddReaction();
-			await browser.storage.local.set({ nextPageValue:"stop"})
+			await browser.storage.local.set({ nextPageValue:"stop"});
 			break;
 		case 'toRemoveNKDAThenMedsThenStop':
 			removeNKDA();
-			await browser.storage.local.set({ nextPageValue:"toMedsThenStop"})
+			await browser.storage.local.set({ nextPageValue:"toMedsThenStop"});
 			break;
 		default:
 			if(areAllergiesNotSet()){
@@ -144,7 +157,14 @@ async function addAllergyPage_Actions(){
 			addPenicillinButton_FromAddAllergy();
 			addSulfaButton_FromAddAllergy();
 			medPageKeydownListener();	
+			addButtonBackToSearchDrugs();
+
 	}
+}
+
+function clickAddAllergy_addAllergyPage(){
+	const addAllergyButton = document.evaluate("//input[contains(@value, 'Add Allergy')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	addAllergyButton.click();
 }
 
 /* 
@@ -225,17 +245,36 @@ NOTE:
 - assumes the current page is the Add Allergy Page.
 */
 function  NKDAFromAddAllergyToAddReaction(){
-	let defaultNKDAButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[4]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	let defaultNKDAButton = document.evaluate("//input[@value='NKDA']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+	// let defaultNKDAButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[4]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	defaultNKDAButton.click();
+
+
+	/* 
+	In OSCAR 19, Add Reaction page no longer exists, and we stay on the same page.
+	- So, if we're still on the addAllergy page, we are likely in OSCAR 19.
+	*/
+	setTimeout(async () => {
+		if(isAddAllergyPage()){
+			clickAddAllergy_addAllergyPage();
+			await browser.storage.local.set({ nextPageValue:"toMedsThenStop"});
+
+		}
+	}, 100);
 }
 
 function penFromAddAllergyToAddReaction(){
-	let defaultPenicillinButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[5]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	let defaultPenicillinButton = document.evaluate("//input[@value='Penicillin']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+	// let defaultPenicillinButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[5]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	defaultPenicillinButton.click();
 }
 
 function sulfaFromAddAllergyToAddReaction(){
-	let defaultSulfaButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[6]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	let defaultSulfaButton = document.evaluate("//input[@value='Sulfa']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+	// let defaultSulfaButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[6]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	defaultSulfaButton.click();	
 }
 
@@ -244,8 +283,11 @@ NOTE:
 - assumes the current page is the Add Allergy Page.
 */
 function  fromAddAllergyToMedications(){
-	let backToMedications = document.evaluate("//input[@value='Back to Search Drug']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-	backToMedications.click();
+	// let backToMedications = document.evaluate("//input[@value='Back to Search Drug']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	// backToMedications.click();
+
+	let addMedicationsURL = getURLOrigin() + "oscarRx/SearchDrug3.jsp";
+	window.open(addMedicationsURL, "_self");
 	
 }
 
@@ -421,7 +463,31 @@ function addButtonNKDAListener_FromAddAllergy(){
 	var theButton = document.getElementById('autoNKDAButton');
 	theButton.addEventListener('click', async function () { 
 		NKDAFromAddAllergyToAddReaction();
-		await browser.storage.local.set({ nextPageValue:"toAddAllergyThenMedsThenStop"})
+		await browser.storage.local.set({ nextPageValue:"toAddAllergyThenMedsThenStop"});
+  	},true);
+}
+
+function addButtonBackToSearchDrugs(){
+	// const backToSearchDrugButton = document.evaluate("//input[@value='Back to Search Drug']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+	// if(backToSearchDrugButton == null){
+	
+	// }
+
+	removeAlreadyExistingElementAndBrTag(document.getElementById("backToSearchDrugButton"));
+	let activeAllergies = document.evaluate("//div[@class='PropSheetMenu']/p[1]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	let targetDiv = activeAllergies;
+
+	targetDiv.insertAdjacentHTML('beforebegin',	'<input id="backToSearchDrugButton" type="button" value="Back to Search Drug" style="background-color: lightBlue; font-size:14px"><br/>');
+	addButtonBackToSearchDrugs_buttonListener();
+
+}
+
+function addButtonBackToSearchDrugs_buttonListener(){
+	var theButton = document.getElementById('backToSearchDrugButton');
+	theButton.addEventListener('click', function () { 
+		let addMedicationsURL = getURLOrigin() + "oscarRx/SearchDrug3.jsp";
+		window.open(addMedicationsURL, "_self");
   	},true);
 }
 
@@ -457,6 +523,24 @@ function addSulfaButtonListener_FromAddAllergy(){
   	},true);
 }
 
+function addButtonAddAllergyThenToMeds_FromAddAllergy(){
+	removeAlreadyExistingElementAndBrTag(document.getElementById("addAllergyThenToMeds"));
+	const targetDivChild = document.evaluate("//input[contains(@value, 'Add Allergy')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	const targetDiv = targetDivChild.parentElement.parentElement;
+
+	targetDiv.insertAdjacentHTML('beforeend',	'<input id="addAllergyThenToMeds" type="button" value="Add Allergy Then To Medications" style="background-color: red; font-size:14px">');
+	buttonListenerAddAllergyThenToMeds_FromAddAllergy();
+
+}
+
+function buttonListenerAddAllergyThenToMeds_FromAddAllergy(){
+	var theButton = document.getElementById('addAllergyThenToMeds');
+	theButton.addEventListener('click', async function () { 
+  		// fromAddReactiontoAddAllergy();  		
+		await browser.storage.local.set({ nextPageValue:"toMedsThenStop"})
+  	},true);
+}
+
 
 
 
@@ -470,7 +554,9 @@ function addSulfaButtonListener_FromAddAllergy(){
 */
 function addButtonAddAllergyThenToMeds_FromAddReaction(){
 	removeAlreadyExistingElementAndBrTag(document.getElementById("addAllergyThenToMeds"));
-	let targetDiv = document.evaluate("//form[@name='RxAddAllergyForm']/table[1]/tbody/tr[9]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	const targetDivChild = document.evaluate("//input[contains(@value, 'Add Allergy')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	const targetDiv = targetDivChild.parentElement.parentElement;
+	// let targetDiv = document.evaluate("//form[@name='RxAddAllergyForm']/table[1]/tbody/tr[9]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	targetDiv.insertAdjacentHTML('beforeend',	'<input id="addAllergyThenToMeds" type="button" value="Add Allergy Then To Medications" style="background-color: red; font-size:14px">');
 	buttonListenerAddAllergyThenToMeds_FromAddReaction();
 

@@ -70,3 +70,10 @@ function getXMLHTTP(theURL){
 
 	return myPromise;
 }
+
+
+function getURLOrigin(){
+	const  urlElements = (window.location.pathname.split('/', 2));
+	const firstUrlElement = (urlElements.slice(1));
+	return window.location.origin + '/' + firstUrlElement + '/';
+}

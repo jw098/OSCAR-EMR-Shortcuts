@@ -254,11 +254,7 @@ function urlEChart(){
 	return newURL;
 }
 
-function getURLOrigin(){
-	var urlElements = (window.location.pathname.split('/', 2));
-	firstUrlElement = (urlElements.slice(1));
-	return window.location.origin + '/' + firstUrlElement + '/';
-}
+
 
 function getDemographicNum(){
 	var params = {}; //Get Params

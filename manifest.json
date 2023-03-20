@@ -41,9 +41,13 @@
                 "*://*/*/oscarRx/ShowAllergies2.jsp*",
                 "*://*/*/oscarRx/showAllergy.do*",
                 "*://*/*/oscarRx/deleteAllergy.do*",
-                "*://*/*/oscarRx/addReaction2.do*"
+                "*://*/*/oscarRx/addReaction2.do*",
+                "*://*/*/oscarRx/addReaction.do*"
             ],
-            "js": ["contentscripts/Allergy_QuickAdd.user.js"]
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/Allergy_QuickAdd.user.js"
+            ]
         },
         {
             "matches": [
