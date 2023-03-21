@@ -39,11 +39,12 @@ function keydownEventListener_eformSearch(eChart_mainWindow_keyboardShortcuts){
     window.addEventListener("keydown", function(theEvent){
         switch(true){
             case eformSearchBar_enabled && keybindingMatches(eformSearchBar_keybinding, theEvent):
-                if(document.activeElement == document.getElementById("caseNote_note0")){
+                const textAreaNode = document.querySelector("textarea[id^='caseNote']");
+                if(document.activeElement == textAreaNode){
                     document.getElementById("referral_name").focus();
                 }
                 else{
-                    document.getElementById("caseNote_note0").focus();
+                    textAreaNode.focus();
                 }
                 break;
             }
