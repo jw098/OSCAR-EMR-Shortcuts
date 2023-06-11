@@ -8,7 +8,8 @@
 // @grant						GM.getValue
 // @grant						GM.deleteValue
 // ==/UserScript==
-
+//"*://*/*/oscarEncounter/ViewRequest.do*"
+ 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Check Enabled
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -170,13 +171,16 @@ function yearsDiff(d1, d2) {
 
 async function postAllHistory() {
 
-	const [medHistory, socHistory, famHistory] = await Promise.all([getHistory(urlMedHistory()), getHistory(urlSocHistory()), getHistory(urlFamHistory())]);
+	const [medHistory, socHistory, famHistory, otherMeds] = await Promise.all([getHistory(urlMedHistory()), getHistory(urlSocHistory()), getHistory(urlFamHistory()), getHistory(urlOtherMeds())]);
 
 	const allHistory = "Past Medical History:\n" + medHistory + "\nSocial History:\n" + socHistory + "\nFamily History:\n"  + famHistory;
-	console.log(allHistory);
-
+	// console.log(allHistory);
+	
 	const clinInfoTextBox = document.getElementById('clinicalInformation');
 	clinInfoTextBox.value = allHistory;
+
+	const currentMedsBox = document.getElementById('currentMedications');
+	currentMedsBox.value += "\n\nOther Meds:\n"  + otherMeds;
 }
 
 
@@ -214,10 +218,16 @@ async function getHistory(URL) {
 }
 
 
+
 function getHistoryAsText(historyDivList){
 	let historyTextAllLines = "";
 	for (i = 0; i < historyDivList.length; i++){
 		const historyDiv = historyDivList[i];
+		const isArchived = historyDiv.children[1].innerText.includes("ARCHIVED");
+		if(isArchived){
+			// don't add text that is ARCHIVED.
+			continue;
+		}
 		const historyTextOneLine = historyDiv.children[0].innerText;
 		historyTextAllLines += historyTextOneLine + "\n";
 	}
@@ -250,6 +260,13 @@ function urlFamHistory(){
 
 function urlEChart(){
 	var newURL = getURLOrigin() + "casemgmt/forward.jsp?action=view&demographicNo="+ getDemographicNum();
+
+	return newURL;
+}
+
+
+function urlOtherMeds(){
+	var newURL = getURLOrigin() + "CaseManagementEntry.do?method=issuehistory&demographicNo="+ getDemographicNum() + "&issueIds=64";
 
 	return newURL;
 }
