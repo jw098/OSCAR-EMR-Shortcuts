@@ -63,15 +63,17 @@ function keydownEventListener_Consultations(consultations_keyboardShortcuts){
 				break;
 			case submit_enabled && keybindingMatches(submit_keybinding, theEvent):
 				var theTarget1 = document.evaluate("//input[@value='Submit Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+				theTarget1.click();
 
-				if (theTarget1 != null){
-					theTarget1.click();
-				}
+				// if (theTarget1 != null){
+				// 	theTarget1.click();
+				// }
 
-				const theTarget2 = document.evaluate("//input[@value='Update Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-				if (theTarget2 != null){
-					theTarget2.click();
-				}
+				// const theTarget2 = document.evaluate("//input[@value='Update Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+				// if (theTarget2 != null){
+				// 	theTarget2.click();
+				// }
+
 				break;					
 		}	
 	 

@@ -125,12 +125,20 @@
         },
         {
             "matches": [
-                "*://*/*/oscarConsultationRequest/ConsultationFormRequest.jsp*",
-                "*://*/*/oscarEncounter/ViewRequest.do*"
+                "*://*/*/oscarConsultationRequest/ConsultationFormRequest.jsp*"
             ],
             "js": [
                 "contentscripts/utils.js",
                 "contentscripts/Consultations_KeyboardShortcuts.user.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*/*/oscarEncounter/ViewRequest.do*"
+            ],
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/Consultations_Update.js"
             ]
         },
         {
