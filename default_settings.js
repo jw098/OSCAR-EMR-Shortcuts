@@ -1364,7 +1364,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       // billingCodeInput_shortcut_officeVisitInputCode_enabled: true,
       // billingCodeInput_shortcut_officeVisitInputCode_keybinding:{
@@ -1400,7 +1400,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       billingDxCodeSearch_shortcuts_cancel_enabled: true,
       billingDxCodeSearch_shortcuts_cancel_keybinding: {
@@ -1421,7 +1421,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       billingServiceCodeSearch_shortcuts_cancel_enabled: true,
       billingServiceCodeSearch_shortcuts_cancel_keybinding: {
@@ -1443,7 +1443,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       billingConfirm_shortcuts_pageEnd_enabled: true,
       billingConfirm_shortcuts_pageEnd_keybinding: {
@@ -1487,7 +1487,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
     }
   },
@@ -1647,14 +1647,14 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       eChart_shortcut_save_enabled: true,
       eChart_shortcut_save_keybinding:{
         ctrlKey: false,
-        shiftKey: false,
+        shiftKey: true,
         altKey: true,
-        key: '2'
+        key: '@'
       },
       eChart_shortcut_signSave_enabled: true,
       eChart_shortcut_signSave_keybinding:{
@@ -1679,7 +1679,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       CPPWindow_shortcut_cancel_enabled: true,
       CPPWindow_shortcut_cancel_keybinding: {
@@ -1702,7 +1702,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       schedule_shortcut_openInbox_enabled: true,
       schedule_shortcut_openInbox_keybinding:{
@@ -1723,7 +1723,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       apptAdd_shortcut_dur10_enabled: true,
       apptAdd_shortcut_dur10_keybinding: {
@@ -1759,7 +1759,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       apptEdit_shortcut_dur10_enabled: true,
       apptEdit_shortcut_dur10_keybinding: {
@@ -1795,7 +1795,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
     }
   },
@@ -1810,14 +1810,14 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       eFormIndividual_shortcut_printSubmit_enabled: true,
       eFormIndividual_shortcut_printSubmit_keybinding: {
         ctrlKey: false,
-        shiftKey: false,
+        shiftKey: true,
         altKey: true,
-        key: '2'
+        key: '@'
       },
     }
   },
@@ -1855,7 +1855,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
     }
   },
@@ -1872,7 +1872,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       inboxItem_shortcut_openEChart_enabled: true,
       inboxItem_shortcut_openEChart_keybinding: {
@@ -1903,7 +1903,7 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       meds_mainWindowShortcut_setFocusDrugSearchbox_enabled: true,
       meds_mainWindowShortcut_setFocusDrugSearchbox_keybinding: {
@@ -1929,14 +1929,14 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       meds_lightWindowShortcut_fax_enabled: true,
       meds_lightWindowShortcut_fax_keybinding: {
         ctrlKey: false,
-        shiftKey: false,
+        shiftKey: true,
         altKey: true,
-        key: '2'
+        key: '@'
       },
       meds_lightWindowShortcut_close_enabled: true,
       meds_lightWindowShortcut_close_keybinding: {
@@ -1975,14 +1975,14 @@ const defaultSettings_ubuntu = {
         ctrlKey: false,
         shiftKey: true,
         altKey: true,
-        key: '1'
+        key: '!'
       },
       tickler_shortcut_submitWrite_enabled: true,
       tickler_shortcut_submitWrite_keybinding: {
         ctrlKey: false,
-        shiftKey: false,
+        shiftKey: true,
         altKey: true,
-        key: '2'
+        key: '@'
       },
       tickler_shortcut_setFocusTextArea_enabled: true,
       tickler_shortcut_setFocusTextArea_keybinding: {
