@@ -162,7 +162,10 @@ async function addAllergyPage_Actions(){
 	}
 }
 
-function clickAddAllergy_addAllergyPage(){
+/* 
+- click the add allergy button. The page should then refresh from Add Allergy to Add Allergy.
+ */
+function clickAddAllergy_fromAddAllergyPage_toAddAllergyPage_oscar19(){
 	const addAllergyButton = document.evaluate("//input[contains(@value, 'Add Allergy')]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	addAllergyButton.click();
 }
@@ -248,16 +251,28 @@ function  NKDAFromAddAllergyToAddReaction(){
 	let defaultNKDAButton = document.evaluate("//input[@value='NKDA']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 
 	// let defaultNKDAButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[4]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-	defaultNKDAButton.click();
-
 
 	/* 
-	In OSCAR 19, Add Reaction page no longer exists, and we stay on the same page.
-	- So, if we're still on the addAllergy page, we are likely in OSCAR 19.
-	*/
+	- if OSCAR 15: clicking the button should bring you to the Add Reaction page
+	 */
+	defaultNKDAButton.click();
+
+	/* 
+	- if OSCAR 19: clicking the button will keep you on the same page
+	 */
+	clickAddAllergy_ifOscar19();
+}
+
+
+/* 
+In OSCAR 19, Add Reaction page no longer exists, and we stay on the same page.
+- So, if we're still on the addAllergy page, we are likely in OSCAR 19.
+- if in OSCAR 19, click the add Allergy button.
+*/
+function clickAddAllergy_ifOscar19(){
 	setTimeout(async () => {
 		if(isAddAllergyPage()){
-			clickAddAllergy_addAllergyPage();
+			clickAddAllergy_fromAddAllergyPage_toAddAllergyPage_oscar19();
 			await browser.storage.local.set({ nextPageValue:"toMedsThenStop"});
 
 		}
@@ -269,6 +284,7 @@ function penFromAddAllergyToAddReaction(){
 
 	// let defaultPenicillinButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[5]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	defaultPenicillinButton.click();
+
 }
 
 function sulfaFromAddAllergyToAddReaction(){
@@ -276,6 +292,7 @@ function sulfaFromAddAllergyToAddReaction(){
 
 	// let defaultSulfaButton = document.evaluate("//form[@name='RxSearchAllergyForm']/table[1]/tbody/tr[3]/td/input[6]",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	defaultSulfaButton.click();	
+
 }
 
 /*
