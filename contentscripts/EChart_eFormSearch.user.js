@@ -71,7 +71,7 @@ function getEFormLibraryURL(){
     
     var elements = (window.location.pathname.split('/', 2))
     const firstElement = (elements.slice(1))
-    const vPath = ('https://' + location.host + '/' + firstElement + '/')
+    const vPath = (location.protocol + '//' + location.host + '/' + firstElement + '/')
     var newURL = vPath + "/eform/efmformslistadd.jsp?group_view=&demographic_no=" + params.demographicNo + "&parentAjaxId=eforms";
 
     return newURL;

@@ -171,7 +171,7 @@ function openMeasurementButton_ClickListener(id, groupName){
 function openMeasurementLink(groupName){
 	var elements = (window.location.pathname.split('/', 2));
 	const firstElement = (elements.slice(1));
-	const vPath = ("https://" + location.host + "/"  + firstElement + "/");
+	const vPath = (location.protocol + "//" + location.host + "/"  + firstElement + "/");
   	
 	var measurementPath = 
 		vPath + "oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=" + groupName;
@@ -189,7 +189,7 @@ function openEFormLink(fid){
 	}
 	var elements = (window.location.pathname.split('/', 2));
 	const firstElement = (elements.slice(1));
-	const vPath = ("https://" + location.host + "/"  + firstElement + "/");
+	const vPath = (location.protocol + "//" + location.host + "/"  + firstElement + "/");
   	
 	var formPath = 
 		vPath + "eform/efmformadd_data.jsp?fid=" + fid + "&demographic_no=" + findDemogNum();

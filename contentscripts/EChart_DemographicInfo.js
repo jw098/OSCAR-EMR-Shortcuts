@@ -239,7 +239,7 @@ function highlightHealthCardType(HCType){
 function getMasterDemographicURL(){
 	var elements = (window.location.pathname.split('/', 2))
 	const firstElement = (elements.slice(1))
-	const vPath = ('https://' + location.host + '/' + firstElement + '/')
+	const vPath = (location.protocol + '//' + location.host + '/' + firstElement )
 	// const vPath = '../'
 	var myParam = location.search.split('demographicNo=')[1]
 	var res = myParam.indexOf('&')

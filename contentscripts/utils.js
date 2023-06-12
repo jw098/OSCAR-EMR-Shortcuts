@@ -59,11 +59,13 @@ function getXMLHTTP(theURL){
 				resolve(xmlhttp.responseText);
       		} 
 			else {
-				reject(new Error("File not Found"));
+				console.trace();
+				reject(new Error(theURL + "File not Found"));
       		}
 		};
 		xmlhttp.onerror = function () {
-			reject(new Error("File not Found"));
+			console.trace();
+			reject(new Error(theURL + "File not Found"));
 		};
 		xmlhttp.send();
 	});
