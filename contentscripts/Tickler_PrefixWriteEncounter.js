@@ -127,9 +127,10 @@ PURPOSE:
 NOTES:
 - get writeEncounter from local storage. proceed only if storedWriteEncounter matches given writeEncounterType. writeEncounterType tells us whether the 'Submit and Exit' or 'Submit and Write to Encounter' buttons were just pressed.
 - set writeEncounter to 'none' to avoid posting tickler message text when not intended.
+- post only if messagePatientName matches current patient
 */
 async function prefixWriteToEncounter_EChart_writeFromStorageOnLoad(writeEncounterType){
-	console.log("writeEncounterType" + writeEncounterType);
+	console.log("writeEncounterType: " + writeEncounterType);
 
 	/* 
 	- proceed only if storedWriteEncounter matches given writeEncounterType
@@ -142,6 +143,7 @@ async function prefixWriteToEncounter_EChart_writeFromStorageOnLoad(writeEncount
 		return;
 	}
 	browser.storage.local.set({ writeEncounter: "none" });
+	console.log("set writeEncounter to none.");
 
 	/* 
 	get the ticklerMessage 
@@ -154,7 +156,7 @@ async function prefixWriteToEncounter_EChart_writeFromStorageOnLoad(writeEncount
 	- ensure it is the correct patient before proceeding.
 	 */
 	if(!patientNameMatchesMessage(ticklerMessage)){
-		// console.error("this shouldn't happen.")
+		console.log("messagePatientName doesn't match current patient.")
 		return;
 	}
 	
@@ -236,11 +238,11 @@ function prefixWriteToEncounter_submitExit(){
 	let currentURL = window.location.href;
 
 	switch(true){
-		// Medications page
+		// Tickler page
 		case ticklerPage1.test(currentURL) || ticklerPage2.test(currentURL):  
 			return prefixWriteToEncounter_submitExit_Tickler();
 	
-		// Add Allergy page
+		// eChart page
 		case eChartPage.test(currentURL):
 			return prefixWriteToEncounter_submitExit_EChart();
 	}
@@ -278,6 +280,7 @@ PURPOSE
 NOTE:
 - this only works if the E-chart is already open when the Tickler was sent. Otherwise, the message won't be received.
 - for the tickler message to be posted on eChart loading, see writeFromStorageOnLoad.
+- after posting the message, set writeEncounter to "none", to avoid double posting. this is done on a delay to account for the case where eChart page is immediately refreshed upon posting the Tickler; by delaying resetting the writeEncounter to none, prefixWriteToEncounter_EChart_writeFromStorageOnLoad has a chance to post the message.
 */
 function prefixWriteToEncounter_submitExit_writeTicklerWhenMessageEvent(){
 	const encounterChannel = new BroadcastChannel("encounterChannel");
@@ -285,8 +288,12 @@ function prefixWriteToEncounter_submitExit_writeTicklerWhenMessageEvent(){
 		const ticklerMessage = event.data.ticklerMessage;
 		console.log(ticklerMessage);
 		if(patientNameMatchesMessage(ticklerMessage)){
-			browser.storage.local.set({ writeEncounter: "none" });
 			postTicklerMessage(ticklerMessage);
+
+			setTimeout(() => {
+				browser.storage.local.set({ writeEncounter: "none" });
+				console.log("set writeEncounter to none.");
+			}, 2000)
 		}
 	});
 
@@ -296,7 +303,7 @@ function patientNameMatchesMessage(ticklerMessage){
 	let currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
 	let messagePatientName = ticklerMessage.messagePatientName;
 	
-	
+
 	currentPatientName = currentPatientName.toUpperCase().split("(")[0];
 	messagePatientName = messagePatientName.toUpperCase().split("(")[0];
 	console.log(currentPatientName);
