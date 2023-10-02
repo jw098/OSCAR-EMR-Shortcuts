@@ -433,18 +433,20 @@ async function updateMedicationsSidebar() {
 	/* 
 	Check current patient name matches. 
 	*/
-	const currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
+	let currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
 
 	const printPagePatientNameHTML = otherPageHTML.querySelectorAll("#AutoNumber1 > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(1)")[0];
 	if(printPagePatientNameHTML == undefined){
 		console.log("Print page patient name undefined. Likely because Medications hasn't been visited yet.");
 		return;
 	}
-	const printPagePatientName = printPagePatientNameHTML.innerHTML.split('-->')[1].split('<')[0].replace(/[\n\s]/g, "");
+	let printPagePatientName = printPagePatientNameHTML.innerHTML.split('-->')[1].split('<')[0].replace(/[\n\s]/g, "");
 
+	currentPatientName = currentPatientName.toUpperCase().split("(")[0];
+	printPagePatientName = printPagePatientName.toUpperCase().split("(")[0];
 	console.log(currentPatientName);
 	console.log(printPagePatientName);
-	if(currentPatientName.split("(")[0] != printPagePatientName.split("(")[0]){
+	if(currentPatientName != printPagePatientName){
 		console.log("Print page patient name doesn't match current patient name.");
 		return;
 	}
