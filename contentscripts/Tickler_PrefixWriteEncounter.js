@@ -71,11 +71,11 @@ PURPOSE:
 	const  submitWriteEncounterButton = 
 		document.evaluate("//input[@value='Submit & Write to Encounter']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 
-
-	submitWriteEncounterButton.addEventListener("click", async function(){
-		saveMessageToStorageAndBroadcast("submitWriteEncounter");
-	});
-	
+	if(submitWriteEncounterButton != null){
+		submitWriteEncounterButton.addEventListener("click", async function(){
+			saveMessageToStorageAndBroadcast("submitWriteEncounter");
+		});
+	}
 }
 
 
@@ -95,8 +95,8 @@ async function saveMessageToStorageAndBroadcast(writeEncounterType){
 		document.evaluate("//textarea",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 	const messageText = messageTextArea.value;
 
-	// console.log(taskAssignedTo);
-	// console.log(messageText)
+	console.log(taskAssignedTo);
+	console.log(messageText)
 
 	const patientName = document.querySelector("input[name='keyword']").value.replace(/[\s]/g, "");
 
@@ -129,7 +129,7 @@ NOTES:
 - set writeEncounter to 'none' to avoid posting tickler message text when not intended.
 */
 async function prefixWriteToEncounter_EChart_writeFromStorageOnLoad(writeEncounterType){
-
+	console.log("writeEncounterType" + writeEncounterType);
 
 	/* 
 	- proceed only if storedWriteEncounter matches given writeEncounterType
@@ -241,7 +241,7 @@ function prefixWriteToEncounter_submitExit(){
 			return prefixWriteToEncounter_submitExit_Tickler();
 	
 		// Add Allergy page
-		case eChartPage.test(currentURL):  
+		case eChartPage.test(currentURL):
 			return prefixWriteToEncounter_submitExit_EChart();
 	}
 }
@@ -295,8 +295,10 @@ function prefixWriteToEncounter_submitExit_writeTicklerWhenMessageEvent(){
 function patientNameMatchesMessage(ticklerMessage){
 	let currentPatientName = document.querySelectorAll(".Header > a:nth-child(1)")[0].innerText.replace(/[\s]/g, "");
 	let messagePatientName = ticklerMessage.messagePatientName;
-	currentPatientName = currentPatientName.split("(")[0];
-	messagePatientName = messagePatientName.split("(")[0];
+	
+	
+	currentPatientName = currentPatientName.toUpperCase().split("(")[0];
+	messagePatientName = messagePatientName.toUpperCase().split("(")[0];
 	console.log(currentPatientName);
 	console.log(messagePatientName);
 
