@@ -59,7 +59,4 @@ function billingCodeInputPage_KeydownListeners(billingCodeInput_keyboardShortcut
 }
 
 
-function scrollToPageEnd_BCBillingConfirm(){
-	window.scrollTo(0, document.body.scrollHeight);
-}
 

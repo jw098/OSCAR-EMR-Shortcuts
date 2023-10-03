@@ -53,18 +53,130 @@ async function checkEnabled_BCBillingCodeInput(){
 			addSpaceForBillingButtons(1);
 			addBillingButtonRow(billingCodeInput.bcBillingButtonGroup1, 1);
 		}
-
 		
 		// Keyboard shortcuts
-		if (billingCodeInputObj.billingCodeInput.billingCodeInput_PageEnd){
-			scrollToPageEnd_BCBillingConfirm();
-		}
+
 		const billingCodeInput_keyboardShortcuts = billingCodeInputObj.billingCodeInput.billingCodeInput_keyboardShortcuts;
 		if (billingCodeInput_keyboardShortcuts.billingCodeInput_shortcuts_enabled){
 			billingCodeInputPage_KeydownListeners(billingCodeInput_keyboardShortcuts);
 		}
-		
+
+		// scroll to bottom of page
+		if (billingCodeInputObj.billingCodeInput.billingCodeInput_PageEnd){
+			scrollToPageEnd_BCBillingConfirm();
+		}
+
+		// Default Billing Physician
+		setDefaultBillingPhysician("Wong");
+
+		// Time code alert
+		checkTimeCodeBilling();
 		
 	}
 }
 
+function scrollToPageEnd_BCBillingConfirm(){
+	window.scrollTo(0, document.body.scrollHeight);
+}
+
+
+/* 
+- ensures time code billings have start and end times, and that number of units for time-based billing do not exceed the time difference between start and end time.
+ */
+function checkTimeCodeBilling(){
+	const continueButton = document.evaluate("id('buttonRow')/td/input[@value='Continue']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+	continueButton.addEventListener('click', function () { 
+		const serviceCode1 = document.getElementById("billing_1_fee").value;
+		// only run the below code if the service code is 98010 or 98011
+		if (serviceCode1 == 98010 || serviceCode1 == 98011 || serviceCode1 == 98012){
+			alertTimeCode();
+		}
+		else {
+			window.onbeforeunload = null;
+		}
+
+	}, true);
+}
+
+function alertTimeCode(){
+	if(isExcessBilledTimeUnits()){
+		alert("Number of units for time-based billing exceeds the time difference between start and end time.");
+		window.onbeforeunload = function() {
+			return 'You have unsaved changes!';
+		}
+	} 
+	else if(isEndTimeEmpty()){
+		alert("End Time is empty.");
+		window.onbeforeunload = function() {
+			return 'You have unsaved changes!';
+		}
+	} 
+	else if(isStartTimeEmpty()){
+		alert("Start Time is empty.");
+		window.onbeforeunload = function() {
+			return 'You have unsaved changes!';
+		}
+	} 
+	else {
+		window.onbeforeunload = null;
+	}
+}
+
+
+/* 
+- return true if number of time units billed exceeds the expected number of time units, based on start and end time.
+ */
+function isExcessBilledTimeUnits(){
+	const endTimeVal = document.getElementById("serviceEndTime").value;
+	const startTimeVal = document.getElementById("serviceStartTime").value;
+
+	const endTimeHours = Number(endTimeVal.split(":")[0]);
+	const endTimeMin = Number(endTimeVal.split(":")[1]);
+	const startTimeHours = Number(startTimeVal.split(":")[0]);
+	const startTimeMin = Number(startTimeVal.split(":")[1]);
+
+	const timeDifference = (endTimeHours + endTimeMin/60) - (startTimeHours + startTimeMin/60);
+	
+	const expectedBilledTimeUnits = timeDifference*4;
+	const actualBilledTimeUnits = document.getElementById("billing_1_fee_unit").value;
+	console.log(timeDifference);
+	console.log(expectedBilledTimeUnits);
+
+	return actualBilledTimeUnits > expectedBilledTimeUnits;
+}
+
+
+function isEndTimeEmpty(){
+	const endTime = document.getElementById("serviceEndTime");
+
+	return endTime.value == "";
+}
+
+function isStartTimeEmpty(){
+	const startTime = document.getElementById("serviceStartTime");
+
+	return startTime.value == "";
+}
+
+
+/* 
+- set the Billing Physician to selectedPhysicianName.
+ */
+function setDefaultBillingPhysician(selectedPhysicianName){
+	const selectPhysician = $('#billingPatientInfo > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)')[0]
+	const physicianList = selectPhysician.children;
+
+	let selectedPhysicianValue = "";
+	for (let i = 0; i < physicianList.length; i++){
+		const aPhysician = physicianList[i];
+		const aPhysicianName = aPhysician.innerText;
+		const aPhysicianVal = aPhysician.value;
+		
+		if (aPhysicianName.includes(selectedPhysicianName)){
+			selectedPhysicianValue = aPhysicianVal;
+		}
+	}
+
+	selectPhysician.value = selectedPhysicianValue;
+}
