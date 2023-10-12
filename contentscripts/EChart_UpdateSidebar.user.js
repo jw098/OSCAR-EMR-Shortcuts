@@ -866,29 +866,7 @@ function isTodayShortDate(nodeShortDate){
 	return eFormDate == todayDate && eFormMonth == todayMonth && eFormYear == todayYear;
 }
 
-function todayDateDDMMMYYYY(){
-	const month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-	const today = new Date();
-	const todayDate = today.getDate();
-	const todayMonth = month[today.getMonth()];
-	const todayYear = today.getFullYear();
 
-	const todayFullDate = todayDate + '-' + todayMonth + '-' + todayYear;
-	return todayFullDate;
-}
-
-function todayDateYYYYMMDD(){
-	const month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-	const today = new Date();
-	const todayDate = today.getDate();
-	const todayMonth = today.getMonth()+1;
-	const todayYear = today.getFullYear();
-
-	const todayFullDate = new Date().toLocaleDateString('en-CA');
-	// console.log(todayFullDate);
-	return todayFullDate;
-}
-	
 
 
 /////////////////////////////////////////////////////

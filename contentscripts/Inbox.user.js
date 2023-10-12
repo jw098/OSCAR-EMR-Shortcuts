@@ -24,6 +24,7 @@ async function checkEnabled_Inbox(){
 		const inbox_buttons = inbox.inbox_buttons;
 		if(inbox_buttons){
 			addButtonLoadNewReports();
+			addButtonLoadTodayReports();
 			addButtonLoadAllReports();
 		}
 

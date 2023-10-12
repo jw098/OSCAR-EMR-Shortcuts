@@ -79,3 +79,34 @@ function getURLOrigin(){
 	const firstUrlElement = (urlElements.slice(1));
 	return window.location.origin + '/' + firstUrlElement + '/';
 }
+
+
+/* 
+- returns today's date as DD-MM-YYY
+ */
+function todayDateDDMMMYYYY(){
+	const month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+	const today = new Date();
+	const todayDate = today.getDate();
+	const todayMonth = month[today.getMonth()];
+	const todayYear = today.getFullYear();
+
+	const todayFullDate = todayDate + '-' + todayMonth + '-' + todayYear;
+	return todayFullDate;
+}
+
+/* 
+- returns today's date as YYYY-MM-DD
+ */
+function todayDateYYYYMMDD(){
+	// const month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+	// const today = new Date();
+	// const todayDate = today.getDate();
+	// const todayMonth = today.getMonth()+1;
+	// const todayYear = today.getFullYear();
+
+	const todayFullDate = new Date().toLocaleDateString('en-CA');
+	// console.log(todayFullDate);
+	return todayFullDate;
+}
+	
