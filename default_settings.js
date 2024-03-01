@@ -6,6 +6,7 @@ const defaultSettings = {
   billingCodeInput:{
     
     billingCodeInput_PageEnd: true,
+    billingCodeInput_checkTimeCode: true,
 
     bcBillingButtonGroup1_enable: true,
     bcBillingButtonGroup1:[
@@ -1005,6 +1006,7 @@ const defaultSettings_ubuntu = {
   billingCodeInput:{
     
     billingCodeInput_PageEnd: true,
+    billingCodeInput_checkTimeCode: true,
 
     bcBillingButtonGroup1_enable: true,
     bcBillingButtonGroup1:[

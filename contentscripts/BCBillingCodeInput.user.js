@@ -67,10 +67,12 @@ async function checkEnabled_BCBillingCodeInput(){
 		}
 
 		// Default Billing Physician
-		setDefaultBillingPhysician("Wong");
+		// setDefaultBillingPhysician("Wong");
 
 		// Time code alert
-		checkTimeCodeBilling();
+		if (billingCodeInputObj.billingCodeInput.billingCodeInput_checkTimeCode){
+			checkTimeCodeBilling();
+		}
 		
 	}
 }
@@ -138,7 +140,7 @@ function isExcessBilledTimeUnits(){
 
 	const timeDifference = (endTimeHours + endTimeMin/60) - (startTimeHours + startTimeMin/60);
 	
-	const expectedBilledTimeUnits = timeDifference*4;
+	const expectedBilledTimeUnits = +(timeDifference*4).toFixed(2);
 	const actualBilledTimeUnits = document.getElementById("billing_1_fee_unit").value;
 	console.log(timeDifference);
 	console.log(expectedBilledTimeUnits);
