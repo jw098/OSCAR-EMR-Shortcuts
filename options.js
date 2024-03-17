@@ -310,6 +310,36 @@ function removeParentNode(event){
 }
 
 ///////////////////////////////////////////////////////////
+// Export/Import Options
+///////////////////////////////////////////////////////////
+
+async function export_options(){
+  const settingsObject = await browser.storage.local.get(defaultSettings);
+  const settingsJson = JSON.stringify(settingsObject);
+
+  const filename = "OSCAR_EMR_shortcuts_exported_settings.json";
+  const blob = new Blob([settingsJson], {type:'application/json'});
+  let link = document.createElement("a");
+  link.download = filename;
+  link.href = window.URL.createObjectURL(blob);
+  document.body.appendChild(link);
+  link.click();
+  setTimeout(() => {
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(link.href);
+  }, 100);
+
+}
+
+let importedSettings;
+
+function import_options(){
+  if (importedSettings != null){
+    restore_options_from_settings(importedSettings);
+  }
+}
+
+///////////////////////////////////////////////////////////
 // Check/Uncheck All settings
 ///////////////////////////////////////////////////////////
 
@@ -619,6 +649,36 @@ function restore_options() {
   });
 }
 
+/* 
+- Restores options from given settings object. For importing settings
+- if a given setting wasn't present in storage, it takes the default value from defaultSettings. 
+*/
+function restore_options_from_settings(settingsObject) {
+  removeAllAddable();
+
+  restoreOptionsPageFromSettings(settingsObject);
+  findAllShortcutConflicts(settingsObject);
+  greyoutExtensionIcon();
+
+  /* 
+  - for some reason, remove() or insertBefore() sometimes causes the page to scroll down.
+  - my guess is that when restore options restores the array of buttons, it gets confused and saves the wrong Y scroll position . And so when the user manually clicks the Add New or Remove buttons, it scrolls to the wrong Y scroll position.
+  - somehow, manually setting the scroll position after restoring the options page fixes this.
+  */
+  window.scrollTo(0, window.scrollY);
+}
+
+/*
+- remove all addable elements
+- finds all buttons with class removeParent, then removes them.
+*/
+
+
+function removeAllAddable(){
+  document
+  .querySelectorAll(".removeParent")
+  .forEach((button) => button.click()); // Remove added shortcuts
+}
 
 
 
@@ -645,17 +705,22 @@ function restoreOptionsPageFromSettings(settingsObject){
       // console.log(value);
       // console.log(document.getElementById(key).keybinding);
       // console.log(document.getElementById(key).value);
-    } else if (key.includes("bcBillingButtonGroup")){
-      const groupNum = key.split("bcBillingButtonGroup")[1];
-      // console.log(groupNum);
-      restoreOptionsPageFromSettings_bcBillingButtons(value, groupNum);
-    } else if (key.includes("measurementButtons")){
+    } else if (Array.isArray(value)){
 
-      restoreOptionsPageFromSettings_eChartButtons(value, "measurementButtons");
-    } else if (key.includes("eFormButtons")){
+      if(key.includes("bcBillingButtonGroup")){
+        const groupNum = key.split("bcBillingButtonGroup")[1];
+        restoreOptionsPageFromSettings_bcBillingButtons(value, groupNum);
 
-      restoreOptionsPageFromSettings_eChartButtons(value, "eFormButtons");
-    } else{
+      } else if (key.includes("measurementButtons")){
+        restoreOptionsPageFromSettings_eChartButtons(value, "measurementButtons");
+
+      } else if (key.includes("eFormButtons")) {
+        restoreOptionsPageFromSettings_eChartButtons(value, "eFormButtons");
+
+      }
+
+    }
+    else{
       // console.log('hihi');
       console.assert(typeof value == "object");
       restoreOptionsPageFromSettings(value);
@@ -1216,18 +1281,27 @@ function findAllShortcutGroups(settingsObject, shortcutGroupsSeenSoFar){
 - restores the default settings from storage.
  */
 function restore_defaults() {
-  chrome.storage.local.set(defaultSettings, function () {
-    restore_options();
-    document
-      .querySelectorAll(".removeParent")
-      .forEach((button) => button.click()); // Remove added shortcuts
-    // Update status to let user know options were saved.
-    var status = document.getElementById("status");
-    status.textContent = "Default options restored";
-    setTimeout(function () {
-      status.textContent = "";
-    }, 1000);
-  });
+  restore_options_from_settings(defaultSettings);
+  // Update status to let user know options were saved.
+  var status = document.getElementById("status");
+  status.textContent = "Default options restored";
+  setTimeout(function () {
+    status.textContent = "";
+  }, 1000);
+
+  // chrome.storage.local.set(defaultSettings, function () {
+  //   restore_options();
+  //   document
+  //     .querySelectorAll(".removeParent")
+  //     .forEach((button) => button.click()); // Remove added shortcuts
+  //   // Update status to let user know options were saved.
+  //   var status = document.getElementById("status");
+  //   status.textContent = "Default options restored";
+  //   setTimeout(function () {
+  //     status.textContent = "";
+  //   }, 1000);
+  // });
+
 }
 
 
@@ -1501,6 +1575,33 @@ function targetEventCaller(theTarget, className, funcName) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+
+    ///////////////////////////////////////////////////////////
+    // FileReader
+    ///////////////////////////////////////////////////////////
+
+  const fileInput = document.getElementById("file");
+  const importWarning = document.getElementById("importWarning");
+  
+  fileInput.addEventListener('change', () => {
+    const fileReader = new FileReader();
+    importWarning.classList.toggle("hide", true);
+
+    fileReader.readAsText(fileInput.files[0]);
+    fileReader.addEventListener('load', () => {
+      console.log(fileReader.result);
+      try {
+        importedSettings = JSON.parse(fileReader.result);
+      } catch (e){
+        importedSettings = null;
+        importWarning.classList.toggle("hide", false);
+      }
+      
+    })
+    
+  })
+
+
   // save_options();
 
   // await setTestSettings();
@@ -1512,6 +1613,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const settingsStructure = await browser.storage.local.get(defaultSettings)
   // console.log(settingsStructure);
+
+  document.getElementById("export").addEventListener("click", export_options);
+  document.getElementById("import").addEventListener("click", import_options);
 
   document.getElementById("save").addEventListener("click", save_options);
   document.getElementById("saveHeader").addEventListener("click", save_options);

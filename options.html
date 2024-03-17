@@ -12,7 +12,7 @@
   </head>
   <body>
     <header>
-      <h1>OSCAR EMR Shortcuts
+      <h1>OSCAR EMR Shortcuts        
         <button id="saveHeader">Save</button>
         <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
           WARNING: Shortcut conflict exists. 
@@ -1185,15 +1185,28 @@
       </section>
     </div>
 
-    <button id="save">Save</button>
-    <button id="restore">Restore Defaults</button>
-    <button id="restore2" class="hide">Restore Defaults2</button>
-    <button id="restoreUbuntu" class="hide">Restore Defaults Ubuntu</button>
 
-    <div id="status"></div>
+    <div>
+      <button id="export" title="Exports the settings that are currently saved.">Export Settings</button>
+    </div>
 
-    <div id="faq">
-      <hr />
+    <div> 
+      <input type="file" id="file" accept=".txt, .json">
+      <label id = "importWarning" class="warning hide" >
+        WARNING: Imported settings file is invalid.
+      </label>
+      <button id="import" title="Imports the uploaded settings file. Does not save.">Import Settings</button>
+    </div>
+
+    <div> 
+
+      <button id="save">Save</button>
+      <button id="restore">Restore Defaults</button>
+      <button id="restore2" class="hide">Restore Defaults2</button>
+      <button id="restoreUbuntu" class="hide">Restore Defaults Ubuntu</button>
+
+      <div id="status"></div>
+      <div id="faq"></div>
     </div>
   </body>
 </html>
