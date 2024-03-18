@@ -1305,43 +1305,6 @@ function restore_defaults() {
 }
 
 
-/* 
-- restores the default settings from storage.
- */
-function restore_defaults_ubuntu() {
-  chrome.storage.local.set(defaultSettings_ubuntu, function () {
-    restore_options();
-    document
-      .querySelectorAll(".removeParent")
-      .forEach((button) => button.click()); // Remove added shortcuts
-    // Update status to let user know options were saved.
-    var status = document.getElementById("status");
-    status.textContent = "Default options restored";
-    setTimeout(function () {
-      status.textContent = "";
-    }, 1000);
-  });
-}
-
-function restore_defaults2() {
-  restore_defaults();
-
-  setTimeout(() => {
-    console.log('restored2')
-    document.getElementById("eFormButton1_fid").value = "510";
-    document.getElementById("eFormButton2_fid").value = "359";
-    document.getElementById("eFormButton3_fid").value = "293";
-    document.getElementById("eFormButton4_fid").value = "291";
-    document.getElementById("inboxItem_styleChange").click();
-  }, 1000);
-  
-}
-
-function show_experimental() {
-  document
-    .querySelectorAll(".customForce")
-    .forEach((item) => (item.style.display = "inline-block"));
-}
 
 
 // just for testing
@@ -1666,8 +1629,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   
 
   document.getElementById("restore").addEventListener("click", restore_defaults);
-  document.getElementById("restore2").addEventListener("click", restore_defaults2);
-  document.getElementById("restoreUbuntu").addEventListener("click", restore_defaults_ubuntu);
   // document
   //   .getElementById("experimental")
   //   .addEventListener("click", show_experimental);

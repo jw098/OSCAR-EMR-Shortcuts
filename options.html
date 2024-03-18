@@ -100,69 +100,43 @@
           </div>
 
         
-          <input id="billingCodeInput_shortcuts_enabled" type="checkbox" />
-          <label for="billingCodeInput_shortcuts_enabled">Enable keyboard shortcuts</label>
+          <div class = "row">
+            <input id="billingCodeInput_shortcuts_enabled" type="checkbox" />
+            <label for="billingCodeInput_shortcuts_enabled">Enable keyboard shortcuts</label>
 
-          <div class="shortcut subRow1">
-            <input id="billingCodeInput_shortcut_continue_enabled" type="checkbox" />
-            <label class="shortcutLabel">Click 'Continue'</label>
-            <input
-              id="billingCodeInput_shortcut_continue_keybinding" 
-              class="customKey"
-              data-shortcutgroup="billingCodeInput_shortcut"
-              type="text"
-              value=""
-              placeholder="press a key"
-            />
-            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
-              WARNING: Shortcut conflicts with another shortcut on the same page. 
-            </label>
+            <div class="shortcut subRow1">
+              <input id="billingCodeInput_shortcut_continue_enabled" type="checkbox" />
+              <label class="shortcutLabel">Click 'Continue'</label>
+              <input
+                id="billingCodeInput_shortcut_continue_keybinding" 
+                class="customKey"
+                data-shortcutgroup="billingCodeInput_shortcut"
+                type="text"
+                value=""
+                placeholder="press a key"
+              />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
+            </div>
+            
+            <div class="shortcut subRow1">
+              <input id="billingCodeInput_shortcut_setFocusDxCode_enabled" type="checkbox" />
+              <label class="shortcutLabel">Set cursor to diagnostic code text box</label>
+              <input
+                id="billingCodeInput_shortcut_setFocusDxCode_keybinding" 
+                class="customKey"
+                data-shortcutgroup="billingCodeInput_shortcut"
+                type="text"
+                value=""
+                placeholder="press a key"
+              />
+              <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+                WARNING: Shortcut conflicts with another shortcut on the same page. 
+              </label>
+            </div>
           </div>
-          <!-- <div class="shortcut subRow1">
-            <input id="billingCodeInput_shortcut_officeVisitInputCode_enabled" type="checkbox" />
-            <label class="shortcutLabel">Input Office visit service code</label>
-            <input
-              id="billingCodeInput_shortcut_officeVisitInputCode_keybinding" 
-              class="customKey"
-              data-shortcutgroup="billingCodeInput_shortcut"
-              type="text"
-              value=""
-              placeholder="press a key"
-            />
-            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
-              WARNING: Shortcut conflicts with another shortcut on the same page. 
-            </label>
-          </div>
-          <div class="shortcut subRow1">
-            <input id="billingCodeInput_shortcut_teleVisitInputCode_enabled" type="checkbox" />
-            <label class="shortcutLabel">Input Telehealth visit service code</label>
-            <input
-              id="billingCodeInput_shortcut_teleVisitInputCode_keybinding" 
-              class="customKey"
-              data-shortcutgroup="billingCodeInput_shortcut"
-              type="text"
-              value=""
-              placeholder="press a key"
-            />
-            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
-              WARNING: Shortcut conflicts with another shortcut on the same page. 
-            </label>
-          </div> -->
-          <div class="shortcut subRow1">
-            <input id="billingCodeInput_shortcut_setFocusDxCode_enabled" type="checkbox" />
-            <label class="shortcutLabel">Set cursor to diagnostic code text box</label>
-            <input
-              id="billingCodeInput_shortcut_setFocusDxCode_keybinding" 
-              class="customKey"
-              data-shortcutgroup="billingCodeInput_shortcut"
-              type="text"
-              value=""
-              placeholder="press a key"
-            />
-            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
-              WARNING: Shortcut conflicts with another shortcut on the same page. 
-            </label>
-          </div>
+          
         </div>
 
 
@@ -493,6 +467,7 @@
                 WARNING: Shortcut conflicts with another shortcut on the same page. 
               </label>
             </div>
+
             <div class="shortcut subRow1">
               <input id="eChart_shortcut_eforms_enabled" type="checkbox" />
               <label class="shortcutLabel">Open eForms library</label>
@@ -1202,8 +1177,6 @@
 
       <button id="save">Save</button>
       <button id="restore">Restore Defaults</button>
-      <button id="restore2" class="hide">Restore Defaults2</button>
-      <button id="restoreUbuntu" class="hide">Restore Defaults Ubuntu</button>
 
       <div id="status"></div>
       <div id="faq"></div>
