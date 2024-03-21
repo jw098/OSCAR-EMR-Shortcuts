@@ -52,17 +52,17 @@ function addBlock(id){
 
 function addOneMeasurementButton(oneMeasurementButton, buttonNum, buttonBlockID){
 	// if not enabled, stop this function
-	const enabled = oneMeasurementButton[`measurementButton${buttonNum}_enabled`];
+	const enabled = oneMeasurementButton[`measurementButton_${buttonNum}_enabled`];
 	if (!enabled){
 		return;
 	}
 	
-	const name = oneMeasurementButton[`measurementButton${buttonNum}_name`];
-	const groupName = oneMeasurementButton[`measurementButton${buttonNum}_groupName`];
-	const button_enabled = oneMeasurementButton[`measurementButton${buttonNum}_button_enabled`];
-	const shortcuts = oneMeasurementButton[`measurementButton${buttonNum}_shortcuts`];
-	const shortcuts_enabled = shortcuts[`measurementButton${buttonNum}_shortcuts_enabled`];
-	const shortcuts_keybinding = shortcuts[`measurementButton${buttonNum}_shortcuts_keybinding`];
+	const name = oneMeasurementButton[`measurementButton_${buttonNum}_name`];
+	const groupName = oneMeasurementButton[`measurementButton_${buttonNum}_groupName`];
+	const button_enabled = oneMeasurementButton[`measurementButton_${buttonNum}_button_enabled`];
+	const shortcuts = oneMeasurementButton[`measurementButton_${buttonNum}_shortcuts`];
+	const shortcuts_enabled = shortcuts[`measurementButton_${buttonNum}_shortcuts_enabled`];
+	const shortcuts_keybinding = shortcuts[`measurementButton_${buttonNum}_shortcuts_keybinding`];
 
 	// add listener for keyboard shortcut
 	if(shortcuts_enabled){
@@ -82,16 +82,16 @@ function addOneMeasurementButton(oneMeasurementButton, buttonNum, buttonBlockID)
 
 function addOneEFormButton(oneEFormButton, buttonNum, buttonBlockID){
 	// if not enabled, stop this function
-	const enabled = oneEFormButton[`eFormButton${buttonNum}_enabled`];
+	const enabled = oneEFormButton[`eFormButton_${buttonNum}_enabled`];
 	if (!enabled){
 		return;
 	}
-	const name = oneEFormButton[`eFormButton${buttonNum}_name`];
-	const fid = oneEFormButton[`eFormButton${buttonNum}_fid`];
-	const button_enabled = oneEFormButton[`eFormButton${buttonNum}_button_enabled`];
-	const shortcuts = oneEFormButton[`eFormButton${buttonNum}_shortcuts`];
-	const shortcuts_enabled = shortcuts[`eFormButton${buttonNum}_shortcuts_enabled`];
-	const shortcuts_keybinding = shortcuts[`eFormButton${buttonNum}_shortcuts_keybinding`];
+	const name = oneEFormButton[`eFormButton_${buttonNum}_name`];
+	const fid = oneEFormButton[`eFormButton_${buttonNum}_fid`];
+	const button_enabled = oneEFormButton[`eFormButton_${buttonNum}_button_enabled`];
+	const shortcuts = oneEFormButton[`eFormButton_${buttonNum}_shortcuts`];
+	const shortcuts_enabled = shortcuts[`eFormButton_${buttonNum}_shortcuts_enabled`];
+	const shortcuts_keybinding = shortcuts[`eFormButton_${buttonNum}_shortcuts_keybinding`];
 
 	// add listener for keyboard shortcut
 	if(shortcuts_enabled){

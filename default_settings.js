@@ -517,14 +517,14 @@ const defaultSettings = {
     measurementButtons_enabled: false,
     measurementButtons:[
       {
-        measurementButton1_enabled: true,
-        measurementButton1_name: "Vitals",
-        measurementButton1_groupName: "Vitals",
+        measurementButton_1_enabled: true,
+        measurementButton_1_name: "Vitals",
+        measurementButton_1_groupName: "Vitals",
 
-        measurementButton1_button_enabled: true,
-        measurementButton1_shortcuts:{
-          measurementButton1_shortcuts_enabled: true,
-          measurementButton1_shortcuts_keybinding: {
+        measurementButton_1_button_enabled: true,
+        measurementButton_1_shortcuts:{
+          measurementButton_1_shortcuts_enabled: true,
+          measurementButton_1_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: false,
             altKey: true,
@@ -538,14 +538,14 @@ const defaultSettings = {
     eFormButtons_enabled: false,
     eFormButtons:[
       {
-        eFormButton1_enabled: true,
-        eFormButton1_name: "Lab Req",
-        eFormButton1_fid: "",
+        eFormButton_1_enabled: true,
+        eFormButton_1_name: "Lab Req",
+        eFormButton_1_fid: "",
 
-        eFormButton1_button_enabled: true,
-        eFormButton1_shortcuts:{
-          eFormButton1_shortcuts_enabled: true,
-          eFormButton1_shortcuts_keybinding: {
+        eFormButton_1_button_enabled: true,
+        eFormButton_1_shortcuts:{
+          eFormButton_1_shortcuts_enabled: true,
+          eFormButton_1_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: true,
             altKey: true,
@@ -554,14 +554,14 @@ const defaultSettings = {
         }
       },
       {
-        eFormButton2_enabled: true,
-        eFormButton2_name: "X-ray",
-        eFormButton2_fid: "",
+        eFormButton_2_enabled: true,
+        eFormButton_2_name: "X-ray",
+        eFormButton_2_fid: "",
 
-        eFormButton2_button_enabled: true,
-        eFormButton2_shortcuts:{
-          eFormButton2_shortcuts_enabled: true,
-          eFormButton2_shortcuts_keybinding: {
+        eFormButton_2_button_enabled: true,
+        eFormButton_2_shortcuts:{
+          eFormButton_2_shortcuts_enabled: true,
+          eFormButton_2_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: true,
             altKey: true,
@@ -571,14 +571,14 @@ const defaultSettings = {
         
       },
       {
-        eFormButton3_enabled: true,
-        eFormButton3_name: "U/S",
-        eFormButton3_fid: "",
+        eFormButton_3_enabled: true,
+        eFormButton_3_name: "U/S",
+        eFormButton_3_fid: "",
 
-        eFormButton3_button_enabled: true,
-        eFormButton3_shortcuts:{
-          eFormButton3_shortcuts_enabled: true,
-          eFormButton3_shortcuts_keybinding: {
+        eFormButton_3_button_enabled: true,
+        eFormButton_3_shortcuts:{
+          eFormButton_3_shortcuts_enabled: true,
+          eFormButton_3_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: true,
             altKey: true,
@@ -588,14 +588,14 @@ const defaultSettings = {
         
       },
       {
-        eFormButton4_enabled: true,
-        eFormButton4_name: "Doctors Note",
-        eFormButton4_fid: "",
+        eFormButton_4_enabled: true,
+        eFormButton_4_name: "Doctors Note",
+        eFormButton_4_fid: "",
 
-        eFormButton4_button_enabled: true,
-        eFormButton4_shortcuts:{
-          eFormButton4_shortcuts_enabled: true,
-          eFormButton4_shortcuts_keybinding: {
+        eFormButton_4_button_enabled: true,
+        eFormButton_4_shortcuts:{
+          eFormButton_4_shortcuts_enabled: true,
+          eFormButton_4_shortcuts_keybinding: {
             ctrlKey: false,
             shiftKey: true,
             altKey: true,
@@ -1002,113 +1002,138 @@ const defaultSettings = {
 
 
 /* 
-- rebuild the settings object according to the structure of settingsStructure (derived from defaultSettings), 
-- if structure is the same, retain the value of storedSettings. if different, take on the value of defaultSettings
+- rebuild the settings object according to the structure of settingsTemplate 
+(derived from defaultSettings), 
+- if structure is the same (i.e. the values have the same data types), 
+retain the value of storedSettings. if different, take on the value of defaultSettings
 NOTE:
-- if the key doesn't exist in storedSettings, the storedValue will be null, and so the rebuiltSettings will default to the value in the default settings structure.
+- if the key doesn't exist in storedSettings, the storedValue will be null, and so the rebuiltSettings 
+will default to the value in default settings.
 
 */
-function rebuildSettingsStructure(settingsStructure, storedSettings){
+function rebuildSettingsStructure(settingsTemplate, storedSettings){
   let rebuiltSettings = {};
-  console.log(storedSettings);
-  for (const [key, value] of Object.entries(settingsStructure)){
+  // console.log(storedSettings);
+  for (const [key, value] of Object.entries(settingsTemplate)){
     
     const storedValue = storedSettings[key];
-    console.log(key);
-    console.log(value);
-    console.log(storedValue);
+    // console.log(key);
+    // console.log(value);
+    // console.log(storedValue);
+
+    /* 
+    - if the key doesn't exist in storedSettings, the storedValue will be null, 
+    and so will not match the value from the default settings template. 
+    Therefore, the rebuiltSettings will default to the value in the default settings template.
+    */
     if (typeof value != typeof storedValue){
       rebuiltSettings[key] = value;
-      console.log("hi1");
     } 
     else { // value types match
       if (typeof value == "boolean" || typeof value == "string" || typeof value == "number"){
         rebuiltSettings[key] = storedValue;
       }
-      else if (key.includes("bcBillingButtonGroup")){
-        console.assert(Array.isArray(value));
-        
-        const groupNum = key.split("bcBillingButtonGroup")[1];
-        console.log(key);
-        console.log(groupNum);
-        // if (storedValue.length == 0){
-        //   console.log("restore default value")
-        //   rebuiltSettings[key] = value;
-        // }
-        // else {
-          
-        // }
-        rebuiltSettings[key] = rebuildSettingsStructure_Array(value[0], storedValue, groupNum);
+      else if (Array.isArray(value)){
+        const settingsTemplate_firstIndex = value[0]
+        rebuiltSettings[key] = rebuildSettingsStructure_Array(settingsTemplate_firstIndex, storedValue);
       }
       else if (typeof value == "object" //&& typeof storedValue == "object" 
           && !Array.isArray(value) 
           && value !== null
       ){
-        console.log("hi2");
+        // console.log("hi2");
         rebuiltSettings[key] = rebuildSettingsStructure(value, storedValue);
       } 
-      else { // value types match, is not boolean, string, number, or object. may be bigint, undefined, symbol, null
-        console.log("hi3" + key + value);
+      else { 
+        // value types match, but is not boolean, string, number, or object. 
+        // may be bigint, undefined, symbol, null
+        console.log("UNEXPECTED:" + key + value);
         rebuiltSettings[key] = storedValue;
       }
     }
   }
+
   return rebuiltSettings;
 }
 
-function rebuildSettingsStructure_Array(settingsStructure, storedSettingsArray, groupNum){
+/* 
+NOTE:
+- settingsTemplate_firstIndex is just the first item in the array. this is used as the template
+for creating settingsTemplate_correctIndexNum, which is the same template with the correct index number.
+This template is then used for rebuilding the rest of the items in the array.
+- we can't just use the array itself from default Settings, in case storedSettingsArray is longer
+than default Settings Array
+- if storedSettingsArray isn't an array, just return an empty array.
+*/
+function rebuildSettingsStructure_Array(settingsTemplate_firstIndex, storedSettingsArray){
   console.log(storedSettingsArray);
+  console.log(storedSettingsArray.length);
+  if (!Array.isArray(storedSettingsArray)){
+    return [];
+  }
+
   let rebuiltSettingsArray = [];
   for (let i = 0; i < storedSettingsArray.length; i++){
     const buttonNum = i+1;
-    const settingsStructureWithCorrectGroupButtonNum = 
-      settingsStructureWithGroupButtonNum(settingsStructure, groupNum, buttonNum);
-    console.log(settingsStructureWithCorrectGroupButtonNum);
+    const settingsTemplate_correctIndexNum = 
+      getSettingsTemplateWithCorrectIndexNum(settingsTemplate_firstIndex, buttonNum);
+
     storedSettingsOneItem = storedSettingsArray[i];
 
-    rebuiltSettingsArray.push(rebuildSettingsStructure(settingsStructureWithCorrectGroupButtonNum, storedSettingsOneItem));
+    rebuiltSettingsArray.push(
+      rebuildSettingsStructure(settingsTemplate_correctIndexNum, storedSettingsOneItem));
+
   }
   console.log(rebuiltSettingsArray);
   return rebuiltSettingsArray;
 }
 
 /* 
-- assumes the settingsStructure is the first element in its respective array.
-- therefore, its groupButtonNum will be X_1_, where X = [1, 2, 3]
+- from settingsTemplate_firstIndex, returns a settingsTemplate object with the
+ correct structure and index number
+ASSUMES:
+- the index number is in the format _X_, and so can be easily searched for and replaced.
+  - e.g. bcBillingButton2_3_enabled. where _3_ denotes that it's the 3rd element in the array.
+NOTES
+- assumes the settingsTemplate_firstIndex is the first element in its respective array.
+- we don't care about the actual value stored in the settings, as this is just the settingsTemplate.
+ this is why we store an empty keybinding
 */
-function settingsStructureWithGroupButtonNum(settingsStructure, groupNum, buttonNum){
+function getSettingsTemplateWithCorrectIndexNum(settingsTemplate_firstIndex, buttonNum){
   let rebuiltSettings = {};
-  for (const [key, value] of Object.entries(settingsStructure)){
-    const keySplitWithoutGroupButtonNum = key.split(/\d+\_\d+\_/);
+  for (const [key, value] of Object.entries(settingsTemplate_firstIndex)){
+    const keySplitWithoutGroupButtonNum = key.split(/\_\d+\_/); // e.g. "bcBillingButton1", "_1_", "enabled"
     const keyWithCorrectGroupButtonNum = 
-      keySplitWithoutGroupButtonNum[0] + groupNum + "_" + buttonNum + "_" + keySplitWithoutGroupButtonNum[1];
+      keySplitWithoutGroupButtonNum[0] + "_" + buttonNum + "_" + keySplitWithoutGroupButtonNum[1];
     if (typeof value == "boolean" || typeof value == "string" || typeof value == "number"){
-      console.log(key);
+      // console.log(key);
       rebuiltSettings[keyWithCorrectGroupButtonNum] = value;
       // console.log(document.getElementById(key).checked);
     } 
     else if (key.includes("_keybinding")){
       rebuiltSettings[keyWithCorrectGroupButtonNum] = returnEmptyKeybinding();
-      // {
-      //   ctrlKey: false,
-      //   shiftKey: false,
-      //   altKey: false,
-      //   key: ''
-      // };
     }
     else{
       console.assert(typeof value == "object");
       rebuiltSettings[keyWithCorrectGroupButtonNum] =  
-        settingsStructureWithGroupButtonNum(value, groupNum, buttonNum);
+        getSettingsTemplateWithCorrectIndexNum(value, buttonNum);
     }
   }
+  
   return rebuiltSettings;
 }
 
 /* 
-- ensure stored settings matches the given settings object. if doesn't match. then fixes it.
+- ensure stored settings matches the default settings object in structure (although the values may be different). 
+if doesn't match, then fixes it.
 NOTE
 - this rebuilds the settings according to the structure of settingsStructure and stores it in storage.
+HOW TO TEST THIS:
+- uncomment setTestSettings in options.js, reload the program, and open the GUI settings page. 
+It loads in settings that are invalid/out of date and there should be an error when 
+you open the GUI settings page.
+- re-comment out setTestSettings and reload the program. This function should run
+and fix the error. Inspect to verify.
  */
 async function checkStoredSettingsStructure(){
   const storedSettings = await browser.storage.local.get(defaultSettings);
@@ -1118,7 +1143,6 @@ async function checkStoredSettingsStructure(){
   // console.log(await browser.storage.local.getBytesInUse("billingCodeInput"));
   await browser.storage.local.set(rebuiltSettings);
   console.log(await browser.storage.local.get());
-  console.log('hihi12');
 }
 
 
