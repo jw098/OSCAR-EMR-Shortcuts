@@ -2567,8 +2567,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   // await checkStoredSettingsStructure();
   restore_options();
 
-  const settingsStructure = await browser.storage.local.get(defaultSettings)
+  // const settingsStructure = await browser.storage.local.get(defaultSettings)
   // console.log(settingsStructure);
+  console.log(await browser.storage.local.get());
 
   document.getElementById("export").addEventListener("click", export_options);
   document.getElementById("import").addEventListener("click", import_options);

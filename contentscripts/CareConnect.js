@@ -10,7 +10,30 @@
 // @version 17.2 Fixed eMAIL for FF ESR 91.3; remove Doxy, eMail, and QuickLinks
 // ==/UserScript== 
 
-loadPHNToCareConnect();
+
+
+checkEnabled_CareConnect();
+async function checkEnabled_CareConnect(){
+	const isEnabled = await browser.storage.local.get('enabled');
+	if(!isEnabled.enabled){
+		return;
+	}
+	else {
+		const eChartObj = await browser.storage.local.get('eChart');
+		const eChart = eChartObj.eChart;
+		const demographicInfo = eChart.demographicInfo;
+		const CareConnect_enabled = demographicInfo.demographicInfo_CareConnect_enabled;
+
+		if (CareConnect_enabled){
+			loadPHNToCareConnect();
+		}
+
+	}
+}
+
+/* 
+- load PHN from storage and paste to CareConnect search field. then clear PHN from storage
+ */
 async function loadPHNToCareConnect(){
 	const PHNObject = await browser.storage.local.get("PHN");
 	const PHN = PHNObject.PHN;
@@ -18,5 +41,6 @@ async function loadPHNToCareConnect(){
 	if(PHN != undefined){
 		console.log("Filled PHN from local storage");
 		$('#search').val(PHN);
+		browser.storage.local.set({PHN: ""});	
 	}
 }

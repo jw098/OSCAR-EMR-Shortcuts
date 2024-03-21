@@ -57,7 +57,10 @@ async function loadDemographicInfo(demographicInfoSettings){
 
 	console.log(demoArrayVal);
 	const HCN = hinValue.replace(/\s/g,'');
-	browser.storage.local.set({PHN: HCN});
+	
+
+
+	
 	// console.log(await browser.storage.local.get({PHN: HCN}))
 	// console.log(HCN)
 	
@@ -178,10 +181,16 @@ async function loadDemographicInfo(demographicInfoSettings){
 
 		document.getElementById("button13").onclick = openCareConnect;
 		document.getElementById("button13").setAttribute('style', 'color:green;'); //font-size:10px; 
+
+		// open careConnect, save PHN to storage for pasting, then clear the PHN after 60s.
 		function openCareConnect() {
 			// window.open("https://health.careconnect.ca?" + passPHN, "newWindow", target = "_blank")
 			// window.open("https://health.careconnect.ca", "newWindow", target = "_blank");
 			window.open("https://health.careconnect.ca");
+			browser.storage.local.set({PHN: HCN});
+			setTimeout(() => {
+				browser.storage.local.set({PHN: ""});	
+			}, 60000);
 		}
 	}
 
