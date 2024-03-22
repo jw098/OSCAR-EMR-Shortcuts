@@ -155,16 +155,6 @@ async function prefixWriteToEncounter_EChartPage_writeFromStorageOnLoad(writeEnc
 	}
 
 
-
-	/* 
-	- then set writeEncounter to none, so that the message isn't posted again. 
-	maybe not needed???
-	 */
-	// browser.storage.local.set({ writeEncounter: "none" });
-	// console.log("set writeEncounter to none.");
-
-
-
 	/* 
 	get the ticklerMessage 
 	*/

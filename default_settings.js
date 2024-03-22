@@ -1126,6 +1126,7 @@ function getSettingsTemplateWithCorrectIndexNum(settingsTemplate_firstIndex, but
 /* 
 - ensure stored settings matches the default settings object in structure (although the values may be different). 
 if doesn't match, then fixes it.
+- also clears the storage
 NOTE
 - this rebuilds the settings according to the structure of settingsStructure and stores it in storage.
 HOW TO TEST THIS:
@@ -1140,7 +1141,7 @@ async function checkStoredSettingsStructure(){
   const rebuiltSettings = rebuildSettingsStructure(defaultSettings, storedSettings);
   console.log(rebuiltSettings);
   console.log(storedSettings);
-  // console.log(await browser.storage.local.getBytesInUse("billingCodeInput"));
+  await browser.storage.local.clear();
   await browser.storage.local.set(rebuiltSettings);
   console.log(await browser.storage.local.get());
 }
