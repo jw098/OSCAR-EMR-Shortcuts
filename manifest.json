@@ -291,14 +291,23 @@
         },
         {
             "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*",
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
+                "contentscripts/Tickler_PrefixWriteEncounter_EncounterPage.js"
+            ]
+        },
+        {
+            "matches": [
                 "*://*/*/tickler/ticklerAdd.jsp*",
                 "*://*/*/tickler/ForwardDemographicTickler*"
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
                 "contentscripts/utils.js",
-                "contentscripts/Tickler_PrefixWriteEncounter.js"
+                "contentscripts/Tickler_PrefixWriteEncounter_TicklerPage.js"
             ]
         }
       ]
