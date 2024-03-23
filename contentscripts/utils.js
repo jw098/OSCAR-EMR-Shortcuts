@@ -110,3 +110,18 @@ function todayDateYYYYMMDD(){
 	return todayFullDate;
 }
 	
+
+/* 
+PURPOSE
+- if the given element already exists in the document, remove it and the br after it.
+ */
+function removeAlreadyExistingElementAndBrTag(element){
+	if(!!element){
+		const brTag = element.nextElementSibling;
+		// console.log(brTag.tagName);
+		if (brTag.tagName=="BR"){
+			brTag.remove();
+		}
+		element.remove();
+	}
+}

@@ -37,16 +37,32 @@
         {
             "matches": [
                 "*://*/*/oscarRx/choosePatient.do*", 
-                "*://*/*/oscarRx/SearchDrug3.jsp*",
+                "*://*/*/oscarRx/SearchDrug3.jsp*"
+            ],
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/AllergyQuickAdd_MedicationsPage.js"
+            ]
+        },
+        {
+            "matches": [
                 "*://*/*/oscarRx/ShowAllergies2.jsp*",
                 "*://*/*/oscarRx/showAllergy.do*",
-                "*://*/*/oscarRx/deleteAllergy.do*",
+                "*://*/*/oscarRx/deleteAllergy.do*"
+            ],
+            "js": [
+                "contentscripts/utils.js",
+                "contentscripts/AllergyQuickAdd_AddAllergyPage.js"
+            ]
+        },
+        {
+            "matches": [
                 "*://*/*/oscarRx/addReaction2.do*",
                 "*://*/*/oscarRx/addReaction.do*"
             ],
             "js": [
                 "contentscripts/utils.js",
-                "contentscripts/Allergy_QuickAdd.user.js"
+                "contentscripts/AllergyQuickAdd_AddReactionPage.js"
             ]
         },
         {
