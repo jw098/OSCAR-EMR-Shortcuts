@@ -23,9 +23,9 @@ async function checkEnabled_UpdateConsultations(){
 	else {
 		const consultationsObj = await browser.storage.local.get('consultations');
 		const consultations = consultationsObj.consultations;
-		const consultations_keyboardShortcuts = consultations.consultations_keyboardShortcuts;
-		if (consultations_keyboardShortcuts.consultations_shortcuts_enabled){
-			keydownEventListener_UpdateConsultations(consultations_keyboardShortcuts);
+		const consultationsUpdate_keyboardShortcuts = consultations.consultationsUpdate_keyboardShortcuts;
+		if (consultationsUpdate_keyboardShortcuts.consultationsUpdate_shortcuts_enabled){
+			keydownEventListener_UpdateConsultations(consultationsUpdate_keyboardShortcuts);
 		}
 	}
 }
@@ -34,15 +34,15 @@ async function checkEnabled_UpdateConsultations(){
 // Keydown Event Listeners
 ////////////////////////////////
 
-function keydownEventListener_UpdateConsultations(consultations_keyboardShortcuts){
+function keydownEventListener_UpdateConsultations(consultationsUpdate_keyboardShortcuts){
 	const close_enabled = 
-	consultations_keyboardShortcuts.consultations_shortcuts_close_enabled;
+	consultationsUpdate_keyboardShortcuts.consultationsUpdate_shortcuts_close_enabled;
 	const close_keybinding = 
-	consultations_keyboardShortcuts.consultations_shortcuts_close_keybinding;
-	const submit_enabled = 
-	consultations_keyboardShortcuts.consultations_shortcuts_submit_enabled;
-	const submit_keybinding = 
-	consultations_keyboardShortcuts.consultations_shortcuts_submit_keybinding;
+	consultationsUpdate_keyboardShortcuts.consultationsUpdate_shortcuts_close_keybinding;
+	const update_enabled = 
+	consultationsUpdate_keyboardShortcuts.consultationsUpdate_shortcuts_update_enabled;
+	const update_keybinding = 
+	consultationsUpdate_keyboardShortcuts.consultationsUpdate_shortcuts_update_keybinding;
 
 
 	// let currentURL = window.location.href;
@@ -54,7 +54,7 @@ function keydownEventListener_UpdateConsultations(consultations_keyboardShortcut
 			case close_enabled && keybindingMatches(close_keybinding, theEvent):	// If on Consultation page, hotkey to close window.
 				window.close();
 				break;
-			case submit_enabled && keybindingMatches(submit_keybinding, theEvent):
+			case update_enabled && keybindingMatches(update_keybinding, theEvent):
 				const theTarget2 = document.evaluate("//input[@value='Update Consultation Request']",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 				theTarget2.click();
 				break;					

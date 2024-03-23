@@ -490,8 +490,27 @@ const defaultSettings = {
         shiftKey: false,
         altKey: true,
         key: '1'
+      }
+    },
+    consultationsUpdate_keyboardShortcuts: {
+      consultationsUpdate_shortcuts_enabled: false,
+
+      consultationsUpdate_shortcuts_close_enabled: true,
+      consultationsUpdate_shortcuts_close_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: 'w'
+      },
+      consultationsUpdate_shortcuts_update_enabled: true,
+      consultationsUpdate_shortcuts_update_keybinding: {
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: true,
+        key: '1'
       },
     }
+
   },
 
   eChart:{

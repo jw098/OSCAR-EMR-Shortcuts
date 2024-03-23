@@ -2243,7 +2243,7 @@ function findAllShortcutConflicts(settingsObject){
   // console.log(settingsObject);
   
   const allShortcutGroups = findAllShortcutGroups(settingsObject, new Set());
-  // console.log(allShortcutGroups);
+  console.log(allShortcutGroups);
   for (let shortcutGroup of allShortcutGroups){
     checkShortcutGroupConflict(shortcutGroup);
   }

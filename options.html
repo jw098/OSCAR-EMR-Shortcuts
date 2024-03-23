@@ -136,7 +136,7 @@
               </label>
             </div>
           </div>
-          
+
         </div>
 
 
@@ -293,6 +293,21 @@
           <input id="consultations_shortcuts_enabled" type="checkbox" />
           <label for="consultations_shortcuts_enabled">Enable keyboard shortcuts</label>
           <div class="shortcut subRow1">
+            <input id="consultations_shortcuts_submit_enabled" type="checkbox" />
+            <label class="shortcutLabel">Submit Consultation Request</label>
+            <input
+              id="consultations_shortcuts_submit_keybinding"
+              class="customKey"
+              data-shortcutgroup="consultations_shortcut"
+              type="text"
+              value=""
+              placeholder="press a key"
+            />
+            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+              WARNING: Shortcut conflicts with another shortcut on the same page. 
+            </label>
+          </div>
+          <div class="shortcut subRow1">
             <input id="consultations_shortcuts_close_enabled" type="checkbox" />
             <label class="shortcutLabel">Close Consultations window</label>
             <input
@@ -307,13 +322,35 @@
               WARNING: Shortcut conflicts with another shortcut on the same page. 
             </label>
           </div>
+        </div>
+
+        <br>
+        
+        <div class="row shortcutGroup">
+          <input id="consultationsUpdate_shortcuts_enabled" type="checkbox" />
+          <label for="consultationsUpdate_shortcuts_enabled">Enable keyboard shortcuts in Update Consults page</label>
           <div class="shortcut subRow1">
-            <input id="consultations_shortcuts_submit_enabled" type="checkbox" />
-            <label class="shortcutLabel">Submit/Update Consultation Request</label>
+            <input id="consultationsUpdate_shortcuts_update_enabled" type="checkbox" />
+            <label class="shortcutLabel">Update Consultation Request</label>
             <input
-              id="consultations_shortcuts_submit_keybinding"
+              id="consultationsUpdate_shortcuts_update_keybinding"
               class="customKey"
-              data-shortcutgroup="consultations_shortcut"
+              data-shortcutgroup="consultationsUpdate_shortcut"
+              type="text"
+              value=""
+              placeholder="press a key"
+            />
+            <label class="warning hide" title="Conflicts only occur if the same keyboard shortcut is assigned to two different actions on the same page. There is no issue if the same shortcut appears on different pages. In case of conflicts, only one of the actions will be performed." >
+              WARNING: Shortcut conflicts with another shortcut on the same page. 
+            </label>
+          </div>
+          <div class="shortcut subRow1">
+            <input id="consultationsUpdate_shortcuts_close_enabled" type="checkbox" />
+            <label class="shortcutLabel">Close Update Consultations window</label>
+            <input
+              id="consultationsUpdate_shortcuts_close_keybinding"
+              class="customKey"
+              data-shortcutgroup="consultationsUpdate_shortcut"
               type="text"
               value=""
               placeholder="press a key"
