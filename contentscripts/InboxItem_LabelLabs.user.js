@@ -155,8 +155,8 @@ function addNewLabsLabel(){
 	const oldLabelResultText = oldLabelInnerText.split("Prev:" + nbsp + nbsp)[1].split(labelLabsTrailingMarker)[0];
 	const oldLabelResultsList = oldLabelResultText.split("/");
 
-	console.log(currentLabsResultsText);
-	console.log(oldLabelResultText);
+	// console.log("current Labs: " + currentLabsResultsText);
+	// console.log("prev Labs: " + oldLabelResultText);
 	let difference = currentLabResultsList.filter(x => !oldLabelResultsList.includes(x));
 	const newResultsText = difference.join("/");
 	// console.log(newResultsText);	
@@ -172,14 +172,16 @@ function addNewLabsLabel(){
 
 /* 
 PURPOSE:
-- labels the current lab result, with labelLabsTrailingMarker appended to the end, so that we know which labels were done by this script vs manually done.
+- labels the current lab result, with labelLabsTrailingMarker appended to the end, 
+so that we know which labels were done by this script vs manually done.
 - do not re-label the lab if has been manually set by someone.
-  - i.e. rename only if current label is "(not set)" or empty string or previously labeled by labelCurrentLabs, as determined by ending in labelLabsTrailingMarker.
+  - i.e. rename only if current label is "(not set)" or empty string or 
+  previously labeled by labelCurrentLabs, as determined by ending in labelLabsTrailingMarker.
  */
 function labelCurrentLabs(){
 	console.log('label labs');
 	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label:")[1].trim();
-	console.log(currentLabsResultsText);
+	// console.log("current label: " + currentLabsResultsText);
 	if	(
 		currentLabsResultsText == "" 
 		|| currentLabsResultsText == "(not set)" 
@@ -224,27 +226,66 @@ function showKeyLabResultsTextBox(keyLabResults){
 	document.body.appendChild(labResultsTextBox); 
 }
 
-function extractKeyLabResults(allLabResults){
-	// console.log(allLabResults);
-	let keyLabResultList = "";	
+/* 
+- get all lab results from the page, from the given nodeList
+- removes duplicates and replaces them with lab result 2.
+ */
+function extractKeyLabResults(allLabResults_nodeList){
+	console.log(allLabResults_nodeList);
+	let keyLabResultList_old = "";	
+	let keyLabResultArray = [];	
 	let index = 0;
-	allLabResults.forEach(	
+	allLabResults_nodeList.forEach(	
 		function(element){			
 			if (!isSubResult(element)){  // add all non sub-results. i.e. add all key results.
-				let labTitle = renameLabResult(element.textContent);  // join to convert array to string.
-				if(keyLabResultList != "" && labTitle != ""){
+				let labTitle = renameLabResult(element.textContent); 
+				if (labTitle != ""){
+					keyLabResultArray.push(labTitle);
+				}
+
+
+				// old code
+				if(keyLabResultList_old != "" && labTitle != ""){
 					labTitle = "/" + labTitle;
 				}				
-				keyLabResultList += labTitle;
-				// console.log(e);
+				keyLabResultList_old += labTitle;
+
+				// console.log(labTitle);
 // 				console.log(e.parentNode.childNodes);
 	// 			console.log(e.parentNode.outerHTML);
 			}
 			index++
 		}
 	)
-	
+
+	const keyLabResultArray_noDupes = consolidateDuplicateLabResults(keyLabResultArray);
+	const keyLabResultList = keyLabResultArray_noDupes.join("/");
+	console.log(keyLabResultList);
+	console.log(keyLabResultList_old);
+
 	return keyLabResultList;
+}
+
+/* 
+- removes duplicate lab results, and replaces it with labResult2
+- e.g. Protein Electrophoresis, Protein Electrophoresis becomes Protein Electrophoresis 2
+ */
+function consolidateDuplicateLabResults(keyLabResultArray){
+	let uniqueLabs = [];
+	for (let i = 0; i < keyLabResultArray.length; i++){
+		const labResult = keyLabResultArray[i];
+		const indexInUniqueArray = uniqueLabs.indexOf(labResult);
+
+		if (indexInUniqueArray === -1) {  // doesn't already exist in unique array
+            uniqueLabs.push(labResult);
+        }
+		else {
+			uniqueLabs[indexInUniqueArray] = uniqueLabs[indexInUniqueArray].concat(" 2");
+		}
+	}
+
+	return uniqueLabs;
+
 }
 
 // Purpose: checks if the Lab result is a sub-result. e.g. WBC, RBC are sub results to Hematology Panel (CBC).
