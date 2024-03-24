@@ -533,7 +533,7 @@ const defaultSettings = {
       demographicInfo_clipboard_enabled: true,
     },
 
-    measurementButtons_enabled: false,
+    measurementButtons_enabled: true,
     measurementButtons:[
       {
         measurementButton_1_enabled: true,
@@ -554,7 +554,7 @@ const defaultSettings = {
 
     ],
 
-    eFormButtons_enabled: false,
+    eFormButtons_enabled: true,
     eFormButtons:[
       {
         eFormButton_1_enabled: true,

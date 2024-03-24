@@ -369,7 +369,9 @@
           <label for="schedule_shortcuts_enabled">Enable keyboard shortcuts</label>
           <div class="shortcut subRow1">
             <input id="schedule_shortcut_openEChart_enabled" type="checkbox" />
-            <label class="shortcutLabel">Open next patient's eChart</label>
+            <label class="shortcutLabel" title="Opens the first patient on the schedule page that isn't Cancelled, No Show, Billed, or Signed">
+              Open next patient's eChart (that isn't Cancelled, No Show, Billed, or Signed)
+            </label>
             <input
               id="schedule_shortcut_openEChart_keybinding"
               class="customKey"
@@ -409,7 +411,7 @@
         </div>
         <div class="row">
           <input id="eformSearchBar_enabled" type="checkbox" />
-          <label for="eformSearchBar_enabled">Search bar that searches eForms by title</label>
+          <label for="eformSearchBar_enabled">eForm Search bar: searches eForms by title</label>
         </div>
 
         <div class="row">
@@ -475,7 +477,7 @@
             <label for="eChart_mainWindow_shortcuts_enabled">Enable keyboard shortcuts</label>
             <div class="shortcut subRow1">
               <input id="eformSearchBar_shortcuts_enabled" type="checkbox" />
-              <label class="shortcutLabel">Set cursor to note text area. If eForm searchbar enabled, toggle between the two.</label>
+              <label class="shortcutLabel">Set cursor to note text area. If eForm Search bar enabled, toggle between the two.</label>
               <input
                 id="eformSearchBar_shortcuts_keybinding"
                 class="customKey"
@@ -923,7 +925,7 @@
 
 
       <section>
-        <h3>Inbox Item (Lab result, Scanned documents)</h3>
+        <h3>Inbox Item (e.g. Lab result, Scanned documents)</h3>
         <div class="row">
           <input id="inboxItem_labelLabs" type="checkbox" 
           title="Will only label lab results if it is an empty label, or hasn't yet been set, or if previously labelled by this script (as evidenced by ending in '...'). Will not override manually labelled results (unless it ends in '...')."/>
@@ -1107,7 +1109,7 @@
         </div>
         <div class="row">
           <input id="tickler_prefixWriteEncounter_submitExit" type="checkbox" />
-          <label for="tickler_prefixWriteEncounter_submitExit" title="NOTE: As mentioned, the tickler message will only be posted to the E-Chart if the E-Chart is already open in another tab. Also, note that it will only paste the message. To guarantee that the message is saved, the user needs to sign or save the note.">When clicking the button 'Submit (tickler) and Exit', post the tickler message to the E-Chart, if the E-Chart is open. The tickler message will be prefixed with '[Tickler message to ...]'.</label>
+          <label for="tickler_prefixWriteEncounter_submitExit" title="NOTE: As mentioned, the tickler message will only be posted to the E-Chart if the E-Chart is already open in another tab. Also, note that it will only paste the message. To guarantee that the message is saved, the user needs to sign or save the note.">When clicking the button 'Submit (tickler) and Exit', post the tickler message to the E-Chart. The tickler message will be prefixed with '[Tickler message to ...]'.</label>
         </div>
         <div class="row">
           <input id="tickler_prefixWriteEncounter_submitWrite" type="checkbox" />
