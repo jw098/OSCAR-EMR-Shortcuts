@@ -7,7 +7,7 @@
 // @grant	   none
 // ==/UserScript==
 
-const labelLabsTrailingMarker = "...";
+const labelLabsTrailingMarker = "…";
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Event Listeners
@@ -181,11 +181,12 @@ so that we know which labels were done by this script vs manually done.
 function labelCurrentLabs(){
 	console.log('label labs');
 	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label:")[1].trim();
-	// console.log("current label: " + currentLabsResultsText);
+	console.log("current label: " + currentLabsResultsText);
 	if	(
 		currentLabsResultsText == "" 
 		|| currentLabsResultsText == "(not set)" 
 		|| currentLabsResultsText.endsWith(labelLabsTrailingMarker)
+		|| currentLabsResultsText.endsWith("...")
 		)
 	{
 		// Gets all lab results from the XML, which are either in table/tbody/tr/td[1]/a[1] or table/tbody/tr/td[1]/span
