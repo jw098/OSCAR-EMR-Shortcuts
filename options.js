@@ -1822,6 +1822,10 @@ function add_measurementButtonBlank() {
     subRow2.appendChild(shortcutDiv);
   div.appendChild(subRow2);
 
+  setGreyout(enabled);
+  setGreyout(buttonEnabled);
+  setGreyout(shortcutEnabled);
+
   buttonList.insertBefore(
     div,
     buttonList.children[buttonList.childElementCount - 1]
@@ -1909,6 +1913,10 @@ function add_EFormButtonBlank() {
       shortcutDiv.appendChild(warning);
     subRow2.appendChild(shortcutDiv);
   div.appendChild(subRow2);
+
+  setGreyout(enabled);
+  setGreyout(buttonEnabled);
+  setGreyout(shortcutEnabled);
 
   buttonList.insertBefore(
     div,
@@ -2047,6 +2055,8 @@ function add_BCBillingButtonBlank(groupNum, isAgeBasedCode) {
   divSubRow2.appendChild(divShortcut);
 
   div.appendChild(divSubRow2);
+  setGreyout(enabled);
+  setGreyout(shortcutEnable);
 
   buttonGroup.insertBefore(
     div,
