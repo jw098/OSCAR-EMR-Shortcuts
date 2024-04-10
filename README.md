@@ -40,8 +40,6 @@ This extension has only been tested on the WELL Health implementation of OSCAR E
 
 - BC Billing page: Alt+1 to Continue, Alt+Q to input in person visit billing code, Alt+W to input telehealth visit billing code, Alt+A to set focus to Dx code.
 
-- Cortico: Escape to close Cortico pop-up
-
 - Consultation: Alt+1 to 'Submit Consultation Request'. Alt+W to close the window. 
 
 - EChart: Alt+1 to Sign/Save/Bill. Alt+2 to Save. Alt+3 to Sign/Save. Alt+4 to Exit. Alt+W, Alt+Q, Alt+A to open Consultation, eForms, Ticklers respectively. 

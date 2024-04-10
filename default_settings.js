@@ -457,20 +457,6 @@ const defaultSettings = {
     }
   },
 
-  cortico: {
-    cortico_keyboardShortcuts: {
-      cortico_shortcuts_enabled: false,
-
-      cortico_shortcut_closeModal_enabled: true,
-      cortico_shortcut_closeModal_keybinding: {
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: false,
-        key: 'Escape'
-      },
-    }
-  },
-
   consultations:{
     postPatientAgeGender: true,
     postAllHistory:true,

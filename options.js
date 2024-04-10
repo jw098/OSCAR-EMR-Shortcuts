@@ -127,44 +127,6 @@ var testSettings = {
   },
 
 
-  cortico: true,
-  // cortico: {
-  //   cortico_keyboardShortcuts: {
-  //     cortico_shortcuts_enabled: true,
-
-  //     cortico_shortcut_closeModal_enabled: true,
-  //     cortico_shortcut_closeModal_keybinding: {
-  //       ctrlKey: false,
-  //       shiftKey: false,
-  //       altKey: false,
-  //       key: 'Escape'
-  //     },
-  //   }
-  // },
-
-  // consultations:{
-  //   postPatientAgeGender: true,
-  //   postAllHistory:true,
-  //   consultations_keyboardShortcuts: {
-  //     consultations_shortcuts_enabled: true,
-
-  //     consultations_shortcuts_close_enabled: true,
-  //     consultations_shortcuts_close_keybinding: {
-  //       ctrlKey: false,
-  //       shiftKey: false,
-  //       altKey: true,
-  //       key: 'w'
-  //     },
-  //     consultations_shortcuts_submit_enabled: true,
-  //     consultations_shortcuts_submit_keybinding: {
-  //       ctrlKey: false,
-  //       shiftKey: false,
-  //       altKey: false,
-  //       key: 1
-  //     },
-  //   }
-  // },
-
   consultations:{
     postPatientAgeGender: true,
     postAllHistory:true,
@@ -652,19 +614,6 @@ const testSettings2 = {
     }
   },
 
-  cortico: {
-    cortico_keyboardShortcuts: {
-      cortico_shortcuts_enabled: false,
-
-      cortico_shortcut_closeModal_enabled: true,
-      cortico_shortcut_closeModal_keybinding: {
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: false,
-        key: 'Escape'
-      },
-    }
-  },
 
   consultations:{
     postPatientAgeGender: true,
