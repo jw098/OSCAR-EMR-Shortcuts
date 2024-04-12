@@ -1,2 +1,0 @@
-- add the setting to default_settings.js. add the setting to the object `defaultSettings`, which stores all settings
-- add the HTML elements to options.html. Ensure the ID matches the setting in default_settings.js.

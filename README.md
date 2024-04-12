@@ -4,17 +4,45 @@ Keyboard shortcuts, buttons, automated actions for OSCAR EMR.
 
 # Features:
 
-- Automated actions
+- Automated actions (e.g. renaming lab results)
 
-- Buttons for common actions
+- Buttons for common actions (e.g. open e-forms)
 
 - Keyboard shortcuts for commonly used actions
 
 # Disclaimer:
 
-This extension has only been tested on the WELL Health implementation of OSCAR EMR, in BC, in Classic view. Feel free to contact me if you notice any bugs.
+This extension has only been tested on the WELL Health implementation of OSCAR EMR, in BC, in Classic view. Due to the nature of a browser extension, I am unable to guarantee it will work with every EMR update, and you use it at your own risk. Using this web extension may result in errant behavior in the EMR.
 
-# Detailed feature list
+Feel free to contact me if you notice any bugs. Please also reach out if you have a different version of OSCAR and are interested in getting this extension to work in your OSCAR version.
+
+# User Guide
+
+## General Settings
+
+- [Keyboard shortcuts](wiki/General-Settings/KeyboardShortcuts.md)
+
+- [Saving settings](wiki/General-Settings/Saving.md)
+
+- [Export/import settings](wiki/General-Settings/Export-Import.md)
+
+## Page-specific features
+
+- [Allergy](wiki/Page-Specific/Allergy.md)
+
+- [BC Billing](wiki/Page-Specific/BCBilling.md)
+
+- [Consultations](wiki/Page-Specific/Consultations.md)
+
+- [E-Chart](wiki/Page-Specific/E-Chart.md)
+
+- [Inbox](wiki/Page-Specific/Inbox.md)
+
+- [Inbox Item](wiki/Page-Specific/InboxItem.md)
+
+- [Medications](wiki/Page-Specific/Medications.md)
+
+- [Tickler](wiki/Page-Specific/Tickler.md)
 
 ## Automated actions: 
 
@@ -36,21 +64,4 @@ This extension has only been tested on the WELL Health implementation of OSCAR E
 
 - Inbox: Button that opens all new and old reports (including acknowledged and filed reports). Another button that opens just new reports.
 
-## Keyboard shortcuts:
-
-- BC Billing page: Alt+1 to Continue, Alt+Q to input in person visit billing code, Alt+W to input telehealth visit billing code, Alt+A to set focus to Dx code.
-
-- Consultation: Alt+1 to 'Submit Consultation Request'. Alt+W to close the window. 
-
-- EChart: Alt+1 to Sign/Save/Bill. Alt+2 to Save. Alt+3 to Sign/Save. Alt+4 to Exit. Alt+W, Alt+Q, Alt+A to open Consultation, eForms, Ticklers respectively. 
-
-- eForms: Within e-forms repository, Alt+A to close. Within an individual e-form: Alt+1 to Submit. Alt+2 to Print & Submit.
-
-- Inbox: Within Inbox, Alt+1 to open first item. Within the Lab result: Alt+1 to Acknowledge. Alt+Q to open E-chart. Alt+W to open Tickler.
-
-- Medications: Alt+1 to 'Save And Print', Alt+A to set focus to 'Drug Name' text area (to enter a new medication), Alt+Q to close the window. When the prescription print window pops up, Alt+1 to 'Print & Paste into EMR'. Alt+2 to 'Fax & Paste into EMR'. 
-
-- Schedule: Alt+1 opens the e-chart for the next patient. i.e. the first patient that is not Billed, not Signed, not No show, and not Cancelled.
-
-- Tickler:  Alt+1 to 'Submit and EXIT', Alt+2 to 'Submit & Write to Encounter', Alt+A to set focus to text box. When the Tickler page loads, it also automatically sets focus to the text box. Note: if not already done, you should consider setting a 'Default Tickler Recipient' under OSCAR Preferences.
 

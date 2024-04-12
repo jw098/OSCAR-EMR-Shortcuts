@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.querySelector("#readme").addEventListener("click", function () {
-    window.open(browser.runtime.getURL("README.md"));
+    window.open("https://github.com/jw098/OSCAR-EMR-Shortcuts/blob/main/README.md");
   });
 
   document.querySelector("#enable").addEventListener("click", function () {
