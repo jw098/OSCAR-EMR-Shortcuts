@@ -210,12 +210,14 @@ function findEFormsPostedToday(postedEFormsNodeList){
 			break;
 		}
 
-		nodeURLOuterHTML = currentTableDataList[0].children[0].outerHTML;
-		nodeFDID = nodeURLOuterHTML.split("fdid=")[1].split("&")[0];
-		// console.log(nodeURLOuterHTML);
-		// console.log(nodeFDID);
-		nodeDate = currentTableDataList[2].textContent;
+		const currentRowData = getEFormRowData(currentTableDataList);
+		// console.log(currentRowData);
 
+		const nodeFDID = getFDID(currentRowData); 
+		const nodeDate = getEFormDate(currentRowData);
+		// console.log(nodeFDID);
+		// console.log(nodeDate);
+		
 		/*
 		- stops when the eForm date doesn't match today's date. assumes dates are sorted.
 		- also stops if eForm from other page matches FDID of first eForm in eChart.
@@ -224,11 +226,9 @@ function findEFormsPostedToday(postedEFormsNodeList){
 			break;
 		}
 
-		nodeURL = getURLOrigin() + 'eform/'+ nodeURLOuterHTML.split("\'")[1];
-		nodeEFormTitle = currentTableDataList[0].children[0].textContent;
-		nodeAddedInfo = currentTableDataList[1].textContent;
-		
-
+		const nodeURL = getEFormURL(currentRowData); 
+		const nodeEFormTitle = getEFormTitle(currentRowData);
+		const nodeAddedInfo = currentRowData[2];
 
 		const postedEFormObject = {
 			URL: nodeURL,
@@ -244,6 +244,56 @@ function findEFormsPostedToday(postedEFormsNodeList){
 	return postedEFormsObjectList;
 }
 
+// list(string) -> string
+function getEFormURL(currentRowData){
+	for (text of currentRowData){
+		if (text.includes("fdid=")){
+			return getURLOrigin() + 'eform/'+ text.split("\'")[1];
+		}
+	}
+	throw new Error("Can't find FDID within the eform list row data.");
+}
+
+// list(string) -> string
+function getEFormTitle(currentRowData){
+	for (text of currentRowData){
+		if (text.includes("fdid=")){
+			return text.split(">\n")[1].split("</")[0].trim();
+		}
+	}
+	throw new Error("Can't find FDID within the eform list row data.");
+}
+
+// list(string) -> string
+function getEFormDate(currentRowData){
+	for (text of currentRowData){
+		if (isDate(text)){
+			return text;
+		}
+	}
+	throw new Error("Can't find Date within the eform list row data.");
+}
+
+
+
+// list(string) -> string
+function getFDID(currentRowData){
+	for (text of currentRowData){
+		if (text.includes("fdid=")){
+			return text.split("fdid=")[1].split("&")[0];
+		}
+	}
+	throw new Error("Can't find FDID within the eform list row data.");
+}
+
+function getEFormRowData(rowNodes){
+	let rowTextDataList = [];
+	for (node of rowNodes){
+		rowTextDataList.push(node.innerHTML);
+	}
+	return rowTextDataList;
+}
+
 function getFirstEChartEFormFDID(){
 	const eChartEFormList = $("#eformslist > li > span:nth-child(2) > a:nth-child(1)"); 
 	// console.log(eChartEFormList[0].outerHTML);
@@ -252,6 +302,7 @@ function getFirstEChartEFormFDID(){
 	}
 	else {
 		const firstFDID = eChartEFormList[0].outerHTML.split("fdid=")[1].split("&")[0];
+		console.log(firstFDID);
 		return firstFDID;	
 	}
 	
