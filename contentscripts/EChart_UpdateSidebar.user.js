@@ -741,7 +741,8 @@ async function updateFormsSidebar() {
 
 	
 	console.log("----Forms---");
-	const postedItemsNodeList = otherPageHTML.querySelectorAll("body > center:nth-child(2) > table:nth-child(1) > tbody:nth-child(1) > tr"); 
+	const postedItemsNodeList = otherPageHTML.querySelectorAll(".MainTableRightColumn > table:nth-child(1) > tbody:nth-child(1) > tr"); 
+	// console.log(postedItemsNodeList);
 	const postedItemsTodayList = findFormsPostedToday(postedItemsNodeList);
 	console.log(postedItemsTodayList);
 
@@ -765,6 +766,7 @@ NOTE:
 function findFormsPostedToday(postedItemNodeList){
     let postedItemObjectList = [];
 	let formTitlesInEChart = getFormTitlesInEChart();
+	// console.log(formTitlesInEChart);
 	let formTitlesSeenInFormListSoFar = new Set();
     for (let i=1; i < postedItemNodeList.length; i++){
         const currentTableRow = postedItemNodeList[i];
@@ -781,7 +783,7 @@ function findFormsPostedToday(postedItemNodeList){
 		const nodeFormID = nodeURL.split("formId=")[1].split("&")[0];
 		
 		const nodeDate = currentTableDataList[2].textContent;
-		const nodeFormTitle = currentTableDataList[0].children[0].textContent;
+		const nodeFormTitle = currentTableDataList[0].children[0].textContent.trim();
 		const nodeDateOnly = nodeDate.split(" ")[0];
 	
 		// console.log(nodeFormTitle);
