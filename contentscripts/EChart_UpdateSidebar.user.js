@@ -401,17 +401,26 @@ function findConsultsPostedToday(postedItemNodeList){
 		currentNode = postedItemNodeList[i];
 		nodeChildren = currentNode.children;
 		// console.log(nodeChildren);
-		nodeURLOuterHTML = nodeChildren[1].children[0].outerHTML;
+		const currentRowInnerHTML = HTMLNodeListToInnerHTMLList(currentNode.children);
+		const currentRowText = HTMLNodeListToInnerTextList(currentNode.children);
+		// console.log(currentRowInnerHTML);
+		// console.log(currentRowText);
+
+		const nodeURLInnerHTML = currentRowInnerHTML[1]; //nodeChildren[1].children[0].outerHTML;
 		/*
 		- gets the URL portion of the HTML in the <a> element, by using split("\'"). and selecting the item at index 1.
 		- then removes the "../.." with substring(6)
 		- then replaces &amp; with &
 		*/
-		nodeURL = getURLOrigin() + nodeURLOuterHTML.split("\'")[1].substring(6).replace(/&amp;/g, "&");
-		nodeItemsTitle = nodeChildren[3].children[0].innerText.replace(/[\r\n\t]/g, "");
-		nodeRequestingDoc = nodeChildren[2].textContent;
-		nodeDate = nodeChildren[4].textContent;
-		nodeReqID = nodeURL.split("requestId=")[1].split("&")[0];
+		const nodeURL = getURLOrigin() + nodeURLInnerHTML.split("\'")[1].substring(6).replace(/&amp;/g, "&");
+		const nodeServiceRequested = currentRowText[3].replace(/[\r\n\t]/g, ""); // nodeChildren[3].children[0].innerText.replace(/[\r\n\t]/g, "");
+		const nodeRequestingDoc = currentRowText[2]; // nodeChildren[2].textContent;
+		const nodeDate = currentRowText[4]; // nodeChildren[4].textContent;
+		const nodeReqID = nodeURL.split("requestId=")[1].split("&")[0];
+		// console.log(nodeURL);
+		// console.log(nodeServiceRequested);
+		// console.log(nodeRequestingDoc);
+		// console.log(nodeDate);
 		
 		/*
 		- stops when the consult date doesn't match today's date. assumes dates are sorted (which they are, but are unfortunately sorted in reverse order within a given day)
@@ -428,7 +437,7 @@ function findConsultsPostedToday(postedItemNodeList){
 
 		const postedItemObject = {
 			URL: nodeURL,
-			itemTitle: nodeItemsTitle,
+			itemTitle: nodeServiceRequested,
 			// consultantDoc: nodeConsultantDoc,
 			requestingDoc: nodeRequestingDoc,
 			date: nodeDate
