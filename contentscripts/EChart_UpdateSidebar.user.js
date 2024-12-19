@@ -210,7 +210,7 @@ function findEFormsPostedToday(postedEFormsNodeList){
 			break;
 		}
 
-		const currentRowData = getEFormRowData(currentTableDataList);
+		const currentRowData = HTMLNodeListToInnerHTMLList(currentTableDataList);
 		// console.log(currentRowData);
 
 		const nodeFDID = getFDID(currentRowData); 
@@ -285,13 +285,22 @@ function getFDID(currentRowData){
 	}
 	throw new Error("Can't find FDID within the eform list row data.");
 }
-
-function getEFormRowData(rowNodes){
-	let rowTextDataList = [];
-	for (node of rowNodes){
-		rowTextDataList.push(node.innerHTML);
+ // list(HTML nodes) -> list(String)
+function HTMLNodeListToInnerHTMLList(htmlNodes){
+	let textDataList = [];
+	for (node of htmlNodes){
+		textDataList.push(node.innerHTML);
 	}
-	return rowTextDataList;
+	return textDataList;
+}
+
+ // list(HTML nodes) -> list(String)
+ function HTMLNodeListToInnerTextList(htmlNodes){
+	let textDataList = [];
+	for (node of htmlNodes){
+		textDataList.push(node.innerText);
+	}
+	return textDataList;
 }
 
 function getFirstEChartEFormFDID(){
@@ -528,11 +537,11 @@ NOTE
 */
 function findMedsPostedToday(postedItemNodeList){
     let postedItemObjectList = [];
-    for (let i=0; i < postedItemNodeList.length; i++){
-        currentNode = postedItemNodeList[i];
-        nodeChildren = currentNode.children;
+    for (rowNode of postedItemNodeList){
+		const rowTextData = HTMLNodeListToInnerTextList(rowNode.children);
+		// console.log(rowTextData);
 
-        nodeMed = nodeChildren[2].children[0].innerText;
+        nodeMed = rowTextData[3].trim();
 
         if (isMatchingPostedMeds(nodeMed)){
         	continue;
