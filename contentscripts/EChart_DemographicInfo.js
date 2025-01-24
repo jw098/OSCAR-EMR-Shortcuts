@@ -273,16 +273,22 @@ function getMasterDemographicURL(){
 
 async function getDemographicInfo(demographicArray, URL){
 	const otherPageXMLText = await getXMLHTTP(URL);
-	// const str = otherPageXMLText;
+	// console.log(otherPageXMLText);
 	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
 
 	let demoArrayValues = [];
 	for (let i = 0; i < demographicArray.length; i++){
 		const measureKey = demographicArray[i];
-		const measureHTMLKey = otherPageHTML.evaluate(`//span[contains(.,'${measureKey}')]`,otherPageHTML,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+		let measureVal = "";
+		if (measureKey == "Email"){
+			measureVal = otherPageHTML.getElementById("email").value;
+		}else{
+			const measureHTMLKey = otherPageHTML.evaluate(`//span[contains(.,'${measureKey}')]`,otherPageHTML,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
 		
-		const measureHTMLVal = measureHTMLKey.nextElementSibling;
-		const measureVal = measureHTMLVal.innerText;
+			const measureHTMLVal = measureHTMLKey.nextElementSibling;
+			measureVal = measureHTMLVal.innerText;
+		}
+
 		demoArrayValues.push(measureVal);
 	}
 	
