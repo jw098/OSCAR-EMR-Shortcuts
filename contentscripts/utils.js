@@ -53,21 +53,24 @@ function getXMLHTTP(theURL){
 	let myPromise = new Promise(function (resolve, reject){
 		let xmlhttp = new XMLHttpRequest();
 		xmlhttp.open("GET", theURL, true);
-		
+
+		xmlhttp.send();
+
 		xmlhttp.onload = function(){
 			if (xmlhttp.status == 200) {
 				resolve(xmlhttp.responseText);
       		} 
 			else {
 				console.trace();
-				reject(new Error(theURL + "File not Found"));
+				console.log("Error code: " + xmlhttp.status);
+				reject(new Error(theURL + " File not found."));
       		}
 		};
 		xmlhttp.onerror = function () {
 			console.trace();
-			reject(new Error(theURL + "File not Found"));
+			reject(new Error(theURL + " Request failed."));
 		};
-		xmlhttp.send();
+		
 	});
 
 	return myPromise;
