@@ -67,101 +67,180 @@ async function labelAllLabs(){
 	$("[id^='labelspan']").append('<br />');
 	$("[id^='labelspan']").append($("<i>"));
 
-	labelCurrentLabs();
-	await addPrevVersionLabel();
+	const lab_result_nodes = document.querySelectorAll('table[name="tblDiscs"]>tbody>tr');
+	const lab_date_array = get_lab_date_array(lab_result_nodes);
+	const lab_result_array = get_lab_result_array_from_lab_dates(lab_date_array);
+	// console.log(lab_result_array);
+	// console.log(lab_date_array);
+	labelCurrentLabs(lab_result_array);
+	show_labs_sorted_by_date(lab_date_array);
+
+	// Getting previous version is deprecated, due to WELL OSCAR blocking XHR
+	// await addPrevVersionLabel();
 	// add timeout to allow for the Prev label to fully load
-	setTimeout(addNewLabsLabel, 300);
+	// setTimeout(addNewLabsLabel, 300);
 }
 
 
 // $("[id^='labelspan'] > i:first-child").before($("<p>"));
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-// Shows old version of Label.
+// Labs sorted by date
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+// list(object(name: String, result_date: Date))  -> void
+function show_labs_sorted_by_date(lab_date_array){
 
-/*
-PURPOSE
-- get URL of the previous version of lab results.
-*/
-function prevVersionURL(){
-	const allVersionElementOnly = document.querySelectorAll('a[href^="labDisplay.jsp?segmentID"]');
-	if (allVersionElementOnly.length == 0){
-		throw new Error("Previous version URL not found.");
-	}
-	const allVersions = allVersionElementOnly[0].parentNode.childNodes;
-
-	let prevNode = "";
-	for (let i = 0; i < allVersions.length; i++){
-		currentNode = allVersions[i];
-		if (currentNode.nodeType == Node.TEXT_NODE && currentNode.textContent.includes("v")){
-			break;
-		}
-		prevNode = currentNode;
-	}
-
-	if (prevNode == ""){
-		throw new Error("Previous version URL not found.");
-	} else {
-		// console.log(prevNode.href);
-		return prevNode.href;
-	}
-}
-
-/*
-PURPOSE:
-- inserts a line for the previous version of this lab result
-NOTE
-- uses XHR
-- inserts the line elements and line breaks before XHR is called.
-*/
-async function addPrevVersionLabel() {
-	try {
-		const prevVersionXMLText = await getXMLHTTP(prevVersionURL());
-		const prevVersionHTML = new DOMParser().parseFromString(prevVersionXMLText, "text/html");
-		const oldLabelElement = prevVersionHTML.querySelectorAll("span[id^='labelspan_'] > i");
-		const oldLabelText = oldLabelElement[0].textContent;
-		const oldLabelResultOnly = oldLabelText.split("Label: ")[1];
-
-		// $("[id^='labelspan']").append('<br />');
-		// $("[id^='labelspan']").append($("<i>").html("Old: " + "&nbsp;&nbsp;&nbsp;" + oldLabelResultOnly));
-
-		// assumes that the extra <i> element has already been appended previously.
-		$("[id^='labelspan'] > i:nth-child(3)").html("Prev:" + "&nbsp;" + "&nbsp;" + oldLabelResultOnly);
-	} catch(err){
-		// console.error(err);
-		console.log("Previous version URL not found.");
-	}
-	
-}
-
-
-/* 
-NOTES:
-- extracts the current and previous lab results. stripping away "Label:", and the trailing marker.
- */
-function addNewLabsLabel(){
-	
-	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label: ")[1].split(labelLabsTrailingMarker)[0];
-	const currentLabResultsList = currentLabsResultsText.split("/");
-
-	const nbsp = String.fromCharCode(160);
-	const oldLabelInnerText = $("[id^='labelspan'] > i:nth-child(3)")[0].innerText;
-	if (oldLabelInnerText == ""){
-		console.log("No previous version found.");
+	lab_date_array.sort(compare_date);
+	// console.log(lab_date_array);
+	const sorted_labs_string = get_sorted_labs_string(lab_date_array);
+	if (sorted_labs_string == ""){
+		// don't show the sorted list if the list if empty or only has one element.
 		return;
 	}
-	const oldLabelResultText = oldLabelInnerText.split("Prev:" + nbsp + nbsp)[1].split(labelLabsTrailingMarker)[0];
-	const oldLabelResultsList = oldLabelResultText.split("/");
+	$("[id^='labelspan'] > i:nth-child(3)").html("Sorted by date:" + "&nbsp;" + "&nbsp;" + sorted_labs_string);
+}
 
-	// console.log("current Labs: " + currentLabsResultsText);
-	// console.log("prev Labs: " + oldLabelResultText);
-	let difference = currentLabResultsList.filter(x => !oldLabelResultsList.includes(x));
-	const newResultsText = difference.join("/");
-	// console.log(newResultsText);	
+// list(object(name: String, result_date: Date)) -> String
+// given array of object(name: String, result_date: Date), which is sorted by date, 
+// return a string where labs are grouped together by date, with each group surrounded by square brackets
+function get_sorted_labs_string(sorted_lab_date_array){
+	if (sorted_lab_date_array.length <= 1){
+		return "";
+	}
+	let sorted_labs_string = "";
+	let date_group = new Date(8.64e15);
+	let first_in_date_group = false;
+	for (let i = 0; i < sorted_lab_date_array.length; i++){
+		const lab_date_obj = sorted_lab_date_array[i];
+		const date = lab_date_obj.result_date;
+		const name = lab_date_obj.name;
 
-	$("[id^='labelspan'] > i:nth-child(5)").html("New:" + "&nbsp;" + "&nbsp;" + "&nbsp;" + newResultsText);
+		if (date.getTime() != date_group.getTime()){
+			if (i != 0){
+				sorted_labs_string += "] ";	
+			}			
+			sorted_labs_string += "[";
+			date_group = date;
+			first_in_date_group = true;
+		}
+		if (!first_in_date_group){
+			sorted_labs_string += "/"
+		}	
+		
+		sorted_labs_string += name;
+		first_in_date_group = false;
+	}
+	sorted_labs_string += "]";
+	console.log("sorted_labs_string: " + sorted_labs_string);
+	return sorted_labs_string;
+}
+
+
+// object(name: String, result_date: Date) object(name: String, result_date: Date) -> int
+function compare_date(a, b) {
+  if ( a.result_date < b.result_date ){
+    return -1;
+  }
+  if ( a.result_date > b.result_date ){
+    return 1;
+  }
+  return 0;
+}
+
+// list(object(name: String, result_date: Date)) -> list(String)
+function get_lab_result_array_from_lab_dates(lab_date_array){
+	let lab_result_array = [];
+	for (const lab_date of lab_date_array){
+		lab_result_array.push(lab_date.name);
+	}
+	return lab_result_array;
+}
+
+
+// list(HTMLNodes) -> list(object(name: String, result_date: Date))
+// return array of object containing lab result and date/time
+// if a given result doesn't have a date, set its date to the latest date among its sub-results
+// if a given result is a sub-result, don't add to map.
+function get_lab_date_array(lab_result_nodes){
+	// console.log(lab_result_nodes);
+	let lab_date_array = [];
+	for (let i = 0; i < lab_result_nodes.length; i++){
+		const lab_result_node = lab_result_nodes[i];
+		if (lab_result_node.className == "Field2"){
+			continue;
+		}
+		// console.log(lab_result_node);
+		const result_name_node = lab_result_node.querySelector("td:first-child>:is(a:first-child, span)");
+		let current_result_name = "";
+		let current_result_date = new Date(8.64e15);	
+		if (result_name_node != null && !isSubResult(result_name_node)){
+			// if node is a top-level result, save its name
+			current_result_name = renameLabResult(result_name_node.textContent);
+
+			// skip this result if renameLabResult() results in an empty string, which implies we want to skip this result
+			if (current_result_name == ""){
+				continue;
+			}
+
+			// console.log(result_name_node);
+			// console.log(current_result_name);
+		}else{
+			// not a top level result
+			continue;
+		}
+		
+		const result_date_node = lab_result_node.querySelector("td:nth-child(6)");
+		if (result_date_node != null){
+			// if node contains a date, save it
+			current_result_date = new Date(result_date_node.textContent);
+			// console.log(current_result_date);
+		}else{
+			// this row doesn't have a date
+			// get the date from the sub-results
+			current_result_date = get_date_from_sub_results(lab_result_nodes, i);
+			// console.log("No date!");
+		}
+
+		// save name, date to map.
+		const lab_date_obj = {name: current_result_name, result_date: current_result_date};
+		// console.log(lab_date_obj);
+		lab_date_array.push(lab_date_obj);
+	}
+	return lab_date_array;
+}
+
+// list(HTMLNodes) int -> Date
+// get date from sub-results, given index of current node and the full list of lab_result_nodes
+// iterate the list starting after the current node.
+// return the latest date of the sub-results. stop when you see a node that isn't a sub-result (e.g. another top-level result, separator node, table headings)
+function get_date_from_sub_results(lab_result_nodes, start_index){
+	let latest_date = new Date(-8.64e15);
+	for (let i = start_index+1; i < lab_result_nodes.length; i++){
+		const lab_result_node = lab_result_nodes[i];
+		// console.log(lab_result_node);
+		const result_name_node = lab_result_node.querySelector("td:first-child>:is(a:first-child, span)");
+		if (result_name_node == null || !isSubResult(result_name_node)){
+			break;
+		}
+		const result_date_node = lab_result_node.querySelector("td:nth-child(6)");
+		if (result_date_node == null){
+			continue;
+		}
+		const current_date = new Date(result_date_node.textContent);
+		// console.log(current_date);
+
+		// update latest_date with the current_date if it is later
+		latest_date = latest_date < current_date ? current_date : latest_date;
+	}
+
+	if (latest_date == new Date(-8.64e15)){
+		// no dates found within sub-results.
+		// return max date instead.
+		return new Date(8.64e15);
+	}else{
+		return latest_date;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +248,7 @@ function addNewLabsLabel(){
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 
-
+// list(String) -> void
 /* 
 PURPOSE:
 - labels the current lab result, with labelLabsTrailingMarker appended to the end, 
@@ -178,8 +257,8 @@ so that we know which labels were done by this script vs manually done.
   - i.e. rename only if current label is "(not set)" or empty string or 
   previously labeled by labelCurrentLabs, as determined by ending in labelLabsTrailingMarker.
  */
-function labelCurrentLabs(){
-	console.log('label labs');
+function labelCurrentLabs(lab_result_array){
+	// console.log('label labs');
 	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label:")[1].trim();
 	console.log("current label: " + currentLabsResultsText);
 	if	(
@@ -189,21 +268,19 @@ function labelCurrentLabs(){
 		|| currentLabsResultsText.endsWith("...")
 		)
 	{
-		// Gets all lab results from the XML, which are either in table/tbody/tr/td[1]/a[1] or table/tbody/tr/td[1]/span
-		const allLabResults = document.querySelectorAll('table[name="tblDiscs"]>tbody>tr>td:first-child>:is(a:first-child, span)');
-		let keyLabResults = extractKeyLabResults(allLabResults);
+		let lab_results_string = get_lab_results_string_in_default_order(lab_result_array);
 		
 		/* 
 		- only add the labelLabsTrailingMarker if the result is not an empty string.
 		*/
-		let labelResult = keyLabResults;
+		let labelResult = lab_results_string;
 		if(labelResult != ""){
-			labelResult = keyLabResults + labelLabsTrailingMarker;
+			labelResult = lab_results_string + labelLabsTrailingMarker;
 		}
 		$("input[id*=acklabel]").val(labelResult);
 
 		const theLabelButton = document.querySelector("button[id*=createLabel]");
-		console.log(theLabelButton);
+		// console.log(theLabelButton);
 		theLabelButton.click();
 		
 		// console.log(keyLabResults);
@@ -227,13 +304,36 @@ function showKeyLabResultsTextBox(keyLabResults){
 	document.body.appendChild(labResultsTextBox); 
 }
 
+// list(String) -> string
 /* 
-- get all lab results from the page, from the given nodeList
+- get all lab results from the page, from the given list of lab results
 - removes duplicates and replaces them with lab result 2.
  */
-function extractKeyLabResults(allLabResults_nodeList){
-	console.log(allLabResults_nodeList);
-	let keyLabResultList_old = "";	
+function get_lab_results_string_in_default_order(lab_result_array){
+	const lab_result_array_no_dupes = consolidateDuplicateLabResults(lab_result_array);
+	const lab_result_string = lab_result_array_no_dupes.join("/");
+
+	// for debugging
+	// TODO: remove before release
+	const lab_result_array2 = get_lab_result_array_old();
+	const lab_result_array_no_dupes2 = consolidateDuplicateLabResults(lab_result_array2);
+	const lab_result_string2 = lab_result_array_no_dupes2.join("/");
+	if (lab_result_string != lab_result_string2){
+		console.log("lab_result_string: " + lab_result_string);
+		console.log("lab_result_string2: " + lab_result_string2);
+		alert("Conflicting results. get_lab_date_array() and get_lab_result_array_old() don't lead to the same results.")
+	}
+
+	return lab_result_string;
+}
+
+// deprecated
+// for testing
+function get_lab_result_array_old(){
+	// Gets all lab results from the XML, which are either in table/tbody/tr/td[1]/a[1] or table/tbody/tr/td[1]/span
+	const allLabResults_nodeList = document.querySelectorAll('table[name="tblDiscs"]>tbody>tr>td:first-child>:is(a:first-child, span)');
+
+	// console.log(allLabResults_nodeList);
 	let keyLabResultArray = [];	
 	let index = 0;
 	allLabResults_nodeList.forEach(	
@@ -243,28 +343,12 @@ function extractKeyLabResults(allLabResults_nodeList){
 				if (labTitle != ""){
 					keyLabResultArray.push(labTitle);
 				}
-
-
-				// old code
-				if(keyLabResultList_old != "" && labTitle != ""){
-					labTitle = "/" + labTitle;
-				}				
-				keyLabResultList_old += labTitle;
-
-				// console.log(labTitle);
-// 				console.log(e.parentNode.childNodes);
-	// 			console.log(e.parentNode.outerHTML);
 			}
 			index++
 		}
-	)
+	)	
+	return keyLabResultArray;
 
-	const keyLabResultArray_noDupes = consolidateDuplicateLabResults(keyLabResultArray);
-	const keyLabResultList = keyLabResultArray_noDupes.join("/");
-	console.log(keyLabResultList);
-	console.log(keyLabResultList_old);
-
-	return keyLabResultList;
 }
 
 /* 
@@ -341,16 +425,25 @@ function renameLabResult(strOldName){
 			strNewName='A1c';
 			break;	
 		case 'Creatinine/eGFR':
-			strNewName='Cr';
+			strNewName='eGFR';
 			break;	
 		case 'Alanine Aminotransferase':
 			strNewName='ALT';
+			break;
+		case 'Aspartate Aminotransferase':
+			strNewName='AST';
 			break;	
+		case 'lactate Dehydrogenase':
+			strNewName='LDH';
+			break;
 		case 'Lipids':
 			strNewName='Lipids';
-			break;	
+			break;
+		case 'Lipoprotein (a)':
+			strNewName='Lp(a)';
+			break;
 		case 'Urine Creatinine Random':
-			strNewName='';
+			strNewName=''; // this is the same as 'Urine Albumin Random', so we want to just skip this result
 			break;	
 		case 'Urine Albumin Random':
 			strNewName='ACR';
@@ -447,7 +540,22 @@ function renameLabResult(strOldName){
 			break;
 		case 'Troponin':
 			strNewName='Trop';
-			break;	
+			break;
+		case 'Protein Electrophoresis':
+			strNewName='SPEP';
+			break;
+		case 'Urine Immunofixation Random':
+			strNewName='UPEP';
+			break;
+		case 'Reticulocytes':
+			strNewName='Retics';
+			break;
+		case 'Haptoglobin':
+			strNewName='Hapto';
+			break;
+		case 'Prostate Specific Ag':
+			strNewName='PSA';
+			break;
 		case 'General Information':
 			strNewName='Gen Info';
 			break;
@@ -613,6 +721,96 @@ function renameLabResultInexactMatch(strOldName){
 	}
 	return strNewName;
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Shows old version of Label.
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*
+PURPOSE
+- get URL of the previous version of lab results.
+*/
+function prevVersionURL(){
+	const allVersionElementOnly = document.querySelectorAll('a[href^="labDisplay.jsp?segmentID"]');
+	if (allVersionElementOnly.length == 0){
+		throw new Error("Previous version URL not found.");
+	}
+	const allVersions = allVersionElementOnly[0].parentNode.childNodes;
+
+	let prevNode = "";
+	for (let i = 0; i < allVersions.length; i++){
+		currentNode = allVersions[i];
+		if (currentNode.nodeType == Node.TEXT_NODE && currentNode.textContent.includes("v")){
+			break;
+		}
+		prevNode = currentNode;
+	}
+
+	if (prevNode == ""){
+		throw new Error("Previous version URL not found.");
+	} else {
+		// console.log(prevNode.href);
+		return prevNode.href;
+	}
+}
+
+/*
+PURPOSE:
+- inserts a line for the previous version of this lab result
+NOTE
+- uses XHR
+- inserts the line elements and line breaks before XHR is called.
+*/
+async function addPrevVersionLabel() {
+	try {
+		const prevVersionXMLText = await getXMLHTTP(prevVersionURL());
+		const prevVersionHTML = new DOMParser().parseFromString(prevVersionXMLText, "text/html");
+		const oldLabelElement = prevVersionHTML.querySelectorAll("span[id^='labelspan_'] > i");
+		const oldLabelText = oldLabelElement[0].textContent;
+		const oldLabelResultOnly = oldLabelText.split("Label: ")[1];
+
+		// $("[id^='labelspan']").append('<br />');
+		// $("[id^='labelspan']").append($("<i>").html("Old: " + "&nbsp;&nbsp;&nbsp;" + oldLabelResultOnly));
+
+		// assumes that the extra <i> element has already been appended previously.
+		$("[id^='labelspan'] > i:nth-child(3)").html("Prev:" + "&nbsp;" + "&nbsp;" + oldLabelResultOnly);
+	} catch(err){
+		// console.error(err);
+		console.log("Previous version URL not found.");
+	}
+	
+}
+
+
+/* 
+NOTES:
+- extracts the current and previous lab results. stripping away "Label:", and the trailing marker.
+ */
+function addNewLabsLabel(){
+	
+	const currentLabsResultsText = $("[id^='labelspan'] > i:nth-child(1)")[0].innerText.split("Label: ")[1].split(labelLabsTrailingMarker)[0];
+	const currentLabResultsList = currentLabsResultsText.split("/");
+
+	const nbsp = String.fromCharCode(160);
+	const oldLabelInnerText = $("[id^='labelspan'] > i:nth-child(3)")[0].innerText;
+	if (oldLabelInnerText == ""){
+		console.log("No previous version found.");
+		return;
+	}
+	const oldLabelResultText = oldLabelInnerText.split("Prev:" + nbsp + nbsp)[1].split(labelLabsTrailingMarker)[0];
+	const oldLabelResultsList = oldLabelResultText.split("/");
+
+	// console.log("current Labs: " + currentLabsResultsText);
+	// console.log("prev Labs: " + oldLabelResultText);
+	let difference = currentLabResultsList.filter(x => !oldLabelResultsList.includes(x));
+	const newResultsText = difference.join("/");
+	// console.log(newResultsText);	
+
+	$("[id^='labelspan'] > i:nth-child(5)").html("New:" + "&nbsp;" + "&nbsp;" + "&nbsp;" + newResultsText);
+}
+
 
 /*
 CBC 			/html/body/div/form[3]/table/tbody/tr/td/table[6]/tbody/tr[2]/td[1]/span
