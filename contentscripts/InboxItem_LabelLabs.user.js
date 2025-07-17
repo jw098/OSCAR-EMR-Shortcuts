@@ -69,6 +69,7 @@ async function labelAllLabs(){
 
 	const lab_result_nodes = document.querySelectorAll('table[name="tblDiscs"]>tbody>tr');
 	const lab_date_array = get_lab_date_array(lab_result_nodes);
+	console.log(lab_date_array);
 	const lab_result_array = get_lab_result_array_from_lab_dates(lab_date_array);
 	// console.log(lab_result_array);
 	// console.log(lab_date_array);
@@ -234,7 +235,7 @@ function get_date_from_sub_results(lab_result_nodes, start_index){
 		latest_date = latest_date < current_date ? current_date : latest_date;
 	}
 
-	if (latest_date == new Date(-8.64e15)){
+	if (latest_date.getTime() == new Date(-8.64e15).getTime()){
 		// no dates found within sub-results.
 		// return max date instead.
 		return new Date(8.64e15);
