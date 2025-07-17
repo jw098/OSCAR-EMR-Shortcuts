@@ -188,6 +188,16 @@
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
                 "contentscripts/utils.js",
+                "contentscripts/eformLibrary_searchBar.js"
+            ]
+        },        
+        {
+            "matches": [
+                "*://*/*/eform/efmformslistadd.jsp*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
                 "contentscripts/eFormLibrary.user.js"
             ]
         },
