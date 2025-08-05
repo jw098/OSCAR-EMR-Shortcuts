@@ -186,14 +186,14 @@ function addPostedFormsBlock(){
 */
 async function updateEFormSidebar() {
 
-	add_new_eforms_block();
+	// add_new_eforms_block();
 
 	// $("#postedEFormsBlock").html("");
 	const eform_list_channel = new BroadcastChannel("update_eform_list");
 	eform_list_channel.addEventListener("message", function(event){
 		const new_eform = event.data;
 		console.log(new_eform);
-		$("#postedEFormsBlock").prepend(new_eform_as_html(new_eform));
+		$("#eformslist").prepend(new_eform_as_html(new_eform));
 	});		
 
 }

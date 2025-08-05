@@ -67,16 +67,19 @@ function get_eform_subject(){
 function save_eform_info(){
 	const eform_list_channel = new BroadcastChannel("update_eform_list");
 
-	document.addEventListener("submit", async (event) =>{
-		const eform_title = get_eform_title();
-		const eform_title_subject = eform_title + ": " + get_eform_subject();
-		console.log(eform_title_subject);
-		eform_list_channel.postMessage(eform_title_subject);
-	// setTimeout(async () => {
-	// 	await browser.storage.local.set({
-	// 		eform_title_subject: eform_title_subject
-	// 	});		
-	// }, 100);
+	// list of nodes where their value/name/id contains "submit"
+	const submit_node_list = document.querySelectorAll(
+		'input[value*="submit" i], input[name*="submit" i], input[id*="submit" i], button[value*="submit" i], button[name*="submit" i], button[id*="submit" i]'
+	); 
+	console.log(submit_node_list);
 
-	});
+	for (const print_node of submit_node_list){
+		print_node.addEventListener("click", (event) =>{
+			const eform_title = get_eform_title();
+			const eform_title_subject = eform_title + ": " + get_eform_subject();
+			console.log(eform_title_subject);
+			eform_list_channel.postMessage(eform_title_subject);			
+		});
+	}
+
 }

@@ -50,7 +50,7 @@ function keydownEventListener_eFormIndividual(eFormIndividual_keyboardShortcuts)
 				// console.log(document.querySelector('#SubmitButton'));
 				theTarget = 
 					document.querySelector('#SubmitButton') 
-					|| document.querySelector('[type="submit"]') 
+					// || document.querySelector('[type="submit"]') 
 					|| document.querySelector('[name="SubmitButton"]')
 					|| document.querySelector('[value="Submit"]');
 				theTarget.click();
