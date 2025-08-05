@@ -8,37 +8,81 @@
 // ==/UserScript==
 
 
+function update_sidebar(){
+	updateEFormSidebar();
+}
+
 /////////////////////////////////////////////////////
 // Focus Event Listener
 /////////////////////////////////////////////////////
 
-function updateAllSidebarOnFocusChange(){
-	window.addEventListener("focus", function(event) { 
-		setTimeout(updateEFormSidebar, 1000);
-		setTimeout(updateConsultationsSidebar, 1000);
-		setTimeout(updateMedicationsSidebar, 1000);
-		setTimeout(updateTicklerSidebar, 1000);
-		setTimeout(updateFormsSidebar, 1000);
-		// console.log("window has focus ");
-	  }, false);
-}
+// function updateAllSidebarOnFocusChange(){
+// 	window.addEventListener("focus", function(event) { 
+// 		setTimeout(updateEFormSidebar, 1000);
+// 		setTimeout(updateConsultationsSidebar, 1000);
+// 		setTimeout(updateMedicationsSidebar, 1000);
+// 		setTimeout(updateTicklerSidebar, 1000);
+// 		setTimeout(updateFormsSidebar, 1000);
+// 		// console.log("window has focus ");
+// 	  }, false);
+// }
 
 
 /////////////////////////////////////////////////////
 // Insert Block
 /////////////////////////////////////////////////////
 
-function addPostedEFormsBlock(){
-	// if the postedItemsBlock exists, don't create another one.
-	if (!!document.getElementById('postedEFormsBlock')){  
-		return;
-	}
+// eformslist element doesn't exist at page load, so we have to wait for it to exist
+// before we create our custom block "postedEFormsBlock"
+function add_new_eforms_block(){
+	let mutationObserver = new MutationObserver(function(mutations) {
 
-	var targetDiv = document.getElementById('eformslist');
-	var theBlock = document.createElement('div');
-	theBlock.id = "postedEFormsBlock";
-	theBlock.className = 'links';
-	targetDiv.before(theBlock);
+		// mutations.forEach(function(mutation) {
+		// 	console.log(mutation);
+		// });
+
+		const eformslist = document.getElementById('eformslist');
+		if (!!eformslist){
+			mutationObserver.disconnect();
+
+			const theBlock = document.createElement('div');
+			theBlock.id = "postedEFormsBlock";
+			theBlock.className = 'links';
+			eformslist.before(theBlock);		
+			maintain_new_eforms_block();
+		}
+	});
+
+	mutationObserver.observe(document.documentElement, {
+	  attributes: true,
+	  subtree: true,
+
+	  // characterData: true,
+	  // childList: true,
+	  // attributeOldValue: true,
+	  // characterDataOldValue: true
+	});
+
+}
+
+// The "postedEFormsBlock" will be destroyed whenever you close an eform that has already been posted
+// Therefore, re-create the block when you leave the eChart window.
+function maintain_new_eforms_block(){
+
+	window.addEventListener("blur", function(event) { 
+		// if the postedItemsBlock exists, don't create another one.
+		if (!!document.getElementById('postedEFormsBlock')){  
+			return;
+		}
+
+		const eformslist = document.getElementById('eformslist');
+		if (!!eformslist){
+			const theBlock = document.createElement('div');
+			theBlock.id = "postedEFormsBlock";
+			theBlock.className = 'links';
+			eformslist.before(theBlock);			
+		}
+	});	
 }
 
 function addPostedConsultsBlock(){
@@ -100,149 +144,76 @@ function addPostedFormsBlock(){
 /////////////////////////////////////////////////////
 
 
-// addButtonLoadPostedEForm();
- // wrap in block level element so button is next line.
- function addButtonLoadPostedEForm(){
-	let targetDiv = document.getElementById('leftNavBar');
+// // addButtonLoadPostedEForm();
+//  // wrap in block level element so button is next line.
+//  function addButtonLoadPostedEForm(){
+// 	let targetDiv = document.getElementById('leftNavBar');
 	
-	var inputButton = document.createElement('input');
-	inputButton.id = 'loadPostedEForm';
-	inputButton.type = 'button';
-	inputButton.value = 'Load Posted eForms';
-	targetDiv.appendChild(inputButton);	
-	loadPostedEFormButton_KeydownListener();
-}
+// 	var inputButton = document.createElement('input');
+// 	inputButton.id = 'loadPostedEForm';
+// 	inputButton.type = 'button';
+// 	inputButton.value = 'Load Posted eForms';
+// 	targetDiv.appendChild(inputButton);	
+// 	loadPostedEFormButton_KeydownListener();
+// }
  
-function loadPostedEFormButton_KeydownListener(){
-  var theButton = document.getElementById('loadPostedEForm');
-  if (theButton == null){
-	console.log("Load Posted eForm buttons doesn't exist.");
-	return;
-  }
-  theButton.addEventListener('click',function () { updateEFormSidebar(); },true);
-}
+// function loadPostedEFormButton_KeydownListener(){
+//   var theButton = document.getElementById('loadPostedEForm');
+//   if (theButton == null){
+// 	console.log("Load Posted eForm buttons doesn't exist.");
+// 	return;
+//   }
+//   theButton.addEventListener('click',function () { updateEFormSidebar(); },true);
+// }
 
 /////////////////////////////////////////////////////
 // Update eForm Sidebar
 /////////////////////////////////////////////////////
 
 /*
-NOTE
 - adds the forms that were posted today to the sidebar.
-- for forms posted today that are already listed in the sidebar, these will be shown instead of my version.
 */
 async function updateEFormSidebar() {
-	const otherPageXMLText = await getXMLHTTP(urlAddedEForms());
-	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
-	const postedItemsNodeList = otherPageHTML.querySelectorAll(".elements > tbody:nth-child(1) > tr"); 
-	const postedItemsTodayList = findEFormsPostedToday(postedItemsNodeList);
 
-	console.log('----eforms----');
-	console.log(postedItemsTodayList);
+	add_new_eforms_block();
 
-	addPostedEFormsBlock();
-
-	$("#postedEFormsBlock").html("");
-	$("#postedEFormsBlock").append(eFormsObjectListToHTML(postedItemsTodayList));
-
+	// $("#postedEFormsBlock").html("");
+	const eform_list_channel = new BroadcastChannel("update_eform_list");
+	eform_list_channel.addEventListener("message", function(event){
+		const new_eform = event.data;
+		console.log(new_eform);
+		$("#postedEFormsBlock").prepend(new_eform_as_html(new_eform));
+	});		
 
 }
 
-// function removeEChartEFormsPostedToday(){
-// 	const eChartPostedTodayEFormsNodeList = $("#eformslist > li > span > a:contains('" + todayDateDDMMMYYYY() + "')");
-
-// 	for (i = 0; i < eChartPostedTodayEFormsNodeList.length; i++){
-// 		eFormPostedTodayInEChart = eChartPostedTodayEFormsNodeList[i].parentNode.parentNode;
-// 		// console.log(eFormPostedTodayInEChart);
-// 		eFormPostedTodayInEChart.remove();
-// 	}
-//     // console.log(eChartPostedTodayEFormsNodeList);
-// }
 
 /*
 PURPOSE:
-- given list of objects with properties URL, eFormTitle, addedInfo, date, produce HTML that produces links to the eForms in question.
+- given eform name produce HTML string
 */
-function eFormsObjectListToHTML(eFormsObjectList){
-	let htmlResult = "";
-	// eFormsObjectList.length
-	for (let i = 0; i < eFormsObjectList.length; i++){
-		eFormObject = eFormsObjectList[i];
-		// console.log(eFormObject);
-
-		htmlResult += 
+// string -> string
+function new_eform_as_html(new_eform_name){
+	
+	const htmlResult = 
 		`<li style="overflow: hidden; clear:both; position:relative; display:block; white-space:nowrap; ">
-			<a border="0" style="text-decoration:none; width:7px; z-index: 100; background-color: white; position:relative; margin: 0px; padding-bottom: 0px;  vertical-align: bottom; display: inline; float: right; clear:both;"><img id="imgeformsZ`+ i + `" src="/oscar/images/clear.gif">&nbsp;&nbsp;</a>
+			<a border="0" style="text-decoration:none; width:7px; z-index: 100; background-color: white; position:relative; margin: 0px; padding-bottom: 0px;  vertical-align: bottom; display: inline; float: right; clear:both;"><img id="imgeformsZ" src="/oscar/images/clear.gif">&nbsp;&nbsp;</a>
 			<span style=" z-index: 1; position:absolute; margin-right:10px; width:90%; overflow:hidden;  height:1.5em; white-space:nowrap; float:left; text-align:left; ">
-			<a class="links" style="" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('` + eFormObject.URL + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + eFormObject.addedInfo + `">` + 
-			eFormObject.eFormTitle + ': ' + eFormObject.addedInfo + 
+			<a class="links" style="" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('` + urlAddedEForms() + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + new_eform_name + `">` + 
+			new_eform_name + 
 			`</a>
 			</span>
 			<span style="z-index: 100; background-color: white; overflow:hidden;   position:relative; height:1.5em; white-space:nowrap; float:right; text-align:right;">
-			...<a class="links" style="margin-right: 2px;" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('`+ eFormObject.URL + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + eFormObject.addedInfo + `">` 
-			+ eFormObject.date + `			
+			...<a class="links" style="margin-right: 2px;" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('`+ urlAddedEForms() + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + new_eform_name + `">` 
+			+ todayDateYYYYMMDD() + `			
 			</a>
 			</span>
-		</li>`
-	}
+		</li>`;
+
 	// console.log(htmlResult);
 	return htmlResult;
 }
 
-
-/*
-PURPOSE:
-- takes the node list and outputs objects describing each eForm, with URL, title, Additional Info, and date.
-- only outputs objects with eforms that match today's date.
-NOTE:
-- avoid posting items already posted in eChart. If item from other page matches FDID of first element in eChart, then stop. Assumes that eForms are sorted by date.
-*/
-function findEFormsPostedToday(postedEFormsNodeList){
-	//console.log(postedEFormsNodeList);
-
-	const firstEChartEFormFDID = getFirstEChartEFormFDID();
-	let postedEFormsObjectList = [];
-	for (let i=1; i < postedEFormsNodeList.length; i++){
-		currentTableRow = postedEFormsNodeList[i]; 
-		currentTableDataList = currentTableRow.children;
-		// console.log(currentTableDataList);
-		if (currentTableDataList[0].innerText == "No data!"){
-			break;
-		}
-
-		const currentRowData = HTMLNodeListToInnerHTMLList(currentTableDataList);
-		// console.log(currentRowData);
-
-		const nodeFDID = getFDID(currentRowData); 
-		const nodeDate = getEFormDate(currentRowData);
-		// console.log(nodeFDID);
-		// console.log(nodeDate);
-		
-		/*
-		- stops when the eForm date doesn't match today's date. assumes dates are sorted.
-		- also stops if eForm from other page matches FDID of first eForm in eChart.
-		*/
-		if (!isToday(nodeDate) || firstEChartEFormFDID == nodeFDID){
-			break;
-		}
-
-		const nodeURL = getEFormURL(currentRowData); 
-		const nodeEFormTitle = getEFormTitle(currentRowData);
-		const nodeAddedInfo = currentRowData[2];
-
-		const postedEFormObject = {
-			URL: nodeURL,
-			eFormTitle: nodeEFormTitle,
-			addedInfo: nodeAddedInfo,
-			date: nodeDate
-		}
-		postedEFormsObjectList.push(postedEFormObject);
-		// console.log(nodeURL);
-		// console.log(nodeAddedInfo);
-		// console.log(nodeDate);
-	}
-	return postedEFormsObjectList;
-}
 
 // list(string) -> string
 function getEFormURL(currentRowData){

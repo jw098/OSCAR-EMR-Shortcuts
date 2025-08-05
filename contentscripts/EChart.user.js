@@ -37,13 +37,14 @@ async function checkEnabled_EChart(){
 
 
 		// Demographic info
-		if(demographicInfo.demographicInfo_enabled){
-			loadDemographicInfo(demographicInfo);
-		}
+		// if(demographicInfo.demographicInfo_enabled){
+		// 	loadDemographicInfo(demographicInfo);
+		// }
 
 		// UpdateSidebar
 		if(updateSidebar){
-			updateAllSidebarOnFocusChange();
+			update_sidebar();
+			// updateAllSidebarOnFocusChange();
 		}
 		
 
