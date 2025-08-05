@@ -47,29 +47,32 @@ function add_new_eforms_block(){
 
 			const theBlock = document.createElement('div');
 			theBlock.id = "postedEFormsBlock";
-			theBlock.className = 'links';
-			eformslist.before(theBlock);		
+			eformslist.before(theBlock);
+
 			maintain_new_eforms_block();
 		}
 	});
 
 	mutationObserver.observe(document.documentElement, {
-	  attributes: true,
-	  subtree: true,
+		childList: true,
+		subtree: true,
 
-	  // characterData: true,
-	  // childList: true,
-	  // attributeOldValue: true,
-	  // characterDataOldValue: true
+	//   attributes: true,
+	//   characterData: true,
+	//   attributeOldValue: true,
+	//   characterDataOldValue: true
 	});
 
 }
 
 // The "postedEFormsBlock" will be destroyed whenever you close an eform that has already been posted
-// Therefore, re-create the block when you leave the eChart window.
+// Therefore, monitor for any changes in 'eforms'. when its childList changes, re-create the postedEFormsBlock
 function maintain_new_eforms_block(){
+	let mutationObserver = new MutationObserver(function(mutations) {
+		// mutations.forEach(function(mutation) {
+		// 	console.log(mutation);
+		// });
 
-	window.addEventListener("blur", function(event) { 
 		// if the postedItemsBlock exists, don't create another one.
 		if (!!document.getElementById('postedEFormsBlock')){  
 			return;
@@ -79,9 +82,17 @@ function maintain_new_eforms_block(){
 		if (!!eformslist){
 			const theBlock = document.createElement('div');
 			theBlock.id = "postedEFormsBlock";
-			theBlock.className = 'links';
 			eformslist.before(theBlock);			
 		}
+	});
+
+	mutationObserver.observe(document.getElementById('eforms'), {
+		childList: true,
+		// subtree: true,
+		// attributes: true,
+		// characterData: true,
+		// attributeOldValue: true,
+		// characterDataOldValue: true
 	});	
 }
 
