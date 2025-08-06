@@ -73,8 +73,8 @@ function save_eform_info(){
 	); 
 	console.log(submit_node_list);
 
-	for (const print_node of submit_node_list){
-		print_node.addEventListener("click", (event) =>{
+	for (const submit_node of submit_node_list){
+		submit_node.addEventListener("click", (event) =>{
 			const eform_title = get_eform_title();
 			const eform_title_subject = eform_title + ": " + get_eform_subject();
 			console.log(eform_title_subject);

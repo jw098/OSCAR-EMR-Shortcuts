@@ -10,6 +10,7 @@
 
 function update_sidebar(){
 	updateEFormSidebar();
+	updateConsultationsSidebar();
 }
 
 /////////////////////////////////////////////////////
@@ -305,40 +306,41 @@ function getFirstEChartEFormFDID(){
 /////////////////////////////////////////////////////
 
 /*
-NOTE
 - adds the consultations that were posted today to the sidebar.
-- for consultations posted today that are already listed in the sidebar, these will be shown instead of my version.
 */
-async function updateConsultationsSidebar() {
-	const otherPageXMLText = await getXMLHTTP(urlAddedConsults());
-	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
-	const postedItemsNodeList = otherPageHTML.querySelectorAll(".MainTableRightColumn > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr"); 
-	const postedItemsTodayList = findConsultsPostedToday(postedItemsNodeList);
-
-	console.log('---consults---');
-	console.log(postedItemsTodayList);
-
-	addPostedConsultsBlock();
-	
-	$("#postedConsultsBlock").html("");
-	$("#postedConsultsBlock").append(consultsObjectListToHTML(postedItemsTodayList));
-	
+function updateConsultationsSidebar() {
+	const consults_list_channel = new BroadcastChannel("update_consults_list");
+	consults_list_channel.addEventListener("message", function(event){
+		const consult_info = event.data;
+		console.log(consult_info);
+		$("#consultationlist").prepend(new_consult_as_html(consult_info));
+	});		
 
 
 }
 
+// object(service: string, consultant: string, reason_for_consult: string) -> string
+function new_consult_as_html(consult_info){
+	const htmlResult = 
+		`<li style="overflow: hidden; clear:both; position:relative; display:block; white-space:nowrap; ">
+			<a border="0" style="text-decoration:none; width:7px; z-index: 100; background-color: white; position:relative; margin: 0px; padding-bottom: 0px;  vertical-align: bottom; display: inline; float: right; clear:both;"><img id="imgconsultationZ" src="/oscar/images/clear.gif">&nbsp;&nbsp;</a>
+			<span style=" z-index: 1; position:absolute; margin-right:10px; width:90%; overflow:hidden;  height:1.5em; white-space:nowrap; float:left; text-align:left; ">
+			<a class="links" style="" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('` + urlAddedConsults() + `', '_blank', 'height=700,width=800,scrollbars=yes,status=yes');return false;" title="` + 
+			consult_info.service + " " + todayDateYYYYMMDD() + '&#10;Reason for referral: ' + consult_info.reason_for_consult + '&#10;Requesting Physician: ' + "&#10;Consultant Physician: "  + consult_info.consultant + `">` + 
+			consult_info.service + 
+			`</a>
+			</span>
+			<span style="z-index: 100; background-color: white; overflow:hidden;   position:relative; height:1.5em; white-space:nowrap; float:right; text-align:right;">` +
+			`...<a class="links" style="margin-right: 2px;" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('`+ urlAddedConsults() + `', '_blank', 'height=700,width=800,scrollbars=yes,status=yes');return false;" title="` +
+			consult_info.service + " " + todayDateYYYYMMDD() + '&#10;Reason for referral: ' + consult_info.reason_for_consult + '&#10;Requesting Physician: ' + "&#10;Consultant Physician: "  + consult_info.consultant + `">` + 
+			todayDateYYYYMMDD() + 			
+			`</a>
+			</span>
+		</li>`;
 
-
-// function removeEChartConsultsPostedToday(){
-// 	const eChartPostedTodayEFormsNodeList = $("#eformslist > li > span > a:contains('" + todayDateDDMMMYYYY() + "')");
-
-// 	for (i = 0; i < eChartPostedTodayEFormsNodeList.length; i++){
-// 		eFormPostedTodayInEChart = eChartPostedTodayEFormsNodeList[i].parentNode.parentNode;
-// 		// console.log(eFormPostedTodayInEChart);
-// 		eFormPostedTodayInEChart.remove();
-// 	}
-//     // console.log(eChartPostedTodayEFormsNodeList);
-// }
+	// console.log(htmlResult);
+	return htmlResult;	
+}
 
 /*
 PURPOSE:

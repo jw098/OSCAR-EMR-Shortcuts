@@ -147,6 +147,16 @@
         },
         {
             "matches": [
+                "*://*/*/oscarConsultationRequest/ConsultationFormRequest.jsp*"
+            ],
+            "js": [
+                "thirdparty/jquery3.1.0.min.js", 
+                "contentscripts/utils.js",
+                "contentscripts/EChart_UpdateSidebar_ConsultsPage.js"
+            ]
+        },         
+        {
+            "matches": [
                 "*://*/*/eform/efmformadd_data.jsp*",
                 "*://*/*/eform/efmshowform_data.jsp*"
             ],
