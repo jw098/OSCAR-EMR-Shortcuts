@@ -11,6 +11,7 @@
 function update_sidebar(){
 	updateEFormSidebar();
 	updateConsultationsSidebar();
+	updateTicklerSidebar();
 }
 
 /////////////////////////////////////////////////////
@@ -617,20 +618,34 @@ NOTE
 - for ticklers posted today that are already listed in the sidebar, these will be shown instead of my version.
 */
 async function updateTicklerSidebar() {
-	const otherPageXMLText = await getXMLHTTP(urlAddedTicklers());
-	const otherPageHTML = new DOMParser().parseFromString(otherPageXMLText, "text/html");
+	const tickler_list_channel = new BroadcastChannel("update_tickler_list");
+	tickler_list_channel.addEventListener("message", function(event){
+		const tickler_info = event.data;
+		console.log(tickler_info);
+		$("#ticklerlist").prepend(new_tickler_as_html(tickler_info));
+	});		
 
+}
 
-	console.log("----ticklers---");
-	const postedItemsNodeList = otherPageHTML.querySelectorAll("body > form:nth-child(3) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(4) > tbody:nth-child(1) > tr"); 
-	const postedItemsTodayList = findTicklersPostedToday(postedItemsNodeList);
-	console.log(postedItemsTodayList);
+// object(message: string, service_date: string, reason_for_consult: string) -> string
+function new_tickler_as_html(tickler_info){
 
-	addPostedTicklersBlock();
-	$("#postedTicklersBlock").html("");
-	$("#postedTicklersBlock").append(ticklersObjectListToHTML(postedItemsTodayList));
-
-
+	const htmlResult = 
+	`<li style="overflow: hidden; clear:both; position:relative; display:block; white-space:nowrap; ">
+		<a border="0" style="text-decoration:none; width:7px; z-index: 100; background-color: white; position:relative; margin: 0px; padding-bottom: 0px;  vertical-align: bottom; display: inline; float: right; clear:both;"><img id="imgeformsZ" src="/oscar/images/clear.gif">&nbsp;&nbsp;</a>
+		<span style=" z-index: 1; position:absolute; margin-right:10px; width:90%; overflow:hidden;  height:1.5em; white-space:nowrap; float:left; text-align:left; ">
+			<a class="links" style="" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('` + urlAddedTicklers() + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + tickler_info.message + " " + tickler_info.service_date + `">` + 
+			tickler_info.message  + 
+			`</a>
+		</span>
+		<span style="z-index: 100; background-color: white; overflow:hidden;   position:relative; height:1.5em; white-space:nowrap; float:right; text-align:right;">
+		...<a class="links" style="margin-right: 2px;" onmouseover="this.className='linkhover'" onmouseout="this.className='links'" href="#" onclick = "window.open('`+ urlAddedTicklers() + `', '_blank', 'scrollbars=yes,status=yes');return false;" title="` + tickler_info.message + " " + tickler_info.service_date + `">` 
+		+ tickler_info.service_date + `			
+		</a>
+		</span>
+	</li>`
+	// console.log(htmlResult);
+	return htmlResult;
 }
 
 /*
