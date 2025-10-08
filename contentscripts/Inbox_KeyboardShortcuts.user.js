@@ -45,7 +45,7 @@ function getNextTarget() {
 	for (const element of allInTBody) {
 		// console.log(index);
 		const styleAttribute = element.getAttribute('style');
-		if (styleAttribute != 'display: none;'){  // Lab result not hidden. i.e not recently acknowledged.
+		if (styleAttribute == null || !styleAttribute.includes('display: none;')){  // Lab result not hidden. i.e not recently acknowledged.
 			break;
 		}
     index++;
