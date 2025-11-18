@@ -129,7 +129,8 @@
         },
         {
             "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*",
+                "*://*/*CaseManagementEntry.do*"
             ],
             "js": [
                 "contentscripts/utils.js",
@@ -179,7 +180,8 @@
         },                 
         {
             "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*",
+                "*://*/*CaseManagementEntry.do*"
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
@@ -337,7 +339,8 @@
         },
         {
             "matches": [
-                "*://*/*/casemgmt/forward.jsp?action=view&demographic*"
+                "*://*/*/casemgmt/forward.jsp?action=view&demographic*",
+                "*://*/*CaseManagementEntry.do*"
             ],
             "js": [
                 "thirdparty/jquery3.1.0.min.js", 
