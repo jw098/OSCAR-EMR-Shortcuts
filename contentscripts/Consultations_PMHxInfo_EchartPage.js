@@ -36,6 +36,18 @@ async function checkEnabled_Consultations_EchartPage(){
 // Past Medical History, Social History, Family History
 /////////////////////////////////////////////////////////////////
 
+function addConsultsButtonListener(){
+	const consults_button = document.evaluate("//div[contains(@id, 'menuTitleconsultation')]/h3/a",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	console.log(consults_button);
+	consults_button.addEventListener('click', async function () { 
+		// console.log("button clicked");
+		getHistoryText("Medical History");
+		getHistoryText("Family History");
+		getHistoryText("Social History");
+		getHistoryText("Other Meds");
+  	},true);
+}
+
 /*
 PURPOSE:
 - use mutation observer to wait for the desired elements to load before trying to access them.
@@ -60,14 +72,15 @@ function CPPMutationObserver(){
 		let pMHxBlock = document.evaluate(pMHxXPath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;		
 		let famHxBlock = document.evaluate(famHxXPath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;		
 		let otherMedsBlock = document.evaluate(otherMedsXPath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-		if (!!socHxBlock && !!pMHxBlock && !!famHxBlock && !!otherMedsBlock){ // confirm all these blocks exist
+		const consults_button = document.evaluate("//div[contains(@id, 'menuTitleconsultation')]/h3/a",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+		if (!!socHxBlock && !!pMHxBlock && !!famHxBlock && !!otherMedsBlock && !!consults_button){ // confirm all these blocks exist
 			mutationObserver.disconnect();
-
-			
 			getHistoryText("Medical History");
 			getHistoryText("Family History");
 			getHistoryText("Social History");
 			getHistoryText("Other Meds");
+
+			addConsultsButtonListener();
 		}
 	});
 
