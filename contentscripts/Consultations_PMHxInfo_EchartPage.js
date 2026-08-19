@@ -54,17 +54,20 @@ function CPPMutationObserver(){
 		let socHxXPath = "//a[text()='Social History']";
 		let pMHxXPath = "//a[text()='Medical History']";
 		let famHxXPath = "//a[text()='Family History']";
+		let otherMedsXPath = "//a[text()='Other Meds']";
 
 		let socHxBlock = document.evaluate(socHxXPath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;		
 		let pMHxBlock = document.evaluate(pMHxXPath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;		
 		let famHxBlock = document.evaluate(famHxXPath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;		
-		if (!!socHxBlock && !!pMHxBlock && !!famHxBlock){
+		let otherMedsBlock = document.evaluate(otherMedsXPath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+		if (!!socHxBlock && !!pMHxBlock && !!famHxBlock && !!otherMedsBlock){ // confirm all these blocks exist
 			mutationObserver.disconnect();
 
 			
 			getHistoryText("Medical History");
 			getHistoryText("Family History");
 			getHistoryText("Social History");
+			getHistoryText("Other Meds");
 		}
 	});
 
@@ -126,7 +129,16 @@ function getHistoryText(history){
 				});				
 				const family_history_obj = await browser.storage.local.get('family_history');
 				console.log("stored ->\n" + family_history_obj.family_history);	
-				break;			
+				break;
+			case "Other Meds":
+				// console.log("Other Meds:\n" + historyTextList);
+				await browser.storage.local.set({
+					other_meds: historyTextList
+				});				
+				const other_meds_obj = await browser.storage.local.get('other_meds');
+				console.log("stored ->\n" + other_meds_obj.other_meds);	
+				break;
+
 		}
 	})();
 	

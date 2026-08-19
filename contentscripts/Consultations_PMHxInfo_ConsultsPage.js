@@ -128,6 +128,7 @@ async function getAllHistory() {
 	const medical_history_obj = await browser.storage.local.get('medical_history');
 	const social_history_obj = await browser.storage.local.get('social_history');
 	const family_history_obj = await browser.storage.local.get('family_history');
+	const other_meds_obj = await browser.storage.local.get('other_meds');
 
 	const medical_history_text = medical_history_obj.medical_history;	
 	const family_history_text = family_history_obj.family_history;
@@ -140,5 +141,5 @@ async function getAllHistory() {
 	clinInfoTextBox.value = allHistory;
 
 	const currentMedsBox = document.getElementById('currentMedications');
-	// currentMedsBox.value += "\n\nOther Meds:\n"  + otherMeds;
+	currentMedsBox.value += "\n\nOther Meds:\n"  + other_meds_obj.other_meds;
 }
